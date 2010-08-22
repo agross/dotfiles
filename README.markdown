@@ -22,8 +22,8 @@ You can configure some settings in `config.yml`:
 
     admin: <%= ENV['USERDOMAIN']  %>\Administrator
     homes:
-      cygwin: C:\Cygwin\home\<%= ENV['USERNAME']  %>
-      windows: <%= ENV['USERPROFILE']  %>
+      cygwin: C:\Cygwin\home\<%= ENV['USERNAME'] %>
+      windows: <%= ENV['USERPROFILE'] %>
 	  
 You will be asked for the password of the `admin` user when the first symlink is created. Why? The problem on Windows is that symlinks cannot be created by normal users. `psexec.exe` is used to launch a process that does the symlinking with (hopefully) sufficient administrative permissions.
 

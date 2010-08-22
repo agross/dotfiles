@@ -1,5 +1,5 @@
 ---
 admin: <%= ENV['USERDOMAIN']  %>\Administrator
 homes:
-  cygwin: C:\Cygwin\home\<%= ENV['USERNAME']  %>
-  windows: <%= ENV['USERPROFILE']  %>
+  cygwin: C:\Cygwin\home\<%= ENV['USERNAME'] %>
+  windows: <%= ENV['USERPROFILE'] %>
