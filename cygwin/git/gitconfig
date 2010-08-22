@@ -1,0 +1,73 @@
+[gui]
+	fontui = -family \"Segoe UI\" -size 8 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family Consolas -size 9 -weight normal -slant roman -underline 0 -overstrike 0
+[user]
+	email = agross@therightstuff.de
+	name = Alexander Groß
+[core]
+	autocrlf = false
+	safecrlf = warn
+	fileMode = false
+	whitespace = trailing-space, space-before-tab, -indent-with-non-tab, cr-at-eol
+	quotepath = false
+	editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession \"$(cygpath --windows --absolute \"$1\")\"
+[apply]
+	whitespace = nowarn
+[alias]
+	glog = log --graph --pretty=oneline --abbrev-commit --decorate --branches
+	wtf = !ruby \"$(cygpath --windows --absolute ~/bin/git-wtf.rb)\" --all --relations
+	rank = !ruby \"$(cygpath --windows --absolute ~/bin/git-rank-contributors.rb)\" $*
+	publish = !ruby \"$(cygpath --windows --absolute ~/bin/git-publish-branch.rb)\" $*
+	svn-relocate = !sh ~/bin/git-svn-relocate.sh $*
+	clobber = !sh ~/bin/git-cleanup.sh
+	sh = !sh ~/bin/git-sh.sh
+	multi-cherry-pick = !sh ~/bin/git-multi-cherry-pick.sh
+	ui = !'/c/Program Files (x86)/QGit/qgit.exe' --all &
+[color]
+	ui = auto
+	wtf = true
+[color "diff"]
+	old = bold red
+	new = bold green
+	meta = bold yellow
+[color "branch"]
+	current = black green
+	local = bold green
+	remote = yellow
+	plain = bold yellow
+[color "status"]
+	added = bold red
+	changed = bold green
+	untracked = bold cyan
+	nobranch = red reverse
+[color "interactive"]
+	prompt = bold green
+	error = bold red
+[branch]
+	autosetupmerge = true
+	autosetuprebase = always
+[svn]
+	rmdir = true
+	findcopiesharder = true
+[merge]
+	tool = diffmerge
+	log = true
+[mergetool]
+	prompt = false
+	keepBackup = false
+[mergetool "diffmerge"]
+	cmd = ~/bin/diffmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[mergetool "p4"]
+	cmd = ~/bin/p4merge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[diff]
+	tool = diffmerge
+	renames = copies
+[difftool]
+	prompt = false
+[difftool "diffmerge"]
+	cmd = ~/bin/diffmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
+[difftool "p4"]
+	cmd = ~/bin/p4merge-diff.sh \"$LOCAL\" \"$REMOTE\"
+[clean]
+	requireForce = false

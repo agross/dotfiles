@@ -1,0 +1,55 @@
+autoload -U zgitinit
+zgitinit
+
+autoload -U zgit-ext-rebaseinfo
+
+function prompt_agross_help () {
+  cat <<'EOF'
+
+  prompt agross
+
+EOF
+}
+
+function prompt_agross_setup() {
+	PROMPT="
+$PR_LIGHT_GREEN%n@%m$PR_NO_COLOR "
+	PROMPT+="$PR_LIGHT_YELLOW%~$PR_NO_COLOR"
+	PROMPT+="$PR_LIGHT_GREEN\$(prompt_agross_scm_branch)$PR_NO_COLOR"
+	PROMPT+="$PR_LIGHT_RED%B\$(prompt_agross_scm_status)%b$PR_NO_COLOR"
+	PROMPT+="%E
+$PR_NO_COLOR%(?.$.$PR_LIGHT_RED%B%S↑%s%b$PR_NO_COLOR) " 
+
+	RPROMPT=''
+	
+	export PROMPT RPROMPT
+}
+
+function prompt_agross_scm_branch() {
+	zgit_isgit || return
+	zgit-ext-rebaseinfo
+	
+	echo -n " @$(zgit_head)$zgit_info[rebase]"
+}
+
+function prompt_agross_scm_status() {
+	zgit_isgit && zgit_inworktree || return
+
+	if ! zgit_isworktreeclean; then
+		echo -n '*'
+	fi
+	
+	if zgit_hasuntracked; then
+		echo -n '?'
+	fi	
+	
+	if ! zgit_isindexclean; then
+		echo -n "^"
+	fi
+
+	if zgit_hasunmerged; then
+		echo -n 'Y'
+	fi
+}
+
+prompt_agross_setup "$@"
