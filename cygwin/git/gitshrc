@@ -1,0 +1,84 @@
+#!/bin/bash
+
+gitalias cmd='command'
+
+# git commit
+gitalias commit='git commit --verbose'
+gitalias amend='git commit --verbose --amend --reuse-message=HEAD'
+gitalias ci='git commit --verbose'
+gitalias cim='git commit --verbose --message'
+gitalias ca='git commit --verbose --all'
+
+gitalias co='git checkout'
+
+# git branch and remote
+gitalias   b='git branch'
+gitalias brs='git branch -a --verbose'
+gitalias  rv='git remote -v'
+gitalias pru='git fetch upstream && git rebase upstream/master'
+gitalias pro='git fetch origin && git rebase origin/master'
+gitalias publish='git publish'
+gitalias pub='git publish'
+gitalias wtf='git wtf'
+
+# git add
+gitalias  a='git add'
+gitalias au='git add --update'
+gitalias aa='git add --all'
+gitalias ai='git add --interactive'
+gitalias ap='git add --patch'
+gitalias aaa='git add --all && git commit --verbose --amend --reuse-message=HEAD'
+gitalias aua='git add --update && git commit --verbose --amend --reuse-message=HEAD'
+
+# git checkout
+gitalias c='git checkout'
+
+# git fetch
+gitalias f='git fetch'
+
+# rebase
+gitalias  r='git rebase --interactive'
+gitalias rc='git rebase --continue'
+gitalias ra='git rebase --abort'
+
+# git diff
+gitalias  d='git diff'
+gitalias  p='git diff --cached'   # mnemonic: "patch"
+gitalias dc='git diff --cached'
+
+gitalias dt='git difftool'
+gitalias dtc='git difftool --cached'
+gitalias dtp='git difftool --tool=p4'
+gitalias dtcp='git difftool --cached --tool=p4'
+gitalias mt='git mergetool'
+gitalias mtp='git mergetool --tool=p4'
+
+# git status
+gitalias  s='git status'
+
+# git log
+gitalias ll='git log'
+gitalias  l='git log --pretty=oneline --abbrev-commit --max-count=15'
+gitalias glog='git glog'
+gitalias gl='git glog'
+gitalias wdw='git log --pretty="format:%an - %s"'
+gitalias rank='git rank'
+
+# misc
+gitalias pick='git cherry-pick'
+gitalias multi-cherry-pick='git multi-cherry-pick'
+gitalias mcp='git multi-cherry-pick'
+gitalias clobber='git clobber'
+
+# experimental
+gitalias unstage='git reset HEAD'
+gitalias pop='git reset --soft HEAD^'
+gitalias review='git log -p --max-count=1'
+gitalias review-files='git log --name-only --max-count=1'
+
+# svn
+gitalias sd='git svn dcommit'
+gitalias sr='git svn rebase'
+
+gitalias ui='git ui'
+gitalias gk='gitk --all &'

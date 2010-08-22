@@ -1,0 +1,252 @@
+" Run as VIM not VI.
+set nocompatible
+
+" Load bundles from the "bundle" sub directories instead of one large plugin dir.
+set runtimepath^=~/.vim
+silent! call pathogen#runtime_append_all_bundles()
+silent! call pathogen#helptags()
+
+" Enable syntax highlighting.
+syntax on
+
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+
+" Default window size
+set lines=40
+set columns=120
+set textwidth=120
+
+" Yank into and put from the Windows clipboard.
+set clipboard=unnamed
+
+" File-type highlighting and configuration.
+" Run :filetype (without args) to see what you may have
+" to turn on yourself, or just set them all to be sure.
+filetype on
+filetype plugin on
+filetype indent on
+
+set autoindent smartindent
+
+" Set the fold column, so we can use the mouse to open and close folds
+set foldcolumn=2
+
+" The width of a TAB is set to 4.
+set tabstop=4
+" Indents will have a width of 4.
+set shiftwidth=4
+" Sets the number of columns for a TAB.
+set softtabstop=4 
+
+" Show line numbers.
+set number
+
+" Do not wrap lines.
+set nowrap
+
+" Show matching brackets.
+set showmatch
+
+" Bracket blinking.
+set mat=5
+
+" Always show status line.
+set laststatus=2
+
+function! InsertStatuslineColor(mode)
+  if a:mode == 'i'
+    highlight StatusLine guibg=green
+  elseif a:mode == 'r'
+    highlight StatusLine guibg=yellow
+  else
+    highlight StatusLine guibg=red
+  endif
+endfunction
+
+autocmd InsertEnter * call InsertStatuslineColor(v:insertmode)
+autocmd InsertLeave * highlight StatusLine guibg=#c2bfa5
+
+set statusline=%<%f\ %h%y\ [%{&ff}]%m%r\ %#warningmsg#%{SyntasticStatuslineFlag()}%*%=%-14.(%l,%c%V%)\ %P
+
+" Mouse in all modes
+set mouse=a
+
+set history=1000
+set matchtime=0
+" The “Press ENTER or type command to continue” prompt is jarring and usually unnecessary. You can shorten command-line text and other info tokens with.
+set shortmess=atI
+
+" Now in the bottom right corner of the status line there will be something like: 529, 35 68%, representing line 529, column 35, about 68% of the way to the end.
+set ruler
+set showcmd
+
+" When the cursor is moved outside the viewport of the current window, the buffer is scrolled by a single line. Setting the option below will start the scrolling three lines before the border, keeping more context around where you’re working.
+set scrolloff=3
+set sidescroll=1
+set sidescrolloff=3
+
+" A running gvim will always have a window title, but when vim is run within an xterm, by default it inherits the terminal’s current title. 
+set title
+
+" Search options
+" Highlight search terms...
+set hlsearch
+set incsearch
+" These two options, when set together, will make /-style searches case-sensitive only if there is a capital letter in the search expression. *-style searches continue to be consistently case-sensitive. 
+set ignorecase
+set smartcase
+
+" Blink if there is an error
+set visualbell
+set noerrorbells
+set printoptions=paper:letter
+
+" Make backspace delete lots of things
+set backspace=indent,eol,start
+
+" Auto-backup files and .swp files don't go to pwd
+set backupdir=$TEMP,.
+set directory=$TEMP,.
+
+" Allow switching edited buffers without saving
+set hidden
+
+" Look for the file in the current directory, then south until you reach home.
+set tags=tags;$HOME
+
+" Who needs .gvimrc?
+if has("gui_running")
+  set encoding=utf-8
+  set guifont=Consolas:h10
+  " Turn on toolbar
+  set guioptions+=T
+  " Turn on menu
+  set guioptions+=m
+  colorscheme desert
+end
+
+if has("gui_running")
+  function! ScreenFilename()
+    if has('win32')
+      return $HOME.'\.vimsize'
+    else
+      return $HOME.'/.vimsize'
+    endif
+  endfunction
+
+  function! ScreenRestore()
+    " Restore window size (columns and lines) and position
+    " from values stored in vimsize file.
+    " Must set font first so columns and lines are based on font size.
+    let f = ScreenFilename()
+    if has("gui_running") && g:screen_size_restore_pos && filereadable(f)
+      let vim_instance = (g:screen_size_by_vim_instance==1?(v:servername):'GVIM')
+      for line in readfile(f)
+        let sizepos = split(line)
+        if len(sizepos) == 5 && sizepos[0] == vim_instance
+          silent! execute "set columns=".sizepos[1]." lines=".sizepos[2]
+          silent! execute "winpos ".sizepos[3]." ".sizepos[4]
+          return
+        endif
+      endfor
+    endif
+  endfunction
+
+  function! ScreenSave()
+    " Save window size and position.
+    if has("gui_running") && g:screen_size_restore_pos
+      let vim_instance = (g:screen_size_by_vim_instance==1?(v:servername):'GVIM')
+      let data = vim_instance . ' ' . &columns . ' ' . &lines . ' ' .
+            \ (getwinposx()<0?0:getwinposx()) . ' ' .
+            \ (getwinposy()<0?0:getwinposy())
+      let f = ScreenFilename()
+      if filereadable(f)
+        let lines = readfile(f)
+        call filter(lines, "v:val !~ '^" . vim_instance . "\\>'")
+        call add(lines, data)
+      else
+        let lines = [data]
+      endif
+      call writefile(lines, f)
+    endif
+  endfunction
+
+  if !exists('g:screen_size_restore_pos')
+    let g:screen_size_restore_pos = 1
+  endif
+  if !exists('g:screen_size_by_vim_instance')
+    let g:screen_size_by_vim_instance = 1
+  endif
+  autocmd VimEnter * if g:screen_size_restore_pos == 1 | call ScreenRestore() | endif
+  autocmd VimLeavePre * if g:screen_size_restore_pos == 1 | call ScreenSave() | endif
+endif
+
+" The <Leader> character is your own personal modifier key, as g is Vim’s modifier key (when compared to vi). The default leader is \, but this isn’t located standardly on all keyboards and requires a pinky stretch in any case
+let mapleader = ","
+
+" Quick timeouts on key combinations.
+set timeoutlen=300
+
+" Alternatives to ESC:
+"imap jkl <ESC>
+"imap jlk <ESC>
+"imap kjl <ESC>
+"imap klj <ESC>
+"imap lkj <ESC>
+"imap ljk <ESC>
+"imap ;l <ESC>
+
+" "Very magic" regexes in searches
+"nnoremap / /\v
+"nnoremap ? ?\v
+
+" Vi-style editing in the command-line
+"nnoremap : q:a
+"nnoremap / q/a
+"nnoremap ? q?a
+
+" Window management
+"nmap <silent> <Leader>xo :wincmd j<CR>
+
+" The following will make tabs and trailing spaces visible when requested.
+set listchars=tab:>-,trail:·,eol:$
+" ,s shows trailing whitespace.
+nmap <silent> <leader>s :set nolist!<CR>
+
+" Fix command typos (stolen from Adam Katz)
+nmap ; :
+
+" These are very similar keys. Typing 'a will jump to the line in the current file marked with ma. However, `a  will jump to the line and column marked with ma! 
+" ` is more useful than ' but less accessible.
+nnoremap ' `
+nnoremap ` '
+
+" Buffer management
+nmap <C-h> :bp<CR>
+nmap <C-l> :bn<CR>
+"nmap <TAB> :b#<CR>
+"nmap <C-q> :bd<CR>
+nmap <C-d> :bw<CR>
+vmap <C-d> :bw<CR>
+
+" Toggle highlighting
+" nmap <silent> <C-n> :silent :set nohls!<CR>:silent :set nohls?<CR>
+nmap <silent> <C-n> :silent :nohlsearch<CR>
+
+" Scroll faster
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
+vnoremap <C-e> 3<C-e>
+vnoremap <C-y> 3<C-y>
+
+" Bash-like filename completion
+set wildmenu
+set wildmode=list:longest
+set wildignore=*.o
+
+autocmd Filetype yaml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd BufNewFile,BufRead *.boo setf boo
+
+" a.vim
+nmap <silent> <Leader>h :A<CR>

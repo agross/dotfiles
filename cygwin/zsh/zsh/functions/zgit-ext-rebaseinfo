@@ -1,0 +1,28 @@
+zgit_isgit || return 1
+
+local r=''
+local b=''
+if [ -f $zgit_info[dir]/rebase-merge/interactive ]; then
+	r="|REBASE-i"
+	b="$(cat $zgit_info[dir]/rebase-merge/head-name)"
+elif [ -d $zgit_info[dir]/rebase-merge ]; then
+	r="|REBASE-m"
+	b="$(cat $zgit_info[dir]/rebase-merge/head-name)"
+else
+	if [ -d $zgit_info[dir]/rebase-apply ]; then
+		if [ -f $zgit_info[dir]/rebase-apply/rebasing ]; then
+			r="|REBASE"
+		elif [ -f $zgit_info[dir]/rebase-apply/applying ]; then
+			r="|AM"
+		else
+			r="|AM/REBASE"
+		fi
+	elif [ -f $zgit_info[dir]/MERGE_HEAD ]; then
+		r="|MERGING"
+	elif [ -f $zgit_info[dir]/BISECT_LOG ]; then
+		r="|BISECTING"
+	fi
+fi
+
+zgit_info[rebase]=$r
+zgit_info[rebase_branch]=$b

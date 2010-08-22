@@ -1,0 +1,39 @@
+function prompt_agross_vcs_help () {
+  cat <<'EOF'
+
+  prompt agross_vcs
+
+EOF
+}
+
+function prompt_agross_vcs_setup() {
+	PROMPT="
+$PR_LIGHT_GREEN%n@%m$PR_NO_COLOR "
+	PROMPT+="$PR_LIGHT_YELLOW%~$PR_NO_COLOR"
+	PROMPT+="$PR_LIGHT_GREEN \$vcs_info_msg_0_ $PR_NO_COLOR"
+	PROMPT+="%E
+$PR_NO_COLOR%(?.$.$PR_LIGHT_RED%B%S↑%s%b$PR_NO_COLOR) " 
+
+	RPROMPT=''
+	
+	export PROMPT RPROMPT
+}
+
+autoload -Uz vcs_info
+
+zstyle ':vcs_info:*:prompt:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*:prompt:*' formats       "${PR_LIGHT_GREEN}@%b${PR_LIGHT_RED}%B%u%c${PR_NO_COLOR}" "%r@%b"
+zstyle ':vcs_info:*:prompt:*' check-for-changes true
+zstyle ':vcs_info:*:prompt:*' stagedstr '^'
+zstyle ':vcs_info:*:prompt:*' unstagedstr '*'
+zstyle ':vcs_info:*'          enable git
+
+autoload -U add-zsh-hook
+add-zsh-hook precmd prompt_precmd
+
+prompt_precmd()
+{
+    vcs_info 'prompt'
+}
+
+prompt_agross_vcs_setup "$@"
