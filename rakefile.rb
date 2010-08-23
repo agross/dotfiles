@@ -25,23 +25,24 @@ end
 
 desc "Let's hook this motherfucker into your system"
 task :install => :load_config do
-	homes = Dir.glob("*/")
+	profiles = Dir.glob("profiles/*/")
 	
-	homes.map! {|x| x.chop! }.each do |home|
-		if configatron.homes.exists?(home.to_sym)
-			install_to = [] << configatron.homes.method_missing(home.to_sym).to_s
+	profiles.map! {|x| x.chop! }.each do |profile|
+		profile_key = profile.sub(/profiles\//, '')
+		if configatron.profiles.exists?(profile_key.to_sym)
+			install_to = [] << configatron.profiles.method_missing(profile_key.to_sym).to_s
 		else
-			install_to = configatron.homes.configatron_keys.map { |h| configatron.homes.method_missing(h.to_sym).to_s }
+			install_to = configatron.profiles.configatron_keys.map { |p| configatron.profiles.method_missing(p.to_sym).to_s }
 		end
 		
-		process_home home, install_to
+		process_profile profile, install_to
 	end
 end
 
-def process_home(home, install_to)
-	puts ">>> Linking '#{home}' to #{install_to.join(', ')}"
+def process_profile(profile, install_to)
+	puts ">>> Linking '#{profile}' to #{install_to.join(', ')}"
 
-	linkables = Dir.glob("#{home}/*/*")
+	linkables = Dir.glob("#{profile}/*/*")
 	linkables.each do |linkable|
 		if File.basename(linkable).match /bin/
 			destination = "bin"

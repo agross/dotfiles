@@ -21,13 +21,13 @@ The install rake task will symlink the appropriate files in `<somewhere>` to you
 You can configure some settings in `config.yml`:
 
     admin: <%= ENV['USERDOMAIN']  %>\Administrator
-    homes:
+    profiles:
       cygwin: C:\Cygwin\home\<%= ENV['USERNAME'] %>
       windows: <%= ENV['USERPROFILE'] %>
 	  
 You will be asked for the password of the `admin` user when the first symlink is created. Why? The problem on Windows is that symlinks cannot be created by normal users. `psexec.exe` is used to launch a process that does the symlinking with (hopefully) sufficient administrative permissions.
 
-`homes.cygwin` and `homes.windows` denote the respective home directories of the subsystems. The subfolders of `<repository>/cygwin` and `<repository>/windows` directly refer to these configuration entries. The contents of the special `<repository>/all` folder will be symlinked to all `homes`. If you want a third `home` entry, just create a new entry in `config.yml` and add a matching folder under `<repository>`.
+`profiles.cygwin` and `profiles.windows` denote the respective home directories of the subsystems. The subfolders of `<repository>/profiles/cygwin` and `<repository>/profiles/windows` directly refer to these configuration entries. The contents of the special `<repository>/profiles/all` folder will be symlinked to all `profiles`. If you want a third `profile` entry, just create a new entry in `config.yml` and add a matching folder under `<repository>/profiles`.
 
 ## thanks
 
