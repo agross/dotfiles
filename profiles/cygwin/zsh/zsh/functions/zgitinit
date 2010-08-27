@@ -222,7 +222,11 @@ zgit_rebaseinfo() {
 	zgit_info[dotest]=$dotest
 
 	zgit_info[rb_onto]=$(cat "$dotest/onto")
-	zgit_info[rb_upstream]=$(cat "$dotest/upstream")
+	if [ -f "$dotest/upstream" ]; then
+		zgit_info[rb_upstream]=$(cat "$dotest/upstream")
+	else
+		zgit_info[rb_upstream]=
+	fi
 	if [ -f "$dotest/orig-head" ]; then
 		zgit_info[rb_head]=$(cat "$dotest/orig-head")
 	elif [ -f "$dotest/head" ]; then
@@ -233,16 +237,10 @@ zgit_rebaseinfo() {
 	return 0
 }
 
-zgitinit() {
-	typeset -ga chpwd_functions
-	typeset -ga preexec_functions
-	typeset -ga precmd_functions
-	chpwd_functions+='zgit_chpwd_hook'
-	preexec_functions+='zgit_preexec_hook'
-	precmd_functions+='zgit_precmd_hook'
-}
+add-zsh-hook chpwd zgit_chpwd_hook
+add-zsh-hook preexec zgit_preexec_hook
+add-zsh-hook precmd zgit_precmd_hook
 
-zgitinit
 zgit_info_update
 
 # vim:set ft=zsh:
