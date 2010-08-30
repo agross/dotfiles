@@ -329,4 +329,4 @@ __git_command_successful () {
   return 0
 }
 
-zstyle ':completion:*:*:git:*' user-commands flow:'description for foo'
+zstyle ':completion:*:*:git:*' user-commands flow:'git workflow'
