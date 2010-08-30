@@ -2,6 +2,8 @@
 
 gitalias cmd='command'
 
+gitalias fl='git flow'
+
 # git commit
 gitalias commit='git commit --verbose'
 gitalias amend='git commit --verbose --amend --reuse-message=HEAD'
