@@ -22,7 +22,7 @@
 	clobber = !sh ~/bin/git-cleanup.sh
 	sh = !sh ~/bin/git-sh.sh
 	multi-cherry-pick = !sh ~/bin/git-multi-cherry-pick.sh
-	ui = !'/c/Program Files (x86)/QGit/qgit.exe' --all &
+	ui = !'/c/Tools/QGit/qgit.exe' --all &
 [color]
 	ui = auto
 	wtf = true
