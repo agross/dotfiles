@@ -78,7 +78,7 @@ bindkey ' '                magic-space
 # Bound keys specific to menu selection.
 
 # In a menu completion, insert the current completion into the buffer, and advance to the next possible completion. 
-bindkey -M menuselect '^M' accept-and-menu-complete      # Return
+#bindkey -M menuselect '^M' accept-and-menu-complete      # Return
 # Execute the contents of the buffer. Then search the history list for a line matching the current one and push the event following onto the buffer stack. 
 # Fügt die Completion auf der Kommandozeile ein und zeigt dann ein Menü mit weiterhin möglichen Completions.
 bindkey -M menuselect '^^' accept-and-infer-next-history # Ctrl + Return
