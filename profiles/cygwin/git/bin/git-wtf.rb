@@ -98,10 +98,11 @@ ARGV.each { |a| abort "Error: unknown argument #{a}." if a =~ /^--/ }
 
 ## search up the path for a file
 def find_file fn
+  home = File.expand_path("~/#{fn}") if File.exist? File.expand_path("~/#{fn}")
   while true
     return fn if File.exist? fn
     fn2 = File.join("..", fn)
-    return nil if File.expand_path(fn2) == File.expand_path(fn)
+    return home if File.expand_path(fn2) == File.expand_path(fn)
     fn = fn2
   end
 end
