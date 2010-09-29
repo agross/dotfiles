@@ -1,0 +1,10 @@
+--- 
+integration-branches: 
+- heads/master
+- heads/develop
+- heads/release
+- heads/next
+- heads/edge
+max_commits: 5
+ignore: []
+
