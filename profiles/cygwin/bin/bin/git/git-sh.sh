@@ -240,4 +240,4 @@ complete -o default -o nospace -F _git help
 
 # vim: tw=80
 
-. ~/bin/git-sh-config.sh
+. ~/bin/git/git-sh-config.sh
