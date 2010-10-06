@@ -29,10 +29,9 @@
 }
 
 # we expect to be sourced into an interactive shell. when executed as a
-# command, kick off a new shell and source us. this is a pretty cool hack;
-# make it better.
+# command, kick off a new shell and source us.
 #[ "$0" = 'bash' ] ||
-#exec /usr/bin/env bash --rcfile "$@" "$0"
+#exec /usr/bin/env bash --rcfile "$0" "$@"
 
 # source the user's .bashrc file
 #[ -r ~/.bashrc ] && {
@@ -159,6 +158,21 @@ for cfg in "${_git_cmd_cfg[@]}" ; do
 	done
 done
 
+# Create aliases for everything defined in the gitconfig [alias] section.
+_git_import_aliases () {
+	eval "$(
+		git config --get-regexp 'alias\..*' |
+		sed 's/^alias\.//'                  |
+		while read key command
+		do
+			if expr -- "$command" : '!' >/dev/null
+			then echo "alias $key='${command#!}'"
+			else echo "gitalias $key='git $command'"
+			fi
+		done
+	)"
+}
+
 # PROMPT =======================================================================
 
 #PS1='`_git_headname`!`_git_workdir``_git_dirty`> '
@@ -218,26 +232,31 @@ _git_color() {
 # HELP ========================================================================
 
 _help_display() {
+	local name value
 	# show git's inbuilt help, after some tweaking...
-	git --help |
-		grep -v 'usage: git ' |
-		sed "s/See 'git help/See 'help/"
+	git --help | grep -v "See 'git help"
 
-	# show aliases from ~/.gitshrc
-	[ -r ~/.gitshrc ] && {
-		echo ; echo 'Aliases from ~/.gitshrc'
-		perl -ne's/(?:git)?alias +// or next; s/=/\t\t\t/; print' ~/.gitshrc
-	}
+	# show aliases defined in ~/.gitconfig
+	echo "Command aliases:"
+	git config --get-regexp 'alias\..*' |
+	sed 's/^alias\.//'                  |
+	sort                                |
+	while read name value
+	do printf "   %-10s %-65s\n" "$name" "$value"
+	done
+
+	printf "\nSee 'help COMMAND' for more information on a specific command.\n"
 }
 
 help() {
 	local _git_pager=$(git config core.pager)
-	[ $# = 1 ] &&
-		git help $1 ||
-		(_help_display | ${_git_pager:-${PAGER:-less}})
+	if [ $# = 1 ];
+	then git help $1
+	else (_help_display | ${_git_pager:-${PAGER:-less}})
+	fi
 }
 complete -o default -o nospace -F _git help
 
-# vim: tw=80
+# vim: tw=80 noexpandtab
 
 . ~/bin/git/git-sh-config.sh
