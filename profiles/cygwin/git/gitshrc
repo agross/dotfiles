@@ -20,9 +20,7 @@ gitalias  rv='git remote -v'
 gitalias pru='git fetch upstream && git rebase upstream/master'
 gitalias pro='git fetch origin && git rebase origin/master'
 gitalias mpull='branch=${1:-develop} && git fetch origin && git rebase --preserve-merges origin/$branch $branch'
-gitalias publish='git publish'
 gitalias pub='git publish'
-gitalias wtf='git wtf'
 
 # git add
 gitalias  a='git add'
@@ -62,16 +60,12 @@ gitalias  s='git status'
 # git log
 gitalias ll='git log'
 gitalias  l='git log --pretty=oneline --abbrev-commit --max-count=15'
-gitalias glog='git glog'
 gitalias gl='git glog'
 gitalias wdw='git log --pretty="format:%an - %s"'
-gitalias rank='git rank'
 
 # misc
 gitalias pick='git cherry-pick'
-gitalias multi-cherry-pick='git multi-cherry-pick'
 gitalias mcp='git multi-cherry-pick'
-gitalias clobber='git clobber'
 
 # experimental
 gitalias unstage='git reset HEAD'
@@ -83,5 +77,4 @@ gitalias review-files='git log --name-only --max-count=1'
 gitalias sd='git svn dcommit'
 gitalias sr='git svn rebase'
 
-gitalias ui='git ui'
 gitalias gk='gitk --all &'

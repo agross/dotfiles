@@ -29,10 +29,9 @@
 }
 
 # we expect to be sourced into an interactive shell. when executed as a
-# command, kick off a new shell and source us. this is a pretty cool hack;
-# make it better.
+# command, kick off a new shell and source us.
 #[ "$0" = 'bash' ] ||
-#exec /usr/bin/env bash --rcfile "$@" "$0"
+#exec /usr/bin/env bash --rcfile "$0" "$@"
 
 # source the user's .bashrc file
 #[ -r ~/.bashrc ] && {
@@ -68,11 +67,9 @@ gitcomplete() {
 #   gitalias ci='commit -v'
 #   gitalias r='rebase --interactive HEAD~10'
 gitalias() {
-	local alias="${1%%=*}" command="${1#*=}"
-	local prog="${command##git }"
-	prog="${prog%% *}"
-	alias $alias="$command"
-	gitcomplete "$alias" "$prog"
+  local alias="${1%%'='*}" # Tail-match the longest string beginning with = and remove it.
+  local command="${1#*=}" # Head-match the shortest string before the = and remove it.
+  alias $alias="$command"
 }
 
 # create aliases and configure bash completion for most porcelain commands
@@ -153,51 +150,111 @@ for cfg in "${_git_cmd_cfg[@]}" ; do
 	for opt in $opts ; do
 		case $opt in
 			alias*)   alias $cmd="git $cmd" ;;
-			#stdcmpl) complete -o default -o nospace -F _git_${cmd//-/_} $cmd ;;
-			#logcmpl) complete -o default -o nospace -F _git_log         $cmd ;;
+#			stdcmpl) complete -o default -o nospace -F _git_${cmd//-/_} $cmd ;;
+#			logcmpl) complete -o default -o nospace -F _git_log         $cmd ;;
 		esac
 	done
 done
 
-# gitalias <alias>='<command> [<args>...]'
-#
-# Define a new shell alias (as with the alias builtin) named <alias>
-# and enable command completion based on <command>. <command> must be
-# a standard non-abbreviated git command name that has completion support.
-#
-# Examples:
-#   gitalias c=checkout
-#   gitalias ci='commit -v'
-#   gitalias r='rebase --interactive HEAD~10'
-gitalias() {
-	local alias="${1%%'='*}" # Tail-match the longest string beginning with = and remove it.
-	local command="${1#*=}" # Head-match the shortest string before the = and remove it.
-	alias $alias="$command"
+# Create aliases for everything defined in the gitconfig [alias] section.
+_git_import_aliases () {
+	eval "$(
+		git config --get-regexp 'alias\..*' |
+		sed 's/^alias\.//'                  |
+		while read key command
+		do
+			if expr -- "$command" : '!' >/dev/null
+			then echo "alias $key='${command#!}'"
+			else echo "gitalias $key='git $command'"
+			fi
+		done
+	)"
+}
+
+# PROMPT =======================================================================
+
+#PS1='`_git_headname`!`_git_workdir``_git_dirty`> '
+
+ANSI_RESET="\001$(git config --get-color "" "reset")\002"
+
+# detect whether the tree is in a dirty state. returns
+_git_dirty() {
+	if git status 2>/dev/null | fgrep -q '(working directory clean)'; then
+		return 0
+	fi
+	local dirty_marker="`git config gitsh.dirty || echo ' *'`"
+	_git_apply_color "$dirty_marker" "color.sh.dirty" "red"
+}
+
+# detect the current branch; use 7-sha when not on branch
+_git_headname() {
+	local br=`git symbolic-ref -q HEAD 2>/dev/null`
+	[ -n "$br" ] &&
+		br=${br#refs/heads/} ||
+		br=`git rev-parse --short HEAD 2>/dev/null`
+	_git_apply_color "$br" "color.sh.branch" "yellow reverse"
+}
+
+# detect working directory relative to working tree root
+_git_workdir() {
+	subdir=`git rev-parse --show-prefix 2>/dev/null`
+	subdir="${subdir%/}"
+	workdir="${PWD%/$subdir}"
+	_git_apply_color "${workdir/*\/}${subdir:+/$subdir}" "color.sh.workdir" "blue bold"
+}
+
+# determine whether color should be enabled. this checks git's color.ui
+# option and then color.sh.
+_git_color_enabled() {
+	[ `git config --get-colorbool color.sh true` = "true" ]
+}
+
+# apply a color to the first argument
+_git_apply_color() {
+	local output="$1" color="$2" default="$3"
+	if _git_color_enabled ; then
+		color=`_git_color "$color" "$default"`
+		echo -ne "${color}${output}${ANSI_RESET}"
+	else
+		echo -ne "$output"
+	fi
+}
+
+# retrieve an ANSI color escape sequence from git config
+_git_color() {
+	local color
+	color=`git config --get-color "$1" "$2" 2>/dev/null`
+	[ -n "$color" ] && echo -ne "\001$color\002"
 }
 
 # HELP ========================================================================
 
 _help_display() {
+	local name value
 	# show git's inbuilt help, after some tweaking...
-	git --help |
-		grep -v 'usage: git ' |
-		sed "s/See 'git help/See 'help/"
+	git --help | grep -v "See 'git help"
 
-	# show aliases from ~/.gitshrc
-	[ -r ~/.gitshrc ] && {
-		echo ; echo 'Aliases from ~/.gitshrc'
-		perl -ne's/(?:git)?alias +// or next; s/=/\t\t\t/; print' ~/.gitshrc
-	}
+	# show aliases defined in ~/.gitconfig
+	echo "Command aliases:"
+	git config --get-regexp 'alias\..*' |
+	sed 's/^alias\.//'                  |
+	sort                                |
+	while read name value
+	do printf "   %-10s %-65s\n" "$name" "$value"
+	done
+
+	printf "\nSee 'help COMMAND' for more information on a specific command.\n"
 }
 
 help() {
 	local _git_pager=$(git config core.pager)
-	[ $# = 1 ] &&
-		git help $1 ||
-		(_help_display | ${_git_pager:-${PAGER:-less}})
+	if [ $# = 1 ];
+	then git help $1
+	else (_help_display | ${_git_pager:-${PAGER:-less}})
+	fi
 }
 #complete -o default -o nospace -F _git help
 
-# vim: tw=80
+# vim: tw=80 noexpandtab
 
-. $ZSH/lib/git-sh-config.sh
+. ~/bin/git/git-sh-config.sh
