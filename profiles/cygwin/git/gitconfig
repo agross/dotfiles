@@ -15,13 +15,13 @@
 	whitespace = nowarn
 [alias]
 	glog = log --graph --pretty=oneline --abbrev-commit --decorate --branches
-	wtf = !ruby \"$(cygpath --windows --absolute ~/bin/git-wtf.rb)\" --all --relations
-	rank = !ruby \"$(cygpath --windows --absolute ~/bin/git-rank-contributors.rb)\" $*
-	publish = !ruby \"$(cygpath --windows --absolute ~/bin/git-publish-branch.rb)\" $*
-	svn-relocate = !sh ~/bin/git-svn-relocate.sh $*
-	clobber = !sh ~/bin/git-cleanup.sh
-	sh = !sh ~/bin/git-sh.sh
-	multi-cherry-pick = !sh ~/bin/git-multi-cherry-pick.sh
+	wtf = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-wtf.rb)\" --all --relations
+	rank = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-rank-contributors.rb)\" $*
+	publish = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-publish-branch.rb)\" $*
+	svn-relocate = !sh ~/bin/git/git-svn-relocate.sh $*
+	clobber = !sh ~/bin/git/git-cleanup.sh
+	sh = !sh ~/bin/git/git-sh.sh
+	multi-cherry-pick = !sh ~/bin/git/git-multi-cherry-pick.sh
 	ui = !'/c/Tools/QGit/qgit.exe' --all &
 [color]
 	ui = auto
@@ -56,18 +56,18 @@
 	prompt = false
 	keepBackup = false
 [mergetool "diffmerge"]
-	cmd = ~/bin/diffmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/bin/git/diffmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [mergetool "p4"]
-	cmd = ~/bin/p4merge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/bin/git/p4merge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [diff]
 	tool = diffmerge
 	renames = copies
 [difftool]
 	prompt = false
 [difftool "diffmerge"]
-	cmd = ~/bin/diffmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/bin/git/diffmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
 [difftool "p4"]
-	cmd = ~/bin/p4merge-diff.sh \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/bin/git/p4merge-diff.sh \"$LOCAL\" \"$REMOTE\"
 [clean]
 	requireForce = false

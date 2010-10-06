@@ -1,4 +1,5 @@
-PATH=~/bin:${PATH}
+paths=($HOME/bin/*/(/) $PATH)
+PATH=${(j.:.)paths}
 
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.zsh
