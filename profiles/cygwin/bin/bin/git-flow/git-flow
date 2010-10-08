@@ -59,6 +59,8 @@ usage() {
 }
 
 main() {
+	unset GREP_OPTIONS
+	
 	if [ $# -lt 1 ]; then
 		usage
 		exit 1
