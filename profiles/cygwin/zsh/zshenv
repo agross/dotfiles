@@ -1,4 +1,4 @@
-paths=($HOME/bin/*/(/) $PATH)
+paths=($HOME/bin $HOME/bin/*/(/) $PATH)
 PATH=${(j.:.)paths}
 
 # Path to your oh-my-zsh configuration.
