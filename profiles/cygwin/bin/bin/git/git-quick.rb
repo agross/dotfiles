@@ -15,7 +15,7 @@ $operations = {
   :checkout    => { :match => /^.M/,         :cmd => 'git checkout --'},
   :head        => { :match => /^(.M|M |A )/, :cmd => 'git reset HEAD --'},
   :diff        => { :match => /^.M/,         :cmd => 'git diff --'},
-  :diff_cached => { :match => /^M./,         :cmd => 'git diff --cached --'}
+  :diff_cached => { :match => /^(M|A)./,     :cmd => 'git diff --cached --'}
 }
 
 def find_operation(command)
