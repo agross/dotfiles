@@ -14,6 +14,11 @@
 [apply]
 	whitespace = nowarn
 [alias]
+	qn = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" new $*
+	qa = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" add $*
+	qr = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" rm $*
+	qh = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" head $*
+	qc = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" checkout $*
 	glog = log --graph --pretty=oneline --abbrev-commit --decorate --branches
 	wtf = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-wtf.rb)\" --all --relations
 	rank = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-rank-contributors.rb)\" $*
