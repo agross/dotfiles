@@ -19,6 +19,8 @@
 	qr = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" rm $*
 	qh = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" head $*
 	qc = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" checkout $*
+	qd = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" diff $*
+	qdc = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" diff_cached $*
 	glog = log --graph --pretty=oneline --abbrev-commit --decorate --branches
 	wtf = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-wtf.rb)\" --all --relations
 	rank = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-rank-contributors.rb)\" $*
