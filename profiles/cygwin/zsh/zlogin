@@ -1,1 +1,6 @@
-cd /scratch
+# Make sure we start in /scratch unless specified otherwise.
+if [ ! -z "${KEEP_CURRENT_PATH}" ]; then
+	unset KEEP_CURRENT_PATH
+else
+	cd /scratch
+fi
