@@ -22,6 +22,7 @@ alias dirs='dirs -v'
 alias md='mkdir -p'
 alias rd='rmdir'
 alias wgets='wget --spider --server-response'
+alias upload='~/bin/upload.sh'
 
 alias ls='ls --color=auto -l --all --human-readable --group-directories'
 alias dir='ls'
