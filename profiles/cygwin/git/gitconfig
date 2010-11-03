@@ -16,6 +16,7 @@
 [alias]
 	qn = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" new $*
 	qa = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" add $*
+	qap= !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" add_patch $*
 	qr = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" rm $*
 	qh = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" head $*
 	qc = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" checkout $*
