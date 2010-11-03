@@ -10,6 +10,7 @@ EOH
 
 $operations = {
   :add         => { :match => /^.M/,         :cmd => 'git add --'},
+  :add_patch   => { :match => /^.M/,         :cmd => 'git add --patch --'},
   :new         => { :match => /^\?\?/,       :cmd => 'git add --'},
   :rm          => { :match => /^ D/,         :cmd => 'git rm --'},
   :checkout    => { :match => /^.M/,         :cmd => 'git checkout --'},
