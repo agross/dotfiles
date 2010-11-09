@@ -97,6 +97,16 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 
 # Load known hosts file for auto-completion with ssh and scp commands.
 if [ -f ~/.ssh/known_hosts ]; then
-  zstyle ':completion:*' hosts $( sed 's/[, ].*$//' $HOME/.ssh/known_hosts )
-  zstyle ':completion:*:*:(ssh|scp):*:*' hosts `sed 's/^\([^ ,]*\).*$/\1/' ~/.ssh/known_hosts`
+	# Hostname completion, excluding IP addresses.
+	zstyle ':completion:*' hosts `sed 's/[, ].*$//' $HOME/.ssh/known_hosts | sed 's/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}//'`
+	zstyle ':completion:*:*:(ssh|scp):*:*' hosts `sed 's/[, ].*$//' $HOME/.ssh/known_hosts | sed 's/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}//'`
+fi
+if [ -f ~/.ssh/config ]; then
+	zstyle -g old_value ':completion:*:*:(ssh|scp):*:*' hosts
+	config_value=`sed -n '/^host .*$/p' $HOME/.ssh/config | sed -e 's/^host //' | tr '\n' ' '`
+	
+	zstyle ':completion:*:*:(ssh|scp):*:*' hosts `echo $old_value $config_value`
+	
+	unset old_value
+	unset config_value
 fi
