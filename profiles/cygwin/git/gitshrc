@@ -73,6 +73,7 @@ gitalias pop='git reset --soft HEAD^'
 gitalias review='git log -p --max-count=1'
 gitalias review-files='git log --name-only --max-count=1'
 gitalias reword='git commit --amend'
+gitalias cleanf='git clean -xdf'
 
 # svn
 gitalias sd='git svn dcommit'
