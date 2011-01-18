@@ -9,6 +9,7 @@ gitalias commit='git commit --verbose'
 gitalias amend='git commit --verbose --amend --reuse-message=HEAD'
 gitalias ci='git commit --verbose'
 gitalias cim='git commit --verbose --message'
+gitalias cima='git commit --verbose --all --message'
 gitalias ca='git commit --verbose --all'
 
 gitalias co='git checkout'
