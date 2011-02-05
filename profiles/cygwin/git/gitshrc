@@ -34,6 +34,8 @@ gitalias aua='git add --update && git commit --verbose --amend --reuse-message=H
 
 # git checkout
 gitalias c='git checkout'
+gitalias cp='git checkout --patch'
+gitalias rp='git reset --patch'
 
 # git fetch
 gitalias f='git fetch'
