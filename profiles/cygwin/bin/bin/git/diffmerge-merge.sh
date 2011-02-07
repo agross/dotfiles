@@ -9,7 +9,7 @@ tool="$(cygpath --unix --absolute "C:/Tools/DiffMerge/diffmerge.exe")"
 
 if [ ! -f "$baseUnixFormat" ]
 then
-	base="$(cygpath --mixed --absolute ~/bin/diffmerge-empty)"
+	base="$(cygpath --mixed --absolute ~/bin/git/diffmerge-empty)"
 fi
 
 #echo -e "local\n$local"
