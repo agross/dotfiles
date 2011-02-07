@@ -12,13 +12,13 @@ title2="New $path"
 
 if [ ! -f "$oldUnixFormat" ]
 then
-	old="$(cygpath --mixed --absolute ~/bin/diffmerge-empty)"
+	old="$(cygpath --mixed --absolute ~/bin/git/diffmerge-empty)"
 	title1="<File didn't exist>"
 fi
 
 if [ ! -f "$newUnixFormat" ]
 then
-	new="$(cygpath --mixed --absolute ~/bin/diffmerge-empty)"
+	new="$(cygpath --mixed --absolute ~/bin/git/diffmerge-empty)"
 	title1="Old $path"
 	title2="<File has been deleted>"
 fi
