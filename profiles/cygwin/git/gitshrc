@@ -1,6 +1,7 @@
 #!/bin/bash
 
 gitalias cmd='command'
+gitalias rsd='command rm *.exe.stackdump'
 
 gitalias fl='git flow'
 
