@@ -9,14 +9,16 @@ The index starts at 1 for each of the "changes to be committed",
 EOH
 
 $operations = {
-  :add         => { :match => /^.M/,         :cmd => 'git add --'},
-  :add_patch   => { :match => /^.M/,         :cmd => 'git add --patch --'},
-  :new         => { :match => /^\?\?/,       :cmd => 'git add --'},
-  :rm          => { :match => /^ D/,         :cmd => 'git rm --'},
-  :checkout    => { :match => /^.M/,         :cmd => 'git checkout --'},
-  :head        => { :match => /^(.M|M |A )/, :cmd => 'git reset HEAD --'},
-  :diff        => { :match => /^.M/,         :cmd => 'git diff --'},
-  :diff_cached => { :match => /^(M|A)./,     :cmd => 'git diff --cached --'}
+  :add               => { :match => /^.M/,         :cmd => 'git add --'},
+  :add_patch         => { :match => /^.M/,         :cmd => 'git add --patch --'},
+  :new               => { :match => /^\?\?/,       :cmd => 'git add --'},
+  :rm                => { :match => /^ D/,         :cmd => 'git rm --'},
+  :checkout          => { :match => /^.M/,         :cmd => 'git checkout --'},
+  :checkout_patch    => { :match => /^.M/,         :cmd => 'git checkout --patch --'},
+  :head              => { :match => /^(.M|M |A )/, :cmd => 'git reset HEAD --'},
+  :head_patch        => { :match => /^(.M|M |A )/, :cmd => 'git reset HEAD --patch --'},
+  :diff              => { :match => /^.M/,         :cmd => 'git diff --'},
+  :diff_cached       => { :match => /^(M|A)./,     :cmd => 'git diff --cached --'}
 }
 
 def find_operation(command)
