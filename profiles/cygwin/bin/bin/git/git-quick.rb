@@ -38,7 +38,18 @@ end
 					
 $op = find_operation ARGV.shift
 $dry_run = ARGV.delete("--dry-run") || ARGV.delete("-n")
-$indexes = ARGV.map do |index| index.to_i - 1 end
+$indexes = ARGV.map { |spec| 
+  if spec.include?('..')
+    bounds = spec.split '..'
+    (bounds[0].to_i..bounds[1].to_i).to_a
+  else
+    spec.to_i
+  end
+} \
+.flatten \
+.map! { |index|
+  index - 1
+}
 
 files = %x{ git status -s } \
   .split(/[\r\n]+/) \
