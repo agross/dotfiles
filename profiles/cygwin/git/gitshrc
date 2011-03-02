@@ -50,6 +50,8 @@ gitalias ra='git rebase --abort'
 gitalias  d='git diff'
 gitalias  p='git diff --cached'   # mnemonic: "patch"
 gitalias dc='git diff --cached'
+gitalias wd='git diff --word-diff'
+gitalias wdc='git diff --cached --word-diff'
 
 gitalias dt='git difftool'
 gitalias dtc='git difftool --cached'
