@@ -65,5 +65,5 @@ if $dry_run
 	puts "Would execute:\n#{cmd}"
 	exit
 end
-
+puts "Will execute:\n#{cmd}"
 system cmd
