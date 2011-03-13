@@ -63,6 +63,12 @@ gitalias mtp='git mergetool --tool=p4'
 # git status
 gitalias  s='git status'
 
+# git push
+gitalias pu='git push upstream'
+gitalias puf='git push upstream --force'
+gitalias po='git push origin'
+gitalias pof='git push origin --force'
+
 # git log
 gitalias ll='git log'
 gitalias  l='git log --pretty=oneline --abbrev-commit --max-count=15'
