@@ -130,6 +130,17 @@ if has("gui_running")
   colorscheme desert
 end
 
+if &term =~ "256"
+  set t_Co=256
+  colorscheme desert256
+  
+  " Highlighting: Setup some nice colours to show the mark positions.
+  hi default ShowMarksHLl ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
+  hi default ShowMarksHLu ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
+  hi default ShowMarksHLo ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
+  hi default ShowMarksHLm ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
+end
+
 if has("gui_running")
   function! ScreenFilename()
     if has('win32')
