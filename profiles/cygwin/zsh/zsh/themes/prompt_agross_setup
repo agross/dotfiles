@@ -18,7 +18,7 @@ $PR_LIGHT_GREEN%n@%m$PR_NO_COLOR "
 	PROMPT+="$PR_LIGHT_GREEN\$(prompt_agross_scm_branch)$PR_NO_COLOR"
 	PROMPT+="$PR_LIGHT_RED%B\$(prompt_agross_scm_status)%b$PR_NO_COLOR"
 	PROMPT+="%E
-$PR_NO_COLOR%(?.$.$PR_LIGHT_RED%B%S↑%s%b$PR_NO_COLOR) " 
+$PR_NO_COLOR%(?.\$(prompt_agross_char).$PR_LIGHT_RED%B%S↑%s%b$PR_NO_COLOR) "
 
 	RPROMPT=''
 	
@@ -30,6 +30,11 @@ function prompt_agross_scm_branch() {
 	zgit-ext-rebaseinfo
 	
 	echo -n " @$(zgit_head)$zgit_info[rebase]"
+}
+
+function prompt_agross_char {
+    zgit_isgit && zgit_inworktree && echo '±' && return
+    echo '$'
 }
 
 function prompt_agross_scm_status() {
