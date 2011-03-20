@@ -6,6 +6,10 @@ set runtimepath^=~/.vim
 silent! call pathogen#runtime_append_all_bundles()
 silent! call pathogen#helptags()
 
+" Everything should be English.
+language messages en_US.UTF-8
+set langmenu=en_US.UTF-8
+
 " Enable syntax highlighting.
 syntax on
 
