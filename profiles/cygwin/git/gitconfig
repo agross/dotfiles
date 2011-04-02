@@ -32,6 +32,7 @@
 	multi-cherry-pick = !sh ~/bin/git/git-multi-cherry-pick.sh
 	ui = !'/c/Tools/QGit/qgit.exe' --all &
 	personal = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-personal-build.rb)\" agross $*
+	some = !ruby \"$(cygpath --windows --absolute ~/bin/git/some-commits.rb)\" $*
 [color]
 	ui = auto
 	wtf = true
