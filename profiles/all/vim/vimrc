@@ -33,6 +33,10 @@ filetype indent on
 
 set autoindent smartindent
 
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+set showmode
+
 " Set the fold column, so we can use the mouse to open and close folds
 set foldcolumn=2
 
