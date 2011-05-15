@@ -44,7 +44,7 @@ def process_profile(profile, install_to)
 
 	linkables = Dir.glob("#{profile}/*/*")
 	linkables.each do |linkable|
-		if File.basename(linkable).match /bin/
+		if File.basename(linkable).match(/bin/)
 			destination = "bin"
 		else
 			destination = ".#{File.basename(linkable)}"
@@ -113,5 +113,5 @@ def as_admin(user, password)
 	command = yield if block_given?
 		
 	psexec = %w{ psexec.exe -e -u } << user << "-p" << password
-	sh *(psexec + command)
+	sh(*(psexec + command))
 end
