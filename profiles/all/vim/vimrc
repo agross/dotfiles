@@ -21,6 +21,9 @@ set lines=40
 set columns=120
 set textwidth=120
 
+" Draw a vertical red line in column 121.
+set colorcolumn=121
+
 " Yank into and put from the Windows clipboard.
 set clipboard=unnamed
 
