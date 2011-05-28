@@ -81,3 +81,5 @@
 	cmd = ~/bin/git/p4merge-diff.sh \"$LOCAL\" \"$REMOTE\"
 [clean]
 	requireForce = false
+[rerere]
+	enabled = true
