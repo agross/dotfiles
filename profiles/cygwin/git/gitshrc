@@ -5,6 +5,11 @@ gitalias rsd='command rm *.exe.stackdump'
 
 gitalias fl='git flow'
 
+# temporarily ignoring files
+gitalias ignore='git update-index --assume-unchanged'
+gitalias unignore='git update-index --no-assume-unchanged'
+gitalias ignored="git ls-files -v | env --unset=GREP_OPTIONS grep --perl '^[a-z] '"
+
 # git commit
 gitalias commit='git commit --verbose'
 gitalias amend='git commit --verbose --amend --reuse-message=HEAD'
