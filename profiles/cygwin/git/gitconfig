@@ -83,3 +83,4 @@
 	requireForce = false
 [rerere]
 	enabled = true
+	autoupdate = true
