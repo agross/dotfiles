@@ -5,6 +5,8 @@ gitalias rsd='command rm *.exe.stackdump'
 
 gitalias fl='git flow'
 
+gitalias unresolve='git checkout --conflict=merge -- '
+
 # temporarily ignoring files
 gitalias ignore='git update-index --assume-unchanged'
 gitalias unignore='git update-index --no-assume-unchanged'
