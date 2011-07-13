@@ -12,6 +12,8 @@ gitalias ignore='git update-index --assume-unchanged'
 gitalias unignore='git update-index --no-assume-unchanged'
 gitalias ignored="git ls-files -v | env --unset=GREP_OPTIONS grep --perl '^[a-z] '"
 
+gitalias gitignored='git ls-files --others --directory --ignored --exclude-standard'
+
 # git commit
 gitalias commit='git commit --verbose'
 gitalias amend='git commit --verbose --amend --reuse-message=HEAD'
