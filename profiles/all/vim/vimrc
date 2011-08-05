@@ -126,6 +126,12 @@ set hidden
 " Look for the file in the current directory, then south until you reach home.
 set tags=tags;$HOME
 
+set background=light 
+let g:solarized_termcolors= 256
+let g:solarized_contrast  = "high"
+colorscheme solarized
+call togglebg#map("<F5>") 
+
 " Who needs .gvimrc?
 if has("gui_running")
   set encoding=utf-8
@@ -134,13 +140,9 @@ if has("gui_running")
   set guioptions+=T
   " Turn on menu
   set guioptions+=m
-  colorscheme desert
 end
 
 if &term =~ "256"
-  set t_Co=256
-  colorscheme desert256
-  
   " Highlighting: Setup some nice colours to show the mark positions.
   hi default ShowMarksHLl ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
   hi default ShowMarksHLu ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
