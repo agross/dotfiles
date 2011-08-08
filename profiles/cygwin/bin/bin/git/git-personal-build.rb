@@ -14,11 +14,11 @@
 ## The remote branch name will be refs/remote-run/<user>/<branch>
 
 user = ARGV.shift
-head = `git symbolic-ref HEAD`.chomp.gsub(/refs\/heads\//, "")
-branch = (ARGV.shift || head).gsub(/refs\/heads\//, "")
+head = `git symbolic-ref HEAD`.chomp.gsub(%r|refs/heads/|, "")
+branch = (ARGV.shift || head).gsub(%r|refs/heads/|, "")
 local_ref = `git show-ref heads/#{branch}`
 remote = ARGV.shift || "origin"
 
 abort "No local branch #{branch} exists!" if local_ref.empty?
 
-system "git push origin +#{branch}:refs/heads/remote-run/#{user}/#{branch}"
+system "git push #{remote} +#{branch}:refs/heads/remote-run/#{user}/#{branch}"
