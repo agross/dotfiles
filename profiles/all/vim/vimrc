@@ -100,7 +100,7 @@ set sidescrolloff=3
 set title
 
 " Search options
-" Highlight search terms...
+" Highlight search terms
 set hlsearch
 set incsearch
 " These two options, when set together, will make /-style searches case-sensitive only if there is a capital letter in the search expression. *-style searches continue to be consistently case-sensitive. 
@@ -278,3 +278,8 @@ set autochdir
 
 " a.vim
 nmap <silent> <Leader>h :A<CR>
+
+" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
+nnoremap <silent> <M-F12> :BufExplorer<CR>
+nnoremap <silent> <F12> :bn<CR>
+nnoremap <silent> <S-F12> :bp<CR>
