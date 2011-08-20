@@ -9,26 +9,20 @@ The index starts at 1 for each of the "changes to be committed",
 EOH
 
 $operations = {
-  :add               => { :match => /^.M/,         :cmd => 'git add --'},
-  :add_patch         => { :match => /^.M/,         :cmd => 'git add --patch --'},
-  :new               => { :match => /^\?\?/,       :cmd => 'git add --'},
-  :rm                => { :match => /^ D/,         :cmd => 'git rm --'},
-  :checkout          => { :match => /^.M/,         :cmd => 'git checkout --'},
-  :checkout_patch    => { :match => /^.M/,         :cmd => 'git checkout --patch --'},
-  :head              => { :match => /^(.M|M |A )/, :cmd => 'git reset HEAD --'},
-  :head_patch        => { :match => /^(.M|M |A )/, :cmd => 'git reset HEAD --patch --'},
-  :diff              => { :match => /^.M/,         :cmd => 'git diff --'},
-  :diff_cached       => { :match => /^(M|A)./,     :cmd => 'git diff --cached --'}
+  :add               => { :match => /^.M/,         :cmd => %w{ git add -- } },
+  :add_patch         => { :match => /^.M/,         :cmd => %w{ git add --patch -- } },
+  :new               => { :match => /^\?\?/,       :cmd => %w{ git add -- } },
+  :rm                => { :match => /^ D/,         :cmd => %w{ git rm -- } },
+  :checkout          => { :match => /^.M/,         :cmd => %w{ git checkout -- } },
+  :checkout_patch    => { :match => /^.M/,         :cmd => %w{ git checkout --patch -- } },
+  :head              => { :match => /^(.M|M |A )/, :cmd => %w{ git reset HEAD -- } },
+  :head_patch        => { :match => /^(.M|M |A )/, :cmd => %w{ git reset HEAD --patch -- } },
+  :diff              => { :match => /^.M/,         :cmd => %w{ git diff -- } },
+  :diff_cached       => { :match => /^(M|A)./,     :cmd => %w{ git diff --cached -- } }
 }
 
 def find_operation(command)
   $operations[command.to_sym]
-end
-
-class String
-  def escape
-    "\"#{self.to_s}\""
-  end
 end
 
 if ARGV.delete("--help") || ARGV.delete("-h")
@@ -56,14 +50,15 @@ files = %x{ git status -s } \
   .grep($op[:match]) \
   .values_at(*($indexes)) \
   .map do |line|
-    line.sub($op[:match], "").strip.escape + " "
+    line.sub($op[:match], "").strip 
   end
-  
-cmd = "#{$op[:cmd]} #{files}"
+
+cmd = $op[:cmd] + files
 
 if $dry_run
-	puts "Would execute:\n#{cmd}"
+	puts "Would execute:\n#{cmd.join ' '}"
 	exit
 end
-puts cmd
-system cmd
+
+puts cmd.join ' '
+system *(cmd)
