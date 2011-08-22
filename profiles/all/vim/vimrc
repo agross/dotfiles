@@ -17,7 +17,6 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 
 " Default window size
-set columns=120
 set textwidth=120
 
 " Draw a vertical red line in column 121.
