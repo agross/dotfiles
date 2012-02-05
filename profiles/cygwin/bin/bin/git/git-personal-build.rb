@@ -21,4 +21,4 @@ remote = ARGV.shift || "origin"
 
 abort "No local branch #{branch} exists!" if local_ref.empty?
 
-system "git push #{remote} +#{branch}:refs/heads/remote-run/#{user}/#{branch}"
+system "git push #{remote} +#{branch}:refs/heads/remote-run/#{branch}"
