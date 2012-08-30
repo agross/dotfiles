@@ -9,3 +9,5 @@ export ZSH=$HOME/.zsh
 
 # Uncomment following line if you want to disable colors in ls
 # export DISABLE_LS_COLORS="true"
+
+export DISPLAY=localhost:0.0

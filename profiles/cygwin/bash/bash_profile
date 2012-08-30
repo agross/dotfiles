@@ -41,3 +41,5 @@ fi
 
 echo "Hello ${USERNAME}, nice to see you."
 echo
+
+export DISPLAY=localhost:0.0
