@@ -30,3 +30,13 @@ alias dir='ls'
 # Also done by Ctrl + L.
 alias cls='echo -ne "\033c"'
 alias g='git'
+
+alias gem='gem.bat'
+alias rake='rake.bat'
+alias erb='erb.bat'
+alias irb='irb.bat'
+alias rdoc='rdoc.bat'
+alias ri='ri.bat'
+alias rspec='rspec.bat'
+alias cucumber='cucumber.bat'
+alias bundle='bundle.bat'
