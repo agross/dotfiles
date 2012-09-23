@@ -97,6 +97,7 @@ gitalias reviewwd='git log -p --word-diff --max-count=1'
 gitalias review-files='git log --name-only --max-count=1'
 gitalias reword='git commit --amend --message'
 gitalias cleanf='git clean -xdf'
+gitalias most-changed='~/bin/git/git-most-changed.sh'
 
 # svn
 gitalias sd='git svn dcommit'
