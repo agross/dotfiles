@@ -5,3 +5,7 @@ plugins=(git-flow-completion)
 source $ZSH/my-zsh.sh
 
 prompt agross
+
+cdpath=(/gw /scratch /play)
+export CDPATH
+
