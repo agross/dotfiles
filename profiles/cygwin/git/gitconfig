@@ -1,3 +1,4 @@
+
 [gui]
 	fontui = -family \"Segoe UI\" -size 8 -weight normal -slant roman -underline 0 -overstrike 0
 	fontdiff = -family Consolas -size 9 -weight normal -slant roman -underline 0 -overstrike 0
@@ -10,7 +11,8 @@
 	fileMode = false
 	whitespace = trailing-space, space-before-tab, -indent-with-non-tab, cr-at-eol
 	quotepath = false
-	editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession \"$(cygpath --windows --absolute \"$1\")\"
+	# editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession \"$(cygpath --windows --absolute \"$1\")\"
+	editor = \"/C/Tools/Sublime Text 2/sublime_text.exe\" --new-window --wait \"$(cygpath --windows --absolute \"$1\")\"
 [apply]
 	whitespace = nowarn
 [alias]
