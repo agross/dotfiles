@@ -6,21 +6,21 @@
 # There are many more expansions available: see the zshmisc man page.
 
 case "$TERM" in
-	xterm*|rxvt*)
+	xterm*|rxvt*|cygwin)
 		# Executed just after a command has been read and is about to be executed.
 		function preexec() {
 			# Print command line that is executed.
-			print -Pn "\e]0;$1\a" 
+			print -Pn "\e]0;$1\a"
 		}
-	
+
 		# Executed before each prompt.
 		function precmd() {
 			# Print current path or git repo@branch.
 			print -Pn "\e]0;%~\a"
 		}
-	
+
 		# Executed whenever the current working directory is changed.
-		function chpwd() {   
+		function chpwd() {
 		}
 		;;
 
@@ -30,7 +30,7 @@ case "$TERM" in
 			echo -ne "\ek$CMD\e\\"
 			print -Pn "\e]0;%n@%m: $1\a"  # xterm
 		}
-		
+
 		function precmd() {
 			echo -ne "\ekzsh\e\\"
 			print -Pn "\e]0;%n@%m: %~\a"  # xterm
