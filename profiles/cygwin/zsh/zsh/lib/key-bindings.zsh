@@ -3,6 +3,10 @@ autoload -U paste-from-clipboard
 # Bind a widget with the same name as the function
 zle -N paste-from-clipboard
 
+# How to obtain key codes in zsh:
+# bindkey -d # deletes all bindings
+# Ctrl+V, followed by the key combination desired to bind prints the code to the console.
+
 bindkey '\eb'     kill-region          # ESC, b
 bindkey '\e\e'    kill-buffer          # ESC, ESC
 bindkey '^E'      kill-whole-line      # Ctrl + E
