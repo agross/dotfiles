@@ -1,8 +1,8 @@
 # startxwin > /dev/null 2>&1
 
 # Make sure we start in /scratch unless specified otherwise.
-if [ ! -z "${KEEP_CURRENT_PATH}" ]; then
-	unset KEEP_CURRENT_PATH
+if [ ! -z "${CHERE_INVOKING}" ]; then
+	unset CHERE_INVOKING
 else
 	cd /scratch
 fi
