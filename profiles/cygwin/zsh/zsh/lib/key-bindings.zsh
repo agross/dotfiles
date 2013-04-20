@@ -31,7 +31,9 @@ bindkey '^[[1;5A' up-line-or-search    # Ctrl + Up arrow
 bindkey '^[[1;5B' down-line-or-search  # Ctrl + Down arrow
 
 bindkey '^[[H'    beginning-of-line    # Home
+bindkey '^[[1~'   beginning-of-line    # Home in ConEmu
 bindkey '^[[F'    end-of-line          # End
+bindkey '^[[4~'   end-of-line          # End in ConEmu
 bindkey '^[[1;5D' backward-word        # Ctrl + left arrow
 bindkey '^[[1;5C' forward-word         # Ctrl + right arrow
 bindkey '^[[3~'   delete-char          # Del
