@@ -72,6 +72,9 @@
 	trustExitCode = true
 [mergetool "p4"]
 	cmd = ~/bin/git/p4merge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[mergetool "semanticmerge"]
+	cmd = ~/bin/git/semanticmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = false
 [diff]
 	tool = diffmerge
 	renames = copies
