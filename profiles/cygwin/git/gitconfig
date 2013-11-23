@@ -91,3 +91,5 @@
 [rerere]
 	enabled = true
 	autoupdate = true
+[push]
+	default = matching
