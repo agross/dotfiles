@@ -93,3 +93,9 @@
 	autoupdate = true
 [push]
 	default = matching
+[sendemail]
+	from = Alexander Groß <agross@therightstuff.de>
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = agross@therightstuff.de
+	smtpserverport = 587
