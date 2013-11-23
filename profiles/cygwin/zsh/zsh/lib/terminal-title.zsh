@@ -15,7 +15,7 @@ case "$TERM" in
 
 		# Executed before each prompt.
 		function precmd() {
-			# Print current path or git repo@branch.
+			# Print current path.
 			print -Pn "\e]0;%~\a"
 		}
 

@@ -12,49 +12,49 @@ EOF
 }
 
 function prompt_agross_setup() {
-	PROMPT="
+  PROMPT="
 $PR_LIGHT_GREEN%n@%m$PR_NO_COLOR "
-	PROMPT+="$PR_LIGHT_YELLOW%~$PR_NO_COLOR"
-	PROMPT+="$PR_LIGHT_GREEN\$(prompt_agross_scm_branch)$PR_NO_COLOR"
-	PROMPT+="$PR_LIGHT_RED%B\$(prompt_agross_scm_status)%b$PR_NO_COLOR"
-	PROMPT+="%E
+  PROMPT+="$PR_LIGHT_YELLOW%~$PR_NO_COLOR"
+  PROMPT+="$PR_LIGHT_GREEN\$(prompt_agross_scm_branch)$PR_NO_COLOR"
+  PROMPT+="$PR_LIGHT_RED%B\$(prompt_agross_scm_status)%b$PR_NO_COLOR"
+  PROMPT+="%E
 $PR_NO_COLOR%(?.\$(prompt_agross_char).$PR_LIGHT_RED%B%S↑%s%b$PR_NO_COLOR) "
 
-	RPROMPT=''
-	
-	export PROMPT RPROMPT
+  RPROMPT=''
+
+  export PROMPT RPROMPT
 }
 
 function prompt_agross_scm_branch() {
-	zgit_isgit || return
-	zgit-ext-rebaseinfo
-	
-	echo -n " @$(zgit_head)$zgit_info[rebase]"
+  zgit_isgit || return
+  zgit-ext-rebaseinfo
+
+  echo -n " @$(zgit_head)$zgit_info[rebase]"
 }
 
 function prompt_agross_char {
-    zgit_isgit && zgit_inworktree && echo '±' && return
-    echo '$'
+  zgit_isgit && echo '±' && return
+  echo '$'
 }
 
 function prompt_agross_scm_status() {
-	zgit_isgit && zgit_inworktree || return
+  zgit_isgit || return
 
-	if ! zgit_isworktreeclean; then
-		echo -n '*'
-	fi
-	
-	if zgit_hasuntracked; then
-		echo -n '?'
-	fi	
-	
-	if ! zgit_isindexclean; then
-		echo -n "^"
-	fi
+  if ! zgit_isworktreeclean; then
+    echo -n '*'
+  fi
 
-	if zgit_hasunmerged; then
-		echo -n 'Y'
-	fi
+  if zgit_hasuntracked; then
+    echo -n '?'
+  fi
+
+  if ! zgit_isindexclean; then
+    echo -n "^"
+  fi
+
+  if zgit_hasunmerged; then
+    echo -n 'Y'
+  fi
 }
 
 prompt_agross_setup "$@"

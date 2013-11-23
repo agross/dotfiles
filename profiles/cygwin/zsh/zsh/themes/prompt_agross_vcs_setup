@@ -7,16 +7,16 @@ EOF
 }
 
 function prompt_agross_vcs_setup() {
-	PROMPT="
+  PROMPT="
 $PR_LIGHT_GREEN%n@%m$PR_NO_COLOR "
-	PROMPT+="$PR_LIGHT_YELLOW%~$PR_NO_COLOR"
-	PROMPT+="$PR_LIGHT_GREEN \$vcs_info_msg_0_ $PR_NO_COLOR"
-	PROMPT+="%E
-$PR_NO_COLOR%(?.$.$PR_LIGHT_RED%B%S↑%s%b$PR_NO_COLOR) " 
+  PROMPT+="$PR_LIGHT_YELLOW%~$PR_NO_COLOR"
+  PROMPT+="$PR_LIGHT_GREEN \$vcs_info_msg_0_ $PR_NO_COLOR"
+  PROMPT+="%E
+$PR_NO_COLOR%(?.$.$PR_LIGHT_RED%B%S↑%s%b$PR_NO_COLOR) "
 
-	RPROMPT=''
-	
-	export PROMPT RPROMPT
+  RPROMPT=''
+
+  export PROMPT RPROMPT
 }
 
 autoload -Uz vcs_info
@@ -27,13 +27,25 @@ zstyle ':vcs_info:*:prompt:*' check-for-changes true
 zstyle ':vcs_info:*:prompt:*' stagedstr '^'
 zstyle ':vcs_info:*:prompt:*' unstagedstr '*'
 zstyle ':vcs_info:*'          enable git
+# zstyle ':vcs_info:*+*:*'      debug true
+
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
+
+# Indicate if there are any untracked files present.
+function +vi-git-untracked() {
+
+  if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+    git status --porcelain | grep '??' &> /dev/null ; then
+    hook_com[unstaged]="${hook_com[unstaged]}?"
+  fi
+}
+
+function prompt_precmd()
+{
+  vcs_info 'prompt'
+}
 
 autoload -U add-zsh-hook
 add-zsh-hook precmd prompt_precmd
-
-prompt_precmd()
-{
-    vcs_info 'prompt'
-}
 
 prompt_agross_vcs_setup "$@"
