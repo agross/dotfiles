@@ -5,11 +5,11 @@ base="$(cygpath --mixed --absolute "$1")"
 baseUnixFormat="$(cygpath --unix --absolute "$1")"
 remote="$(cygpath --mixed --absolute "$3")"
 result="$(cygpath --mixed --absolute "$4")"
-tool="$(cygpath --unix --absolute "C:/Tools/P4Merge/p4merge.exe")"
+tool="$(cygpath --unix --absolute "C:/Tools/DiffMerge/diffmerge.exe")"
 
 if [ ! -f "$baseUnixFormat" ]
 then
-	base="$(cygpath --mixed --absolute ~/bin/git/diffmerge-empty)"
+	base="$(cygpath --mixed --absolute ~/bin/git/tools/empty)"
 fi
 
 #echo -e "local\n$local"
@@ -17,4 +17,4 @@ fi
 #echo -e "remote\n$remote"
 #echo -e "result\n$result"
 
-"$tool" "$base" "$local" "$remote" "$result"
+"$tool" --merge --result="$result" "$local" "$base" "$remote" --title1="Mine" --title2="Merged: $4" --title3="Theirs"

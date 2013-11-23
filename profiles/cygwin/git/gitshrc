@@ -69,6 +69,8 @@ gitalias dtcp='git difftool --cached --tool=p4'
 gitalias mt='git mergetool'
 gitalias mtp='git mergetool --tool=p4'
 
+gitalias meld='git difftool --dir-diff --tool=meld'
+
 # git status
 gitalias  s='git status'
 

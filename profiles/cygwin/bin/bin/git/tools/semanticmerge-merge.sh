@@ -9,7 +9,7 @@ tool="$(cygpath --unix --absolute "C:/Users/agross/AppData/Local/PlasticSCM4/sem
 
 if [ ! -f "$baseUnixFormat" ]
 then
-	base="$(cygpath --mixed --absolute ~/bin/git/diffmerge-empty)"
+	base="$(cygpath --mixed --absolute ~/bin/git/tools/empty)"
 fi
 
 #echo -e "local\n$local"

@@ -68,12 +68,12 @@
 	prompt = false
 	keepBackup = false
 [mergetool "diffmerge"]
-	cmd = ~/bin/git/diffmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/bin/git/tools/diffmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [mergetool "p4"]
-	cmd = ~/bin/git/p4merge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/bin/git/tools/p4merge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [mergetool "semanticmerge"]
-	cmd = ~/bin/git/semanticmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/bin/git/tools/semanticmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = false
 [diff]
 	tool = diffmerge
@@ -81,9 +81,11 @@
 [difftool]
 	prompt = false
 [difftool "diffmerge"]
-	cmd = ~/bin/git/diffmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/bin/git/tools/diffmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
 [difftool "p4"]
-	cmd = ~/bin/git/p4merge-diff.sh \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/bin/git/tools/p4merge-diff.sh \"$LOCAL\" \"$REMOTE\"
+[difftool "meld"]
+	cmd = ~/bin/git/tools/meld-diff.sh \"$LOCAL\" \"$REMOTE\"
 [clean]
 	requireForce = false
 [rerere]
