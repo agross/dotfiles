@@ -10,5 +10,5 @@ count.to_i.times.each do |c|
 
   system "touch #{r}"
   system "git add --all"
-  system "git commit -m #{r}"
+  system "git commit -m 'Commitnachricht #{r}'"
 end
