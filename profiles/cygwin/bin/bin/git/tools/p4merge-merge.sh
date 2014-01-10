@@ -1,20 +1,12 @@
 #!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+#
 
-local="$(cygpath --mixed --absolute "$2")"
-base="$(cygpath --mixed --absolute "$1")"
-baseUnixFormat="$(cygpath --unix --absolute "$1")"
-remote="$(cygpath --mixed --absolute "$3")"
-result="$(cygpath --mixed --absolute "$4")"
-tool="$(cygpath --unix --absolute "C:/Tools/P4Merge/p4merge.exe")"
+script_path=${0%/*}
+source "$script_path/diff-and-merge-support.sh"
 
-if [ ! -f "$baseUnixFormat" ]
-then
-	base="$(cygpath --mixed --absolute ~/bin/git/tools/empty)"
-fi
+get_tool_path mergetool "C:/Tools/P4Merge/p4merge.exe"
+get_merge_args "$1" "$2" "$3" "$4"
 
-#echo -e "local\n$local"
-#echo -e "base\n$base"
-#echo -e "remote\n$remote"
-#echo -e "result\n$result"
-
-"$tool" "$base" "$local" "$remote" "$result"
+"$mergetool" "$base" "$local" "$remote" "$result"

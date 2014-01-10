@@ -13,7 +13,7 @@ file_name="some path/conflicted file"
 
 git init
 
-commit "foo" "$file_name"
+commit "dummy" "dummy"
 
 git checkout -b another_branch
 commit "bar" "$file_name"

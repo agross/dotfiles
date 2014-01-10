@@ -74,7 +74,34 @@ function get_diff_args()
     echo "Old: $1 -> absolute: $old_unix -> Windows: $old ($old_title)"
     echo "New: $2 -> absolute: $new_unix -> Windows: $new ($new_title)"
     echo
-    echo "Command line: $cmd"
+    echo "Command line:"
+    set -x
+  fi
+}
+
+# Sets global variables: base, local, remote, result
+function get_merge_args()
+{
+  local path
+  get_cygpath path
+
+  base=$($path --mixed --absolute "$1")
+  local base_unix=$($path --unix --absolute "$1")
+  if [ ! -f "$base_unix" ]; then
+    base=$($path --mixed --absolute ~/bin/git/tools/empty)
+  fi
+
+  local=$($path --mixed --absolute "$2")
+  remote=$($path --mixed --absolute "$3")
+  result=$($path --mixed --absolute "$4")
+
+  if [ -n "${GIT_DIFFMERGE_VERBOSE-}" ]; then
+    echo "Base: $1 -> absolute: $base_unix -> Windows: $base"
+    echo "Local: $2 -> Windows: $local"
+    echo "Remote: $3 -> Windows: $remote"
+    echo "Result: $4 -> Windows: $result"
+    echo
+    echo "Command line:"
     set -x
   fi
 }
