@@ -51,7 +51,7 @@ function get_diff_args()
   get_cygpath path
 
   old=$($path --mixed "$1")
-  # Extract file name from git's temporary file: /tmp/<garbage>_filename
+  # Extract file name from git's temporary file: /tmp/<garbage>_filename, useful for e.g. renamed files
   old_title="Old $(echo $1 | cut -d'_' -f 2-)"
   if [ ! -f "$1" ]; then
     old=$($path --mixed ~/bin/git/tools/empty)
@@ -63,10 +63,8 @@ function get_diff_args()
   if [ ! -f "$2" ]; then
     new=$($path --mixed ~/bin/git/tools/empty)
     new_title="<File has been deleted>"
-  fi
 
-  if [ ! -f "$2" ]; then
-    # Extract file name from git's temporary file: /tmp/<garbage>_filename
+    # Extract file name from git's temporary file: /tmp/<garbage>_filename, useful for e.g. renamed files
     old_title="Old $(echo $1 | cut -d'_' -f 2-)"
   fi
 
