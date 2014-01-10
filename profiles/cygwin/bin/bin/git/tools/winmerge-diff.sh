@@ -1,30 +1,12 @@
 #!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+#
 
-path="$(cygpath $1)"
-old="$(cygpath --mixed --absolute "$1")"
-oldUnixFormat="$(cygpath --unix --absolute "$1")"
-new="$(cygpath --mixed --absolute "$2")"
-newUnixFormat="$(cygpath --unix --absolute "$2")"
-tool="$(cygpath --unix --absolute "C:/Tools/WinMerge/WinMergeU.exe")"
+script_path=${0%/*}
+source "$script_path/diff-and-merge-support.sh"
 
-title1="Old"
-title2="New $path"
+get_tool_path difftool "C:/Tools/WinMerge/WinMergeU.exe"
+get_diff_args "$1" "$2"
 
-if [ ! -f "$oldUnixFormat" ]
-then
-	old="$(cygpath --mixed --absolute ~/bin/git/tools/empty)"
-	title1="<File didn't exist>"
-fi
-
-if [ ! -f "$newUnixFormat" ]
-then
-	new="$(cygpath --mixed --absolute ~/bin/git/tools/empty)"
-	title1="Old $path"
-	title2="<File has been deleted>"
-fi
-
-#echo -e "path\n$path"
-#echo -e "old\n$old"
-#echo -e "new\n$new"
-
-"$tool" /e /u /dl "$title1" /dr "$title2" "$old" "$new"
+"$difftool" /e /u /dl "$old_title" /dr "$new_title" "$old" "$new"
