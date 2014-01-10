@@ -9,7 +9,9 @@ function get_cygpath()
   local cygpath=$(command -v cygpath)
 
   if [ "x$cygpath" = "x" ]; then
-    cygpath=/D/Development/Repository/tools/Git/cygpath
+    # Assume a local copy of cygpath.exe and cygwin1.dll (e.g. for MSysGit)
+    local script_path=${0%/*}
+    cygpath=$script_path/cygpath
   fi
 
   if [ -n "${GIT_DIFFMERGE_VERBOSE-}" ]; then
@@ -48,31 +50,29 @@ function get_diff_args()
   local path
   get_cygpath path
 
-  old=$($path --mixed --absolute "$1")
-  local old_unix=$($path --unix --absolute "$1")
+  old=$($path --mixed "$1")
   # Extract file name from git's temporary file: /tmp/<garbage>_filename
   old_title="Old $(echo $1 | cut -d'_' -f 2-)"
-  if [ ! -f "$old_unix" ]; then
-    old=$($path --mixed --absolute ~/bin/git/tools/empty)
+  if [ ! -f "$1" ]; then
+    old=$($path --mixed ~/bin/git/tools/empty)
     old_title="<File didn't exist>"
   fi
 
-  new=$($path --mixed --absolute "$2")
-  local new_unix=$($path --unix --absolute "$2")
+  new=$($path --mixed "$2")
   new_title="New $2"
-  if [ ! -f "$new_unix" ]; then
-    new=$($path --mixed --absolute ~/bin/git/tools/empty)
+  if [ ! -f "$2" ]; then
+    new=$($path --mixed ~/bin/git/tools/empty)
     new_title="<File has been deleted>"
   fi
 
-  if [ ! -f "$new_unix" ]; then
+  if [ ! -f "$2" ]; then
     # Extract file name from git's temporary file: /tmp/<garbage>_filename
-    old_title="Old echo $1 | cut -d'_' -f 2-"
+    old_title="Old $(echo $1 | cut -d'_' -f 2-)"
   fi
 
   if [ -n "${GIT_DIFFMERGE_VERBOSE-}" ]; then
-    echo "Old: $1 -> absolute: $old_unix -> Windows: $old ($old_title)"
-    echo "New: $2 -> absolute: $new_unix -> Windows: $new ($new_title)"
+    echo "Old: $1 -> Windows: $old ($old_title)"
+    echo "New: $2 -> Windows: $new ($new_title)"
     echo
     echo "Command line:"
     set -x
@@ -85,18 +85,17 @@ function get_merge_args()
   local path
   get_cygpath path
 
-  base=$($path --mixed --absolute "$1")
-  local base_unix=$($path --unix --absolute "$1")
-  if [ ! -f "$base_unix" ]; then
-    base=$($path --mixed --absolute ~/bin/git/tools/empty)
+  base=$($path --mixed "$1")
+  if [ ! -f "$1" ]; then
+    base=$($path --mixed ~/bin/git/tools/empty)
   fi
 
-  local=$($path --mixed --absolute "$2")
-  remote=$($path --mixed --absolute "$3")
-  result=$($path --mixed --absolute "$4")
+  local=$($path --mixed "$2")
+  remote=$($path --mixed "$3")
+  result=$($path --mixed "$4")
 
   if [ -n "${GIT_DIFFMERGE_VERBOSE-}" ]; then
-    echo "Base: $1 -> absolute: $base_unix -> Windows: $base"
+    echo "Base: $1 -> Windows: $base"
     echo "Local: $2 -> Windows: $local"
     echo "Remote: $3 -> Windows: $remote"
     echo "Result: $4 -> Windows: $result"
