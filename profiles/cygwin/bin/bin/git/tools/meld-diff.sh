@@ -1,11 +1,15 @@
 #!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+#
 
-old="$(cygpath --mixed --absolute "$1")"
-new="$(cygpath --mixed --absolute "$2")"
+script_path=${0%/*}
+source "$script_path/diff-and-merge-support.sh"
 
-tool="$(cygpath --unix --absolute "C:/Tools/Meld/meld/meld.exe")"
+get_cygpath path
+old=$($path --mixed --absolute "$1")
+new=$($path --mixed --absolute "$2")
 
-#echo -e "old\n$old"
-#echo -e "new\n$new"
+get_tool_path difftool "C:/Tools/Meld/meld/meld.exe"
 
-"$tool" --diff "$old" "$new"
+"$difftool" --diff "$old" "$new"
