@@ -1,22 +1,24 @@
 autoload -U compinit
-compinit
 
-# If unset, the cursor is set to the end of the word if completion is started. Otherwise it stays there and completion is done from both ends. 
+# Ignore insecure directories.
+compinit -u
+
+# If unset, the cursor is set to the end of the word if completion is started. Otherwise it stays there and completion is done from both ends.
 setopt complete_in_word
 
-# Automatically list choices on an ambiguous completion. 
+# Automatically list choices on an ambiguous completion.
 setopt auto_list
 
-# If a completion is performed with the cursor within a word, and a full completion is inserted, the cursor is moved to the end of the word. That is, the cursor is moved to the end of the word if either a single match is inserted or menu completion is performed. 
+# If a completion is performed with the cursor within a word, and a full completion is inserted, the cursor is moved to the end of the word. That is, the cursor is moved to the end of the word if either a single match is inserted or menu completion is performed.
 setopt always_to_end
 
-# If a parameter is completed whose content is the name of a directory, then add a trailing slash instead of a space. 
+# If a parameter is completed whose content is the name of a directory, then add a trailing slash instead of a space.
 unsetopt auto_param_slash
 
-# Do not require a leading `.' in a filename to be matched explicitly. 
+# Do not require a leading `.' in a filename to be matched explicitly.
 setopt globdots
 
-# In completion, recognize exact matches even if they are ambiguous. 
+# In completion, recognize exact matches even if they are ambiguous.
 setopt rec_exact
 
 # On an ambiguous completion, instead of listing possibilities or beeping, insert the first match immediately.
@@ -73,13 +75,13 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 bindkey '^I'               expand-or-complete-prefix     # Tab
 
 # Perform history expansion and insert a space into the buffer. This is intended to be bound to SPACE.
-bindkey ' '                magic-space          
+bindkey ' '                magic-space
 
 # Bound keys specific to menu selection.
 
-# In a menu completion, insert the current completion into the buffer, and advance to the next possible completion. 
+# In a menu completion, insert the current completion into the buffer, and advance to the next possible completion.
 #bindkey -M menuselect '^M' accept-and-menu-complete      # Return
-# Execute the contents of the buffer. Then search the history list for a line matching the current one and push the event following onto the buffer stack. 
+# Execute the contents of the buffer. Then search the history list for a line matching the current one and push the event following onto the buffer stack.
 # Fügt die Completion auf der Kommandozeile ein und zeigt dann ein Menü mit weiterhin möglichen Completions.
 bindkey -M menuselect '^^' accept-and-infer-next-history # Ctrl + Return
 # Undo last completion.
@@ -88,7 +90,7 @@ bindkey -M menuselect '^Z' undo                          # Ctrl + Z
 bindkey -M menuselect '\e' send-break                    # ESC
 # Leaves menu completion, accepting the current selection.
 bindkey -M menuselect '^I' magic-space                   # Tab
-bindkey -M menuselect ' '  magic-space          
+bindkey -M menuselect ' '  magic-space
 
 # Process completion.
 zstyle ':completion:*:*:*:*:processes' command "ps --user `whoami` --windows"
@@ -104,9 +106,9 @@ fi
 if [ -f ~/.ssh/config ]; then
 	zstyle -g old_value ':completion:*:*:(ssh|scp):*:*' hosts
 	config_value=`sed -n '/^host .*$/p' $HOME/.ssh/config | sed -e 's/^host //' | tr '\n' ' '`
-	
+
 	zstyle ':completion:*:*:(ssh|scp):*:*' hosts `echo $old_value $config_value`
-	
+
 	unset old_value
 	unset config_value
 fi
