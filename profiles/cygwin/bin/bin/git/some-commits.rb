@@ -3,12 +3,17 @@ require 'fileutils'
 
 count = ARGV.shift || 1
 
+def file_name(int)
+  "Datei-#{int}.txt"
+end
+
 count.to_i.times.each do |c|
   begin
     r = (rand() * 100).to_i
-  end while File.exist? r.to_s
+    f = file_name(r)
+  end while File.exist?(f)
 
-  system "touch #{r}"
+  system "touch #{f}"
   system "git add --all"
-  system "git commit -m 'Commitnachricht #{r}'"
+  system "git commit -m 'Commitnachricht #{f}'"
 end
