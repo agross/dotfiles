@@ -56,18 +56,18 @@ gitalias rc='git rebase --continue'
 gitalias ra='git rebase --abort'
 
 # git diff
-gitalias  d='git diff'
-gitalias  p='git diff --cached'   # mnemonic: "patch"
-gitalias dc='git diff --cached'
-gitalias wd='git diff --word-diff'
-gitalias wdc='git diff --cached --word-diff'
+gitalias d           ='git diff'
+gitalias wd          ='git diff --word-diff'
+gitalias dns         ='git diff --ignore-all-space'
+gitalias wdns        ='git diff --word-diff --ignore-all-space'
+
+gitalias dc          ='git diff --cached'
+gitalias wdc         ='git diff --cached --word-diff'
+gitalias wdcns       ='git diff --cached --word-diff --ignore-all-space'
+gitalias preview     ='git diff --cached'
 
 gitalias dt='git difftool'
-gitalias dtc='git difftool --cached'
-gitalias dtp='git difftool --tool=p4'
-gitalias dtcp='git difftool --cached --tool=p4'
 gitalias mt='git mergetool'
-gitalias mtp='git mergetool --tool=p4'
 
 gitalias meld='git difftool --dir-diff --tool=meld'
 
@@ -95,8 +95,6 @@ gitalias mcp='git multi-cherry-pick'
 gitalias unstage='git reset HEAD'
 gitalias pop='git reset --soft HEAD^'
 gitalias review='git log -p --max-count=1'
-gitalias preview='git diff --cached'
-gitalias previewwd='git diff --cached'
 gitalias reviewwd='git log -p --word-diff --max-count=1'
 gitalias review-files='git log --name-only --max-count=1'
 gitalias reword='git commit --amend --message'
