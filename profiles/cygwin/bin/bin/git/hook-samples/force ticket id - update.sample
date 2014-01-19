@@ -1,0 +1,30 @@
+#!/bin/bash
+
+refname="$1"
+oldrev="$2"
+newrev="$3"
+result=0
+
+# Make sure we handle the situation when the branch does not exist yet
+if ! [ $oldrev = 0000000000000000000000000000000000000000 ] ; then
+    excludes=( ^$oldrev )
+else
+    excludes=( $(git for-each-ref --format '^%(refname:short)' refs/heads/) )
+fi
+
+# Get the list of incomming commits
+commits=`git rev-list $newrev "${excludes[@]}"`
+
+# For every commit in the list
+for commit in $commits
+do
+  # check the log message for ticket number
+  message=`git log --format=%s -1 $commit`
+  ticket=`echo "$message" | grep -o "^[A-Z]\{2,3\}-[0-9]\+"`
+  if [ "$ticket" = "" ] ; then
+    echo "Commit $commit does not start with a ticket number"
+    result=1
+  fi
+done
+
+exit $result
