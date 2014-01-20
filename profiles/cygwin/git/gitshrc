@@ -56,15 +56,15 @@ gitalias rc='git rebase --continue'
 gitalias ra='git rebase --abort'
 
 # git diff
-gitalias d           ='git diff'
-gitalias wd          ='git diff --word-diff'
-gitalias dns         ='git diff --ignore-all-space'
-gitalias wdns        ='git diff --word-diff --ignore-all-space'
+gitalias d='git diff'
+gitalias wd='git diff --word-diff'
+gitalias dns='git diff --ignore-all-space'
+gitalias wdns='git diff --word-diff --ignore-all-space'
 
-gitalias dc          ='git diff --cached'
-gitalias wdc         ='git diff --cached --word-diff'
-gitalias wdcns       ='git diff --cached --word-diff --ignore-all-space'
-gitalias preview     ='git diff --cached'
+gitalias dc='git diff --cached'
+gitalias wdc='git diff --cached --word-diff'
+gitalias wdcns='git diff --cached --word-diff --ignore-all-space'
+gitalias preview='git diff --cached'
 
 gitalias dt='git difftool'
 gitalias mt='git mergetool'
