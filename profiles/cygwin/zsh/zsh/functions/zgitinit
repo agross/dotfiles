@@ -155,7 +155,7 @@ zgit_tracking_merge() {
 }
 
 zgit_isindexclean() {
-	zgit_isgit || return 1
+	zgit_inworktree || return 1
 	if git diff --quiet --cached 2>/dev/null; then
 		return 0
 	else
@@ -164,7 +164,7 @@ zgit_isindexclean() {
 }
 
 zgit_isworktreeclean() {
-	zgit_isgit || return 1
+	zgit_inworktree || return 1
 	if [ -z "$(git ls-files $zgit_info[dir]:h --modified)" ]; then
 		return 0
 	else
@@ -173,7 +173,7 @@ zgit_isworktreeclean() {
 }
 
 zgit_hasuntracked() {
-	zgit_isgit || return 1
+	zgit_inworktree || return 0
 	local -a flist
 	flist=($(git ls-files --others --exclude-standard))
 	if [ $#flist -gt 0 ]; then
@@ -184,9 +184,9 @@ zgit_hasuntracked() {
 }
 
 zgit_hasunmerged() {
-	zgit_isgit || return 1
+	zgit_inworktree || return 0
 	local -a flist
-	flist=($(git ls-files -u))
+	flist=($(git ls-files --unmerged))
 	if [ $#flist -gt 0 ]; then
 		return 0
 	else
@@ -195,7 +195,7 @@ zgit_hasunmerged() {
 }
 
 zgit_svnhead() {
-	zgit_isgit || return 1
+	zgit_inworktree || return 1
 
 	local commit=$1
 	if [ -z "$commit" ]; then
