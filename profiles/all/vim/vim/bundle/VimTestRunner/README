@@ -1,5 +1,0 @@
-VimTestRunner
-
-Runs tests for current file (<leader>y) or whole project (<leader>a), showing a
-green bar if all tests passed or a red bar on failure, jumping to the spec line
-that failed.
