@@ -41,12 +41,12 @@ set showmode
 " Set the fold column, so we can use the mouse to open and close folds
 set foldcolumn=2
 
-" The width of a TAB is set to 4.
-set tabstop=4
-" Indents will have a width of 4.
-set shiftwidth=4
+" The width of a TAB is set to 2.
+set tabstop=2
+" Indents will have a width of 2.
+set shiftwidth=2
 " Sets the number of columns for a TAB.
-set softtabstop=4 
+set softtabstop=2
 
 " Show line numbers.
 set number
@@ -95,14 +95,14 @@ set scrolloff=3
 set sidescroll=1
 set sidescrolloff=3
 
-" A running gvim will always have a window title, but when vim is run within an xterm, by default it inherits the terminal’s current title. 
+" A running gvim will always have a window title, but when vim is run within an xterm, by default it inherits the terminal’s current title.
 set title
 
 " Search options
 " Highlight search terms
 set hlsearch
 set incsearch
-" These two options, when set together, will make /-style searches case-sensitive only if there is a capital letter in the search expression. *-style searches continue to be consistently case-sensitive. 
+" These two options, when set together, will make /-style searches case-sensitive only if there is a capital letter in the search expression. *-style searches continue to be consistently case-sensitive.
 set ignorecase
 set smartcase
 
@@ -124,11 +124,11 @@ set hidden
 " Look for the file in the current directory, then south until you reach home.
 set tags=tags;$HOME
 
-set background=light 
+set background=light
 let g:solarized_termcolors= 256
 let g:solarized_contrast  = "high"
 colorscheme solarized
-call togglebg#map("<F5>") 
+call togglebg#map("<F5>")
 
 " Who needs .gvimrc?
 if has("gui_running")
@@ -240,7 +240,7 @@ nmap <silent> <leader>s :set nolist!<CR>
 " Fix command typos (stolen from Adam Katz)
 nmap ; :
 
-" These are very similar keys. Typing 'a will jump to the line in the current file marked with ma. However, `a  will jump to the line and column marked with ma! 
+" These are very similar keys. Typing 'a will jump to the line in the current file marked with ma. However, `a  will jump to the line and column marked with ma!
 " ` is more useful than ' but less accessible.
 nnoremap ' `
 nnoremap ` '
