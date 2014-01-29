@@ -1,6 +1,6 @@
 #!/bin/sh
 
-git reflog expire --expire=1.minute --all
+git reflog expire --expire=now --all
 git fsck --unreachable
 git prune
-git gc
+git gc --prune=now
