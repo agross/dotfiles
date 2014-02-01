@@ -19,10 +19,12 @@ bindkey '^[^[[D'  beep                 # ESC, Left arrow
 bindkey '^Z'      undo                 # Ctrl + Z
 bindkey '^Y'      redo                 # Ctrl + Y
 
-bindkey '^H'      history-incremental-search-backward # Ctrl + H
+bindkey '^H'      history-incremental-search-backward         # Ctrl + H
+bindkey '^K'      history-incremental-pattern-search-backward # Ctrl + K
+bindkey '^J'      history-incremental-pattern-search-forward  # Ctrl + J
+
 bindkey '^[[5~'   up-line-or-history   # Shift + up arrow
 bindkey '^[[6~'   down-line-or-history # Shift + down arrow
-
 bindkey '^[[A'    up-line-or-history   # Up arrow
 bindkey '^[[B'    down-line-or-history # Down arrow
 
