@@ -85,7 +85,7 @@ gitalias ll='git log'
 gitalias  l='git log --pretty=oneline --abbrev-commit --max-count=15'
 gitalias lp='git log --patch --word-diff'
 gitalias gl='git glog'
-gitalias wdw='git log --pretty="format:%an - %s"'
+gitalias wdw='git log --pretty="format:%h - %an - %s"'
 
 # misc
 gitalias pick='git cherry-pick'
