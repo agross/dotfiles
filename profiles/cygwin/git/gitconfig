@@ -1,4 +1,3 @@
-
 [gui]
 	fontui = -family \"Segoe UI\" -size 8 -weight normal -slant roman -underline 0 -overstrike 0
 	fontdiff = -family Consolas -size 9 -weight normal -slant roman -underline 0 -overstrike 0
@@ -16,15 +15,13 @@
 [apply]
 	whitespace = nowarn
 [alias]
-	qn = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" new $*
-	qa = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" add $*
-	qap= !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" add_patch $*
-	qr = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" rm $*
-	qh = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" head $*
-	qc = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" checkout $*
-	qd = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" diff $*
-	qdc = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-quick.rb)\" diff_cached $*
-	glog = log --graph --pretty=oneline --abbrev-commit --decorate --branches
+	qn  = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" track
+	qa  = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" stage
+	qap = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" stage_with_patch
+	qd  = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" diff
+	qdc = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" diff_cached
+	qc = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" checkout
+	qu = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" unstage
 	wtf = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-wtf.rb)\" --all --relations
 	rank = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-rank-contributors.rb)\" $*
 	publish = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-publish-branch.rb)\" $*

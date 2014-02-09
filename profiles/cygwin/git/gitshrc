@@ -82,9 +82,10 @@ gitalias pof='git push origin --force'
 
 # git log
 gitalias ll='git log'
-gitalias  l='git log --pretty=oneline --abbrev-commit --max-count=15'
-gitalias lp='git log --patch --word-diff'
-gitalias gl='git glog'
+gitalias l='git log --pretty=oneline --abbrev-commit --max-count=15'
+gitalias lp='git log --patch'
+gitalias lpw='git log --patch --word-diff'
+gitalias glog='git log --graph --pretty=oneline --abbrev-commit --decorate --branches --all'
 gitalias wdw='git log --pretty="format:%h - %an - %s"'
 
 # misc
