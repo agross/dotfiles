@@ -1,6 +1,11 @@
 # Add function path.
 fpath=($ZSH/functions $fpath)
 
+# Autoload all functions from our functions path. Just execute the function,
+# no need to autoload <function> before.
+# See http://zsh.sourceforge.net/FAQ/zshfaq03.html, section 3.11.
+autoload -Uz $ZSH/functions/*(:t)
+
 # Add theme path.
 fpath=($ZSH/themes $fpath)
 
