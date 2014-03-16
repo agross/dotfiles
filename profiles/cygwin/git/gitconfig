@@ -12,6 +12,7 @@
 	quotepath = false
 	editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession \"$(cygpath --windows --absolute \"$1\")\"
 	# editor = \"/C/Tools/Sublime Text 2/sublime_text.exe\" --new-window --wait \"$(cygpath --windows --absolute \"$1\")\"
+	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession
 [apply]
 	whitespace = nowarn
 [alias]
