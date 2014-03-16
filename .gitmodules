@@ -1,0 +1,3 @@
+[submodule "profiles/cygwin/bin/bin/git-some"]
+	path = profiles/cygwin/bin/bin/git-some
+	url = https://github.com/GROSSWEBER/git-some
