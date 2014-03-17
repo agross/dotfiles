@@ -33,6 +33,7 @@
 	ui = !'/c/Tools/QGit/qgit.exe' --all &
 	personal = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-personal-build.rb)\" agross $*
 	some = !sh -c \"~/bin/git-some/git-some.sh $1\"
+	fixup = "!sh -c 'set -e; rev=${1-HEAD}; sha=$(git rev-parse --short $rev 2> /dev/null) || (echo "Could not parse revision $rev"; exit 1); git commit --message \"fixup $sha\"' -"
 [color]
 	ui = auto
 	wtf = true
