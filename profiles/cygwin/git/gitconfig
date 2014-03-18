@@ -28,8 +28,6 @@
 	publish = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-publish-branch.rb)\" $*
 	svn-relocate = !sh ~/bin/git/git-svn-relocate.sh $*
 	clobber = !sh ~/bin/git/git-cleanup.sh
-	sh = !sh ~/bin/git/git-sh.sh
-	multi-cherry-pick = !sh ~/bin/git/git-multi-cherry-pick.sh
 	ui = !'/c/Tools/QGit/qgit.exe' --all &
 	personal = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-personal-build.rb)\" agross $*
 	some = !sh -c \"~/bin/git-some/git-some.sh $1\"
