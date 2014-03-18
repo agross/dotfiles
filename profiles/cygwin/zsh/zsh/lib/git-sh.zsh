@@ -164,7 +164,9 @@ _git_import_aliases () {
 		while read key command
 		do
 			if expr -- "$command" : '!' >/dev/null
-			then echo "alias $key='${command#!}'"
+			# Remove preceding ! and replace single quotes with '\'' to
+			# close the string, add a quote, and reopen the string.
+			then c=${command#!}; c=${c//\'/\'\\\'\'}; echo "alias $key='$c'"
 			else echo "gitalias $key='git $command'"
 			fi
 		done

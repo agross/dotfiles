@@ -31,7 +31,15 @@
 	ui = !'/c/Tools/QGit/qgit.exe' --all &
 	personal = !ruby \"$(cygpath --windows --absolute ~/bin/git/git-personal-build.rb)\" agross $*
 	some = !sh -c \"~/bin/git-some/git-some.sh $1\"
-	fixup = "!sh -c 'set -e; rev=${1-HEAD}; sha=$(git rev-parse --short $rev 2> /dev/null) || (echo "Could not parse revision $rev"; exit 1); git commit --message \"fixup $sha\"' -"
+	fixup = "!sh -c 'set -e; rev=${1-HEAD}; sha=$(git rev-parse --short $rev 2> /dev/null) || (echo \"Could not parse revision $rev\"; exit 1); git commit --message \"fixup $sha\"' --"
+	#
+	# This is a sample alias that
+	# - will be invoked by the shell (!) and not prefixed with 'git'
+	# - supports parameters ($1-default_value)
+	# - ignores if more parameters then the referenced ones are passed (--)
+	# - supports semicolons inside the string (alias needs to be enclosed by ")
+	#
+	# hello = "!sh -c 'echo \"hello, ${1-world}\"' --"
 [color]
 	ui = auto
 	wtf = true
