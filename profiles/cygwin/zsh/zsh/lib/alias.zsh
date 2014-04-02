@@ -33,10 +33,8 @@ alias g='git'
 
 alias gem='gem.bat'
 alias rake='rake.bat'
-alias erb='erb.bat'
 alias irb='irb.bat'
-alias rdoc='rdoc.bat'
-alias ri='ri.bat'
-alias rspec='rspec.bat'
-alias cucumber='cucumber.bat'
+# bundle conflicts with the git-bundle auto-alias, so define a second alias.
 alias bundle='bundle.bat'
+alias bun='nocorrect bundle.bat'
+alias bex='nocorrect bundle.bat exec'
