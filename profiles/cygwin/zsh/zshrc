@@ -6,5 +6,5 @@ source $ZSH/my-zsh.sh
 
 prompt agross
 
-cdpath=(/gw /scratch /play /git-demos)
+cdpath=(/gw /scratch /play /d/Users/agross/Coding /git-demos /gw/Kunden/*)
 export CDPATH
