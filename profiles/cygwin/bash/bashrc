@@ -36,15 +36,7 @@ shopt -s nocaseglob
 # for example, cd /vr/lgo/apaache would find /var/log/apache
 shopt -s cdspell
 
-source ~/bin/git/git-functions.sh
-export PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w \[\e[32m\]$(git_write_branch)\[\e[1;31m\]$(git_write_dirty)\[\e[0m\]\n\\$ '
-
-# Git completion/__git_ps1 options.
-#export GIT_PS1_SHOWDIRTYSTATE="nonempty"
-#export GIT_PS1_SHOWSTASHSTATE="nonempty"
-#export GIT_PS1_SHOWUNTRACKEDFILES="nonempty"
-
-source ~/bin/git/git-sh.sh
+export PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\\$ '
 
 unset INPUTRC
 
@@ -88,7 +80,7 @@ export HISTCONTROL="ignoredups"
 export HISTIGNORE="[   ]*:&:bg:fg:exit"
 
 # Whenever displaying the prompt, write the previous line to disk
-export PROMPT_COMMAND="history -a && git_write_title"
+export PROMPT_COMMAND="history -a"
 
 
 # Aliases
@@ -132,67 +124,3 @@ complete -o default -o nospace -F _git g
 
 # Some example functions
 # function settitle() { echo -ne "\e]2;$@\a\e]1;$@\a"; }
-
-function up()
-{
-    dir=""
-    if [ -z "$1" ]; then
-        dir=..
-    elif [[ $1 =~ ^[0-9]+$ ]]; then
-        x=0
-        while [ $x -lt ${1:-1} ]; do
-            dir=${dir}../
-            x=$(($x+1))
-        done
-    else
-        dir=${PWD%/$1/*}/$1
-    fi
-    cd "$dir";
-}
-
-function upstr()
-{
-    echo "$(up "$1" && pwd)";
-}
-
-function upg()
-{
-    cd "$(dirname "$(cygpath -a "$(__gitdir)")")"
-}
-
-# down somesubdir
-#
-# Find a directory below this that matches the word provided.
-# Best if your locatedb is in good shape.
-function down() {
-    dir=""
-    if [ -z "$1" ]; then
-        dir=.
-    fi
-    dir=$(locate --ignore-case --limit=1 --regex "$PWD.*/$1$")
-    cd "$dir";
-}
-
-function down2()
-{
-     dir=""
-     if [ -z "$1" ]; then
-         dir=.
-     fi
-     dir=$(find . -type d -iname $1 | head -n 1)
-     cd "$dir";
-}
-
-# cdd someglobaldir
-#
-# Quickly change to a directory anywhere that matches the word you typed.
-# Prefers short paths.
-# Best if your locatedb is in good shape.
-function cdd() {
-    dir=""
-    if [ -z "$1" ]; then
-        dir=.
-    fi
-    dir=$(locate --ignore-case --regex $1$ | awk '{print length"\t"$0}'| sort -n | cut -f2- | head -n 1)
-    cd "$dir";
-}
