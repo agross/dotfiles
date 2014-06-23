@@ -1,0 +1,13 @@
+# Set $TERM to xterm-256color for screened shells.
+term xterm-256color
+
+# Log everything we see on the screen.
+logfile $LOG
+logfile flush 1
+deflog on
+
+# Support scrolling.
+termcapinfo xterm* ti@:te@
+
+# Support updating the title bar from the screened shell.
+termcapinfo xterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
