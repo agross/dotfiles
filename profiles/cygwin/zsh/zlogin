@@ -1,8 +1,6 @@
-# startxwin > /dev/null 2>&1
-
 # Make sure we start in /scratch unless specified otherwise.
 if [ ! -z "${KEEP_DIR}" ]; then
-	unset KEEP_DIR
+  unset KEEP_DIR
 else
-	cd /scratch
+  cd /scratch
 fi
