@@ -8,5 +8,3 @@ prompt agross
 
 cdpath=(/gw /scratch /lab /lab/.NET /git-demos /gw/Kunden/*)
 export CDPATH
-
-start-screen

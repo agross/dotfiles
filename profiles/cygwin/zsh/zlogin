@@ -4,3 +4,5 @@ if [ ! -z "${KEEP_DIR}" ]; then
 else
   cd /scratch
 fi
+
+start-screen
