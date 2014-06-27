@@ -2,19 +2,17 @@
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
-# List jobs in the long format by default. 
+# List jobs in the long format by default.
 setopt long_list_jobs
 
 # If querying the user before executing `rm *' or `rm path/*', first wait ten seconds and ignore anything typed in that time.
 setopt rm_star_wait
 
-# Run all background jobs at a lower priority. This option is set by default. 
+# Run all background jobs at a lower priority. This option is set by default.
 unsetopt bg_nice
 
-# Report the status of background jobs immediately, rather than waiting until just before printing a prompt. 
+# Report the status of background jobs immediately, rather than waiting until just before printing a prompt.
 unsetopt notify
-
-export SPROMPT='zsh: correct '%R' to '%r'? %Uy%ues/%Un%uo/%Ue%udit/%Ua%ubort '
 
 export PAGER=less
 export LESS='--quit-at-eof --tabs=3 --LONG-PROMPT --quit-if-one-screen --RAW-CONTROL-CHARS --no-init'
@@ -23,7 +21,7 @@ export EDITOR=vi
 export GREP_OPTIONS='--color=auto --ignore-case --binary-files=without-match --line-number --initial-tab'
 export GREP_COLOR='1;32'
 
-# Language settings: This variable determines the locale category for any category not specifically selected via a variable starting with `LC_'. 
+# Language settings: This variable determines the locale category for any category not specifically selected via a variable starting with `LC_'.
 export LANG=en_US.UTF-8
 
 # no	NORMAL, NORM	Global default, although everything should be something
