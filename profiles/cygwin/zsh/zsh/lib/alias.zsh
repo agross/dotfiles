@@ -31,6 +31,8 @@ alias dir='ls'
 alias cls='echo -ne "\033c"'
 alias g='git'
 
+alias sudo='cygstart --action=runas'
+
 alias gem='gem.bat'
 alias rake='rake.bat'
 alias irb='irb.bat'
