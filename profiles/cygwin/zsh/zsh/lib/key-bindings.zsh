@@ -44,7 +44,7 @@ bindkey '^[[3;5~' delete-word          # Ctrl + Del
 bindkey '^[[3;2~' delete-word          # Shift + Del
 
 # I can type multiline command lines, and still be able to move the cursor up/down between the lines while editing.
-bindkey '^J'      self-insert          # Ctrl + J, Home and End for moving to the beginning and end.
+# bindkey '^J'      self-insert          # Ctrl + J, Home and End for moving to the beginning and end.
 
 bindkey '^D'      copy-prev-shell-word # Ctrl + D
 bindkey '\e.'     insert-last-word     # ESC, .
