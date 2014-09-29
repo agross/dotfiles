@@ -12,8 +12,14 @@ EOF
 }
 
 function prompt_agross_setup() {
-  PROMPT="
-$PR_LIGHT_GREEN%n@%m$PR_NO_COLOR "
+  # Display history number on screen terminals in the right prompt.
+  PROMPT='
+'
+  if [ -n "${WINDOW+x}" ]; then
+    PROMPT+='$PR_LIGHT_CYAN%h$PR_NO_COLOR '
+  fi
+
+  PROMPT+="$PR_LIGHT_GREEN%n@%m$PR_NO_COLOR "
   PROMPT+="$PR_LIGHT_YELLOW%~$PR_NO_COLOR"
   PROMPT+="$PR_LIGHT_GREEN\$(prompt_agross_scm_branch)$PR_NO_COLOR"
   PROMPT+="$PR_LIGHT_RED%B\$(prompt_agross_scm_status)%b$PR_NO_COLOR"
