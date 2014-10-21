@@ -1,6 +1,6 @@
 Columns=120
 Rows=36
-Transparency=low
+Transparency=off
 OpaqueWhenFocused=yes
 Scrollbar=right
 ScrollbackLines=10000
