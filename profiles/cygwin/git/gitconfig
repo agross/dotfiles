@@ -86,6 +86,7 @@
 [diff]
 	tool = diffmerge
 	renames = copies
+	submodule = log
 [difftool]
 	prompt = false
 [difftool "diffmerge"]
@@ -109,3 +110,5 @@
 	smtpserver = smtp.gmail.com
 	smtpuser = agross@therightstuff.de
 	smtpserverport = 587
+[status]
+	submodulesummary = true
