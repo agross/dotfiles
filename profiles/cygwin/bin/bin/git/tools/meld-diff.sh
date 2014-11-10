@@ -6,10 +6,7 @@
 script_path=${0%/*}
 source "$script_path/diff-and-merge-support.sh"
 
-get_cygpath path
-old=$($path --mixed "$1")
-new=$($path --mixed "$2")
-
 difftool="/c/Tools/Meld/meld/meld.exe"
+get_diff_args "$1" "$2"
 
 "$difftool" --diff "$old" "$new"
