@@ -73,7 +73,10 @@
 	prompt = false
 	keepBackup = false
 [mergetool "diffmerge"]
-	cmd = ~/bin/git/tools/diffmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+  cmd = ~/bin/git/tools/diffmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+  trustExitCode = true
+[mergetool "bc"]
+	cmd = ~/bin/git/tools/beyondcompare-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [mergetool "p4"]
 	cmd = ~/bin/git/tools/p4merge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
@@ -90,7 +93,9 @@
 [difftool]
 	prompt = false
 [difftool "diffmerge"]
-	cmd = ~/bin/git/tools/diffmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
+  cmd = ~/bin/git/tools/diffmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
+[difftool "bc"]
+	cmd = ~/bin/git/tools/beyondcompare-diff.sh \"$LOCAL\" \"$REMOTE\"
 [difftool "p4"]
 	cmd = ~/bin/git/tools/p4merge-diff.sh \"$LOCAL\" \"$REMOTE\"
 [difftool "meld"]
