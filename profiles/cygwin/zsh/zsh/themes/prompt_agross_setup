@@ -35,7 +35,17 @@ function prompt_agross_scm_branch() {
   zgit_isgit || return
   zgit-ext-rebaseinfo
 
-  echo -n " @$(zgit_head)$zgit_info[rebase]"
+  local extra=''
+
+  if zgit_ingitdir; then
+    extra='GIT_DIR! '
+  fi
+
+  if zgit_isbare; then
+    extra='BARE! '
+  fi
+
+  echo -n " $extra@$(zgit_head)$zgit_info[rebase]"
 }
 
 function prompt_agross_char {
@@ -44,7 +54,7 @@ function prompt_agross_char {
 }
 
 function prompt_agross_scm_status() {
-  zgit_isgit || return
+  zgit_inworktree || return
 
   if ! zgit_isworktreeclean; then
     echo -n '*'

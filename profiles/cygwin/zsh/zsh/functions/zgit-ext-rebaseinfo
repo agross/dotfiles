@@ -1,4 +1,4 @@
-zgit_isgit || return 1
+zgit_inworktree || return
 
 local r=''
 local b=''
