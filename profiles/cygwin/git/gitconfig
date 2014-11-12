@@ -116,4 +116,4 @@
 	smtpuser = agross@therightstuff.de
 	smtpserverport = 587
 [status]
-	submodulesummary = true
+	#submodulesummary = true
