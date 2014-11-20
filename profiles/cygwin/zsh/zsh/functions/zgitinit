@@ -10,7 +10,8 @@ zgit_chpwd_hook() {
 }
 
 zgit_preexec_hook() {
-  if [[ $2 == git\ * ]] || [[ $2 == *\ git\ * ]]; then
+  # 'git <optional>' or '<optional> git <optional>' or '<optional> .git<optional>' is executed.
+  if [[ $2 == git\ * ]] || [[ $2 == *\ git\ * ]] || [[ $2 == *\ .git* ]]; then
     zgit_precmd_do_update=1
   fi
 }
@@ -26,7 +27,7 @@ zgit_info_update() {
   zgit_info=()
 
   local -a info
-  info=($(git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree 2>/dev/null))
+  info=($(git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree 2> /dev/null))
   if [ $? -ne 0 ] || [ -z "$info[1]" ]; then
     return
   fi
@@ -77,18 +78,18 @@ zgit_head() {
 
   if [ -z "$zgit_info[head]" ]; then
     local name=''
-    name=$(git symbolic-ref --quiet --short HEAD)
+    name=$(git symbolic-ref --quiet --short HEAD 2> /dev/null)
     if [ $? -eq 0 ]; then
       if [[ $name == refs/(heads|tags)/* ]]; then
         name=${name#refs/(heads|tags)/}
       fi
     else
-      name=$(git rev-parse --short HEAD)
+      name=$(git rev-parse --short HEAD 2> /dev/null)
       if [ $? -ne 0 ]; then
         return 1
       fi
 
-      aka=$(git name-rev --name-only --no-undefined --always HEAD)
+      aka=$(git name-rev --name-only --no-undefined --always HEAD 2> /dev/null)
       if [ $? -ne 0 ]; then
         return 1
       elif [[ $aka == remotes/* ]]; then
@@ -106,11 +107,11 @@ zgit_branch() {
   zgit_inworktree || return 1
 
   if [ -z "$zgit_info[branch]" ]; then
-    local branch=$(git symbolic-ref HEAD 2>/dev/null)
+    local branch=$(git symbolic-ref HEAD 2> /dev/null)
     if [ $? -eq 0 ]; then
       branch=${branch##*/}
     else
-      branch=$(git name-rev --name-only --always HEAD)
+      branch=$(git name-rev --name-only --always HEAD 2> /dev/null)
     fi
     zgit_info[branch]=$branch
   fi
@@ -171,7 +172,7 @@ zgit_tracking_merge() {
 zgit_isindexclean() {
   zgit_inworktree || return 1
 
-  if git diff --diff-filter=MARCDTXB --cached --quiet; then
+  if git diff --diff-filter=MARCDTXB --cached --quiet 2> /dev/null; then
     return 0
   else
     return 1
@@ -181,7 +182,7 @@ zgit_isindexclean() {
 zgit_isworktreeclean() {
   zgit_inworktree || return 1
 
-  if git diff --diff-filter=MARCDTXB --quiet; then
+  if git diff --diff-filter=MARCDTXB --quiet 2> /dev/null; then
     return 0
   else
     return 1
@@ -192,7 +193,7 @@ zgit_hasuntracked() {
   zgit_inworktree || return 1
 
   local -a flist
-  flist=($(git ls-files --others --exclude-standard))
+  flist=($(git ls-files --others --exclude-standard 2> /dev/null))
   if [ $#flist -gt 0 ]; then
     return 0
   else
@@ -203,7 +204,7 @@ zgit_hasuntracked() {
 zgit_hasunmerged() {
   zgit_inworktree || return 1
 
-  if git diff --diff-filter=U --quiet; then
+  if git diff --diff-filter=U --quiet 2> /dev/null; then
     return 1
   else
     return 0
