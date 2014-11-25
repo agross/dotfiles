@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# test -t 0 checks if the terminal is a tty. If so, it returns success and we
+# output /dev/clipboard to stdin. Otherwhise, e.g. when we pipe some command's
+# output tothis script, we read from stdin and redirect the output to
+# /dev/clipboard.
+
+test -t 0 && cat /dev/clipboard || cat >/dev/clipboard
