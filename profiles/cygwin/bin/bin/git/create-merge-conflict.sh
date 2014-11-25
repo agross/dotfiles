@@ -4,7 +4,7 @@ function commit()
 {
   mkdir -p "$(dirname "$2")"
 
-  echo $1 > "$2"
+  echo -e $1 > "$2"
   git add "$2"
   git commit -m "$1"
 }
@@ -13,12 +13,12 @@ file_name="some path/conflicted file"
 
 git init
 
-commit "foo" "$file_name"
+commit "first line\n\nline from base commit\n\nlast line" "$file_name"
 
 git checkout -b another_branch
-commit "bar" "$file_name"
+commit "first line changed by them\n\ntheir line\n\nlast line" "$file_name"
 
 git checkout master
-commit "baz" "$file_name"
+commit "first line\n\nour line\n\nlast line changed by us" "$file_name"
 
 git merge another_branch
