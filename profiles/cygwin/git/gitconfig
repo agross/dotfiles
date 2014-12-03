@@ -10,8 +10,8 @@
 	fileMode = false
 	whitespace = trailing-space, space-before-tab, -indent-with-non-tab, cr-at-eol
 	quotepath = false
-	editor = ~/bin/git/sublime-text.sh
-	# editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession \"$(cygpath --windows --absolute \"$1\")\"
+	# editor = ~/bin/git/sublime-text.sh
+	editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession \"$(cygpath --windows --absolute \"$1\")\"
 	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession
 [apply]
 	whitespace = nowarn
