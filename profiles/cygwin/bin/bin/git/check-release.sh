@@ -1,7 +1,5 @@
 #!/bin/sh
 
-GREP_OPTIONS=
-
 for branch in "$@"
   do
     echo Checking $branch

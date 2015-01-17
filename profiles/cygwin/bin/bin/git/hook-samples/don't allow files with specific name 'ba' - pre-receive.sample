@@ -1,25 +1,25 @@
 #!/bin/sh
 while read oldrev newrev refname
 do
-	forbidden_pattern="ba"
-	echo "Checking $oldrev..$newrev ($refname)"
-  forbidden_files=`git log --no-color --name-only --pretty="format:" $oldrev..$newrev | env GREP_OPTIONS='' grep $forbidden_pattern`
+  forbidden_pattern="ba"
+  echo "Checking $oldrev..$newrev ($refname)"
+  forbidden_files=`git log --no-color --name-only --pretty="format:" $oldrev..$newrev | grep $forbidden_pattern`
 
   if [ -n "$forbidden_files" ]
   then
-		echo Commit range contains the forbidden files, checking individual commits
+    echo Commit range contains the forbidden files, checking individual commits
 
-		for commit in $(git rev-list $oldrev..$newrev)
-		do
-			this_commit=`git show --no-color --name-only --pretty="format:" $commit | env GREP_OPTIONS='' grep $forbidden_pattern`
-	    if [ -n "$this_commit" ]
-	    then
-				echo Commit $commit
-				echo $this_commit
-	    fi
-		done
+    for commit in $(git rev-list $oldrev..$newrev)
+    do
+      this_commit=`git show --no-color --name-only --pretty="format:" $commit | grep $forbidden_pattern`
+      if [ -n "$this_commit" ]
+      then
+        echo Commit $commit
+        echo $this_commit
+      fi
+    done
 
-		exit 1
+    exit 1
   fi
 done
 

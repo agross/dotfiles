@@ -18,9 +18,6 @@ export PAGER=less
 export LESS='--quit-at-eof --tabs=3 --LONG-PROMPT --quit-if-one-screen --RAW-CONTROL-CHARS --no-init'
 export EDITOR=vi
 
-export GREP_OPTIONS='--color=auto --ignore-case --binary-files=without-match --line-number --initial-tab'
-export GREP_COLOR='1;32'
-
 # Language settings: This variable determines the locale category for any category not specifically selected via a variable starting with `LC_'.
 export LANG=en_US.UTF-8
 

@@ -10,7 +10,7 @@ cd $dir
 git clean -df
 
 git svn show-externals | \
-  GREP_OPTIONS='' grep "^/" | \
+  grep "^/" | \
   while read line;
   do
     # The path always starts with /, remove it using sed.

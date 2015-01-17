@@ -23,6 +23,7 @@ alias md='mkdir -p'
 alias rd='rmdir'
 alias wgets='wget --spider --server-response'
 alias upload='~/bin/upload.sh'
+alias grep='grep --color=auto --ignore-case --binary-files=without-match --line-number --initial-tab'
 
 alias ls='ls --color=auto -l --all --human-readable --group-directories'
 alias dir='ls'
