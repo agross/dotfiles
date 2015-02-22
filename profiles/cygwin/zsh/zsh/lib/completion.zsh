@@ -113,3 +113,10 @@ if [ -f ~/.ssh/config ]; then
 	unset old_value
 	unset config_value
 fi
+
+# node completion
+local prefix
+prefix=$(cygpath --unix "$(npm config get prefix)")
+for completion in $prefix/node_modules/*/completion/zsh; do
+  eval "$(cat $completion)"
+done
