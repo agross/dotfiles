@@ -131,7 +131,7 @@ _git_cmd_cfg=(
 	'rev-list       alias'
 	'rev-parse      alias'
 	'revert         alias'
-	'rm             alias'
+#	'rm             alias'
 	'send-email     alias'
 	'send-pack      alias'
 	'shortlog       alias  stdcmpl'
