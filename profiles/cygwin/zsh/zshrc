@@ -1,6 +1,6 @@
 # Which plugins would you like to load? (plugins can be found in ~/.zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git-flow-completion)
+plugins=(git-flow-completion ssh-agent)
 
 source $ZSH/my-zsh.sh
 
