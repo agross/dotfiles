@@ -127,7 +127,7 @@ set tags=tags;$HOME
 set background=light
 let g:solarized_termcolors= 256
 let g:solarized_contrast  = "high"
-colorscheme solarized
+" colorscheme solarized
 call togglebg#map("<F5>")
 
 " Who needs .gvimrc?
