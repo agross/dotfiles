@@ -113,7 +113,7 @@ _git_cmd_cfg=(
 	'merge          alias  stdcmpl'
 	'merge-base     alias  stdcmpl'
 	'mergetool      alias'
-	'mv             alias'
+#	'mv             alias'
 	'name-rev              stdcmpl'
 	'patch-id       alias'
 	'peek-remote    alias'
