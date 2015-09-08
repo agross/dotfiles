@@ -31,6 +31,7 @@ alias dir='ls'
 # Also done by Ctrl + L.
 alias cls='echo -ne "\033c"'
 alias g='git'
+alias vi='vim'
 
 alias sudo='cygstart --action=runas'
 
