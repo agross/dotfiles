@@ -19,13 +19,17 @@ fi
 
 trigger_build()
 {
-  newrev_short=$(git rev-parse --short $1)
-  newrev=$(git rev-parse $1)
+  newrev=$(git rev-parse --short $1)
   refname="$2"
+
+  if [ "$newrev" = "0000000" ]; then
+    echo "Skipped triggering build for $refname because the new rev is $newrev"
+    return
+  fi
 
   for build_id in $build_ids
   do
-    echo "Triggering build ID $build_id for $refname ($newrev_short)"
+    echo "Triggering build ID $build_id for $refname ($newrev)"
 
     if [ "$refname" = "refs/heads/develop" ]; then
       # Default branch.
@@ -35,7 +39,7 @@ trigger_build()
       branch_name="branchName=\"${refname/refs\/heads\/feature\//}\""
     fi
 
-    post_data="<build $branch_name><buildType id=\"$build_id\" /><comment><text>Triggered by post-receive script for $newrev_short</text></comment></build>"
+    post_data="<build $branch_name><buildType id=\"$build_id\" /><comment><text>Triggered by post-receive script for $newrev</text></comment></build>"
 
     curl --silent --fail --user $user:$password --header 'Content-Type: application/xml' --data-binary "$post_data" $base_url/httpAuth/app/rest/buildQueue > /dev/null
     if [ $? -ne 0 ]; then
