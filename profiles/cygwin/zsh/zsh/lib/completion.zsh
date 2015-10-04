@@ -117,6 +117,7 @@ fi
 # node completion
 local prefix
 prefix=$(cygpath --unix "$(npm config get prefix)")
+prefix=$(cygpath --unix "$APPDATA/npm")
 for completion in $prefix/node_modules/*/completion/zsh; do
   eval "$(cat $completion)"
 done
