@@ -118,3 +118,5 @@
 	smtpserverport = 587
 [status]
 	#submodulesummary = true
+[rebase]
+	autoSquash = true
