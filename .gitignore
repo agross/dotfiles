@@ -1,2 +1,2 @@
-profiles/cygwin/ssh/ssh/*
+profiles/all/ssh/ssh/*
 profiles/cygwin/subversion/subversion/auth/*
