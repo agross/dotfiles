@@ -1,0 +1,10 @@
+local template="$HOME/.screenrc"
+local config=$(mktemp)
+local log="/tmp/screen-$HOST-$RANDOM.log"
+
+cat $template | sed "s|\$LOG|$log|g" > $config
+
+screen -c "$config" -L -S shared
+
+rm "$config" 2> /dev/null
+rm "$log" 2> /dev/null

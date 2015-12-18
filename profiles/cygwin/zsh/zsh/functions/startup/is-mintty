@@ -1,0 +1,4 @@
+local -a args
+args=("${(ps/\0/)$(cat /proc/$PPID/cmdline 2>&1 /dev/null)}")
+
+[[ -n "${args[(r)/usr/bin/mintty]}" ]]

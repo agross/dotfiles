@@ -1,8 +1,4 @@
-# Make sure we start in /scratch unless specified otherwise.
-if [ ! -z "${KEEP_DIR}" ]; then
-  unset KEEP_DIR
-else
-  cd /scratch
-fi
+verbose Loading $fg[green]zlogin$reset_color
 
-start-screen
+startup-directory /scratch
+undefine-startup-functions

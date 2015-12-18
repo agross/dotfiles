@@ -1,13 +1,9 @@
-# Automatically remove duplicates from these arrays.
-typeset -U paths
-paths=($HOME/bin $HOME/bin/*/(/) $PATH)
-PATH=${(j.:.)paths}
+verbose Loading $fg[green]zprofile$reset_color
 
-# Path to your oh-my-zsh configuration.
-export ZSH=$HOME/.zsh
+if is-mintty && [[ -z $STY ]]; then
+  startup-directory /scratch
 
-# Set to this to use case-sensitive completion
-# export CASE_SENSITIVE="true"
-
-# Uncomment following line if you want to disable colors in ls
-# export DISABLE_LS_COLORS="true"
+  verbose Starting $fg[green]screen$reset_color because we\'re running $fg[green]mintty$reset_color
+  start-screen
+  exit
+fi

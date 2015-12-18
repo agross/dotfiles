@@ -5,35 +5,37 @@
 # %~          expands to directory, replacing $HOME with '~'
 # There are many more expansions available: see the zshmisc man page.
 
+verbose Setting up $fg[red]precmd$reset_color and $fg[red]preexec$reset_color hooks for $fg[yellow]$TERM$reset_color
+
+# Disable oh-my-zsh's title support.
+DISABLE_AUTO_TITLE="true"
+
 case "$TERM" in
-	xterm*|rxvt*|cygwin)
-		# Executed just after a command has been read and is about to be executed.
-		function preexec() {
-			# Print command line that is executed.
-			print -Pn "\e]0;$1\a"
-		}
+  xterm*|rxvt*|cygwin|screen)
+    # Executed just after a command has been read and is about to be executed.
+    function preexec() {
+      if [[ -n $SSH_CONNECTION ]]; then
+        # Print user@host and command line that is executed.
+        print -Pn "\e]0;%n@$HOST: $1\a"
+      else
+        # Print command line that is executed.
+        print -Pn "\e]0;$1\a"
+      fi
+    }
 
-		# Executed before each prompt.
-		function precmd() {
-			# Print current path.
-			print -Pn "\e]0;%~\a"
-		}
+    # Executed before each prompt.
+    function precmd() {
+      if [[ -n $SSH_CONNECTION ]]; then
+        # Print user@host and current path.
+        print -Pn "\e]0;%n@$HOST: %~\a"
+      else
+        # Print current path.
+        print -Pn "\e]0;%~\a"
+      fi
+    }
 
-		# Executed whenever the current working directory is changed.
-		function chpwd() {
-		}
-		;;
-
-	screen*)
-		function preexec() {
-			local CMD=${1[(wr)^(*=*|sudo|ssh|-*)]}
-			echo -ne "\ek$CMD\e\\"
-			print -Pn "\e]0;%n@%m: $1\a"  # xterm
-		}
-
-		function precmd() {
-			echo -ne "\ekzsh\e\\"
-			print -Pn "\e]0;%n@%m: %~\a"  # xterm
-		}
-		;;
+    # Executed whenever the current working directory is changed.
+    function chpwd() {
+    }
+    ;;
 esac

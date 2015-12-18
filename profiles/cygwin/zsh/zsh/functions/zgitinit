@@ -253,10 +253,9 @@ zgit_rebaseinfo() {
   return 0
 }
 
+autoload -U add-zsh-hook
 add-zsh-hook chpwd zgit_chpwd_hook
 add-zsh-hook preexec zgit_preexec_hook
 add-zsh-hook precmd zgit_precmd_hook
 
 zgit_info_update
-
-# vim:set ft=zsh:

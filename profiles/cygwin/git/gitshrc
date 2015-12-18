@@ -7,6 +7,9 @@ gitalias fl='git flow'
 
 gitalias unresolve='git checkout --conflict=merge -- '
 
+gitalias set-x='git update-index --chmod=+x -- '
+gitalias unset-x='git update-index --chmod=-x -- '
+
 # temporarily ignoring files
 gitalias ignore='git update-index --assume-unchanged'
 gitalias unignore='git update-index --no-assume-unchanged'

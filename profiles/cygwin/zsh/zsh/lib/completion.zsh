@@ -32,7 +32,7 @@ zmodload -i zsh/complist
 
 # Completion cache.
 zstyle ':completion::complete:*' use-cache on
-zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
+zstyle ':completion::complete:*' cache-path $HOME/.cache/zsh-completion/$HOST
 
 # Completion menu is always shown, show selection when >=3 entries.
 zstyle ':completion:*' menu yes select=3
@@ -48,7 +48,7 @@ zstyle ':completion:*:expand:*' tag-order all-expansions
 
 # Formatting and messages.
 zstyle ':completion:*'              verbose yes
-zstyle ':completion:*:descriptions' format 'Completing %B%d%b'
+zstyle ':completion:*:descriptions' format "Completing $fg_bold[blue]%d$reset_color"
 zstyle ':completion:*:messages'     format '%d'
 zstyle ':completion:*:warnings'     format 'No matches for: %d'
 zstyle ':completion:*:corrections'  format '%B%d (errors: %e)%b'
@@ -58,15 +58,12 @@ zstyle ':completion:*'              list-prompt '%SAt %p: Hit TAB for more, or t
 zstyle ':completion:*'              select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' fake-files   '/:c' '/:d'
 
-# Use LS_COLORS to color files.
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
 # German umlauts, case-insensitive (all), partial-word and then substring completion.
-if [ "x$CASE_SENSITIVE" = "xtrue" ]; then
-	zstyle ':completion:*' matcher-list 'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-	unset CASE_SENSITIVE
+if [[ "$CASE_SENSITIVE" == "true" ]]; then
+  zstyle ':completion:*' matcher-list 'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+  unset CASE_SENSITIVE
 else
-	zstyle ':completion:*' matcher-list 'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+  zstyle ':completion:*' matcher-list 'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 fi
 
 # Ignore completion functions (until the _ignored completer).
@@ -94,30 +91,20 @@ bindkey -M menuselect '^I' magic-space                   # Tab
 bindkey -M menuselect ' '  magic-space
 
 # Process completion.
-zstyle ':completion:*:*:*:*:processes' command "ps --user `whoami` --windows"
+if [[ "$(platform)" == "windows" ]]; then
+  local windows=--windows
+fi
+zstyle ':completion:*:*:*:*:processes' command "ps --user `whoami` $windows"
+unset windows
 # PID in red, rest default-colored.
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 
-# Load known hosts file for auto-completion with ssh and scp commands.
-if [ -f ~/.ssh/known_hosts ]; then
-	# Hostname completion, excluding IP addresses.
-	zstyle ':completion:*' hosts `sed 's/[, ].*$//' $HOME/.ssh/known_hosts | sed 's/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}//'`
-	zstyle ':completion:*:*:(ssh|scp):*:*' hosts `sed 's/[, ].*$//' $HOME/.ssh/known_hosts | sed 's/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}//'`
+if [[ "$(platform)" == "windows" ]]; then
+  # node completion
+  local prefix="$(cygpath --unix "$APPDATA/npm")"
+  for completion in $prefix/node_modules/*/completion/zsh; do
+    eval "$(cat $completion)"
+  done
+
+  unset prefix completion
 fi
-if [ -f ~/.ssh/config ]; then
-	zstyle -g old_value ':completion:*:*:(ssh|scp):*:*' hosts
-	config_value=`sed -n '/^host .*$/p' $HOME/.ssh/config | sed -e 's/^host //' | tr '\n' ' '`
-
-	zstyle ':completion:*:*:(ssh|scp):*:*' hosts `echo $old_value $config_value`
-
-	unset old_value
-	unset config_value
-fi
-
-# node completion
-local prefix
-prefix=$(cygpath --unix "$(npm config get prefix)")
-prefix=$(cygpath --unix "$APPDATA/npm")
-for completion in $prefix/node_modules/*/completion/zsh; do
-  eval "$(cat $completion)"
-done

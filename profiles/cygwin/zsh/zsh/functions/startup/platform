@@ -1,0 +1,9 @@
+if [[ "$(uname)" == "Darwin" ]]; then
+  echo 'mac'
+elif [[ "$(uname -s)" == "Linux" ]]; then
+  echo 'linux'
+elif [[ "$(uname -o)" == "Cygwin" ]]; then
+  echo 'windows'
+else
+  echo 'unknown'
+fi

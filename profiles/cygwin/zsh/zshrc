@@ -1,10 +1,39 @@
-# Which plugins would you like to load? (plugins can be found in ~/.zsh/plugins/*)
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git-flow-completion/git-flow-completion ssh-agent zsh-syntax-highlighting/zsh-syntax-highlighting)
+verbose Loading $fg[green]zshrc$reset_color
 
-source $ZSH/my-zsh.sh
+ZPLUG_HOME=$HOME/.cache/zplug
+if [[ ! -d $ZPLUG_HOME ]]; then
+  verbose Downloading $fg[cyan]zplug$reset_color to $fg[green]$ZPLUG_HOME$reset_color
+  mkdir --parents "$ZPLUG_HOME"
+  wget -O "$ZPLUG_HOME/zplug" git.io/zplug
 
-prompt agross
+  verbose Loading $fg[cyan]zplug$reset_color
+  source "$ZPLUG_HOME/zplug"
 
-cdpath=(/gw /scratch /lab /lab/.NET /git-demos /gw/Kunden/*)
-export CDPATH
+  zplug update --self
+else
+  verbose Loading $fg[cyan]zplug$reset_color
+  source "$ZPLUG_HOME/zplug"
+fi
+
+zplug "~/.zsh/config", from:local
+zplug "~/.zsh/themes", from:local, of:"agross.zsh-theme"
+zplug "~/.zsh/lib", from:local
+
+zplug "b4b4r07/zplug"
+zplug "plugins/ssh-agent", from:oh-my-zsh
+zplug "bobthecow/git-flow-completion"
+zplug "rhysd/zsh-bundle-exec", if:"which bundle"
+
+zplug "zsh-users/zsh-syntax-highlighting", nice:10
+
+# Install plugins if there are plugins that have not been installed.
+if ! zplug check --verbose; then
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo
+    zplug install
+  fi
+fi
+
+# Source and add to the PATH.
+zplug load --verbose
