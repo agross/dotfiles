@@ -1,0 +1,14 @@
+ZSH_VERBOSE=true
+
+# Path to dotfiles.
+export DOTFILES="$HOME/.dotfiles"
+
+# Prepend our startup function path and remove duplicates.
+typeset -Ua fpath
+fpath=("$DOTFILES/zsh/functions/startup" $fpath)
+autoload -Uz $DOTFILES/zsh/functions/startup/*(:t)
+
+# Load color support.
+autoload -U colors && colors
+
+verbose Loading $fg[green]zshenv$reset_color

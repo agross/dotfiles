@@ -1,0 +1,123 @@
+[gui]
+	fontui = -family \"Segoe UI\" -size 8 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family Consolas -size 9 -weight normal -slant roman -underline 0 -overstrike 0
+[user]
+	email = agross@therightstuff.de
+	name = Alexander Groß
+[core]
+	autocrlf = false
+	safecrlf = warn
+	fileMode = false
+	whitespace = trailing-space, space-before-tab, -indent-with-non-tab, cr-at-eol
+	quotepath = false
+	# editor = ~/bin/git/sublime-text.sh
+	editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession \"$(cygpath --windows --absolute \"$1\")\"
+	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession
+[apply]
+	whitespace = nowarn
+[alias]
+	qn  = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" track
+	qa  = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" stage
+	qap = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" stage_with_patch
+	qd  = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" diff
+	qdc = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" diff_cached
+	qc = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" checkout
+	qu = !ruby \"$(cygpath --windows --absolute /c/Ruby/bin/quick-git)\" unstage
+	wtf = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-wtf.rb)\" --all --relations
+	rank = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-rank-contributors.rb)\" $*
+	publish = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-publish-branch.rb)\" $*
+	biggest-commits = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-biggest-commits.rb)\" $*
+	clobber = !sh ~/.dotfiles/bin/git/git-cleanup
+	personal = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-personal-build.rb)\" agross $*
+	flow = !sh ~/.dotfiles/git/git-flow/git-flow $*
+	some = "!sh -c '~/.dotfiles/git/git-some/git-some.sh $1' --"
+	ui = !'/c/Tools/QGit/qgit.exe' --all &
+	fixup = commit --fixup
+	# fixup = "!sh -c 'set -e; rev=${1-HEAD}; sha=$(git rev-parse --short $rev 2> /dev/null) || (echo \"Could not parse revision $rev\"; exit 1); git commit --message \"fixup $sha\"' --"
+	#
+	# This is a sample alias that
+	# - will be invoked by the shell (!) and not prefixed with 'git'
+	# - supports parameters ($1-default_value)
+	# - ignores if more parameters then the referenced ones are passed (--)
+	# - supports semicolons inside the string (alias needs to be enclosed by ")
+	#
+	# hello = "!sh -c 'echo \"hello, ${1-world}\"' --"
+[color]
+	ui = auto
+	wtf = true
+[color "diff"]
+	old = bold red
+	new = bold green
+	meta = bold yellow
+[color "branch"]
+	current = black green
+	local = bold green
+	remote = yellow
+	plain = bold yellow
+[color "status"]
+	added = bold red
+	changed = bold green
+	untracked = bold cyan
+	nobranch = red reverse
+[color "interactive"]
+	prompt = bold green
+	error = bold red
+[branch]
+	autosetupmerge = true
+	autosetuprebase = always
+[svn]
+	rmdir = true
+	findcopiesharder = true
+[merge]
+	tool = diffmerge
+	log = true
+[mergetool]
+	prompt = false
+	keepBackup = false
+[mergetool "diffmerge"]
+  cmd = ~/.dotfiles/git/tools/diffmerge-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+  trustExitCode = true
+[mergetool "bc"]
+	cmd = ~/.dotfiles/git/tools/beyondcompare-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[mergetool "p4"]
+	cmd = ~/.dotfiles/git/tools/p4merge-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[mergetool "semanticmerge"]
+	cmd = ~/.dotfiles/git/tools/semanticmerge-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = false
+[mergetool "winmerge"]
+	cmd = ~/.dotfiles/git/tools/winmerge-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[diff]
+	tool = diffmerge
+	renames = copies
+	submodule = log
+[difftool]
+	prompt = false
+[difftool "diffmerge"]
+  cmd = ~/.dotfiles/git/tools/diffmerge-diff \"$LOCAL\" \"$REMOTE\"
+[difftool "bc"]
+	cmd = ~/.dotfiles/git/tools/beyondcompare-diff \"$LOCAL\" \"$REMOTE\"
+[difftool "p4"]
+	cmd = ~/.dotfiles/git/tools/p4merge-diff \"$LOCAL\" \"$REMOTE\"
+[difftool "meld"]
+	cmd = ~/.dotfiles/git/tools/meld-diff \"$LOCAL\" \"$REMOTE\"
+[difftool "winmerge"]
+	cmd = ~/.dotfiles/git/tools/winmerge-diff \"$LOCAL\" \"$REMOTE\"
+[clean]
+	requireForce = false
+[rerere]
+	enabled = true
+	autoupdate = true
+[push]
+	default = matching
+[sendemail]
+	from = Alexander Groß <agross@therightstuff.de>
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = agross@therightstuff.de
+	smtpserverport = 587
+[status]
+	#submodulesummary = true
+[rebase]
+	autoSquash = true

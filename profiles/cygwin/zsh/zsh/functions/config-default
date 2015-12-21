@@ -1,3 +1,0 @@
-pushd /dotfiles
-git checkout profiles/cygwin/git/gitconfig
-popd

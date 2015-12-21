@@ -1,0 +1,8 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto eol=lf
+
+# Files that will always have CRLF line endings on checkout.
+*.cmd text eol=crlf
+
+# Ruby.
+*.rb diff=ruby

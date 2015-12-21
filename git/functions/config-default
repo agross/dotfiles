@@ -1,0 +1,3 @@
+pushd /dotfiles
+git checkout git/gitconfig.symlink
+popd

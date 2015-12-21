@@ -1,3 +1,8 @@
-[submodule "profiles/cygwin/bin/bin/git-some"]
-	path = profiles/cygwin/bin/bin/git-some
+[submodule "git/git-some"]
+	path = git/git-some
 	url = https://github.com/GROSSWEBER/git-some
+	 branch = master
+[submodule "git/git-flow"]
+	path = git/git-flow
+	url = https://github.com/nvie/gitflow.git
+	branch = master

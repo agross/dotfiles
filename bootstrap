@@ -1,0 +1,203 @@
+#!/usr/bin/env bash
+#
+# bootstrap installs things.
+#
+# Graciously taken from https://github.com/holman/dotfiles.
+
+# Fail on errors.
+set -e
+
+DOTFILES_ROOT="$(dirname "$(readlink --canonicalize-existing "$0")")"
+
+info () {
+  printf "\r  [\e[01;36m INFO \e[0m] %s\n" "$1"
+}
+
+user () {
+  printf "\r  [\e[01;33m  ?   \e[0m] $1 "
+}
+
+success () {
+  printf "\r\e[2K  [\e[01;32m  OK  \e[0m] $1\n"
+}
+
+fail () {
+  printf "\r\e[2K  [\e[01;31m FAIL \e[0m] $1\n"
+  echo ''
+  exit 1
+}
+
+platforms () {
+  if [[ "$(uname)" == "Darwin" ]]; then
+    echo 'mac'
+  elif [[ "$(uname -s)" == "Linux" ]]; then
+    echo 'linux'
+  elif [[ "$(uname -o)" == "Cygwin" ]]; then
+    printf "cygwin\nwindows"
+  elif [[ "$(uname -o)" == "Msys" ]]; then
+    echo 'msys'
+  else
+    echo 'unknown'
+  fi
+}
+
+home_directory () {
+  local platform=$1
+
+  case "$platform" in
+    mac|linux|msys|cygwin )
+      home=$HOME
+      ;;
+    windows )
+      home="$(printf "%s" "$(cygpath --unix $USERPROFILE)")"
+      ;;
+    * )
+      fail "$(printf "Cannot determine home directories for platform \e[00;32m%s\e[0m" "$platform")"
+      ;;
+  esac
+}
+
+platform_excluded () {
+  local topic=$1
+  local platform=$2
+  local exclude_file="$topic/.exclude-platforms"
+
+  if [ ! -f "$exclude_file" ]; then
+    echo false
+    return
+  fi
+
+  if [ ! -z $(grep "$platform" "$exclude_file") ]; then
+    echo true
+    return
+  fi
+
+  echo false
+}
+
+link_file () {
+  local src=$1
+  local dst=$2
+
+  local overwrite= backup= skip=
+  local action=
+
+  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]; then
+    if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]; then
+      local current_src="$(readlink --canonicalize-existing "$dst")"
+
+      if [ "$current_src" == "$src" ]; then
+        skip=true;
+      else
+        user "File already exists: \e[00;32m$dst\e[0m (\e[00;36m$(file --brief "$dst")\e[0m)
+           Will be linked to: \e[00;32m$src\e[0m
+           What do you want to do? (\e[1;33ms\e[0m)kip, (\e[1;33mS\e[0m)kip all, (\e[1;33mo\e[0m)verwrite, (\e[1;33mO\e[0m)verwrite all, (\e[1;33mb\e[0m)ackup, (\e[1;33mB\e[0m)ackup all?"
+
+        while true; do
+          # Read from tty, needed because we read in outer loop.
+          read -n 1 action < /dev/tty
+
+          case "$action" in
+            o )
+              overwrite=true
+              break
+              ;;
+            O )
+              overwrite_all=true
+              break
+              ;;
+            b )
+              backup=true
+              break
+              ;;
+            B )
+              backup_all=true
+              break
+              ;;
+            s )
+              skip=true
+              break
+              ;;
+            S )
+              skip_all=true
+              break
+              ;;
+            * )
+              ;;
+          esac
+        done
+      fi
+    fi
+
+    overwrite=${overwrite:-$overwrite_all}
+    backup=${backup:-$backup_all}
+    skip=${skip:-$skip_all}
+
+    if [ "$overwrite" == "true" ]; then
+      rm -rf "$dst"
+      success "Removed \e[00;32m$dst\e[0m"
+    fi
+
+    if [ "$backup" == "true" ]; then
+      mv "$dst" "${dst}.backup"
+      success "Moved \e[00;32m$dst\e[0m to \e[00;32m${dst}.backup\e[0m"
+    fi
+
+    if [ "$skip" == "true" ]; then
+      success "Skipped \e[00;32m$src\e[0m == \e[00;32m$dst\e[0m"
+    fi
+  fi
+
+  if [ "$skip" != "true" ]; then  # "false" or empty
+    # Create native symlinks on Windows.
+    export CYGWIN=winsymlinks:nativestrict
+    ln -s "$1" "$2"
+
+    success "Linked \e[00;32m$1\e[0m to \e[00;32m$2\e[0m"
+  fi
+}
+
+install_dotfiles () {
+  local overwrite_all=false backup_all=false skip_all=false
+
+  info "$(printf "Installing dotfiles from \e[00;32m%s\e[0m" "$DOTFILES_ROOT")"
+
+  echo "$(platforms)" | while read -r platform; do
+    local home
+    home_directory "$platform"
+
+    echo ''
+    info "$(printf "Installing dotfiles in \e[00;32m%s\e[0m for platform \e[00;32m%s\e[0m" "$home" "$platform")"
+
+    # First, add a symlink for this dotfiles directory.
+    local dotfiles="$home/.dotfiles"
+    link_file "$DOTFILES_ROOT" "$dotfiles"
+
+    # Find direct child directories (topics), exclude those starting with dots.
+    find "$DOTFILES_ROOT" -mindepth 1 -maxdepth 1 -type d -not -name '\.*' -print0 | while read -d $'\0' topic; do
+      if [ "$(platform_excluded "$topic" "$platform")" == "true" ]; then
+        info "$(printf "Skipped \e[00;32m%s\e[0m as it is excluded for platform \e[00;32m%s\e[0m" "$topic" "$platform")"
+        continue
+      fi
+
+      # Find files and directories named *.symlink below each topic directory, exclude dot files.
+      find "$topic" -mindepth 1 -maxdepth 1 \( -type f -or -type d \) -name '*.symlink' -not -name '\.*' -print0 | while read -d $'\0' src
+      do
+        dst="$home/.$(basename "${src%.*}")"
+        link_file "$src" "$dst"
+      done
+
+      # Run optional install script.
+      local install="$topic/.install.sh"
+      if [ -x "$install" ]; then
+        info "$(printf "Running \e[00;32m%s\e[0m" "$install")"
+        sh -c "${install}"
+      fi
+    done
+  done
+
+  echo ''
+  info "$(printf "All installed from \e[00;32m%s\e[0m" "$DOTFILES_ROOT")"
+}
+
+install_dotfiles

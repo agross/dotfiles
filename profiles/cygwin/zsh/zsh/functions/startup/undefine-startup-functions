@@ -1,8 +1,0 @@
-# Unfunction self (first parameter), verbose must come last.
-local functions=($0 platform startup-directory verbose)
-
-local fun
-for fun in $functions; do
-  verbose Unfunction $fg[red]$fun$reset_color
-  unfunction $fun
-done

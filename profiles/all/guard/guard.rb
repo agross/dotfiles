@@ -1,1 +1,0 @@
-notification :gntp, host: 'localhost'
