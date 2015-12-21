@@ -15,7 +15,7 @@ else
   source "$ZPLUG_HOME/zplug"
 fi
 
-zplug "~/.zsh/config", from:local
+zplug "~/.zsh/config", from:local, nice:-20
 zplug "~/.zsh/themes", from:local, of:"agross.zsh-theme"
 zplug "~/.zsh/lib", from:local
 
