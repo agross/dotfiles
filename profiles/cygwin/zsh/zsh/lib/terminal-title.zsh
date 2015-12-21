@@ -11,27 +11,28 @@ verbose Setting up $fg[red]precmd$reset_color and $fg[red]preexec$reset_color ho
 DISABLE_AUTO_TITLE="true"
 
 case "$TERM" in
-  xterm*|rxvt*|cygwin|screen)
+  xterm*|rxvt*|cygwin|screen*)
     # Executed just after a command has been read and is about to be executed.
     function preexec() {
       if [[ -n $SSH_CONNECTION ]]; then
-        # Print user@host and command line that is executed.
-        print -Pn "\e]0;%n@$HOST: $1\a"
-      else
-        # Print command line that is executed.
-        print -Pn "\e]0;$1\a"
+        local user_at_host="%n@$HOST: "
       fi
+
+      # Print command line that is executed.
+      print -Pn "\e]0;$user_at_host$1\a"
     }
 
     # Executed before each prompt.
     function precmd() {
       if [[ -n $SSH_CONNECTION ]]; then
-        # Print user@host and current path.
-        print -Pn "\e]0;%n@$HOST: %~\a"
-      else
-        # Print current path.
-        print -Pn "\e]0;%~\a"
+        local user_at_host="%n@$HOST: "
       fi
+
+      # Print current path.
+      print -Pn "\e]0;$user_at_host%~\a"
+
+      # screen title (in ^A").
+      print -Pn "\ekzsh $user_at_host%~\e\\"
     }
 
     # Executed whenever the current working directory is changed.

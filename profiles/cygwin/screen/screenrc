@@ -1,6 +1,3 @@
-# Set $TERM to xterm-256color for screened shells.
-term xterm-256color
-
 # Log everything we see on the screen.
 logfile $LOG
 logfile flush 1
