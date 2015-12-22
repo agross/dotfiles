@@ -5,14 +5,17 @@
 # If any of the following fails, the script fails.
 set -e
 
-commitish=`git rev-parse $1`
-commitish_short=`git rev-parse --short $1`
+rev=${1:-HEAD}
+echo Using $rev
 
-on_remote_branches=`git branch --contains=$commitish --remotes`
+commitish=$(git rev-parse $rev)
+commitish_short=$(git rev-parse --short $rev)
+
+on_remote_branches=$(git branch --contains=$commitish --remotes)
 
 if [ -n "$on_remote_branches" ]
 then
-  branch_count=`echo "$on_remote_branches" | wc --lines`
+  branch_count=$(echo "$on_remote_branches" | wc --lines)
 
   branch_es=branches
   if [ $branch_count -eq 1 ]
