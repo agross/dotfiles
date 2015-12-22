@@ -8,7 +8,7 @@
 ## Probably not without some editing, because people often commit from more
 ## than one address.
 ##
-## git-rank-contributors Copyright 2008 William Morgan <wmorgan-git-wt-add@masanjin.net>. 
+## git-rank-contributors Copyright 2008 William Morgan <wmorgan-git-wt-add@masanjin.net>.
 ## This program is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
 ## the Free Software Foundation, either version 3 of the License, or (at
@@ -35,13 +35,13 @@ by_commits = ARGV.delete("-commits")
 
 author = nil
 state = :pre_author
-`git log -M -C -C -p --no-color`.each do |l|
+`git log -M -C -C -p --no-color`.each_line do |l|
   case
   when (state == :pre_author || state == :post_author) && l =~ /Author: (.*)$/
     author = $1
     state = :post_author
-	authors[author] ||= Hash.new(0)
-	authors[author][:commits] += 1
+  authors[author] ||= Hash.new(0)
+  authors[author][:commits] += 1
   when state == :post_author && l =~ /^\+\+\+/
     state = :in_diff
   when state == :in_diff && l =~ /^[\+\-]/
@@ -61,6 +61,6 @@ longest_diffs = authors.values.collect{ |data| data[:lines].to_s.length }.max
 authors.sort_by { |author, data| -1 * sorter.call(data) }.each do |author, data|
   author = author.obfuscate if obfuscate
   author = author.htmlize if htmlize
-  
+
   puts "#{author.rjust(longest_name)}: #{data[:commits].to_s.rjust(longest_commits)} commits with #{data[:lines].to_s.rjust(longest_diffs)} lines of diff"
 end
