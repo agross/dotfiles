@@ -1,0 +1,34 @@
+# screen-like prefix Ctrl+A.
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# Key bindings.
+bind-key C-a last-window
+
+# Set $TERM variable.
+set -g default-terminal screen
+
+## Update the $TERM variable of terminal emulator when creating a new session or attaching a existing session.
+set -g update-environment 'DISPLAY SSH_ASKPASS SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY TERM'
+## Determine if we should enable 256-colour support.
+if "[[ ${TERM} =~ 256color || ${TERM} == fbterm ]]" 'set -g default-terminal screen-256color'
+
+# Show SSH info in window title.
+set -g set-titles on
+set -g set-titles-string "#T"
+
+# Highlight active window
+set-window-option -g window-status-current-bg red
+set-window-option -g window-status-current-fg white
+
+# Rather than constraining window size to the maximum size of any client
+# connected to the *session*, constrain window size to the maximum size of any
+# client connected to *that window*. Much more reasonable.
+setw -g aggressive-resize on
+
+# Allows for faster key repetition.
+set -s escape-time 0
+
+set -g mouse on
+bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e; send-keys -M'"
