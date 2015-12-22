@@ -37,19 +37,19 @@ function() {
   local eg=$options[extended_glob]
   setopt extended_glob
 
+  # Note the slashes after $DOTFILES. See https://github.com/b4b4r07/zplug/issues/74.
   local nice=
-  nice=-19; zplug "$DOTFILES", from:local, nice:$nice, of:"**/*.zsh"
   # Load paths first.
-  #nice=-20; zplug "$DOTFILES/filter-path/../", from:local, nice:$nice, of:"**/path.zsh"
+  nice=-20; zplug "$DOTFILES", from:local, nice:$nice, of:"**/path.zsh"
 
   # Load everything but the path and completion files second.
-  #nice=-19; zplug "$DOTFILES", from:local, nice:$nice, of:"**/(^(path|completion)).zsh"
+  nice=-19; zplug "$DOTFILES/", from:local, nice:$nice, of:"**/(^(path|completion)).zsh"
 
   # Set theme.
   nice=-18; zplug "$DOTFILES/zsh/themes", from:local, of:"agross.zsh-theme"
 
   # Load completions after compinit was run.
-  nice=10; zplug "$DOTFILES/filter-completions/../", from:local, nice:$nice, of:"**/completion.zsh"
+  nice=10; zplug "$DOTFILES//", from:local, nice:$nice, of:"**/completion.zsh"
 
   zplug "b4b4r07/zplug"
   zplug "plugins/ssh-agent", from:oh-my-zsh, ignore:oh-my-zsh.sh
