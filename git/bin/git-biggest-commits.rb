@@ -25,7 +25,10 @@ IO.popen("git rev-list #{head}", 'r') do |rev_list|
 end
 
 if big_files.any?
-  big_files.each do |sha, (path, size, commit)|
+  big_files
+    .sort_by { |_sha, (_path, size, _commit)| size }
+    .reverse
+    .each do |sha, (path, size, commit)|
     where = `git show -s #{commit} --format='%h: %cr'`.chomp
     puts "%4.1fMB\t%s\t(%s)" % [size.to_f / Megabyte, path, where]
   end
