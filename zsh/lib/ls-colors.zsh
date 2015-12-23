@@ -65,8 +65,8 @@
 local executable='00;32'
 local archive='00;31'
 
-# Have zsh automatically sync $ls_colors and global $LS_COLORS, minus duplicates.
-typeset -gaUT LS_COLORS ls_colors :
+# Have zsh automatically sync $ls_colors and global exported $LS_COLORS, minus duplicates.
+typeset -gxaUT LS_COLORS ls_colors :
 
 ls_colors=(
   'fi=00'           # fi  FILE  Normal file
@@ -103,8 +103,6 @@ ls_colors=(
 
 unset executable
 unset archive
-
-export LS_COLORS
 
 # Use colors in file list completion.
 zstyle ':completion:*' list-colors $ls_colors
