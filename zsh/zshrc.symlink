@@ -69,4 +69,9 @@ function() {
 
   # Restore extended_glob option.
   options[extended_glob]=$eg
+
+  # If we run screen, clean up after ourselves.
+  if [[ -n "$STY" ]]; then
+    undefine-startup-functions
+  fi
 }
