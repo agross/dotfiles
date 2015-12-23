@@ -7,3 +7,5 @@ for fun in $functions; do
   verbose Unfunction $fg[red]$fun$reset_color
   unfunction $fun
 done
+
+unset ZSH_VERBOSE
