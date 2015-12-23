@@ -1,5 +1,5 @@
 # Find all topic/function directories, add them to $path and autoload these functions so you can just call them.
-for topic_folder ($DOTFILES/*/functions(/)); do
+for topic_folder ($DOTFILES/*/functions(/N)); do
   verbose Adding autoloaded function path $fg[green]$topic_folder$reset_color
   fpath=($topic_folder $fpath);
 
