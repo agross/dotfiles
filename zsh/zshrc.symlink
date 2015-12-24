@@ -57,6 +57,7 @@ function() {
   zplug "rhysd/zsh-bundle-exec", if:"(( $+commands[bundle] ))"
 
   zplug "holman/dotfiles", as:command, of:"bin/e"
+  zplug "agross/rapid-git", if:"(( $+commands[git] ))", of:"rapid-git.sh"
 
   zplug "zsh-users/zsh-syntax-highlighting", nice:10
 
