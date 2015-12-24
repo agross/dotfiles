@@ -3,6 +3,12 @@ logfile $LOG
 logfile flush 1
 deflog on
 
+# No visual bell.
+vbell off
+
+# Change the window size to the size of the current region.
+fit
+
 # Support scrolling.
 termcapinfo xterm* ti@:te@
 
