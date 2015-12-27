@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 #
 # bootstrap installs things.
 #
@@ -28,13 +28,13 @@ fail () {
 }
 
 platforms () {
-  if [[ "$(uname)" == "Darwin" ]]; then
+  if [ "$(uname)" == "Darwin" ]; then
     echo 'mac'
-  elif [[ "$(uname -s)" == "Linux" ]]; then
+  elif [ "$(uname -s)" == "Linux" ]; then
     echo 'linux'
-  elif [[ "$(uname -o)" == "Cygwin" ]]; then
+  elif [ "$(uname -o)" == "Cygwin" ]; then
     printf "cygwin\nwindows"
-  elif [[ "$(uname -o)" == "Msys" ]]; then
+  elif [ "$(uname -o)" == "Msys" ]; then
     echo 'msys'
   else
     echo 'unknown'
@@ -62,11 +62,11 @@ platform_excluded () {
   local platform=$2
   local exclude_file="$topic/.exclude-platforms"
 
-  if [[ ! -f "$exclude_file" ]]; then
+  if [ ! -f "$exclude_file" ]; then
     return 1
   fi
 
-  if [[ -n $(/usr/bin/grep "$platform" "$exclude_file") ]]; then
+  if [ -n $(/usr/bin/grep "$platform" "$exclude_file") ]; then
     return 0
   fi
 
@@ -80,11 +80,11 @@ link_file () {
   local overwrite= backup= skip=
   local action=
 
-  if [[ -f "$dst" || -d "$dst" || -L "$dst" ]]; then
-    if [[ "$overwrite_all" == "false" ]] && [[ "$backup_all" == "false" ]] && [[ "$skip_all" == "false" ]]; then
+  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]; then
+    if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]; then
       local current_src="$(readlink --canonicalize-existing "$dst")"
 
-      if [[ "$current_src" == "$src" ]]; then
+      if [ "$current_src" == "$src" ]; then
         skip=true;
       else
         user "File already exists: \e[00;32m$dst\e[0m (\e[00;36m$(file --brief "$dst")\e[0m)
@@ -131,22 +131,22 @@ link_file () {
     backup=${backup:-$backup_all}
     skip=${skip:-$skip_all}
 
-    if [[ "$overwrite" == "true" ]]; then
+    if [ "$overwrite" == "true" ]; then
       rm -rf "$dst"
       success "Removed \e[00;32m$dst\e[0m"
     fi
 
-    if [[ "$backup" == "true" ]]; then
+    if [ "$backup" == "true" ]; then
       mv "$dst" "${dst}.backup"
       success "Moved \e[00;32m$dst\e[0m to \e[00;32m${dst}.backup\e[0m"
     fi
 
-    if [[ "$skip" == "true" ]]; then
+    if [ "$skip" == "true" ]; then
       success "Skipped \e[00;32m$src\e[0m == \e[00;32m$dst\e[0m"
     fi
   fi
 
-  if [[ "$skip" != "true" ]]; then  # "false" or empty
+  if [ "$skip" != "true" ]; then  # "false" or empty
     # Create native symlinks on Windows.
     export CYGWIN=winsymlinks:nativestrict
     ln -s "$1" "$2"
