@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 #
 # bootstrap installs things.
 #
@@ -6,9 +6,7 @@
 
 # Fail on errors.
 set -e
-
-DOTFILES_ROOT="$(dirname "$(readlink --canonicalize-existing "$0")")"
-
+#set -x
 info () {
   printf "\r  [\e[01;36m INFO \e[0m] %s\n" "$1"
 }
@@ -22,30 +20,49 @@ success () {
 }
 
 fail () {
-  printf "\r\e[2K  [\e[01;31m FAIL \e[0m] $1\n"
-  echo ''
+  printf "\r\e[2K  [\e[01;31m FAIL \e[0m] $1\n\n"
   exit 1
 }
 
 platforms () {
+  if [ -n "$platforms_cache" ]; then
+    printf "$platforms_cache"
+    return
+  fi
+
   if [ "$(uname)" == "Darwin" ]; then
-    echo 'mac'
+    printf 'mac'
   elif [ "$(uname -s)" == "Linux" ]; then
-    echo 'linux'
+    printf 'linux'
+  elif [ "$(uname -s)" == "FreeBSD" ]; then
+    printf 'freebsd'
   elif [ "$(uname -o)" == "Cygwin" ]; then
     printf "cygwin\nwindows"
   elif [ "$(uname -o)" == "Msys" ]; then
-    echo 'msys'
+    printf 'msys'
   else
-    echo 'unknown'
+    printf 'unknown'
   fi
+}
+# Cache value.
+export platforms_cache="$(platforms)"
+
+readlink_e () {
+  local file=$1
+
+  if [ "$(platforms)" == 'freebsd' ]; then
+    printf "$(realpath "$file")"
+    return $?
+  fi
+
+  printf "$(readlink --canonicalize-existing "$file")"
 }
 
 home_directory () {
   local platform=$1
 
   case "$platform" in
-    mac|linux|msys|cygwin )
+    mac|linux|msys|cygwin|freebsd )
       home=$HOME
       ;;
     windows )
@@ -66,7 +83,7 @@ platform_excluded () {
     return 1
   fi
 
-  if [ -n $(/usr/bin/grep "$platform" "$exclude_file") ]; then
+  if [ -n "$(/usr/bin/grep "$platform" "$exclude_file")" ]; then
     return 0
   fi
 
@@ -82,7 +99,7 @@ link_file () {
 
   if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]; then
     if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]; then
-      local current_src="$(readlink --canonicalize-existing "$dst")"
+      local current_src="$(readlink_e "$dst")"
 
       if [ "$current_src" == "$src" ]; then
         skip=true;
@@ -156,11 +173,14 @@ link_file () {
 }
 
 install_dotfiles () {
+  local dotfiles_root="$(dirname "$(readlink_e "$0")")"
+
   local overwrite_all=false backup_all=false skip_all=false
 
-  info "$(printf "Installing dotfiles from \e[00;32m%s\e[0m" "$DOTFILES_ROOT")"
+  info "$(printf "Installing dotfiles from \e[00;32m%s\e[0m" "$dotfiles_root")"
 
-  echo "$(platforms)" | while read -r platform; do
+  local platforms="$(platforms)"
+  while IFS=$'\n' read -r platform; do
     local home
     home_directory "$platform"
 
@@ -169,33 +189,38 @@ install_dotfiles () {
 
     # First, add a symlink for this dotfiles directory.
     local dotfiles="$home/.dotfiles"
-    link_file "$DOTFILES_ROOT" "$dotfiles"
+    link_file "$dotfiles_root" "$dotfiles"
 
     # Find direct child directories (topics), exclude those starting with dots.
-    find "$DOTFILES_ROOT" -mindepth 1 -maxdepth 1 -type d -not -name '\.*' -print0 | while read -d $'\0' topic; do
+    local topics="$(find "$dotfiles_root" -mindepth 1 -maxdepth 1 -type d -not -name '\.*')"
+    while IFS=$'\n' read -r topic; do
+      [[ -z "$topic" ]] && continue
+
       if platform_excluded "$topic" "$platform"; then
         info "$(printf "Skipped \e[00;32m%s\e[0m as it is excluded for platform \e[00;32m%s\e[0m" "$topic" "$platform")"
         continue
       fi
 
       # Find files and directories named *.symlink below each topic directory, exclude dot files.
-      find "$topic" -mindepth 1 -maxdepth 1 \( -type f -or -type d \) -name '*.symlink' -not -name '\.*' -print0 | while read -d $'\0' src
-      do
+      local symlinks="$(find "$topic" -mindepth 1 -maxdepth 1 \( -type f -or -type d \) -name '*.symlink' -not -name '\.*')"
+      while IFS=$'\n' read -r src; do
+        [[ -z "$src" ]] && continue
+
         dst="$home/.$(basename "${src%.*}")"
         link_file "$src" "$dst"
-      done
+      done <<< "$symlinks"
 
       # Run optional install script.
       local install="$topic/.install.sh"
       if [ -x "$install" ]; then
         info "$(printf "Running \e[00;32m%s\e[0m" "$install")"
-        sh -c "${install}"
+        sh -c "$install"
       fi
-    done
-  done
+    done <<< "$topics"
+  done <<< "$platforms"
 
   echo ''
-  info "$(printf "All installed from \e[00;32m%s\e[0m" "$DOTFILES_ROOT")"
+  info "$(printf "All installed from \e[00;32m%s\e[0m" "$dotfiles_root")"
 }
 
 install_dotfiles
