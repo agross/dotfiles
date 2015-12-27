@@ -62,17 +62,15 @@ platform_excluded () {
   local platform=$2
   local exclude_file="$topic/.exclude-platforms"
 
-  if [ ! -f "$exclude_file" ]; then
-    echo false
-    return
+  if [[ ! -f "$exclude_file" ]]; then
+    return 1
   fi
 
-  if [ ! -z $(grep "$platform" "$exclude_file") ]; then
-    echo true
-    return
+  if [[ -n $(/usr/bin/grep "$platform" "$exclude_file") ]]; then
+    return 0
   fi
 
-  echo false
+  return 1
 }
 
 link_file () {
@@ -82,11 +80,11 @@ link_file () {
   local overwrite= backup= skip=
   local action=
 
-  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]; then
-    if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]; then
+  if [[ -f "$dst" || -d "$dst" || -L "$dst" ]]; then
+    if [[ "$overwrite_all" == "false" ]] && [[ "$backup_all" == "false" ]] && [[ "$skip_all" == "false" ]]; then
       local current_src="$(readlink --canonicalize-existing "$dst")"
 
-      if [ "$current_src" == "$src" ]; then
+      if [[ "$current_src" == "$src" ]]; then
         skip=true;
       else
         user "File already exists: \e[00;32m$dst\e[0m (\e[00;36m$(file --brief "$dst")\e[0m)
@@ -133,22 +131,22 @@ link_file () {
     backup=${backup:-$backup_all}
     skip=${skip:-$skip_all}
 
-    if [ "$overwrite" == "true" ]; then
+    if [[ "$overwrite" == "true" ]]; then
       rm -rf "$dst"
       success "Removed \e[00;32m$dst\e[0m"
     fi
 
-    if [ "$backup" == "true" ]; then
+    if [[ "$backup" == "true" ]]; then
       mv "$dst" "${dst}.backup"
       success "Moved \e[00;32m$dst\e[0m to \e[00;32m${dst}.backup\e[0m"
     fi
 
-    if [ "$skip" == "true" ]; then
+    if [[ "$skip" == "true" ]]; then
       success "Skipped \e[00;32m$src\e[0m == \e[00;32m$dst\e[0m"
     fi
   fi
 
-  if [ "$skip" != "true" ]; then  # "false" or empty
+  if [[ "$skip" != "true" ]]; then  # "false" or empty
     # Create native symlinks on Windows.
     export CYGWIN=winsymlinks:nativestrict
     ln -s "$1" "$2"
@@ -175,7 +173,7 @@ install_dotfiles () {
 
     # Find direct child directories (topics), exclude those starting with dots.
     find "$DOTFILES_ROOT" -mindepth 1 -maxdepth 1 -type d -not -name '\.*' -print0 | while read -d $'\0' topic; do
-      if [ "$(platform_excluded "$topic" "$platform")" == "true" ]; then
+      if platform_excluded "$topic" "$platform"; then
         info "$(printf "Skipped \e[00;32m%s\e[0m as it is excluded for platform \e[00;32m%s\e[0m" "$topic" "$platform")"
         continue
       fi
