@@ -53,12 +53,12 @@ function() {
   zplug "b4b4r07/zplug"
   zplug "plugins/ssh-agent", from:oh-my-zsh, ignore:oh-my-zsh.sh
   zplug "bobthecow/git-flow-completion"
-  zplug "rhysd/zsh-bundle-exec", if:"(( $+commands[bundle] ))"
+  zplug "rhysd/zsh-bundle-exec", if:"(($+commands[bundle]))"
 
   zplug "holman/dotfiles", as:command, of:"bin/e"
-  zplug "agross/rapid-git", if:"(( $+commands[git] ))", of:"rapid-git.sh"
+  zplug "agross/rapid-git", if:"(($+commands[git]))", of:"rapid-git.sh"
 
-  zplug "zsh-users/zsh-syntax-highlighting", nice:10
+  zplug "zsh-users/zsh-syntax-highlighting", nice:10, if:"[ -z "$OS" ]"
 
   zplug_install
 
