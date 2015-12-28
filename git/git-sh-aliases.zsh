@@ -24,15 +24,15 @@ function porcelain_aliases() {
   local -aU verbs
   verbs=(
     'add'
-    'am'
+#    'am'
     'annotate'
     'apply'
-    'archive'
+#    'archive'
     'bisect'
     'blame'
     'branch'
-    'bundle'
-    'cat-file'
+#    'bundle'
+#    'cat-file'
     'checkout'
     'cherry'
     'cherry-pick'
@@ -47,50 +47,48 @@ function porcelain_aliases() {
     'format-patch'
     'fsck'
     'gc'
-    'gui'
-    'hash-object'
+#    'gui'
+#    'hash-object'
     'init'
     'instaweb'
     'log'
-    'lost-found'
     'ls-files'
     'ls-remote'
-    'ls-tree'
+#    'ls-tree'
     'merge'
     'merge-base'
     'mergetool'
-    'name-rev'
-    'patch-id'
-    'peek-remote'
+#    'name-rev'
+#    'patch-id'
     'prune'
     'pull'
     'push'
-    'quiltimport'
+#    'quiltimport'
     'rebase'
     'reflog'
     'remote'
-    'repack'
-    'repo-config'
-    'request-pull'
+#    'repack'
+#    'repo-config'
+#    'request-pull'
     'reset'
-    'rev-list'
+#    'rev-list'
     'rev-parse'
     'revert'
-    'send-email'
-    'send-pack'
-    'shortlog'
+#    'send-email'
+#    'send-pack'
+#    'shortlog'
     'show'
-    'show-branch'
+#    'show-branch'
     'stash'
     'status'
-    'stripspace'
+#    'stripspace'
     'submodule'
-    'svn'
-    'symbolic-ref'
+#    'svn'
+#    'symbolic-ref'
     'tag'
-    'tar-tree'
-    'var'
-    'whatchanged'
+#    'tar-tree'
+#    'var'
+#    'whatchanged'
   )
 
   local verb
@@ -118,39 +116,44 @@ function gitconfig_aliases() {
       # Commands starting with ! need to go through git.
       alias $alias="git $alias"
     else
-      gitalias $alias="git $command"
+      gitalias $alias="$command"
     fi
   done
 }
 
-# gitalias <alias>='git <command> [<args>...]'
+# gitalias <alias>='<command> [<args>...]' [nogit]
 #
-# Define a new shell alias (as with the alias builtin) named <alias>
-# and enable command completion based on <command>. <command> must be
-# a standard non-abbreviated git command name that has completion support.
+# Define a new shell alias (as with the alias builtin) named <alias>.
 #
 # Examples:
-#   gitalias c='git checkout'
-#   gitalias ci='git commit -v'
-#   gitalias r='git rebase --interactive HEAD~10'
+#   gitalias c='checkout'
+#   gitalias ci='commit -v'
+#   gitalias r='rebase --interactive HEAD~10'
+#
+#   # Does not prepend git to the alias.
+#   gitalias push='branch=${1:-HEAD} && git push origin $branch' nogit
 function gitalias() {
   local alias="${1%%=*}"
   local command="${1#*=}"
+
+  if [[ "$2" != "nogit" ]]; then
+    command="git $command"
+  fi
 
   verbose Adding $fg[green]$funcstack[2]$reset_color alias: $fg[red]$alias$reset_color = $fg[red]$command$reset_color
   alias $alias="$command"
 }
 
 porcelain_aliases
-#unfunction porcelain_aliases
+unfunction porcelain_aliases
 
 gitconfig_aliases
 unfunction gitconfig_aliases
 
 # Source the system-wide rc file.
-[ -r /etc/gitshrc ] && source /etc/gitshrc
+[[ -r /etc/gitshrc ]] && source /etc/gitshrc
 
 # Source the user's rc file.
-[ -r ~/.gitshrc ] && source ~/.gitshrc
+[[ -r ~/.gitshrc ]] && source ~/.gitshrc
 
 unfunction gitalias

@@ -1,113 +1,94 @@
 #!/bin/bash
 
-gitalias cmd='command'
-gitalias rsd='command rm *.exe.stackdump'
+# Escaping aliases to go through the shell.
+gitalias nogit='command' nogit
 
-gitalias fl='git flow'
+# git status.
+gitalias s='status'
 
-gitalias unresolve='git checkout --conflict=merge -- '
+# Executable bit.
+gitalias   set-x='update-index --chmod=+x'
+gitalias unset-x='update-index --chmod=-x'
 
-gitalias set-x='git update-index --chmod=+x -- '
-gitalias unset-x='git update-index --chmod=-x -- '
+# Temporarily ignoring files.
+gitalias     ignore='update-index --assume-unchanged'
+gitalias   unignore='update-index --no-assume-unchanged'
+gitalias    ignored="ls-files -v | /usr/bin/grep --perl-regexp '^h\s' | cut --delimiter=' ' --fields=2-"
 
-# temporarily ignoring files
-gitalias ignore='git update-index --assume-unchanged'
-gitalias unignore='git update-index --no-assume-unchanged'
-gitalias ignored="git ls-files -v | /usr/bin/grep --perl-regexp '^[a-z]\s' | cut --delimiter=' ' --fields=2-"
+gitalias gitignored='ls-files --others --directory --ignored --exclude-standard'
 
-gitalias gitignored='git ls-files --others --directory --ignored --exclude-standard'
+# git commit.
+gitalias commit='commit --verbose'
+gitalias  amend='commit --amend --no-edit'
+gitalias     ci='commit --verbose'
+gitalias    cim='commit --verbose --message'
+gitalias   cima='commit --verbose --all --message'
 
-# git commit
-gitalias commit='git commit --verbose'
-gitalias amend='git commit --verbose --amend --reuse-message=HEAD'
-gitalias ci='git commit --verbose'
-gitalias cim='git commit --verbose --message'
-gitalias cima='git commit --verbose --all --message'
-gitalias ca='git commit --verbose --all'
+gitalias reword='commit --amend --message'
+gitalias    aua='commit --all --verbose --amend --no-edit'
+gitalias    aaa='add --all && git commit --verbose --amend --no-edit'
 
-gitalias co='git checkout'
+# git branch and remote.
+gitalias    co='checkout'
+gitalias     b='branch'
+gitalias   brs='branch --all --verbose'
+gitalias    rv='remote --verbose'
+gitalias    pr='function _() { git pull --rebase ${1:-origin} ${2:-HEAD} }; _' nogit
+gitalias mpull='function _() { remote=${1:-origin}; branch=${2:-HEAD}; git fetch "$remote" && git rebase --preserve-merges "$remote/$branch" "$branch" }; _' nogit
+gitalias    pf='function _() { git push --force ${1:-origin} ${2:-HEAD} }; _' nogit
 
-# git branch and remote
-gitalias   b='git branch'
-gitalias brs='git branch -a --verbose'
-gitalias  rv='git remote -v'
-gitalias pru='git fetch upstream && git rebase upstream/master'
-gitalias pro='git fetch origin && git rebase origin/master'
-gitalias mpull='branch=${1:-develop} && git fetch origin && git rebase --preserve-merges origin/$branch $branch'
-gitalias pub='git publish'
+# Index-related commands.
+gitalias       a='add'
+gitalias      au='add --update'
+gitalias      aa='add --all'
+gitalias      ai='add --interactive'
+gitalias      ap='add --patch'
+gitalias      cp='checkout --patch'
+gitalias      rp='reset HEAD --patch'
+gitalias unstage='reset HEAD'
 
-# git add
-gitalias  a='git add'
-gitalias au='git add --update'
-gitalias aa='git add --all'
-gitalias ai='git add --interactive'
-gitalias ap='git add --patch'
-gitalias aaa='git add --all && git commit --verbose --amend --reuse-message=HEAD'
-gitalias aua='git add --update && git commit --verbose --amend --reuse-message=HEAD'
+# git rebase.
+gitalias  r='rebase --interactive --autosquash'
+gitalias rc='rebase --continue'
+gitalias ra='rebase --abort'
 
-# git checkout
-gitalias c='git checkout'
-gitalias cp='git checkout --patch'
-gitalias rp='git reset --patch'
+# git diff.
+gitalias       d='diff'
+gitalias      wd='diff --word-diff'
+gitalias     dns='diff --ignore-all-space'
+gitalias    wdns='diff --word-diff --ignore-all-space'
 
-# git fetch
-gitalias f='git fetch'
+gitalias      dc='diff --staged'
+gitalias     wdc='diff --staged --word-diff'
+gitalias   wdcns='diff --staged --word-diff --ignore-all-space'
+gitalias preview='diff --staged'
 
-# rebase
-gitalias  r='git rebase --interactive --autosquash'
-gitalias rc='git rebase --continue'
-gitalias ra='git rebase --abort'
+# Handling diffs and  merges.
+gitalias        dt='difftool'
+gitalias      meld='difftool --dir-diff --tool=meld'
+gitalias        mt='mergetool'
+gitalias unresolve='checkout --conflict=merge'
 
-# git diff
-gitalias d='git diff'
-gitalias wd='git diff --word-diff'
-gitalias dns='git diff --ignore-all-space'
-gitalias wdns='git diff --word-diff --ignore-all-space'
+# git log.
+gitalias   ll='log'
+gitalias    l='log --oneline --max-count=15'
+gitalias   ld='log --oneline --max-count=15 --decorate'
+gitalias   lp='log --patch'
+gitalias  lpw='log --patch --word-diff'
+gitalias glog='log --graph --oneline --decorate --branches --all'
+gitalias  wdw='log --date=relative --pretty="format:%C(yellow)%h%Creset %C(bold blue)%an%Creset %C(bold green)%cr%Creset %s"'
 
-gitalias dc='git diff --cached'
-gitalias wdc='git diff --cached --word-diff'
-gitalias wdcns='git diff --cached --word-diff --ignore-all-space'
-gitalias preview='git diff --cached'
+gitalias       review='log --patch --max-count=1'
+gitalias     reviewwd='log --patch --word-diff --max-count=1'
+gitalias review-files='log --name-only --max-count=1'
+gitalias most-changed="log --format=%n --name-only | /usr/bin/grep -v '^$' | sort | uniq --count | sort --numeric-sort --reverse | head --lines=50"
 
-gitalias dt='git difftool'
-gitalias mt='git mergetool'
+# git cherry-pick.
+gitalias pick='cherry-pick'
 
-gitalias meld='git difftool --dir-diff --tool=meld'
+# git clean.
+gitalias cleanf='clean -xdf'
 
-# git status
-gitalias  s='git status'
-
-# git push
-gitalias pu='git push upstream'
-gitalias puf='git push upstream --force'
-gitalias po='git push origin'
-gitalias pof='git push origin --force'
-
-# git log
-gitalias ll='git log'
-gitalias l='git log --oneline --max-count=15'
-gitalias ld='git log --oneline --max-count=15 --decorate'
-gitalias lp='git log --patch'
-gitalias lpw='git log --patch --word-diff'
-gitalias glog='git log --graph --oneline --decorate --branches --all'
-gitalias wdw='git log --pretty="format:%h - %an - %s"'
-
-# misc
-gitalias pick='git cherry-pick'
-gitalias mcp='git multi-cherry-pick'
-
-# experimental
-gitalias unstage='git reset HEAD'
-gitalias pop='git reset --soft HEAD^'
-gitalias review='git log -p --max-count=1'
-gitalias reviewwd='git log -p --word-diff --max-count=1'
-gitalias review-files='git log --name-only --max-count=1'
-gitalias reword='git commit --amend --message'
-gitalias cleanf='git clean -xdf'
-gitalias most-changed='~/bin/git/git-most-changed.sh'
-
-# svn
-gitalias sd='git svn dcommit'
-gitalias sr='git svn rebase'
-
-gitalias gk='gitk --all &'
+# git svn.
+gitalias sd='svn dcommit'
+gitalias sr='svn rebase'
