@@ -6,6 +6,7 @@
 # bindkey -L
 # List bindings in keymap menuselect.
 # bindkey -M menuselect
+# About widgets: http://sgeb.io/articles/zsh-zle-closer-look-custom-widgets/
 
 # How to obtain key codes in zsh:
 # Ctrl+X, followed by the key combination desired to bind prints the code to the console.
@@ -14,11 +15,6 @@ bindkey '^X'      quoted-insert        # Ctrl + X
 bindkey '\eb'     kill-region          # ESC, b
 bindkey '\e\e'    kill-buffer          # ESC, ESC
 bindkey '^E'      kill-whole-line      # Ctrl + E
-
-bindkey '^[^[[A'  beep                 # ESC, Up arrow
-bindkey '^[^[[B'  beep                 # ESC, Down arrow
-bindkey '^[^[[C'  beep                 # ESC, Right arrow
-bindkey '^[^[[D'  beep                 # ESC, Left arrow
 
 bindkey '^C'      send-break           # Ctrl + C
 bindkey '^Z'      undo                 # Ctrl + Z
@@ -33,17 +29,16 @@ bindkey '^[[6~'   down-line-or-history # Shift + down arrow
 bindkey '^[[A'    up-line-or-history   # Up arrow
 bindkey '^[[B'    down-line-or-history # Down arrow
 
-# Make search up and down work, so partially type and hit Ctrl + up/down to find relevant stuff.
-bindkey '^[[1;5A' up-line-or-search    # Ctrl + Up arrow
-bindkey '^[[1;5B' down-line-or-search  # Ctrl + Down arrow
+# Make search up and down work, so partially type and hit Shift + up/down to find relevant stuff.
+bindkey '\e[1;2A' up-line-or-search    # Shift + Up arrow
+bindkey '\e[1;2B' down-line-or-search  # Shift + Down arrow
 
-bindkey '^[[H'    beginning-of-line    # Home
-bindkey '^[[1~'   beginning-of-line    # Home in ConEmu
-bindkey '^[[F'    end-of-line          # End
-bindkey '^[[4~'   end-of-line          # End in ConEmu
+zmodload -i zsh/terminfo
+[[ -n "$terminfo[khome]" ]] && bindkey $terminfo[khome] beginning-of-line # Home
+[[ -n "$terminfo[kend]" ]]  && bindkey $terminfo[kend]  end-of-line       # End
+[[ -n "$terminfo[kdch1]" ]] && bindkey $terminfo[kdch1] delete-char       # Del
 bindkey '^[[1;5D' backward-word        # Ctrl + left arrow
 bindkey '^[[1;5C' forward-word         # Ctrl + right arrow
-bindkey '^[[3~'   delete-char          # Del
 bindkey '^_'      backward-delete-word # Ctrl + Backspace
 bindkey '^[[3;5~' delete-word          # Ctrl + Del
 bindkey '^[[3;2~' delete-word          # Shift + Del
@@ -57,15 +52,15 @@ autoload -Uz paste-from-clipboard
 zle -N paste-from-clipboard
 bindkey '^V'      paste-from-clipboard # Ctrl + V
 
-bindkey '^[.'     insert-last-word     # ESC, .
+bindkey '\e.'     insert-last-word     # ESC, .
 # Copy the word before the one just copied by insert-last-word.
 autoload -Uz copy-earlier-word
 zle -N copy-earlier-word
-bindkey '^[m'     copy-earlier-word    # ESC, m
+bindkey '\em'     copy-earlier-word    # ESC, m
 
 zmodload -i zsh/parameter
 insert-last-command-output() {
   LBUFFER+="$(eval $history[$((HISTCMD-1))])"
 }
 zle -N insert-last-command-output
-bindkey '^[1'     insert-last-command-output # ESC, 1
+bindkey '\e1'     insert-last-command-output # ESC, 1
