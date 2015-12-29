@@ -80,6 +80,7 @@ bindkey -M menuselect '^^' accept-and-infer-next-history # Ctrl + Return
 bindkey -M menuselect '^Z' undo                          # Ctrl + Z
 # Abort completion.
 bindkey -M menuselect '\e' send-break                    # ESC
+bindkey -M menuselect '^C' send-break                    # Ctrl + C
 # Leaves menu completion, accepting the current selection.
 bindkey -M menuselect '^I' magic-space                   # Tab
 bindkey -M menuselect ' '  magic-space

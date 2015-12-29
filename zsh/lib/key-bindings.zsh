@@ -1,5 +1,13 @@
+# Deletes all bindings.
+# bindkey -d
+# List keymaps.
+# bindkey -l
+# List key bindings with as you would set up them using bindkey (the command).
+# bindkey -L
+# List bindings in keymap menuselect.
+# bindkey -M menuselect
+
 # How to obtain key codes in zsh:
-# bindkey -d # deletes all bindings
 # Ctrl+X, followed by the key combination desired to bind prints the code to the console.
 bindkey '^X'      quoted-insert        # Ctrl + X
 
@@ -12,6 +20,7 @@ bindkey '^[^[[B'  beep                 # ESC, Down arrow
 bindkey '^[^[[C'  beep                 # ESC, Right arrow
 bindkey '^[^[[D'  beep                 # ESC, Left arrow
 
+bindkey '^C'      send-break           # Ctrl + C
 bindkey '^Z'      undo                 # Ctrl + Z
 bindkey '^Y'      redo                 # Ctrl + Y
 
