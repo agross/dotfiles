@@ -1,0 +1,22 @@
+local -a functions
+functions=(platform)
+
+# A global variable is needed since we cannot capture closures in zsh.
+typeset -gA function_cache
+
+local fun
+for fun in $functions; do
+  # Call function.
+  local result="$($fun)"
+
+  # Put result in cache.
+  function_cache[$fun]="$result"
+
+  verbose Caching result of $fg[red]$fun$reset_color as $fg[green]${function_cache[$fun]}$reset_color
+
+  # Redefine function to return result.
+  function $fun () {
+    local fun=$0
+    echo "${function_cache[$fun]}"
+  }
+done

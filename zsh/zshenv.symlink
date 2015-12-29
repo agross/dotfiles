@@ -11,4 +11,7 @@ autoload -Uz $DOTFILES/zsh/functions/startup/*(:t)
 # Load color support.
 autoload -U colors && colors
 
+# Cache function results.
+build-cache
+
 verbose Loading $fg[green]zshenv$reset_color
