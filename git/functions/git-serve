@@ -1,0 +1,3 @@
+local base_path="$(readlink --canonicalize-existing "${1:-$PWD}")"
+echo Serving $fg[green]$base_path$reset_color
+git daemon --verbose --export-all --base-path="$base_path" &
