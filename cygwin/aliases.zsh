@@ -1,4 +1,8 @@
-# Some cygwin programs like to produce stackdumps.
+if [[ "$(platform)" != "windows" ]]; then
+  return
+fi
+
+# Some Cygwin programs like to produce stackdumps.
 alias rsd='rm -f *.exe.stackdump'
 
 if (( $+commands[cygstart] )); then

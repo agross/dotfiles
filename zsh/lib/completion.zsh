@@ -51,7 +51,6 @@ zstyle ':completion:*'              group-name ''
 zstyle ':completion:*:-command-'    group-order builtins commands functions
 zstyle ':completion:*'              list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*'              select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*' fake-files   '/:c' '/:d'
 
 # German umlauts, case-insensitive (all), partial-word and then substring completion.
 if [[ "$CASE_SENSITIVE" == "true" ]]; then
@@ -86,10 +85,6 @@ bindkey -M menuselect '^I' magic-space                   # Tab
 bindkey -M menuselect ' '  magic-space
 
 # Process completion.
-if [[ "$(platform)" == "windows" ]]; then
-  local windows=--windows
-fi
-zstyle ':completion:*:*:*:*:processes' command "ps --user `whoami` $windows"
-unset windows
+zstyle ':completion:*:*:*:*:processes' command "ps --user "$USER""
 # PID in red, rest default-colored.
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
