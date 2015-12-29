@@ -1,3 +1,1 @@
-pushd /dotfiles
-git checkout git/gitconfig.symlink
-popd
+git checkout "$(readlink --canonicalize-existing "$HOME/.gitconfig")"
