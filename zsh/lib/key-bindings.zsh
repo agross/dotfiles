@@ -1,11 +1,7 @@
-autoload -U paste-from-clipboard
-
-# Bind a widget with the same name as the function
-zle -N paste-from-clipboard
-
 # How to obtain key codes in zsh:
 # bindkey -d # deletes all bindings
-# Ctrl+V, followed by the key combination desired to bind prints the code to the console.
+# Ctrl+X, followed by the key combination desired to bind prints the code to the console.
+bindkey '^X'      quoted-insert        # Ctrl + X
 
 bindkey '\eb'     kill-region          # ESC, b
 bindkey '\e\e'    kill-buffer          # ESC, ESC
@@ -21,7 +17,6 @@ bindkey '^Y'      redo                 # Ctrl + Y
 
 bindkey '^R'      history-incremental-pattern-search-backward # Ctrl + R
 bindkey '^H'      history-incremental-pattern-search-backward # Ctrl + H
-bindkey '^K'      history-incremental-pattern-search-backward # Ctrl + K
 bindkey '^J'      history-incremental-pattern-search-forward  # Ctrl + J
 
 bindkey '^[[5~'   up-line-or-history   # Shift + up arrow
@@ -48,7 +43,20 @@ bindkey '^[[3;2~' delete-word          # Shift + Del
 # bindkey '^J'      self-insert          # Ctrl + J, Home and End for moving to the beginning and end.
 
 bindkey '^D'      copy-prev-shell-word # Ctrl + D
-bindkey '\e.'     insert-last-word     # ESC, .
-bindkey '\e_'     insert-last-word     # ESC, _
-bindkey '^X'      quoted-insert        # Ctrl + X
+
+autoload -Uz paste-from-clipboard
+zle -N paste-from-clipboard
 bindkey '^V'      paste-from-clipboard # Ctrl + V
+
+bindkey '^[.'     insert-last-word     # ESC, .
+# Copy the word before the one just copied by insert-last-word.
+autoload -Uz copy-earlier-word
+zle -N copy-earlier-word
+bindkey '^[m'     copy-earlier-word    # ESC, m
+
+zmodload -i zsh/parameter
+insert-last-command-output() {
+  LBUFFER+="$(eval $history[$((HISTCMD-1))])"
+}
+zle -N insert-last-command-output
+bindkey '^[1'     insert-last-command-output # ESC, 1
