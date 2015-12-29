@@ -1,13 +1,8 @@
+# Loaded for login shells only, i.e. not for screen sessions.
+
 verbose Loading $fg[green]zprofile$reset_color
 
-if is-mintty && [[ -z "$STY" ]]; then
-  startup-directory /scratch
-
-  verbose Starting $fg[green]screen$reset_color because we\'re running $fg[green]mintty$reset_color
-  screen-mintty && exit
-fi
-
-if [[ ! "$TERM" =~ ^screen ]] && [[ -n "$SSH_CONNECTION" ]]; then
-  verbose Starting $fg[green]screen$reset_color because we\'re connected using $fg[green]ssh$reset_color
-  screen-ssh && exit
-fi
+local profile
+for profile in $DOTFILES/**/zprofile.zsh; do
+  source $profile
+done

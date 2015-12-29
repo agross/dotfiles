@@ -1,3 +1,5 @@
+# Loaded for all shells.
+
 verbose Loading $fg[green]zshrc$reset_color
 
 function zplug_load() {
@@ -31,6 +33,9 @@ function zplug_install() {
 }
 
 function() {
+  # Cache function results.
+  build-cache
+
   zplug_load
 
   # Save extended_glob option for restore. We need to change it for zplug's of tags.
@@ -41,8 +46,8 @@ function() {
   # Load paths first.
   nice=-20; zplug "$DOTFILES", from:local, nice:$nice, of:"**/path.zsh"
 
-  # Load everything but the path and completion files second.
-  nice=-19; zplug "$DOTFILES", from:local, nice:$nice, of:"**/(^(path|completion)).zsh"
+  # Load everything but the path, completion and zprofile files second.
+  nice=-19; zplug "$DOTFILES", from:local, nice:$nice, of:"**/(^(path|completion|zprofile)).zsh"
 
   # Set theme.
   nice=-18; zplug "$DOTFILES/zsh/themes", from:local, nice:$nice, of:"agross.zsh-theme"
@@ -70,8 +75,8 @@ function() {
   # Restore extended_glob option.
   options[extended_glob]=$eg
 
-  # If we run screen, clean up after ourselves.
-  if [[ -n "$STY" ]]; then
-    undefine-startup-functions
-  fi
+  startup-directory /scratch
+
+  # Clean up after ourselves.
+  undefine-startup-functions
 }

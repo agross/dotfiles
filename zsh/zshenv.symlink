@@ -1,7 +1,10 @@
+# Loaded for all shells.
+
+# ZSH_VERBOSE=true enables logging.
 ZSH_VERBOSE=true
 
 # Path to dotfiles.
-declare -xr DOTFILES="$HOME/.dotfiles"
+typeset -xr DOTFILES="$HOME/.dotfiles"
 
 # Prepend our startup function path and remove duplicates.
 typeset -Ua fpath
@@ -11,7 +14,4 @@ autoload -Uz $DOTFILES/zsh/functions/startup/*(:t)
 # Load color support.
 autoload -U colors && colors
 
-# Cache function results.
-build-cache
-
-verbose Loading $fg[green]zshenv$reset_color
+verbose Loaded $fg[green]zshenv$reset_color

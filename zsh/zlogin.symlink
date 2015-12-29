@@ -1,4 +1,0 @@
-verbose Loading $fg[green]zlogin$reset_color
-
-startup-directory /scratch
-undefine-startup-functions
