@@ -47,7 +47,7 @@ gitalias      au='add --update'
 gitalias      aa='add --all'
 gitalias      ai='add --interactive'
 gitalias      ap='add --patch'
-gitalias      cp='checkout --patch'
+gitalias     cop='checkout --patch'
 gitalias      rp='reset HEAD --patch'
 gitalias unstage='reset HEAD'
 
