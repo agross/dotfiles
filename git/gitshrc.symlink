@@ -3,6 +3,9 @@
 # Escaping aliases to go through the shell.
 gitalias nogit='command' nogit
 
+# git daemon.
+gitalias serve='function _() { local base_path="$(readlink --canonicalize-existing "${1:-$PWD}")"; echo Serving $fg[green]$base_path$reset_color; git daemon --verbose --export-all --base-path="$base_path" & }; _' nogit
+
 # git status.
 gitalias s='status'
 
@@ -35,7 +38,7 @@ gitalias     b='branch'
 gitalias   brs='branch --all --verbose'
 gitalias    rv='remote --verbose'
 gitalias    pr='function _() { git pull --rebase ${1:-origin} ${2:-HEAD} }; _' nogit
-gitalias mpull='function _() { remote=${1:-origin}; branch=${2:-HEAD}; git fetch "$remote" && git rebase --preserve-merges "$remote/$branch" "$branch" }; _' nogit
+gitalias mpull='function _() { local remote=${1:-origin}; local branch=${2:-HEAD}; git fetch "$remote" && git rebase --preserve-merges "$remote/$branch" "$branch" }; _' nogit
 gitalias    pf='function _() { git push --force ${1:-origin} ${2:-HEAD} }; _' nogit
 
 # Index-related commands.
