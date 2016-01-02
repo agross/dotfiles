@@ -2,9 +2,8 @@ if [[ "$(platform)" != "windows" ]]; then
   return
 fi
 
-# Have zsh automatically sync $cygwin and global $CYGWIN, minus duplicates.
-typeset -gaUT CYGWIN cygwin ' '
+# Have zsh automatically sync $cygwin and global exported $CYGWIN, minus duplicates.
+typeset -gxaUT CYGWIN cygwin ' '
 cygwin=(nodosfilewarning)
 
-verbose Setting $fg[yellow]\$CYGWIN$reset_color to $fg[yellow]$cygwin$reset_color
-export CYGWIN
+verbose Setting $fg[yellow]\$CYGWIN$reset_color to $fg[yellow]$CYGWIN$reset_color
