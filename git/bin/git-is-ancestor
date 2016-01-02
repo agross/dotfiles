@@ -24,8 +24,8 @@ EOF
 }
 
 if [ $# -ne 2 ]; then
-    usage
-    exit 2
+  usage
+  exit 2
 fi
 
 if $(git merge-base --is-ancestor $1 $2); then
