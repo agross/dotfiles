@@ -54,7 +54,7 @@
 	untracked = bold cyan
 	nobranch = red reverse
 [color "interactive"]
-	prompt = bold green
+	prompt = bold blue
 	error = bold red
 [branch]
 	autosetupmerge = true
