@@ -46,8 +46,8 @@ function() {
   # Load paths first.
   nice=-20; zplug "$DOTFILES", from:local, nice:$nice, of:"**/path.zsh"
 
-  # Load everything but the path, completion, postinit and zprofile files second.
-  nice=-19; zplug "$DOTFILES", from:local, nice:$nice, of:"**/(^(path|completion|postinit|zprofile)).zsh"
+  # Load everything but the zprofile, path, completion and postinit files second.
+  nice=-19; zplug "$DOTFILES", from:local, nice:$nice, of:"**/(^(zprofile|path|completion|postinit)).zsh"
 
   # Set theme.
   nice=-18; zplug "$DOTFILES/zsh/themes", from:local, nice:$nice, of:"agross.zsh-theme"

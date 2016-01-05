@@ -5,7 +5,7 @@ fi
 # If we started an SSH agent, make the environment variables known system-wide for use with cmd.exe
 # or Atom's git-plus. Otherwise unset them.
 # Windows Explorer will listen on changes to the global environment variables and new processes
-# started via Explorer will have the new environment variable set.
+# started via Explorer will have the new environment variable available.
 if [[ -n "$SSH_AGENT_PID" ]] && [[ -n "$SSH_AUTH_SOCK" ]]; then
   verbose Exporting system-wide $fg[yellow]\$SSH_AGENT_PID$reset_color as $fg[yellow]$SSH_AGENT_PID$reset_color
   setx SSH_AGENT_PID "$SSH_AGENT_PID" > /dev/null
