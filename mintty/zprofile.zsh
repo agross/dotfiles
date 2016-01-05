@@ -12,7 +12,7 @@ if is-mintty; then
     rm "$log" 2> /dev/null
   }
 
-  verbose Starting $fg[green]screen$reset_color because we\'re running $fg[green]mintty$reset_color
+  verbose Starting $fg[red]screen$reset_color because we\'re running $fg[red]mintty$reset_color
   undefine-startup-functions
 
   _start-screen

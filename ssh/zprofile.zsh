@@ -4,6 +4,6 @@ if [[ -n "$SSH_CONNECTION" ]] && (($+commands[screen])); then
     ln -sf "$SSH_AUTH_SOCK" "/tmp/ssh-agent-$USER-screen"
   fi
 
-  verbose Starting $fg[green]screen$reset_color because we\'re connected using $fg[green]ssh$reset_color
+  verbose Starting $fg[red]screen$reset_color because we\'re connected using $fg[red]ssh$reset_color
   /usr/bin/screen -dRq ssh && exit
 fi
