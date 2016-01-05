@@ -15,9 +15,13 @@ if [[ -n "$SSH_AGENT_PID" ]] && [[ -n "$SSH_AUTH_SOCK" ]]; then
   setx SSH_AUTH_SOCK "$auth_sock" > /dev/null
   unset auth_sock
 else
-  verbose Removing system-wide export $fg[yellow]\$SSH_AGENT_PID$reset_color
-  setx SSH_AGENT_PID "" > /dev/null
+  if [[ -n "$SSH_AGENT_PID" ]]; then
+    verbose Removing system-wide export $fg[yellow]\$SSH_AGENT_PID$reset_color
+    setx SSH_AGENT_PID "" > /dev/null
+  fi
 
-  verbose Removing system-wide export $fg[yellow]\$SSH_AUTH_SOCK$reset_color
-  setx SSH_AUTH_SOCK "" > /dev/null
+  if [[ -n "$SSH_AGENT_SOCK" ]]; then
+    verbose Removing system-wide export $fg[yellow]\$SSH_AUTH_SOCK$reset_color
+    setx SSH_AUTH_SOCK "" > /dev/null
+  fi
 fi
