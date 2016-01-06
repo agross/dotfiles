@@ -1,0 +1,5 @@
+if [[ -z "$SSH_AGENT_PID" ]]; then
+  return 1
+fi
+
+ps x | grep ${SSH_AGENT_PID} | grep ssh-agent > /dev/null
