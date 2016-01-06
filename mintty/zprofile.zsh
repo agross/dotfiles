@@ -13,8 +13,5 @@ if is-mintty; then
   }
 
   verbose Starting $fg[red]screen$reset_color because we\'re running $fg[red]mintty$reset_color
-  undefine-startup-functions
-
-  _start-screen
-  exit
+  _start-screen && exit
 fi
