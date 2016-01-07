@@ -52,11 +52,11 @@ function() {
   # Set theme.
   nice=-18; zplug "$DOTFILES/zsh/themes", from:local, nice:$nice, of:"agross.zsh-theme"
 
-  # Load completions after compinit was run.
-  nice=10;  zplug "$DOTFILES", from:local, nice:$nice, of:"**/completion.zsh"
-
   # Load postinit last.
   nice=9;   zplug "$DOTFILES", from:local, nice:$nice, of:"**/postinit.zsh"
+
+  # Load completions after compinit was run.
+  nice=10;  zplug "$DOTFILES", from:local, nice:$nice, of:"**/completion.zsh"
 
   zplug "b4b4r07/zplug"
   zplug "plugins/ssh-agent", from:oh-my-zsh, ignore:oh-my-zsh.sh
