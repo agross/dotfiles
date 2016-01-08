@@ -89,12 +89,12 @@ dotfiles
 |  ├─ zprofile.zsh           # zsh #1: run for login shells
 |  ├─ path.zsh               # zsh #2: modifies $PATH
 |  ├─ something.zsh          # zsh #3: additional setup
-|  ├─ completion.zsh         # zsh #4: zsh completion setup
-|  └─ postinit.zsh           # zsh #5: run after zplug is done
+|  ├─ postinit.zsh           # zsh #4: run after additional setup
+|  └─ completion.zsh         # zsh #5: zsh completion setup
 └─ git
    ├─ bin                    # contains git scripts
    |  └─ git-specific-script
-   ├─ .gitconfig.symlink     # symlinked to ~/.gitconfig
+   ├─ gitconfig.symlink      # symlinked to ~/.gitconfig
    ├─ aliases.zsh            # sets up git aliases
    ├─ path.zsh               # adds dotfiles/git/bin to $PATH
    └─ ...
@@ -138,13 +138,13 @@ These files are expected to modify the `PATH` environment variable and are loade
 
 You can put anything you want in these, e.g. set up topic-specific aliases.
 
+### topic/\*\*/postinit.zsh
+
+Postinit scripts are loaded last, i.e. after all [zplug](https://github.com/b4b4r07/zplug) plugins are loaded and before completion setup is run. Put any last-minute setup here. I use them on Windows to make my Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
+
 ### topic/\*\*/completion.zsh
 
 Completion scripts are run after [zplug](https://github.com/b4b4r07/zplug) calls [zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html) to initializes the completion system. Put any completion-specific setup here.
-
-### topic/\*\*/postinit.zsh
-
-Postinit scripts are loaded last, i.e. after all [zplug](https://github.com/b4b4r07/zplug) plugins are loaded and completion setup is finished. Put any last-minute setup here. I use them on Windows to make my Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
 
 Thanks
 ------
