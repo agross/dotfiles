@@ -31,6 +31,7 @@ gitalias reword='commit --amend --message'
 gitalias    aua='commit --all --verbose --amend --no-edit'
 gitalias    aaa='add --all && git commit --verbose --amend --no-edit'
 gitalias   undo='reset HEAD~1'
+gitalias     rh='reset --hard'
 
 # git branch and remote.
 gitalias    co='checkout'
