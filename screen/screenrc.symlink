@@ -16,4 +16,4 @@ termcapinfo xterm* ti@:te@
 termcapinfo xterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
 
 # Use the SSH agent socket that is created by oh-my-zsh/plugins/ssh-agent.
-setenv SSH_AUTH_SOCK /tmp/ssh-agent-$USER-screen
+setenv SSH_AUTH_SOCK $HOME/.ssh/ssh-agent-$USER-$HOSTNAME
