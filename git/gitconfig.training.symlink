@@ -1,0 +1,77 @@
+[core]
+  safecrlf = warn
+  fileMode = false
+  whitespace = trailing-space, space-before-tab, -indent-with-non-tab, cr-at-eol
+  quotepath = false
+[apply]
+  whitespace = nowarn
+[alias]
+  some = "!sh -c '~/.dotfiles/git/git-some/git-some.sh $1' --"
+  flow = !sh ~/.dotfiles/git/git-flow/git-flow $*
+  wtf = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-wtf.rb)\" --all --relations
+  rank = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-rank-contributors.rb)\" $*
+  clobber = !sh ~/.dotfiles/bin/git/git-cleanup
+  ui = !'/c/Tools/QGit/qgit.exe' --all &
+  #
+  # This is a sample alias that
+  # - will be invoked by the shell (!) and not prefixed with 'git'
+  # - supports parameters ($1-default_value)
+  # - ignores if more parameters then the referenced ones are passed (--)
+  # - supports semicolons inside the string (alias needs to be enclosed by ")
+  #
+  # hello = "!sh -c 'echo \"hello, ${1-world}\"' --"
+[color]
+  ui = auto
+  wtf = true
+[color "branch"]
+  local = green
+  remote = red
+  #plain = bold yellow
+[color "decorate"]
+  head = blue
+  branch = green
+  remoteBranch = red
+  tag = magenta
+[branch]
+  # autosetuprebase = always
+[merge]
+  tool = diffmerge
+[mergetool]
+  # prompt = false
+  # keepBackup = false
+[mergetool "diffmerge"]
+  cmd = ~/bin/git/tools/diffmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+  trustExitCode = true
+[mergetool "bc"]
+  cmd = ~/bin/git/tools/beyondcompare-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+  trustExitCode = true
+[mergetool "p4"]
+  cmd = ~/bin/git/tools/p4merge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[mergetool "semanticmerge"]
+  cmd = ~/bin/git/tools/semanticmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+  trustExitCode = false
+[mergetool "winmerge"]
+  cmd = ~/bin/git/tools/winmerge-merge.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+  trustExitCode = true
+[diff]
+  tool = diffmerge
+  # renames = copies
+[difftool]
+  prompt = false
+[difftool "diffmerge"]
+  cmd = ~/bin/git/tools/diffmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
+[difftool "bc"]
+  cmd = ~/bin/git/tools/beyondcompare-diff.sh \"$LOCAL\" \"$REMOTE\"
+[difftool "p4"]
+  cmd = ~/bin/git/tools/p4merge-diff.sh \"$LOCAL\" \"$REMOTE\"
+[difftool "meld"]
+  cmd = ~/bin/git/tools/meld-diff.sh \"$LOCAL\" \"$REMOTE\"
+[difftool "winmerge"]
+  cmd = ~/bin/git/tools/winmerge-diff.sh \"$LOCAL\" \"$REMOTE\"
+[clean]
+  # requireForce = false
+[rerere]
+  # enabled = true
+  # autoupdate = true
+[push]
+  # default = matching
