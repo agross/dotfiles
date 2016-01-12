@@ -82,3 +82,5 @@
 	#submodulesummary = true
 [rebase]
 	autoSquash = true
+[stash]
+	showPatch = true
