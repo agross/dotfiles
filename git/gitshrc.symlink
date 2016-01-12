@@ -30,6 +30,7 @@ gitalias   cima='commit --verbose --all --message'
 gitalias reword='commit --amend --message'
 gitalias    aua='commit --all --verbose --amend --no-edit'
 gitalias    aaa='add --all && git commit --verbose --amend --no-edit'
+gitalias  fixup='commit --fixup'
 gitalias   undo='reset HEAD~1'
 gitalias     rh='reset --hard'
 
