@@ -13,6 +13,7 @@
 	some = !~/.dotfiles/git/git-some/git-some.sh
 	ui = !/c/Tools/QGit/qgit.exe --all &
 	flow = !~/.dotfiles/git/git-flow/git-flow
+	feierabend = !git add --all && git commit -m \"Feierabendcommit $(date)\" && git push --force origin HEAD:refs/private/$USER/$(git symbolic-ref --short HEAD)
 
 	# This is a sample alias that
 	# - will be invoked by the shell (!) and not prefixed with 'git'
