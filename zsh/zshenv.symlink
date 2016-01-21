@@ -1,7 +1,7 @@
 # Loaded for all shells.
 
 # ZSH_VERBOSE=true enables logging.
-ZSH_VERBOSE=true
+# ZSH_VERBOSE=true
 
 # Path to dotfiles.
 typeset -xr DOTFILES="$HOME/.dotfiles"
