@@ -83,7 +83,7 @@ platform_excluded () {
     return 1
   fi
 
-  if [ -n "$(/usr/bin/grep "$platform" "$exclude_file")" ]; then
+  if [ -n "$(/bin/grep "$platform" "$exclude_file")" ]; then
     return 0
   fi
 

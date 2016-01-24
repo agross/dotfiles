@@ -16,7 +16,7 @@ gitalias unset-x='update-index --chmod=-x'
 # Temporarily ignoring files.
 gitalias     ignore='update-index --assume-unchanged'
 gitalias   unignore='update-index --no-assume-unchanged'
-gitalias    ignored="ls-files -v | /usr/bin/grep --perl-regexp '^h\s' | cut --delimiter=' ' --fields=2-"
+gitalias    ignored="ls-files -v | /bin/grep --perl-regexp '^h\s' | cut --delimiter=' ' --fields=2-"
 
 gitalias gitignored='ls-files --others --directory --ignored --exclude-standard'
 
@@ -87,7 +87,7 @@ gitalias  wdw='log --date=relative --pretty="format:%C(yellow)%h%Creset %C(bold 
 gitalias       review='log --patch --max-count=1'
 gitalias     reviewwd='log --patch --word-diff --max-count=1'
 gitalias review-files='log --name-only --max-count=1'
-gitalias most-changed="log --format=%n --name-only | /usr/bin/grep -v '^$' | sort | uniq --count | sort --numeric-sort --reverse | head --lines=50"
+gitalias most-changed="log --format=%n --name-only | /bin/grep -v '^$' | sort | uniq --count | sort --numeric-sort --reverse | head --lines=50"
 
 # git cherry-pick.
 gitalias pick='cherry-pick'

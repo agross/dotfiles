@@ -3,7 +3,7 @@ if [[ "$(platform)" != "windows" ]]; then
 fi
 
 # Drives that cannot be reached by globbing.
-local drives=($(mount | /usr/bin/grep --perl-regexp '^\w: on /\w ' | cut --delimiter=' ' --fields=3))
+local drives=($(mount | /bin/grep --perl-regexp '^\w: on /\w ' | cut --delimiter=' ' --fields=3))
 zstyle ':completion:*' fake-files "/:${(j. .)drives//\//}"
 
 # Use kill completion for wkill.
