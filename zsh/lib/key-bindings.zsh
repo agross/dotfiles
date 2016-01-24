@@ -13,7 +13,6 @@
 bindkey '^X'      quoted-insert        # Ctrl + X
 
 bindkey '\eb'     kill-region          # ESC, b
-bindkey '\e\e'    kill-buffer          # ESC, ESC
 bindkey '^E'      kill-whole-line      # Ctrl + E
 
 bindkey '^C'      send-break           # Ctrl + C

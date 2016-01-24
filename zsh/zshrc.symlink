@@ -32,8 +32,9 @@ function() {
   nice=10;  zplug "$DOTFILES", from:local, nice:$nice, of:'**/completion.zsh'
 
   zplug 'b4b4r07/zplug'
-  zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
   zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
+  zplug 'plugins/sudo', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[sudo]))"
+  zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
   zplug 'bobthecow/git-flow-completion'
   zplug 'rhysd/zsh-bundle-exec', if:"(($+commands[bundle])) && [[ "$(platform)" != "windows" ]]"
 
