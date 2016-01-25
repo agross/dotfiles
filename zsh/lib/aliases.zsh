@@ -6,6 +6,10 @@ alias -g G=' | grep'
 
 alias cd..='cd ..'
 alias cd/='cd /'
+# cd into the directory of the most recent parameter.
+# mkdir foo && touch foo/bar
+# cdd # will cd into foo
+alias cdd='cd $(dirname $_)'
 
 alias 1='cd -'
 alias 2='cd +2'
