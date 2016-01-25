@@ -6,7 +6,7 @@ autoload -U zgit-ext-rebaseinfo
 function {
   local history_index="%{$fg[cyan]%}%h%{$reset_color%}"
   local user_host="%{$fg[green]%}%n@%m%{$reset_color%}"
-  local cwd="%{$fg[yellow]%}%~%{$reset_color%}"
+  local cwd="%{$fg[yellow]%}\$(_prompt_agross_cwd)%{$reset_color%}"
   local git_branch="%{$fg[green]%}\$(_prompt_agross_scm_branch)%{$reset_color%}"
   local git_status_symbols="%{$fg_bold[red]%}\$(_prompt_agross_scm_status)%{$reset_color%}"
   local jobs="%(1j.%{$fg_bold[magenta]%} %j jobs%{$reset_color%}.)"
@@ -25,6 +25,10 @@ function {
 $git_or_exit_status "
 
   RPROMPT=''
+}
+
+function _prompt_agross_cwd() {
+  echo -n ${PWD/#$HOME/\~}
 }
 
 function _prompt_agross_scm_branch() {
