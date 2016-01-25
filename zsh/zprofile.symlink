@@ -3,6 +3,6 @@
 verbose Loading $fg[green]zprofile$reset_color
 
 local profile
-for profile in $DOTFILES/**/zprofile.zsh; do
+for profile in $DOTFILES/**/zprofile.zsh(N); do
   source $profile
 done
