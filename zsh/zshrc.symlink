@@ -43,6 +43,7 @@ function() {
   zplug 'agross/rapid-git', if:"(($+commands[git]))", of:'rapid-git.sh'
 
   zplug 'zsh-users/zsh-syntax-highlighting', nice:10, if:"[[ "$(platform)" != "windows" ]]"
+  zplug 'knu/z', of:'z.sh', nice:10
 
   zplug-install
 
