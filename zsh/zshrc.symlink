@@ -35,6 +35,7 @@ function() {
   zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
   zplug 'plugins/sudo', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[sudo]))"
   zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
+  zplug 'Tarrasch/zsh-bd'
   zplug 'bobthecow/git-flow-completion'
   zplug 'rhysd/zsh-bundle-exec', if:"(($+commands[bundle])) && [[ "$(platform)" != "windows" ]]"
 
