@@ -1,0 +1,27 @@
+autoload -U colors && colors
+
+local hostsfile="$HOME/.dotfiles-hosts"
+
+if [[ ! -f "$hostsfile" ]]; then
+  >&2 echo $fg[green]$hostsfile$reset_color does not exist. Please create it with one line per host to update dotfiles on.
+  return 1
+fi
+
+function dotfiles::update() {
+  local host="$1"
+
+  echo Updating dotfiles on $fg[green]$host$reset_color
+  ssh -n -A $host 'echo "Expecting dotfiles in \$DOTFILES (currently set to $DOTFILES)" && cd $DOTFILES && git fetch && git reset --hard origin/master'
+}
+
+while [[ $# -gt 0 ]]; do
+  dotfiles::update "$1"
+  shift
+done
+
+local host
+while read -r host; do
+  dotfiles::update "$host"
+done < $hostsfile
+
+unfunction dotfiles::update
