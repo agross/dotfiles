@@ -25,12 +25,14 @@ case "$TERM" in
         local user_at_host="%n@$HOST: "
       fi
 
+      local cwd="${PWD/#$HOME/\~}"
+
       # Print current path.
-      print -Pn "\e]0;$user_at_host%~\a"
+      print -Pn "\e]0;$user_at_host$cwd\a"
 
       if [[ -n $STY ]]; then
         # screen title (in ^A").
-        print -Pn "\ekzsh $user_at_host%~\e\\"
+        print -Pn "\ekzsh $user_at_host$cwd\e\\"
       fi
     }
 
