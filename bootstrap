@@ -6,21 +6,33 @@
 
 # Fail on errors.
 set -e
-#set -x
+
+# Show executed commands.
+# set -x
+
+light_red="\e[01;31m"
+green="\e[0;32m"
+light_green="\e[01;32m"
+light_yellow="\e[01;33m"
+cyan="\e[0;36m"
+light_cyan="\e[01;36m"
+reset_color="\e[0m"
+clear_line="\e[2K"
+
 info () {
-  printf "\r  [\e[01;36m INFO \e[0m] %s\n" "$1"
+  printf   "\r  [%b INFO %b] %b\n" $light_cyan $reset_color "$1"
 }
 
 user () {
-  printf "\r  [\e[01;33m  ?   \e[0m] $1 "
+  printf   "\r  [%b  ?   %b] %b " $light_yellow $reset_color "$1"
 }
 
 success () {
-  printf "\r\e[2K  [\e[01;32m  OK  \e[0m] $1\n"
+  printf "\r%b  [%b  OK  %b] %b\n" $clear_line $light_green $reset_color "$1"
 }
 
 fail () {
-  printf "\r\e[2K  [\e[01;31m FAIL \e[0m] $1\n\n"
+  printf "\r%b  [%b FAIL %b] %b\n\n" $clear_line $light_red $reset_color "$1"
   exit 1
 }
 
@@ -69,7 +81,7 @@ home_directory () {
       home="$(printf "%s" "$(cygpath --unix $USERPROFILE)")"
       ;;
     * )
-      fail "$(printf "Cannot determine home directories for platform \e[00;32m%s\e[0m" "$platform")"
+      fail "$(printf "Cannot determine home directories for platform %b%s%b" $green "$platform" $reset_color)"
       ;;
   esac
 }
@@ -104,9 +116,18 @@ link_file () {
       if [ "$current_src" == "$src" ]; then
         skip=true;
       else
-        user "File already exists: \e[00;32m$dst\e[0m (\e[00;36m$(file --brief "$dst")\e[0m)
-           Will be linked to: \e[00;32m$src\e[0m
-           What do you want to do? (\e[1;33ms\e[0m)kip, (\e[1;33mS\e[0m)kip all, (\e[1;33mo\e[0m)verwrite, (\e[1;33mO\e[0m)verwrite all, (\e[1;33mb\e[0m)ackup, (\e[1;33mB\e[0m)ackup all?"
+        user "$(printf "File already exists: %b%s%b (%b%s%b)
+           Will be linked to: %b%s%b
+           What do you want to do? (%bs%b)kip, (%bS%b)kip all, (%bo%b)verwrite, (%bO%b)verwrite all, (%bb%b)ackup, (%bB%b)ackup all?" \
+           $green "$dst" $reset_color \
+           $cyan "$(file --brief "$dst")" $reset_color \
+           $green "$src" $reset_color \
+           $light_yellow $reset_color \
+           $light_yellow $reset_color \
+           $light_yellow $reset_color \
+           $light_yellow $reset_color \
+           $light_yellow $reset_color \
+           $light_yellow $reset_color)"
 
         while true; do
           # Read from tty, needed because we read in outer loop.
@@ -150,16 +171,16 @@ link_file () {
 
     if [ "$overwrite" == "true" ]; then
       rm -rf "$dst"
-      success "Removed \e[00;32m$dst\e[0m"
+      success "$(printf "Removed %b%s%b" $green "$dst" $reset_color)"
     fi
 
     if [ "$backup" == "true" ]; then
       mv "$dst" "${dst}.backup"
-      success "Moved \e[00;32m$dst\e[0m to \e[00;32m${dst}.backup\e[0m"
+      success "$(printf "Moved %b%s%b to %b%s%b" $green "$dst" $reset_color $green "${dst}.backup" $reset_color)"
     fi
 
     if [ "$skip" == "true" ]; then
-      success "Skipped \e[00;32m$src\e[0m == \e[00;32m$dst\e[0m"
+      success "$(printf "Skipped %b%s%b == %b%s%b" $green "$src" $reset_color $green "$dst" $reset_color)"
     fi
   fi
 
@@ -168,7 +189,7 @@ link_file () {
     export CYGWIN=winsymlinks:nativestrict
     ln -s "$1" "$2"
 
-    success "Linked \e[00;32m$1\e[0m to \e[00;32m$2\e[0m"
+    success "$(printf "Linked %b%s%b to %b%s%b" $green "$1" $reset_color $green "$2" $reset_color)"
   fi
 }
 
@@ -177,15 +198,15 @@ install_dotfiles () {
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  info "$(printf "Installing dotfiles from \e[00;32m%s\e[0m" "$dotfiles_root")"
+  info "$(printf "Installing dotfiles from %b%s%b" $green "$dotfiles_root" $reset_color)"
 
   local platforms="$(platforms)"
   while IFS=$'\n' read -r platform; do
     local home
     home_directory "$platform"
 
-    echo ''
-    info "$(printf "Installing dotfiles in \e[00;32m%s\e[0m for platform \e[00;32m%s\e[0m" "$home" "$platform")"
+    echo
+    info "$(printf "Installing dotfiles in %b%s%b for platform %b%s%b" $green "$home" $reset_color $green "$platform" $reset_color)"
 
     # First, add a symlink for this dotfiles directory.
     local dotfiles="$home/.dotfiles"
@@ -197,7 +218,7 @@ install_dotfiles () {
       [[ -z "$topic" ]] && continue
 
       if platform_excluded "$topic" "$platform"; then
-        info "$(printf "Skipped \e[00;32m%s\e[0m as it is excluded for platform \e[00;32m%s\e[0m" "$topic" "$platform")"
+        info "$(printf "Skipped %b%s%b as it is excluded for platform %b%s%b" $green "$topic" $reset_color $green "$platform" $reset_color)"
         continue
       fi
 
@@ -213,14 +234,14 @@ install_dotfiles () {
       # Run optional install script.
       local install="$topic/.install.sh"
       if [ -x "$install" ]; then
-        info "$(printf "Running \e[00;32m%s\e[0m" "$install")"
+        info "$(printf "Running %b%s%b" $green "$install" $reset_color)"
         sh -c "$install"
       fi
     done <<< "$topics"
   done <<< "$platforms"
 
-  echo ''
-  info "$(printf "All installed from \e[00;32m%s\e[0m" "$dotfiles_root")"
+  echo
+  info "$(printf "All installed from %b%s%b" $green "$dotfiles_root" $reset_color)"
 }
 
 install_dotfiles
