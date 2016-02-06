@@ -62,7 +62,7 @@ export platforms_cache="$(platforms)"
 readlink_e () {
   local file=$1
 
-  if [ "$(platforms)" == 'freebsd' ]; then
+  if [ "$(platforms)" == 'freebsd' -o "$(platforms)" == 'mac' ]; then
     printf "$(realpath "$file")"
     return $?
   fi
