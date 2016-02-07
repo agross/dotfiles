@@ -21,3 +21,5 @@ verbose Loading $fg[cyan]zplug$reset_color from $fg[green]$destination$reset_col
 source "$destination"
 
 zplug update --self
+
+# vim:set filetype=sh:

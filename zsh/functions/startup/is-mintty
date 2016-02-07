@@ -34,3 +34,5 @@ for parent in $parents; do
 done
 
 return 1
+
+# vim:set filetype=sh:

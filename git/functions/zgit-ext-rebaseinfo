@@ -26,3 +26,5 @@ fi
 
 zgit_info[rebase]=$r
 zgit_info[rebase_branch]=$b
+
+# vim:set filetype=sh:

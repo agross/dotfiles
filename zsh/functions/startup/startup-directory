@@ -14,3 +14,5 @@ fi
 
 verbose Changing current directory from $fg[green]$PWD$reset_color to $fg[green]$start_dir$reset_color
 cd "$start_dir"
+
+# vim:set filetype=sh:

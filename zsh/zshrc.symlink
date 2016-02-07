@@ -59,3 +59,5 @@ function() {
   # Clean up after ourselves.
   undefine-startup-functions
 }
+
+# vim:set filetype=sh:

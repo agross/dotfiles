@@ -8,3 +8,5 @@ else
   verbose Loading $fg[cyan]zplug$reset_color from $fg[green]$zplug_path$reset_color
   source "$zplug_path"
 fi
+
+# vim:set filetype=sh:

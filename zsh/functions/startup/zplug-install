@@ -8,3 +8,5 @@ if read -q; then
   echo
   zplug install
 fi
+
+# vim:set filetype=sh:

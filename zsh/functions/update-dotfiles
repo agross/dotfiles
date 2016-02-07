@@ -29,3 +29,5 @@ while read -r host; do
 done < $hostsfile
 
 unfunction dotfiles::update
+
+# vim:set filetype=sh:

@@ -15,3 +15,5 @@ autoload -Uz $DOTFILES/zsh/functions/startup/*(:t)
 autoload -U colors && colors
 
 verbose Loaded $fg[green]zshenv$reset_color
+
+# vim:set filetype=sh:

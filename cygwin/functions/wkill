@@ -1,3 +1,5 @@
 # wkill to kill Cygwin and Windows processes(see ../completion.zsh).
 
 kill $*
+
+# vim:set filetype=sh:

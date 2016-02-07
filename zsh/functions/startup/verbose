@@ -5,3 +5,5 @@ if [[ -n $ZSH_VERBOSE ]]; then
   unset p
   >&2 printf '\n'
 fi
+
+# vim:set filetype=sh:

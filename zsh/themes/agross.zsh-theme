@@ -72,3 +72,5 @@ function _prompt_agross_scm_status() {
     echo -n 'Y'
   fi
 }
+
+# vim:set filetype=sh:

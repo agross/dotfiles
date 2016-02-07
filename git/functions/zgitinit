@@ -259,3 +259,5 @@ add-zsh-hook preexec zgit_preexec_hook
 add-zsh-hook precmd zgit_precmd_hook
 
 zgit_info_update
+
+# vim:set filetype=sh:

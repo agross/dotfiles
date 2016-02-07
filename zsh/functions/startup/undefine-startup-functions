@@ -20,3 +20,5 @@ done
 unset function_cache
 
 unset ZSH_VERBOSE
+
+# vim:set filetype=sh:

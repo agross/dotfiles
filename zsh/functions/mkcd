@@ -1,2 +1,4 @@
 local dir="$1"
 mkdir --parents "$dir" && cd "$dir"
+
+# vim:set filetype=sh:

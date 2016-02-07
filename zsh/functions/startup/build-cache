@@ -34,3 +34,5 @@ for fun in $functions; do
     return ${_function_cache[${fun}_exit_code]}
   }
 done
+
+# vim:set filetype=sh:

@@ -7,3 +7,5 @@ elif [[ "$(uname -o)" == "Cygwin" ]]; then
 else
   echo 'unknown'
 fi
+
+# vim:set filetype=sh:

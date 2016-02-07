@@ -1,7 +1,9 @@
 # Create a widget from the function paste-from clipboard.
-# Note that /dev/clipboard will give you access to the clipboard 
+# Note that /dev/clipboard will give you access to the clipboard
 # if you are on Cygwin.
 
 CLIPOUT=`cat /dev/clipboard`
 BUFFER=$LBUFFER$CLIPOUT$RBUFFER
 CURSOR=$[$CURSOR + ${#CLIPOUT}]
+
+# vim:set filetype=sh:
