@@ -54,7 +54,7 @@ function get_diff_args()
   # Extract file name from git's temporary file: /tmp/<garbage>_filename, useful for e.g. renamed files
   old_title="Old $(echo $1 | cut -d'_' -f 2-)"
   if [ ! -f "$1" ] && [ ! -d "$1" ]; then
-    old=$($path --mixed ~/bin/git/tools/empty)
+    old=$($path --mixed $DOTFILES/git/tools/empty)
     old_title="<File didn't exist>"
   fi
 
@@ -62,7 +62,7 @@ function get_diff_args()
   # Extract file name from git's temporary file: /tmp/<garbage>_filename, useful for e.g. renamed files
   new_title="New $(echo $2 | cut -d'_' -f 2-)"
   if [ ! -f "$2" ] && [ ! -d "$2" ]; then
-    new=$($path --mixed ~/bin/git/tools/empty)
+    new=$($path --mixed $DOTFILES/git/tools/empty)
     new_title="<File has been deleted>"
 
     # Extract file name from git's temporary file: /tmp/<garbage>_filename, useful for e.g. renamed files
@@ -86,7 +86,7 @@ function get_merge_args()
 
   base=$($path --mixed "$1")
   if [ ! -f "$1" ]; then
-    base=$($path --mixed ~/bin/git/tools/empty)
+    base=$($path --mixed $DOTFILES/git/tools/empty)
   fi
 
   local=$($path --mixed "$2")
