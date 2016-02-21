@@ -37,7 +37,6 @@ function() {
   zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
   zplug 'Tarrasch/zsh-bd'
   zplug 'bobthecow/git-flow-completion'
-  zplug 'rhysd/zsh-bundle-exec', if:"(($+commands[bundle])) && [[ "$(platform)" != "windows" ]]"
 
   zplug 'holman/dotfiles', as:command, of:'bin/e'
   zplug 'transcode-open/apt-cyg', as:command, if:"[[ "$(platform)" == "windows" ]]", of:'apt-cyg'
