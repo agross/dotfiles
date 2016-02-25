@@ -39,7 +39,6 @@ function() {
   zplug 'bobthecow/git-flow-completion'
 
   zplug 'holman/dotfiles', as:command, of:'bin/e'
-  zplug 'transcode-open/apt-cyg', as:command, if:"[[ "$(platform)" == "windows" ]]", of:'apt-cyg'
   zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", of:'rapid-git.sh'
 
   zplug 'zsh-users/zsh-syntax-highlighting', nice:10, if:"[[ "$(platform)" != "windows" ]]"
