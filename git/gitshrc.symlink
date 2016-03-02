@@ -42,6 +42,8 @@ gitalias    rv='remote --verbose'
 gitalias    pr='function _() { git pull --rebase ${1:-origin} ${2:-HEAD} }; _' nogit
 gitalias mpull='function _() { local remote=${1:-origin}; local branch=${2:-HEAD}; git fetch "$remote" && git rebase --preserve-merges "$remote/$branch" "$branch" }; _' nogit
 gitalias    pf='function _() { git push --force ${1:-origin} ${2:-HEAD} }; _' nogit
+gitalias    fb='function _() { local branch=${1:-master}; local remote=${2:-origin}; git fetch $remote  $branch:$branch }; _' nogit
+gitalias   fbf='function _() { local branch=${1:-master}; local remote=${2:-origin}; git fetch $remote +$branch:$branch }; _' nogit
 
 # Index-related commands.
 gitalias       a='add'
