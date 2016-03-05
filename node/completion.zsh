@@ -4,7 +4,7 @@ fi
 
 local prefix="$(cygpath --unix "$APPDATA/npm")"
 local completion
-for completion in $prefix/node_modules/*/completion/zsh; do
+for completion in $prefix/node_modules/*/completion/zsh(N); do
   eval "$(cat $completion)"
 done
 

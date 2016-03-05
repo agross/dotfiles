@@ -2,7 +2,7 @@
 typeset -gaU cdpath
 
 if [[ "$(platform)" == "windows" ]]; then
-  cdpath=(/gw /scratch /lab /lab/.NET /git-demos /gw/Kunden/* $cdpath)
+  cdpath=(/gw /scratch /lab /lab/.NET /git-demos /gw/Kunden/*(N) $cdpath)
 else
   cdpath=($HOME /etc /opt/jetbrains $cdpath)
 fi
