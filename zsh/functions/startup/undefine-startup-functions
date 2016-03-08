@@ -17,7 +17,7 @@ for fun in $functions; do
 done
 
 # Kill function cache.
-unset function_cache
+unset _function_cache
 
 unset ZSH_VERBOSE
 
