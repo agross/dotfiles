@@ -1,0 +1,24 @@
+local parent_directory=${${(%):-%x}:h:h}
+local word="$@"
+
+zmodload zsh/mapfile
+
+local dict="$parent_directory/dictionary-de"
+local lines
+lines=(${(f)mapfile[$dict]})
+
+typeset -A dictionary
+local line
+for line in $lines; do
+  local kv=("${(@s/ /)line}")
+  dictionary[${kv[1]:l}]=$kv[2]
+done
+
+echo -e "Spelling: $fg_bold[green]$word$reset_color\n"
+
+local char
+for char in ${(s::)word}; do
+  echo -e $fg_bold[green]$char$reset_color  $fg_bold[blue]$dictionary[$char:l]$reset_color
+done
+
+# vim:set filetype=sh:
