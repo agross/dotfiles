@@ -68,7 +68,7 @@
 	enabled = true
 	autoupdate = true
 [push]
-	default = matching
+	default = simple
 [sendemail]
 	from = Alexander Groß <agross@therightstuff.de>
 	smtpencryption = tls
