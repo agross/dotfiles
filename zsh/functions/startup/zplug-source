@@ -1,8 +1,8 @@
 ZPLUG_HOME="$HOME/.cache/zplug"
 
-local zplug_path="$ZPLUG_HOME/zplug"
+local zplug_path="$ZPLUG_HOME/init.zsh"
 
-if [[ ! -f "$zplug_path" ]]; then
+if [[ ! -f "$zplug_path" || ! -L "$zplug_path" ]]; then
   zplug-download "$zplug_path"
 else
   verbose Loading $fg[cyan]zplug$reset_color from $fg[green]$zplug_path$reset_color
