@@ -8,9 +8,10 @@
 [apply]
 	whitespace = nowarn
 [alias]
-	some = !~/.dotfiles/git/git-some/git-some.sh
+	some = !git-some.sh
+	flow = !$ZPLUG_HOME/repos/nvie/gitflow/git-flow
+	standup = !git-standup
 	ui = !/c/Tools/QGit/qgit.exe --all &
-	flow = !~/.dotfiles/git/git-flow/git-flow
 	feierabend = !git add --all && git commit -m \"Feierabendcommit $(date)\" && git push --force origin HEAD:refs/private/$USER/$(git symbolic-ref --short HEAD)
 
 	# This is a sample alias that
