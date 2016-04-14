@@ -12,7 +12,7 @@
 	flow = !$ZPLUG_HOME/repos/nvie/gitflow/git-flow
 	standup = !git-standup
 	ui = !/c/Tools/QGit/qgit.exe --all &
-	feierabend = !git add --all && git commit -m \"Feierabendcommit $(date)\" && git push --force origin HEAD:refs/private/$USER/$(git symbolic-ref --short HEAD)
+	feierabend = !git add --all && git commit --no-verify -m \"Feierabendcommit $(date)\" && git push --force origin HEAD:refs/private/$USER/$(git symbolic-ref --short HEAD)
 
 	# This is a sample alias that
 	# - will be invoked by the shell (!) and not prefixed with 'git'
