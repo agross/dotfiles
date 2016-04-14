@@ -36,10 +36,13 @@ function() {
   zplug 'plugins/sudo', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[sudo]))"
   zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
   zplug 'Tarrasch/zsh-bd'
+
+  zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command, of:'not-needed'
   zplug 'bobthecow/git-flow-completion'
+  zplug 'grossweber/git-some', if:"(($+commands[git]))", as:command, of:'git-some.sh'
 
   zplug 'holman/dotfiles', as:command, of:'bin/e'
-  zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", of:'rapid-git.sh'
+  zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", as:command, of:'rapid-git.sh'
 
   zplug 'zsh-users/zsh-syntax-highlighting', nice:10, if:"[[ "$(platform)" != "windows" ]]"
   zplug 'knu/z', of:'z.sh', nice:10

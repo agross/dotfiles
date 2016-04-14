@@ -7,9 +7,9 @@
 [apply]
 	whitespace = nowarn
 [alias]
-	some = !~/.dotfiles/git/git-some/git-some.sh
+	some = !git-some.sh
+	flow = !$ZPLUG_HOME/repos/nvie/gitflow/git-flow
 	ui = !/c/Tools/QGit/qgit.exe --all &
-	flow = !~/.dotfiles/git/git-flow/git-flow
 	clobber = !~/.dotfiles/git/bin/git-cleanup
 
 	wtf = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-wtf.rb)\" --all --relations
