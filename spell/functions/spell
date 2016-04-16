@@ -1,9 +1,15 @@
 local parent_directory=${${(%):-%x}:h:h}
+
+local dict="$parent_directory/dictionary-de"
+if [[ "$1" =~ ^- ]]; then
+  dict="$parent_directory/dictionary$1"
+  shift
+fi
+
 local word="$@"
 
 zmodload zsh/mapfile
 
-local dict="$parent_directory/dictionary-de"
 local lines
 lines=(${(f)mapfile[$dict]})
 
