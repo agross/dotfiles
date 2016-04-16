@@ -6,6 +6,11 @@ if [[ "$1" =~ ^- ]]; then
   shift
 fi
 
+if [[ ! -f "$dict" ]]; then
+  >&2 echo Dictionary $dict not found.
+  return 1
+fi
+
 local word="$@"
 
 zmodload zsh/mapfile
