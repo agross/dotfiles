@@ -41,7 +41,7 @@ function() {
   zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command, of:'not-needed'
   zplug 'bobthecow/git-flow-completion'
   zplug 'grossweber/git-some', if:"(($+commands[git]))", as:command, of:'git-some.sh'
-  zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", as:command, of:'rapid-git.sh'
+  zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", of:'rapid-git.sh'
   zplug 'kamranahmedse/git-standup', if:"(($+commands[git]))", as:command, of:'git-standup'
 
   zplug 'zsh-users/zsh-syntax-highlighting', nice:10, if:"[[ "$(platform)" != "windows" ]]"
