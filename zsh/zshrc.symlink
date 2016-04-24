@@ -37,6 +37,7 @@ function() {
   zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
   zplug 'Tarrasch/zsh-bd'
   zplug 'holman/dotfiles', as:command, of:'bin/e'
+  zplug 'zsh-users/zsh-completions'
 
   zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command, of:'not-needed'
   zplug 'bobthecow/git-flow-completion'

@@ -12,6 +12,10 @@ if [[ "$(platform)" == "windows" ]]; then
   alias bundle='bundle.bat'
   alias bun='nocorrect bundle.bat'
   alias bex='nocorrect bundle.bat exec'
+
+  compdef _bundle bundle='bundle'
+  compdef _bundle bun='bundle'
+  compdef _bundle bex='bundle exec'
 else
   verbose Setting up Linux Ruby aliases
 
