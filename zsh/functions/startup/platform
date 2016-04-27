@@ -1,8 +1,8 @@
-if [[ "$(uname)" == "Darwin" ]]; then
+if [[ "$OSTYPE" == *darwin* ]]; then
   echo 'mac'
-elif [[ "$(uname -s)" == "Linux" ]]; then
+elif [[ "$OSTYPE" == *linux* ]]; then
   echo 'linux'
-elif [[ "$(uname -o)" == "Cygwin" ]]; then
+elif [[ "$OSTYPE" == "cygwin" ]]; then
   echo 'windows'
 else
   echo 'unknown'
