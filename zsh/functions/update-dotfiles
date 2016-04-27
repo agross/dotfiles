@@ -9,23 +9,26 @@ fi
 
 function dotfiles::update() {
   local host="$1"
+  shift
 
   echo Updating dotfiles on $fg[green]$host$reset_color
   ssh -n -A $host 'echo "Expecting dotfiles in \$DOTFILES (currently set to $DOTFILES)" && \
-    cd $DOTFILES && \
+    cd "$DOTFILES" && \
     git fetch && \
     git reset --hard origin/master && \
     ./bootstrap'
-}
 
-while [[ $# -gt 0 ]]; do
-  dotfiles::update "$1"
-  shift
-done
+  while [[ $# -gt 0 ]]; do
+    echo Running command $fg[red]$1$reset_color on $fg[green]$host$reset_color
+    ssh -n -A $host "$1"
+
+    shift
+  done
+}
 
 local host
 while read -r host; do
-  dotfiles::update "$host"
+  dotfiles::update "$host" "$@"
 done < $hostsfile
 
 unfunction dotfiles::update
