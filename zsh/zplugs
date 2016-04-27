@@ -1,0 +1,40 @@
+local nice
+
+# Load paths first.
+nice=-20; zplug "$DOTFILES", from:local, nice:$nice, use:'**/path.zsh'
+
+# Load everything but the zprofile, path, completion and postinit files second.
+nice=-19; zplug "$DOTFILES", from:local, nice:$nice, use:'**/(^(zprofile|path|completion|postinit)).zsh'
+
+# Set theme.
+nice=-18; zplug "$DOTFILES/zsh/themes", from:local, nice:$nice, use:'agross.zsh-theme'
+
+# Load postinit last.
+nice=9;   zplug "$DOTFILES", from:local, nice:$nice, use:'**/postinit.zsh'
+
+# Load completions after compinit was run.
+nice=10;  zplug "$DOTFILES", from:local, nice:$nice, use:'**/completion.zsh'
+
+# Manage zplug with zplug.
+zplug 'b4b4r07/zplug', hook-build:'zplug update --self'
+
+# oh-my-zsh plugins.
+zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
+zplug 'plugins/sudo', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[sudo]))"
+zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
+
+# Other useful plugins.
+zplug 'Tarrasch/zsh-bd'
+zplug 'holman/dotfiles', as:command, use:'bin/e'
+zplug 'zsh-users/zsh-completions'
+
+# Plugins related to git.
+zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command, use:'not-needed'
+zplug 'bobthecow/git-flow-completion'
+zplug 'grossweber/git-some', if:"(($+commands[git]))", as:command, use:'git-some.sh'
+zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", use:'rapid-git.sh'
+zplug 'kamranahmedse/git-standup', if:"(($+commands[git]))", as:command, use:'git-standup'
+
+# Plugins to be Loaded after compinit was run.
+zplug 'zsh-users/zsh-syntax-highlighting', nice:10, if:"[[ "$(platform)" != "windows" ]]"
+zplug 'knu/z', use:'z.sh', nice:10

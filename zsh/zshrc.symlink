@@ -14,39 +14,7 @@ function() {
   # Use extended_glob option for zplug subshells. We need to change it for zplug's use tags containing extended globs.
   zstyle ":zplug:config:setopt" only_subshell extended_glob
 
-  local nice=
-  # Load paths first.
-  nice=-20; zplug "$DOTFILES", from:local, nice:$nice, use:'**/path.zsh'
-
-  # Load everything but the zprofile, path, completion and postinit files second.
-  nice=-19; zplug "$DOTFILES", from:local, nice:$nice, use:'**/(^(zprofile|path|completion|postinit)).zsh'
-
-  # Set theme.
-  nice=-18; zplug "$DOTFILES/zsh/themes", from:local, nice:$nice, use:'agross.zsh-theme'
-
-  # Load postinit last.
-  nice=9;   zplug "$DOTFILES", from:local, nice:$nice, use:'**/postinit.zsh'
-
-  # Load completions after compinit was run.
-  nice=10;  zplug "$DOTFILES", from:local, nice:$nice, use:'**/completion.zsh'
-
-  zplug 'b4b4r07/zplug', hook-build:"zplug update --self"
-  zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
-  zplug 'plugins/sudo', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[sudo]))"
-  zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
-  zplug 'Tarrasch/zsh-bd'
-  zplug 'holman/dotfiles', as:command, use:'bin/e'
-  zplug 'zsh-users/zsh-completions'
-
-  zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command, use:'not-needed'
-  zplug 'bobthecow/git-flow-completion'
-  zplug 'grossweber/git-some', if:"(($+commands[git]))", as:command, use:'git-some.sh'
-  zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", use:'rapid-git.sh'
-  zplug 'kamranahmedse/git-standup', if:"(($+commands[git]))", as:command, use:'git-standup'
-
-  zplug 'zsh-users/zsh-syntax-highlighting', nice:10, if:"[[ "$(platform)" != "windows" ]]"
-  zplug 'knu/z', use:'z.sh', nice:10
-
+  ZPLUG_LOADFILE="$DOTFILES/zsh/zplugs"
   zplug-install
 
   # Source plugins and add commands to the PATH.
