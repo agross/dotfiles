@@ -30,7 +30,7 @@ function() {
   # Load completions after compinit was run.
   nice=10;  zplug "$DOTFILES", from:local, nice:$nice, use:'**/completion.zsh'
 
-  zplug 'b4b4r07/zplug', at:v2, hook-build:"zplug update --self"
+  zplug 'b4b4r07/zplug', hook-build:"zplug update --self"
   zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
   zplug 'plugins/sudo', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[sudo]))"
   zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"

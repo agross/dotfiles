@@ -5,7 +5,7 @@ verbose Downloading $fg[cyan]zplug$reset_color to $fg[green]$zplug_dir$reset_col
 
 if [[ ! -f "$zplug_source" ]]; then
   if (($+commands[git])); then
-    git clone --branch v2 https://github.com/b4b4r07/zplug "$zplug_dir"
+    git clone https://github.com/b4b4r07/zplug "$zplug_dir"
     if [[ $? -ne 0 ]]; then
       verbose Failed to download $fg[cyan]zplug$reset_color to $fg[green]$zplug_source$reset_color. ZSH startup will continue without zplug.
       return 2
