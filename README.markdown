@@ -122,7 +122,7 @@ If the `.exclude-platforms` file does not exist or if it is empty, the topic is 
 
 ### [zsh](#shell)-specific files
 
-I use the excellent [zplug](https://github.com/b4b4r07/zplug) project to manage my zsh plugins and initialization.
+I use the excellent [zplug](https://github.com/zplug/zplug) project to manage my zsh plugins and initialization.
 
 You can configure verbose logging of the zsh startup process by [setting `ZSH_VERBOSE`](https://github.com/agross/dotfiles/blob/master/zsh/zshenv.symlink#L4) to a nonempty value.
 
@@ -140,11 +140,11 @@ You can put anything you want in these, e.g. set up topic-specific aliases.
 
 ### topic/\*\*/postinit.zsh
 
-Postinit scripts are loaded last, i.e. after all [zplug](https://github.com/b4b4r07/zplug) plugins are loaded and before completion setup is run. Put any last-minute setup here. I use them on Windows to make my Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
+Postinit scripts are loaded last, i.e. after all [zplug](https://github.com/zplug/zplug) plugins are loaded and before completion setup is run. Put any last-minute setup here. I use them on Windows to make my Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
 
 ### topic/\*\*/completion.zsh
 
-Completion scripts are run after [zplug](https://github.com/b4b4r07/zplug) calls [zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html) to initializes the completion system. Put any completion-specific setup here.
+Completion scripts are run after [zplug](https://github.com/zplug/zplug) calls [zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html) to initializes the completion system. Put any completion-specific setup here.
 
 Thanks
 ------
