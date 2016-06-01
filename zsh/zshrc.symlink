@@ -2,28 +2,24 @@
 
 verbose Loading $fg[green]zshrc$reset_color
 
-function() {
-  # Cache function results.
-  build-cache
+# Cache function results.
+build-cache
 
-  zplug-init
-  if [[ $? -ne 0 ]]; then
-    return 1
-  fi
+zplug-init
+if [[ $? -ne 0 ]]; then
+  return 1
+fi
 
-  # Use extended_glob option for zplug subshells. We need to change it for zplug's use tags containing extended globs.
-  zstyle ":zplug:config:setopt" only_subshell extended_glob
+# Use extended_glob option for zplug subshells. We need to change it for zplug's use tags containing extended globs.
+zstyle ":zplug:config:setopt" only_subshell extended_glob
 
-  ZPLUG_LOADFILE="$DOTFILES/zsh/zplugs"
-  zplug-install
+ZPLUG_LOADFILE="$DOTFILES/zsh/zplugs"
+zplug-install
 
-  # Source plugins and add commands to the PATH.
-  zplug load --verbose
+# Source plugins and add commands to the PATH.
+zplug load --verbose
 
-  startup-directory /scratch
-
-  # Clean up after ourselves.
-  undefine-startup-functions
-}
+# Clean up after ourselves.
+undefine-startup-functions
 
 # vim:set filetype=sh:

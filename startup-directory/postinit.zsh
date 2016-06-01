@@ -5,7 +5,7 @@ if [[ -n $KEEP_DIR ]]; then
   return
 fi
 
-local start_dir=$1
+local start_dir=/scratch
 
 if [[ ! -d "$start_dir" ]]; then
   verbose Startup directory $fg[green]$start_dir$reset_color does not exist, keeping current directory $fg[green]$PWD$reset_color
@@ -14,5 +14,3 @@ fi
 
 verbose Changing current directory from $fg[green]$PWD$reset_color to $fg[green]$start_dir$reset_color
 cd "$start_dir"
-
-# vim:set filetype=sh:
