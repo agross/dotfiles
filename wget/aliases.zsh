@@ -1,1 +1,1 @@
-alias wgets='wget --spider --server-response'
+alias wgets='wget --no-hsts --spider --server-response'
