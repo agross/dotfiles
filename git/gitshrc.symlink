@@ -36,6 +36,7 @@ gitalias     rh='reset --hard'
 
 # git branch and remote.
 gitalias    co='checkout'
+gitalias   cob='function _() { local branch=$1; [[ -z $branch ]] && echo Need branch name && return 1; git checkout -b $branch --track origin/$branch }; _' nogit
 gitalias     b='branch'
 gitalias   brs='branch --all --verbose'
 gitalias    rv='remote --verbose'
