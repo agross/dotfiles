@@ -29,6 +29,7 @@ zplug 'holman/dotfiles', as:command, use:'bin/e'
 zplug 'zsh-users/zsh-completions'
 
 # Plugins related to git.
+zplug 'so-fancy/diff-so-fancy', if:"(($+commands[git]))", as:command, use: 'diff-so-fancy'
 zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command, use:'not-needed'
 zplug 'bobthecow/git-flow-completion'
 zplug 'grossweber/git-some', if:"(($+commands[git]))", as:command, use:'git-some.sh'

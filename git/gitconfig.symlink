@@ -82,3 +82,14 @@
 	autoSquash = true
 [stash]
 	showPatch = true
+[pager]
+	log = diff-so-fancy | less
+	show = diff-so-fancy | less --pattern='^(added|deleted|modified): '
+	diff = diff-so-fancy | less --pattern='^(added|deleted|modified): '
+[interactive]
+	diffFilter = diff-so-fancy
+[color "diff-highlight"]
+	oldnormal = red
+	oldhighlight = red bold
+	newnormal = green
+	newhighlight = bold green
