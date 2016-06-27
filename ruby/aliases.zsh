@@ -23,6 +23,6 @@ if [[ "$(platform)" == "windows" ]]; then
 else
   verbose Setting up Linux Ruby aliases
 
-  alias bun='bundle'
-  alias bex='bundle exec'
+  alias bun='nocorrect bundle'
+  alias bex='nocorrect bundle exec'
 fi
