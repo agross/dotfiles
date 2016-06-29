@@ -5,17 +5,17 @@ fi
 if [[ "$(platform)" == "windows" ]]; then
   verbose Setting up Windows Ruby aliases
 
-  # Define an alias for *.bat file inside the Ruby bin directory.
+  # Define an alias for *.bat and *.cmd files inside the Ruby bin directory.
   # Windows Ruby installs gem binaries as an extensionless file as well as one
-  # with a .bat extension.
+  # with a .bat extension. *.cmd is used for e.g. gem.cmd by Ruby Installer.
   # Glob qualifier (N.:r:t):
   #   N  = ignore no matches
   #   .  = yield plain files only
-  #   :r = remove file extension
   #   :t = remove leading path (basename)
   local ruby_binary
-  for ruby_binary in $(dirname "$commands[ruby]")/*.bat(N.:r:t); do
-    alias "$ruby_binary"="$ruby_binary.bat"
+  for ruby_binary in $(dirname "$commands[ruby]")/*.{bat,cmd}(N.:t); do
+    local filename="${ruby_binary%.*}"
+    alias "$filename"="$ruby_binary"
   done
 
   alias bun='nocorrect bundle.bat'
