@@ -1,0 +1,29 @@
+# Define an alias for extensionless files inside the Ruby bin directory.
+#
+# Windows Ruby installs gem binaries as an extensionless file as well as one
+# with a .bat or .cmd extension. We opt not to go though cmd.exe by calling
+# Ruby directly with the extensionless file (which contains pure Ruby). This
+# saves us from the tedious questions whether we really want to
+# "Terminate batch job (Y/N)?".
+#
+# Glob qualifier (N.):
+#   N          = ignore no matches
+#   .          = yield plain files only
+#   +cyg_mixed = transform results using ../../cygwin/functions/cyg_mixed
+
+# We need the extended_glob option for the glob.
+setopt local_options extended_glob
+
+local executable
+for executable in $(dirname "$commands[ruby]")/^?*.*(N.+cyg_mixed); do
+  local alias="$(basename "$executable")"
+  local command=""$commands[ruby]" "$executable""
+
+  if [[ $1 != '--no-verbose' ]]; then
+    echo $fg[red]$alias$reset_color = $fg[red]$command$reset_color
+  fi
+
+  alias "$alias"="$command"
+done
+
+# vim:set filetype=sh:
