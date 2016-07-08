@@ -5,5 +5,5 @@ if [[ -n "$SSH_CONNECTION" ]] && (($+commands[screen])); then
   fi
 
   verbose Starting $fg[red]screen$reset_color because we\'re connected using $fg[red]ssh$reset_color
-  /usr/bin/screen -dRq ssh && exit
+  exec /usr/bin/screen -dRq ssh
 fi
