@@ -1,0 +1,10 @@
+# http://dnf.readthedocs.io/en/latest/cli_vs_yum.html#dnf-provides-complies-with-the-yum-documentation-of-the-command
+
+if [[ -z $1 ]]; then
+  >&2 echo Usage: $0 \<binary\>
+  return 1
+fi
+
+dnf provides "*/$1"
+
+# vim:set filetype=sh:
