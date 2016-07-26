@@ -70,6 +70,7 @@
 	autoupdate = true
 [push]
 	default = simple
+	followTags = true
 [sendemail]
 	from = Alexander Groß <agross@therightstuff.de>
 	smtpencryption = tls
