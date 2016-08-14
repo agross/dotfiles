@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ssh agross@home.therightstuff.de -t ~/wake.sh
+ssh agross@home.therightstuff.de -t ~/bin/wake
