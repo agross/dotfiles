@@ -4,19 +4,48 @@ set -g prefix C-a
 bind C-a send-prefix
 
 # Key bindings.
+# Switch between windows by pressing prefix+A or prefix+Ctrl+A.
+bind-key a last-window
 bind-key C-a last-window
+
+# Support prefix+<key> and prefix+Ctrl+<key>.
+bind-key C-c new-window
+bind-key C-n next-window
+bind-key C-p previous-window
+bind-key C-d detach-client
+
+# Window switching, prefix+F<x>.
+bind-key F1 select-window -t :=0
+bind-key F2 select-window -t :=1
+bind-key F3 select-window -t :=3
+bind-key F4 select-window -t :=4
+bind-key F5 select-window -t :=5
+bind-key F6 select-window -t :=6
+bind-key F7 select-window -t :=7
+bind-key F8 select-window -t :=8
+bind-key F9 select-window -t :=9
+
+# Force a reload of the config file with prefix+r.
+bind-key r source-file ~/.tmux.conf\; display-message "tmux config reloaded."
+
+# Start numbering windows at 1.
+set -g base-index 1
+
+# Increase scroll history.
+set -g history-limit 30000
+
+# Ignore all bells.
+set -g bell-action none
 
 # Set $TERM variable.
 set -g default-terminal screen
 
-## Update the $TERM variable of terminal emulator when creating a new session or attaching a existing session.
-set -g update-environment 'DISPLAY SSH_ASKPASS SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY TERM'
-## Determine if we should enable 256-colour support.
-if "[[ ${TERM} =~ 256color || ${TERM} == fbterm ]]" 'set -g default-terminal screen-256color'
+# Determine if we should enable 256-colour support.
+if "[[ $TERM =~ 256color || $TERM == fbterm ]]" "set -g default-terminal screen-256color"
 
 # Show SSH info in window title.
 set -g set-titles on
-set -g set-titles-string "#T"
+set -g set-titles-string "#{pane_title}"
 
 # Highlight active window
 set-window-option -g window-status-current-bg red
@@ -25,13 +54,43 @@ set-window-option -g window-status-current-fg white
 # Rather than constraining window size to the maximum size of any client
 # connected to the *session*, constrain window size to the maximum size of any
 # client connected to *that window*. Much more reasonable.
-setw -g aggressive-resize on
+set-window-option -g aggressive-resize on
 
 # Allows for faster key repetition.
 set -s escape-time 0
 
+# Mouse scrolling support.
 set -g mouse on
-bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e; send-keys -M'"
+bind-key -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e; send-keys -M'"
 
 # Always copy SSH environment variables.
-set -g update-environment "SSH_CLIENT SSH_CONNECTION SSH_TTY SSH_AUTH_SOCK SSH_ASKPASS"
+set -g update-environment "SSH_CLIENT SSH_CONNECTION SSH_TTY SSH_AUTH_SOCK SSH_ASKPASS SSH_AGENT_PID"
+
+# tmux plugins.
+set -g @tpm_plugins '                 \
+  tmux-plugins/tpm                    \
+  tmux-plugins/tmux-cpu               \
+  tmux-plugins/tmux-prefix-highlight  \
+  tmux-plugins/tmux-continuum         \
+  tmux-plugins/tmux-resurrect         \
+  tmux-plugins/tmux-pain-control      \
+'
+
+# Display CPU usage and whether the prefix key was pressed.
+set -g status-left "#{session_name}: "
+set -g status-right "#{prefix_highlight} CPU: #{cpu_percentage} Load: #(cat /proc/loadavg | cut -d ' ' -f -3) #{host}"
+set -g status-right-length 70
+set -g status-interval 5
+
+# Restoring sessions with tmux-resurrect.
+set -g @resurrect-processes ":all:"
+
+# Restore last saved environment when tmux is started.
+set -g @continuum-restore 'on'
+
+# Install tpm unless it is.
+# Using $TMUX_PLUGIN_MANAGER_PATH here does not seem to work.
+if "test ! -d ~/.tmux/plugins/tpm" "run-shell 'git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'"
+
+# Initialize tmux plugin manager (keep this line at the very bottom of tmux.conf).
+run-shell "~/.tmux/plugins/tpm/tpm"
