@@ -31,6 +31,6 @@ Term=xterm-256color
 Answerback=
 ForegroundColour=0,0,0
 BackgroundColour=255,255,255
-CursorColour=255,255,255
+CursorColour=0,0,0
 BoldAsFont=no
 BoldAsColour=yes
