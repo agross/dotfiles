@@ -59,7 +59,12 @@ set-window-option -g aggressive-resize on
 # Allows for faster key repetition.
 set -s escape-time 0
 
-# Mouse scrolling support.
+# Mouse scrolling support for cygwin terminals (ConEmu w/o connector).
+# This tricks the terminal emulator into thinking tmux is a full screen
+# application, which will make the scrollback be recorded properly.
+set -ga terminal-overrides ',cygwin:smcup@:rmcup@'
+
+# Mouse scrolling support for Linux terminals and mintty.
 set -g mouse on
 bind-key -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e; send-keys -M'"
 
@@ -89,7 +94,6 @@ set -g @resurrect-processes ":all:"
 set -g @continuum-restore 'on'
 
 # Install tpm unless it is.
-# Using $TMUX_PLUGIN_MANAGER_PATH here does not seem to work.
 if "test ! -d ~/.tmux/plugins/tpm" "run-shell 'git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'"
 
 # Initialize tmux plugin manager (keep this line at the very bottom of tmux.conf).
