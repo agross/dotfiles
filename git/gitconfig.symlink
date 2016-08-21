@@ -57,6 +57,7 @@
 	tool = diffmerge
 	renames = copies
 	submodule = log
+	compactionHeuristic = true
 [difftool]
 	prompt = false
 [difftool "diffmerge"]
