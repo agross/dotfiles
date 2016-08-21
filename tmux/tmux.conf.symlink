@@ -82,8 +82,11 @@ set -g @tpm_plugins '                 \
 '
 
 # Display CPU usage and whether the prefix key was pressed.
-set -g status-left "#{session_name}: "
-set -g status-right "#{prefix_highlight} CPU: #{cpu_percentage} Load: #(cat /proc/loadavg | cut -d ' ' -f -3) #{host}"
+set-window-option -g window-status-format         "#{window_index} #{window_name}"
+set-window-option -g window-status-current-format "#{window_index} #{window_name}"
+set -g status-left ""
+set-option -g @cpu_icon "□"
+set -g status-right "#{prefix_highlight} #{cpu_icon}#{cpu_percentage} Load: #(cat /proc/loadavg | cut -d ' ' -f -3) #{host}"
 set -g status-right-length 70
 set -g status-interval 5
 
