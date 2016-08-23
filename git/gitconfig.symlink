@@ -39,8 +39,8 @@
 	prompt = bold blue
 	error = bold red
 [branch]
-	autosetupmerge = true
-	autosetuprebase = always
+	autoSetupMerge = true
+	autoSetupRebase = always
 [svn]
 	rmdir = true
 	findcopiesharder = true

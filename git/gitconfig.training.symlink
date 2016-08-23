@@ -33,7 +33,7 @@
 	remoteBranch = red
 	tag = magenta
 [branch]
-	# autosetuprebase = true
+	# autoSetupRebase = always
 [merge]
 	tool = diffmerge
 [mergetool]
