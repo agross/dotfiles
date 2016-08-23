@@ -25,13 +25,13 @@
 	ui = auto
 	wtf = true
 [color "branch"]
-	local = green
-	remote = red
+	local = bold green
+	remote = bold red
 [color "decorate"]
-	head = blue
-	branch = green
-	remoteBranch = red
-	tag = magenta
+	head = bold blue
+	branch = bold green
+	remoteBranch = bold red
+	tag = bold magenta
 [branch]
 	# autoSetupRebase = always
 [merge]
