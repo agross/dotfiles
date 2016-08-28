@@ -17,7 +17,7 @@ nice=9;   zplug "$DOTFILES", from:local, nice:$nice, use:'**/postinit.zsh'
 nice=10;  zplug "$DOTFILES", from:local, nice:$nice, use:'**/completion.zsh'
 
 # Manage zplug with zplug.
-zplug 'zplug/zplug', hook-build:'zplug update --self'
+zplug 'zplug/zplug', at:c39e17f528c517d3b59c3366e99a25121eb4f496, frozen:true
 
 # oh-my-zsh plugins.
 zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh

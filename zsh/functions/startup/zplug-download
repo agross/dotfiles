@@ -15,4 +15,6 @@ if [[ $? -ne 0 ]]; then
   return 2
 fi
 
+pushd "$zplug_dir" && git reset --hard c39e17f528c517d3b59c3366e99a25121eb4f496 && popd
+
 # vim:set filetype=sh:
