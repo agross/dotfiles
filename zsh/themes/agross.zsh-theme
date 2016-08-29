@@ -15,9 +15,10 @@ function {
   # Start with newline.
   PROMPT='
 '
+
   # Display history number on mintty terminals.
   if is-mintty; then
-    verbose Enabling history index in $fg[yellow]\$PROMPT$reset_color because mintty was started
+    verbose Enabling history index in $fg[yellow]\$PROMPT$reset_color because $fg[red]mintty$reset_color was started
     PROMPT+="$history_index "
   fi
 
