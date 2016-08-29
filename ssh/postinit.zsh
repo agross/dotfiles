@@ -34,4 +34,7 @@ else
   verbose Exporting user-specific system-wide $fg[yellow]\$SSH_AUTH_SOCK$reset_color as $fg[yellow]$auth_sock$reset_color
   setx SSH_AUTH_SOCK "$auth_sock" > /dev/null
   unset auth_sock
+
+  # Clean up unused sockets.
+  find '/tmp/ssh-*' -maxdepth 1 -type s -user $USER -not -path "(readlink --canonicalize "$SSH_AUTH_SOCK")" -printf %h\\0 2> /dev/null | xargs --null --no-run-if-empty rm -r
 fi
