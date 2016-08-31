@@ -2,9 +2,9 @@
 	whitespace = trailing-space, space-before-tab, -indent-with-non-tab, cr-at-eol
 	quotepath = false
 	# Notepad++ on Cygwin.
-	# editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession -notabbar -noPlugin \"$(cygpath --windows --absolute \"$1\")\"
+	# editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession -noPlugins \"$(cygpath --windows --absolute \"$1\")\"
 	# Notepad++ on msysgit (a.k.a. Git for Windows).
-	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession -notabbar -noPlugin
+	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession -noPlugins
 [apply]
 	whitespace = nowarn
 [alias]
