@@ -10,7 +10,7 @@ alias cd/='cd /'
 # mkdir foo && touch foo/bar
 # cdd # will cd into foo
 alias cdd='cd $(dirname $_)'
-alias up=bd
+alias up='_() { bd ${1:-1} }; _'
 
 alias 1='cd -'
 alias 2='cd +2'
