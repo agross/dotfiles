@@ -1,4 +1,8 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
+#
+# All files are checked out with LF line endings because shell scripts
+# (in case of zsh these may be files without extension) need to have
+# LF line endings.
 * text=auto eol=lf
 
 # Files that will always have CRLF line endings on checkout.
@@ -6,3 +10,8 @@
 
 # Ruby.
 *.rb diff=ruby
+
+# Binaries, in case someone checks in their tools.
+*.dll binary
+*.exe binary
+*.pdf binary
