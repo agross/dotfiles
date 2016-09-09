@@ -9,7 +9,7 @@ alias cd/='cd /'
 # cd into the directory of the most recent parameter.
 # mkdir foo && touch foo/bar
 # cdd # will cd into foo
-alias cdd='cd $(dirname $_)'
+alias cdd='cd "$(dirname $_)"'
 alias up='_() { bd ${1:-1} }; _'
 
 alias 1='cd -'
