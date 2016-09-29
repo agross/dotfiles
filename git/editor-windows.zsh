@@ -11,5 +11,8 @@ fi
 
 export GIT_EDITOR='file="$(cygpath --windows --absolute "$1")"; shift $#; cp "$file" "$file.git" && /c/Tools/Notepad++/notepad++.exe -multiInst -nosession -noPlugins "$file.git" && mv "$file.git" "$file"'
 
+# Visual Studio Code.
+# export GIT_EDITOR='file="$(cygpath --windows --absolute "$1")"; shift $#; /c/Tools/Code/bin/code --wait "$file"'
+
 # ST opens two windows when there is no instance of ST running.
 # export GIT_EDITOR='file="$(cygpath --windows --absolute "$1")"; shift $#; /c/Tools/Sublime\ Text/subl.exe --wait --new-window "$file" --'
