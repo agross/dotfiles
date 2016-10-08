@@ -91,8 +91,8 @@
 	showPatch = true
 [pager]
 	log = diff-so-fancy | less
-	show = diff-so-fancy | less --pattern='^(added|deleted|modified): '
-	diff = diff-so-fancy | less --pattern='^(added|deleted|modified): '
+	show = diff-so-fancy | less --pattern='^(added|deleted|modified): |'
+	diff = diff-so-fancy | less --pattern='^(added|deleted|modified): |'
 [interactive]
 	diffFilter = diff-so-fancy
 [color "diff-highlight"]
