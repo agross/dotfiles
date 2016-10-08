@@ -1,4 +1,4 @@
-if [[ -n $ZSH_VERBOSE ]]; then
+if [[ -n $ZSH_VERBOSE || -n $FORCE ]]; then
   for p in $@; do
     >&2 printf "%s " "$p"
   done

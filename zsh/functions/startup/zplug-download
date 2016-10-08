@@ -1,20 +1,15 @@
-local zplug_init="$1"
-local zplug_dir="$(dirname "$zplug_init")"
+verbose Downloading $fg[cyan]zplug$reset_color to $fg[green]$ZPLUG_HOME$reset_color
 
-verbose Downloading $fg[cyan]zplug$reset_color to $fg[green]$zplug_dir$reset_color
-
-(($+commands[git])) || {
-  verbose You need $fg[red]git$reset_color to download $fg[cyan]zplug$reset_color. ZSH startup will continue without $fg[cyan]zplug$reset_color.
+(($+commands[curl])) || {
+  FORCE=1 verbose You need $fg[red]curl$reset_color to download $fg[cyan]zplug$reset_color. ZSH startup will continue without $fg[cyan]zplug$reset_color.
   return 1
 }
 
-git clone https://github.com/zplug/zplug "$zplug_dir"
+curl --silent --location zplug.sh/installer | zsh
 
 if [[ $? -ne 0 ]]; then
-  verbose Failed to download $fg[cyan]zplug$reset_color to $fg[green]$zplug_dir$reset_color. ZSH startup will continue without $fg[cyan]zplug$reset_color.
+  FORCE=1 verbose Failed to install $fg[cyan]zplug$reset_color to $fg[green]$ZPLUG_HOME$reset_color. ZSH startup will continue without $fg[cyan]zplug$reset_color.
   return 2
 fi
-
-pushd "$zplug_dir" && git reset --hard c39e17f528c517d3b59c3366e99a25121eb4f496 && popd
 
 # vim:set filetype=sh:

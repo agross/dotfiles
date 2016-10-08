@@ -5,18 +5,15 @@ verbose Loading $fg[green]zshrc$reset_color
 # Cache function results.
 build-cache
 
-zplug-init
-if [[ $? -ne 0 ]]; then
-  return 1
-fi
+ZPLUG_LOADFILE="$DOTFILES/zsh/zplugs"
 
 # Use extended_glob option for zplug subshells. We need to change it for zplug's use tags containing extended globs.
 zstyle ":zplug:config:setopt" only_subshell extended_glob
 
-ZPLUG_LOADFILE="$DOTFILES/zsh/zplugs"
-
-# Work around https://github.com/zplug/zplug/issues/212 until https://github.com/zplug/zplug/pull/215 is merged.
-export PATH=$ZPLUG_HOME/bin:$PATH
+zplug-init
+if [[ $? -ne 0 ]]; then
+  return 1
+fi
 
 zplug-install
 

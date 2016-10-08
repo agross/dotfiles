@@ -17,7 +17,7 @@ nice=9;   zplug "$DOTFILES", from:local, nice:$nice, use:'**/postinit.zsh'
 nice=10;  zplug "$DOTFILES", from:local, nice:$nice, use:'**/completion.zsh'
 
 # Manage zplug with zplug.
-zplug 'zplug/zplug', at:c39e17f528c517d3b59c3366e99a25121eb4f496, frozen:true
+zplug 'zplug/zplug'
 
 # oh-my-zsh plugins.
 zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
@@ -31,7 +31,7 @@ zplug 'zsh-users/zsh-completions'
 
 # Plugins related to git.
 zplug 'so-fancy/diff-so-fancy', if:"(($+commands[git] + $+commands[perl] + $(perl -e 'use open qw(:std :utf8);' 2> /dev/null && echo 1 || echo 0) == 3))", as:command, use:'diff-so-fancy'
-zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command, use:'not-needed'
+zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command #, depth:0 https://github.com/zplug/zplug/issues/243 # We need all commits as master is not the default branch.
 zplug 'bobthecow/git-flow-completion'
 zplug 'grossweber/git-some', if:"(($+commands[git]))", as:command, use:'git-some.sh'
 zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", use:'rapid-git.sh'
