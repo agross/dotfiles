@@ -37,6 +37,6 @@ zplug 'grossweber/git-some', if:"(($+commands[git]))", as:command, use:'git-some
 zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", use:'rapid-git.sh'
 zplug 'kamranahmedse/git-standup', if:"(($+commands[git]))", as:command, use:'git-standup'
 
-# Plugins to be Loaded after compinit was run.
+# Plugins to be loaded after compinit was run.
 zplug 'zsh-users/zsh-syntax-highlighting', nice:10, if:"[[ "$(platform)" != "windows" ]]"
 zplug 'knu/z', use:'z.sh', nice:10
