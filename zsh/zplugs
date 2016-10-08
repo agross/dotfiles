@@ -1,42 +1,87 @@
 local nice
 
 # Load paths and function paths first.
-nice=-20; zplug "$DOTFILES", from:local, nice:$nice, use:'**/(path|fpath).zsh'
+nice=-20; zplug "$DOTFILES", \
+                from:local, \
+                nice:$nice, \
+                use:'**/(path|fpath).zsh'
 
 # Load everything but the path (implicit), function path (implicit), zprofile,
 # completion and postinit files second.
-nice=-19; zplug "$DOTFILES", from:local, nice:$nice, use:'**/(^(zprofile|completion|postinit)).zsh'
+nice=-19; zplug "$DOTFILES", \
+                from:local, \
+                nice:$nice, \
+                use:'**/(^(zprofile|completion|postinit)).zsh'
 
 # Set theme.
-nice=-18; zplug "$DOTFILES/zsh/themes", from:local, nice:$nice, use:'agross.zsh-theme'
+nice=-18; zplug "$DOTFILES/zsh/themes", \
+                from:local, \
+                nice:$nice, \
+                use:'agross.zsh-theme'
 
 # Load postinit last.
-nice=9;   zplug "$DOTFILES", from:local, nice:$nice, use:'**/postinit.zsh'
+nice=9;   zplug "$DOTFILES", \
+                from:local, \
+                nice:$nice, \
+                use:'**/postinit.zsh'
 
 # Load completions after compinit was run.
-nice=10;  zplug "$DOTFILES", from:local, nice:$nice, use:'**/completion.zsh'
+nice=10;  zplug "$DOTFILES", \
+          from:local, \
+          nice:$nice, \
+          use:'**/completion.zsh'
 
 # Manage zplug with zplug.
 zplug 'zplug/zplug'
 
 # oh-my-zsh plugins.
-zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
-zplug 'plugins/sudo', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[sudo]))"
-zplug 'plugins/systemd', from:oh-my-zsh, ignore:oh-my-zsh.sh, if:"(($+commands[systemctl]))"
+zplug 'plugins/ssh-agent', \
+      from:oh-my-zsh, \
+      ignore:oh-my-zsh.sh
+zplug 'plugins/sudo', \
+      from:oh-my-zsh, \
+      ignore:oh-my-zsh.sh, \
+      if:"(($+commands[sudo]))"
+zplug 'plugins/systemd', \
+      from:oh-my-zsh, \
+      ignore:oh-my-zsh.sh, \
+      if:"(($+commands[systemctl]))"
 
 # Other useful plugins.
 zplug 'Tarrasch/zsh-bd'
-zplug 'holman/dotfiles', as:command, use:'bin/e'
+zplug 'holman/dotfiles', \
+      as:command, \
+      use:'bin/e'
 zplug 'zsh-users/zsh-completions'
 
 # Plugins related to git.
-zplug 'so-fancy/diff-so-fancy', if:"(($+commands[git] + $+commands[perl] + $(perl -e 'use open qw(:std :utf8);' 2> /dev/null && echo 1 || echo 0) == 3))", as:command, use:'diff-so-fancy'
-zplug 'nvie/gitflow', if:"(($+commands[git]))", as:command #, depth:0 https://github.com/zplug/zplug/issues/243 # We need all commits as master is not the default branch.
+zplug 'so-fancy/diff-so-fancy', \
+      if:"(($+commands[git] + $+commands[perl] + $(perl -e 'use open qw(:std :utf8);' 2> /dev/null && echo 1 || echo 0) == 3))", \
+      as:command, \
+      use:'diff-so-fancy'
+zplug 'nvie/gitflow', \
+      if:"(($+commands[git]))", \
+      as:command
+      # We need all commits as master is not the default branch.
+      # https://github.com/zplug/zplug/issues/243
+      #, depth:0
 zplug 'bobthecow/git-flow-completion'
-zplug 'grossweber/git-some', if:"(($+commands[git]))", as:command, use:'git-some.sh'
-zplug 'rapid-git/rapid-git', if:"(($+commands[git]))", use:'rapid-git.sh'
-zplug 'kamranahmedse/git-standup', if:"(($+commands[git]))", as:command, use:'git-standup'
+zplug 'grossweber/git-some', \
+      if:"(($+commands[git]))", \
+      as:command, \
+      use:'git-some.sh'
+zplug 'rapid-git/rapid-git', \
+      if:"(($+commands[git]))", \
+      use:'rapid-git.sh'
+zplug 'kamranahmedse/git-standup', \
+      if:"(($+commands[git]))", \
+      as:command, \
+      use:'git-standup'
 
 # Plugins to be loaded after compinit was run.
-zplug 'zsh-users/zsh-syntax-highlighting', nice:10, if:"[[ "$(platform)" != "windows" ]]"
-zplug 'knu/z', use:'z.sh', nice:10
+zplug 'zsh-users/zsh-syntax-highlighting', \
+      nice:10, \
+      if:"[[ "$(platform)" != "windows" ]]"
+zplug 'knu/z', \
+      use:'z.sh', \
+      nice:10
