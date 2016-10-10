@@ -6,8 +6,6 @@ fi
 printf "Install? [y/N]: "
 if read -q; then
   echo
-  # https://github.com/zplug/zplug/issues/243
-  # ZPLUG_CLONE_DEPTH=1
   zplug install
 fi
 

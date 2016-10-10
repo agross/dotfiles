@@ -62,9 +62,6 @@ zplug 'so-fancy/diff-so-fancy', \
 zplug 'nvie/gitflow', \
       if:"(($+commands[git]))", \
       as:command
-      # We need all commits as master is not the default branch.
-      # https://github.com/zplug/zplug/issues/243
-      #, depth:0
 zplug 'bobthecow/git-flow-completion'
 zplug 'grossweber/git-some', \
       if:"(($+commands[git]))", \
