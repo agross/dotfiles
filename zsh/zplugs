@@ -74,6 +74,16 @@ zplug 'kamranahmedse/git-standup', \
       as:command, \
       use:'git-standup'
 
+# Plugins related to docker.
+zplug 'plugins/docker', \
+      from:oh-my-zsh, \
+      ignore:oh-my-zsh.sh, \
+      if:"(($+commands[docker]))"
+zplug 'plugins/docker-compose', \
+      from:oh-my-zsh, \
+      ignore:oh-my-zsh.sh, \
+      if:"(($+commands[docker-compose]))"
+
 # Plugins to be loaded after compinit was run.
 zplug 'zsh-users/zsh-syntax-highlighting', \
       nice:10, \
