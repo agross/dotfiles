@@ -53,6 +53,10 @@ zplug 'holman/dotfiles', \
       as:command, \
       use:'bin/e'
 zplug 'zsh-users/zsh-completions'
+zplug 'plugins/gem', \
+      from:oh-my-zsh, \
+      ignore:oh-my-zsh.sh, \
+      if:"(($+commands[gem]))"
 
 # Plugins related to git.
 zplug 'so-fancy/diff-so-fancy', \
