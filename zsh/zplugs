@@ -91,3 +91,5 @@ zplug 'zsh-users/zsh-syntax-highlighting', \
 zplug 'knu/z', \
       use:'z.sh', \
       nice:10
+
+# vim:set filetype=sh:
