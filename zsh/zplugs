@@ -68,8 +68,7 @@ zplug 'grossweber/git-some', \
       as:command, \
       use:'git-some.sh'
 zplug 'rapid-git/rapid-git', \
-      if:"(($+commands[git]))", \
-      use:'rapid-git.sh'
+      if:"(($+commands[git]))"
 zplug 'kamranahmedse/git-standup', \
       if:"(($+commands[git]))", \
       as:command, \
