@@ -27,9 +27,10 @@
 	new = bold green
 	meta = bold yellow
 [color "branch"]
-	current = black green
-	local = bold green
+	current = bold green
+	local = green
 	remote = bold red
+	upstream = bold red
 	plain = bold yellow
 [color "status"]
 	added = bold red
