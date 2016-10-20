@@ -1,0 +1,15 @@
+local -a all_functions
+all_functions=(${(ok)functions})
+
+local arg
+for arg in $*; do
+  echo Processing \"$arg\"
+
+  local -a matches
+  matches=(${(M)all_functions:#${arg}*})
+
+  local fun
+  for fun in $matches; do
+    reload-fun $fun
+  done
+done
