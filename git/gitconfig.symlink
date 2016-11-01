@@ -102,3 +102,5 @@
 	oldhighlight = red bold
 	newnormal = green
 	newhighlight = bold green
+[url "git@github.com:"]
+	insteadOf = gh:
