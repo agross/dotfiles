@@ -1,0 +1,29 @@
+# Define an alias for extensionless files inside the Elixir bin directory.
+#
+# Files with shebang for shell are ignored.
+#
+# Glob qualifier (N.):
+#   N          = ignore no matches
+#   .          = yield plain files only
+#   +cyg_mixed = transform results using ../../cygwin/functions/cyg_mixed
+
+# We need the extended_glob option for the glob.
+setopt local_options extended_glob
+
+local executable
+for executable in $(dirname "$commands[elixir]")/^?*.*(N.+cyg_mixed); do
+  # Omit executable if it is a shell script.
+  read shebang < "$executable"
+  [[ "$shebang" == '#!/bin/sh' ]] && continue
+
+  local alias="$(basename "$executable")"
+  local command="$executable.bat"
+
+  if [[ $1 != '--no-verbose' ]]; then
+    echo $fg[red]$alias$reset_color = $fg[red]$command$reset_color
+  fi
+
+  alias "$alias"="$command"
+done
+
+# vim:set filetype=sh:
