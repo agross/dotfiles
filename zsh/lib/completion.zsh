@@ -52,13 +52,15 @@ zstyle ':completion:*:-command-'    group-order builtins commands functions
 zstyle ':completion:*'              list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*'              select-prompt '%SScrolling active: current selection at %p%s'
 
-# German umlauts, case-insensitive (all), partial-word and then substring completion.
-if [[ "$CASE_SENSITIVE" == "true" ]]; then
-  zstyle ':completion:*' matcher-list 'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-  unset CASE_SENSITIVE
-else
-  zstyle ':completion:*' matcher-list 'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-fi
+# 1. Try case-sensitive completion.
+# 2. Map German umlauts, allow case-insensitive completion.
+# 3. Partial-word completion.
+# 4. Substring completion.
+# http://stackoverflow.com/a/24237590/149264
+zstyle ':completion:*' matcher-list '' \
+                                    'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' \
+                                    'r:|[._-]=* r:|=*' \
+                                    'l:|=* r:|=*'
 
 # Ignore completion functions (until the _ignored completer).
 zstyle ':completion:*:functions' ignored-patterns '_*'
