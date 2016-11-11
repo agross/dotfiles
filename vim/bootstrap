@@ -1,0 +1,4 @@
+[[ "$OSTYPE" == 'windows' ]] && return
+
+symlink "$topic/vim.symlink"
+symlink "$topic/vimrc.symlink"

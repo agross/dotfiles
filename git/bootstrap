@@ -1,0 +1,6 @@
+symlink "$topic/gitconfig.symlink"
+symlink "$topic/gitconfig.training.symlink"
+symlink "$topic/git-wtfrc.symlink"
+
+[[ "$OSTYPE" == "windows" ]] && return
+symlink "$topic/gitshrc.symlink"

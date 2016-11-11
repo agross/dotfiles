@@ -1,0 +1,3 @@
+[[ "$OSTYPE" == 'windows' ]] && return
+
+[[ -d "$topic/gnupg.symlink" ]] && symlink "$topic/gnupg.symlink"

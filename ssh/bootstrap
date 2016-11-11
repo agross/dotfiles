@@ -1,0 +1,3 @@
+[[ "$OSTYPE" != 'cygwin' ]] && [[ "$OSTYPE" != 'windows' ]] && return
+
+symlink "$topic/ssh.symlink"

@@ -1,0 +1,5 @@
+[[ "$OSTYPE" == 'cygwin' ]] || \
+[[ "$OSTYPE" == 'windows' ]] && \
+return
+
+symlink "$topic/htoprc.symlink"

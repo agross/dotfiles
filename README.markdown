@@ -50,28 +50,42 @@ agross@linux ~/.dotfiles
 $ ./bootstrap
   [ INFO ] Installing dotfiles from /home/agross/.dotfiles
 
-  [ INFO ] Installing dotfiles in /home/agross for platform linux
+  [ INFO ] Installing dotfiles to $HOME=/home/agross for $OSTYPE=linux
   [  OK  ] Linked /home/agross/.dotfiles == /home/agross/.dotfiles
+  [ INFO ] Running /home/agross/.dotfiles/bash/bootstrap
   [  OK  ] Linked /home/agross/.dotfiles/bash/bash_profile.symlink == /home/agross/.bash_profile
   [  OK  ] Linked /home/agross/.dotfiles/bash/bashrc.symlink == /home/agross/.bashrc
   [  OK  ] Linked /home/agross/.dotfiles/bash/inputrc.symlink == /home/agross/.inputrc
+  [ INFO ] Running /home/agross/.dotfiles/git/bootstrap
+  [  OK  ] Linked /home/agross/.dotfiles/git/gitconfig.symlink == /home/agross/.gitconfig
+  [  OK  ] Linked /home/agross/.dotfiles/git/gitconfig.training.symlink == /home/agross/.gitconfig.training
   [  OK  ] Linked /home/agross/.dotfiles/git/git-wtfrc.symlink == /home/agross/.git-wtfrc
   [  OK  ] Linked /home/agross/.dotfiles/git/gitshrc.symlink == /home/agross/.gitshrc
-  [  OK  ] Linked /home/agross/.dotfiles/git/gitconfig.symlink == /home/agross/.gitconfig
-  [ INFO ] Skipped /home/agross/.dotfiles/mintty as it is excluded for platform linux
+  [ INFO ] Running /home/agross/.dotfiles/mintty/bootstrap
+  [ INFO ] Running /home/agross/.dotfiles/ruby/bootstrap
   [  OK  ] Linked /home/agross/.dotfiles/ruby/gemrc.symlink == /home/agross/.gemrc
   [  OK  ] Linked /home/agross/.dotfiles/ruby/guard.rb.symlink == /home/agross/.guard.rb
   [  OK  ] Linked /home/agross/.dotfiles/ruby/irbrc.symlink == /home/agross/.irbrc
+  [  OK  ] Linked /home/agross/.dotfiles/ruby/pryrc.symlink == /home/agross/.pryrc
+  [ INFO ] Running /home/agross/.dotfiles/screen/bootstrap
   [  OK  ] Linked /home/agross/.dotfiles/screen/screenrc.symlink == /home/agross/.screenrc
-  [ INFO ] Skipped /home/agross/.dotfiles/ssh as it is excluded for platform linux
+  [ INFO ] Running /home/agross/.dotfiles/ssh/bootstrap
+  [ INFO ] Running /home/agross/.dotfiles/tmux/bootstrap
+  [  OK  ] Linked /home/agross/.dotfiles/tmux/tmux.conf.symlink == /home/agross/.tmux.conf
+  [ INFO ] Running /home/agross/.dotfiles/vim/bootstrap
   [  OK  ] Linked /home/agross/.dotfiles/vim/vim.symlink == /home/agross/.vim
   [  OK  ] Linked /home/agross/.dotfiles/vim/vimrc.symlink == /home/agross/.vimrc
+  [ INFO ] Running /home/agross/.dotfiles/wget/bootstrap
   [  OK  ] Linked /home/agross/.dotfiles/wget/wgetrc.symlink == /home/agross/.wgetrc
-  [  OK  ] Linked /home/agross/.dotfiles/zsh/zlogin.symlink == /home/agross/.zlogin
+  [ INFO ] Running /home/agross/.dotfiles/zsh/bootstrap
   [  OK  ] Linked /home/agross/.dotfiles/zsh/zprofile.symlink == /home/agross/.zprofile
-  [  OK  ] Linked /home/agross/.dotfiles/zsh/zshrc.symlink == /home/agross/.zshrc
   [  OK  ] Linked /home/agross/.dotfiles/zsh/zshenv.symlink == /home/agross/.zshenv
-  [  OK  ] Linked /home/agross/.dotfiles/tmux/tmux.conf.symlink to /home/agross/.tmux.conf
+  [  OK  ] Linked /home/agross/.dotfiles/zsh/zshrc.symlink == /home/agross/.zshrc
+  [ INFO ] Running /home/agross/.dotfiles/htop/bootstrap
+  [  OK  ] Linked /home/agross/.dotfiles/htop/htoprc.symlink == /home/agross/.htoprc
+  [ INFO ] Running /home/agross/.dotfiles/elixir/bootstrap
+  [  OK  ] Linked /home/agross/.dotfiles/elixir/iex.exs.symlink == /home/agross/.iex.exs
+  [ INFO ] Running /home/agross/.dotfiles/gpg/bootstrap
 
   [ INFO ] All installed from /home/agross/.dotfiles
 ```
@@ -83,9 +97,7 @@ dotfiles are structured around topics. Topics are directories under the dotfiles
 ```
 dotfiles
 ├─ example
-|  ├─ .exclude-platforms     # bootstrapper #1: specifies excluded platforms for this topic
-|  ├─ example.symlink        # bootstrapper #2: symlinked to ~/.example
-|  ├─ .install.sh            # bootstrapper #3: performs additional installation after symlinking
+|  ├─ bootstrap              # bootstrapper: script to symlink files and install additional programs
 |  ├─ zprofile.zsh           # zsh #1: run for login shells
 |  ├─ path.zsh               # zsh #2: modifies $PATH
 |  ├─ something.zsh          # zsh #3: additional setup
@@ -104,21 +116,22 @@ There are some special files that either the `bootstrap` script or [zsh](#shell)
 
 ### `bootstrap`-specific files
 
-#### topic/\*.symlink
+The bootstrapper will create an implicit symlink for the dotfiles directory itself. It will always be symlinked to `$HOME/.dotfiles` (unless you [`git clone`d the dotfiles](#installation) there.) This makes it easier to refer to other dotfiles from within dotfiles as you can use a static path. For example, [my git mergetool scripts point to `$HOME/.dotfiles/git/tools`](https://github.com/agross/dotfiles/blob/master/git/gitconfig.symlink#L56).
 
-Files and directories with a `.symlink` extension are symlinked to your home directory with the `.symlink` extension removed and a dot character prepended.
+#### topic/bootstrap
 
-There is an implicit symlink for the dotfiles directory itself: It will always be symlinked to `$HOME/.dotfiles` (unless you [`git clone`d the dotfiles](#installation) there.)
+`bootstrap` will source each `topic/bootstrap` file and thereby run it using bash. The script can then
 
-#### topic/.install.sh
+* symlink files using the `symlink $source $target` function. `$target` may be omitted, e.g. `symlink foo.symlink` will create the symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo.symlink`.
+* install additional programs at the script's discretion.
 
-An optional installer script that is run after the topic's symlinks have been created.
+Each `topic/bootstrap` has the following environment variables available:
 
-#### topic/.exclude-platforms
+| Variable  | Description |
+| ----------| ----------- |
+| `$OSTYPE` | Normalized operating system, e.g. `linux`, `mac`, `windows` for msysgit and Git for Windows, `cygwin`, or the original `$OSTYPE` |
+| `$HOME`   | Home directory for the operating system, e.g. `$HOME` for all Linux-style `$OSTYPE`s and `/c/Users/<you>/` for `$OSTYPE == 'windows'` |
 
-`bootstrap` will not process the topic if the current platform is listed in the file (one platform per line). The bootstrapper currently detects platforms `cygwin`, `windows`, `linux`, `mac`, `msys` and `freebsd`.
-
-If the `.exclude-platforms` file does not exist or if it is empty, the topic is processed on all platforms.
 
 ### [zsh](#shell)-specific files
 
