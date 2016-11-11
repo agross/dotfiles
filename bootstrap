@@ -8,7 +8,7 @@
 set -e
 
 # Show executed commands.
-#set -x
+# set -x
 
 light_red="\e[01;31m"
 green="\e[0;32m"
@@ -121,22 +121,22 @@ symlink () {
     backup=${backup:-$backup_all}
     skip=${skip:-$skip_all}
 
-    if [ "$overwrite" == "true" ]; then
+    if [[ "$overwrite" == "true" ]]; then
       rm -rf "$dst"
       success "$(printf "Removed %b%s%b" $green "$dst" $reset_color)"
     fi
 
-    if [ "$backup" == "true" ]; then
+    if [[ "$backup" == "true" ]]; then
       mv "$dst" "${dst}.backup"
       success "$(printf "Moved %b%s%b to %b%s%b" $green "$dst" $reset_color $green "${dst}.backup" $reset_color)"
     fi
 
-    if [ "$skip" == "true" ]; then
+    if [[ "$skip" == "true" ]]; then
       success "$(printf "Skipped %b%s%b == %b%s%b" $green "$src" $reset_color $green "$dst" $reset_color)"
     fi
   fi
 
-  if [ "$skip" != "true" ]; then # "false" or empty.
+  if [[ "$skip" != "true" ]]; then # "false" or empty.
     # Create native symlinks on Windows.
     CYGWIN=winsymlinks:nativestrict ln --symbolic "$src" "$dst"
 
