@@ -2,4 +2,4 @@
 [[ "$OSTYPE" == 'windows' ]] && \
 return
 
-symlink "$topic/htoprc.symlink"
+symlink "$topic/htoprc"

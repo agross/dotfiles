@@ -53,38 +53,38 @@ $ ./bootstrap
   [ INFO ] Installing dotfiles to $HOME=/home/agross for $OSTYPE=linux
   [  OK  ] Linked /home/agross/.dotfiles == /home/agross/.dotfiles
   [ INFO ] Running /home/agross/.dotfiles/bash/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/bash/bash_profile.symlink == /home/agross/.bash_profile
-  [  OK  ] Linked /home/agross/.dotfiles/bash/bashrc.symlink == /home/agross/.bashrc
-  [  OK  ] Linked /home/agross/.dotfiles/bash/inputrc.symlink == /home/agross/.inputrc
+  [  OK  ] Linked /home/agross/.dotfiles/bash/bash_profile == /home/agross/.bash_profile
+  [  OK  ] Linked /home/agross/.dotfiles/bash/bashrc == /home/agross/.bashrc
+  [  OK  ] Linked /home/agross/.dotfiles/bash/inputrc == /home/agross/.inputrc
   [ INFO ] Running /home/agross/.dotfiles/git/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/git/gitconfig.symlink == /home/agross/.gitconfig
-  [  OK  ] Linked /home/agross/.dotfiles/git/gitconfig.training.symlink == /home/agross/.gitconfig.training
-  [  OK  ] Linked /home/agross/.dotfiles/git/git-wtfrc.symlink == /home/agross/.git-wtfrc
-  [  OK  ] Linked /home/agross/.dotfiles/git/gitshrc.symlink == /home/agross/.gitshrc
+  [  OK  ] Linked /home/agross/.dotfiles/git/gitconfig == /home/agross/.gitconfig
+  [  OK  ] Linked /home/agross/.dotfiles/git/gitconfig.training == /home/agross/.gitconfig.training
+  [  OK  ] Linked /home/agross/.dotfiles/git/git-wtfrc == /home/agross/.git-wtfrc
+  [  OK  ] Linked /home/agross/.dotfiles/git/gitshrc == /home/agross/.gitshrc
   [ INFO ] Running /home/agross/.dotfiles/mintty/bootstrap
   [ INFO ] Running /home/agross/.dotfiles/ruby/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/ruby/gemrc.symlink == /home/agross/.gemrc
-  [  OK  ] Linked /home/agross/.dotfiles/ruby/guard.rb.symlink == /home/agross/.guard.rb
-  [  OK  ] Linked /home/agross/.dotfiles/ruby/irbrc.symlink == /home/agross/.irbrc
-  [  OK  ] Linked /home/agross/.dotfiles/ruby/pryrc.symlink == /home/agross/.pryrc
+  [  OK  ] Linked /home/agross/.dotfiles/ruby/gemrc == /home/agross/.gemrc
+  [  OK  ] Linked /home/agross/.dotfiles/ruby/guard.rb == /home/agross/.guard.rb
+  [  OK  ] Linked /home/agross/.dotfiles/ruby/irbrc == /home/agross/.irbrc
+  [  OK  ] Linked /home/agross/.dotfiles/ruby/pryrc == /home/agross/.pryrc
   [ INFO ] Running /home/agross/.dotfiles/screen/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/screen/screenrc.symlink == /home/agross/.screenrc
+  [  OK  ] Linked /home/agross/.dotfiles/screen/screenrc == /home/agross/.screenrc
   [ INFO ] Running /home/agross/.dotfiles/ssh/bootstrap
   [ INFO ] Running /home/agross/.dotfiles/tmux/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/tmux/tmux.conf.symlink == /home/agross/.tmux.conf
+  [  OK  ] Linked /home/agross/.dotfiles/tmux/tmux.conf == /home/agross/.tmux.conf
   [ INFO ] Running /home/agross/.dotfiles/vim/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/vim/vim.symlink == /home/agross/.vim
-  [  OK  ] Linked /home/agross/.dotfiles/vim/vimrc.symlink == /home/agross/.vimrc
+  [  OK  ] Linked /home/agross/.dotfiles/vim/vim == /home/agross/.vim
+  [  OK  ] Linked /home/agross/.dotfiles/vim/vimrc == /home/agross/.vimrc
   [ INFO ] Running /home/agross/.dotfiles/wget/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/wget/wgetrc.symlink == /home/agross/.wgetrc
+  [  OK  ] Linked /home/agross/.dotfiles/wget/wgetrc == /home/agross/.wgetrc
   [ INFO ] Running /home/agross/.dotfiles/zsh/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/zsh/zprofile.symlink == /home/agross/.zprofile
-  [  OK  ] Linked /home/agross/.dotfiles/zsh/zshenv.symlink == /home/agross/.zshenv
-  [  OK  ] Linked /home/agross/.dotfiles/zsh/zshrc.symlink == /home/agross/.zshrc
+  [  OK  ] Linked /home/agross/.dotfiles/zsh/zprofile == /home/agross/.zprofile
+  [  OK  ] Linked /home/agross/.dotfiles/zsh/zshenv == /home/agross/.zshenv
+  [  OK  ] Linked /home/agross/.dotfiles/zsh/zshrc == /home/agross/.zshrc
   [ INFO ] Running /home/agross/.dotfiles/htop/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/htop/htoprc.symlink == /home/agross/.htoprc
+  [  OK  ] Linked /home/agross/.dotfiles/htop/htoprc == /home/agross/.htoprc
   [ INFO ] Running /home/agross/.dotfiles/elixir/bootstrap
-  [  OK  ] Linked /home/agross/.dotfiles/elixir/iex.exs.symlink == /home/agross/.iex.exs
+  [  OK  ] Linked /home/agross/.dotfiles/elixir/iex.exs == /home/agross/.iex.exs
   [ INFO ] Running /home/agross/.dotfiles/gpg/bootstrap
 
   [ INFO ] All installed from /home/agross/.dotfiles
@@ -106,7 +106,8 @@ dotfiles
 └─ git
    ├─ bin                    # contains git scripts
    |  └─ git-specific-script
-   ├─ gitconfig.symlink      # symlinked to ~/.gitconfig
+   ├─ bootstrap              # bootstrapper to create symlinks
+   ├─ gitconfig              # symlinked to ~/.gitconfig by bootstrap
    ├─ aliases.zsh            # sets up git aliases
    ├─ path.zsh               # adds dotfiles/git/bin to $PATH
    └─ ...
@@ -116,19 +117,20 @@ There are some special files that either the `bootstrap` script or [zsh](#shell)
 
 ### `bootstrap`-specific files
 
-The bootstrapper will create an implicit symlink for the dotfiles directory itself. It will always be symlinked to `$HOME/.dotfiles` (unless you [`git clone`d the dotfiles](#installation) there.) This makes it easier to refer to other dotfiles from within dotfiles as you can use a static path. For example, [my git mergetool scripts point to `$HOME/.dotfiles/git/tools`](https://github.com/agross/dotfiles/blob/master/git/gitconfig.symlink#L56).
+The bootstrapper will create an implicit symlink for the dotfiles directory itself. It will always be symlinked to `$HOME/.dotfiles` (unless you [`git clone`d the dotfiles](#installation) there.) This makes it easier to refer to other dotfiles from within dotfiles as you can use a static path. For example, [my git mergetool scripts point to `$HOME/.dotfiles/git/tools`](https://github.com/agross/dotfiles/blob/master/git/gitconfig#L56).
 
 #### topic/bootstrap
 
 `bootstrap` will source each `topic/bootstrap` file and thereby run it using bash. The script can then
 
-* symlink files using the `symlink $source $target` function. `$target` may be omitted, e.g. `symlink foo.symlink` will create the symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo.symlink`.
+* symlink files using the `symlink $source $target` function. `$target` may be omitted, e.g. `symlink $topic/foo` will create the symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo`.
 * install additional programs at the script's discretion.
 
 Each `topic/bootstrap` has the following environment variables available:
 
 | Variable  | Description |
 | ----------| ----------- |
+| `$topic`  | Directory of the topic of the current `bootstrap` script |
 | `$OSTYPE` | Normalized operating system, e.g. `linux`, `mac`, `windows` for msysgit and Git for Windows, `cygwin`, or the original `$OSTYPE` |
 | `$HOME`   | Home directory for the operating system, e.g. `$HOME` for all Linux-style `$OSTYPE`s and `/c/Users/<you>/` for `$OSTYPE == 'windows'` |
 
@@ -137,7 +139,7 @@ Each `topic/bootstrap` has the following environment variables available:
 
 I use the excellent [zplug](https://github.com/zplug/zplug) project to manage my zsh plugins and initialization.
 
-You can configure verbose logging of the zsh startup process by [setting `ZSH_VERBOSE`](https://github.com/agross/dotfiles/blob/master/zsh/zshenv.symlink#L4) to a nonempty value.
+You can configure verbose logging of the zsh startup process by [setting `ZSH_VERBOSE`](https://github.com/agross/dotfiles/blob/master/zsh/zshenv#L4) to a nonempty value.
 
 ### topic/\*\*/zprofile.zsh
 

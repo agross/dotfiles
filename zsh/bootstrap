@@ -1,5 +1,5 @@
 [[ "$OSTYPE" == 'windows' ]] && return
 
-symlink "$topic/zprofile.symlink"
-symlink "$topic/zshenv.symlink"
-symlink "$topic/zshrc.symlink"
+symlink "$topic/zprofile"
+symlink "$topic/zshenv"
+symlink "$topic/zshrc"

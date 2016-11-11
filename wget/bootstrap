@@ -1,1 +1,1 @@
-symlink "$topic/wgetrc.symlink"
+symlink "$topic/wgetrc"

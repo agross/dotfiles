@@ -1,1 +1,1 @@
-symlink "$topic/iex.exs.symlink"
+symlink "$topic/iex.exs"

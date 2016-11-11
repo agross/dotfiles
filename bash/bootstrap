@@ -1,5 +1,5 @@
 [[ "$OSTYPE" == 'windows' ]] && return
 
-symlink "$topic/bash_profile.symlink"
-symlink "$topic/bashrc.symlink"
-symlink "$topic/inputrc.symlink"
+symlink "$topic/bash_profile"
+symlink "$topic/bashrc"
+symlink "$topic/inputrc"

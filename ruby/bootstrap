@@ -1,4 +1,4 @@
-symlink "$topic/gemrc.symlink"
-symlink "$topic/guard.rb.symlink"
-symlink "$topic/irbrc.symlink"
-symlink "$topic/pryrc.symlink"
+symlink "$topic/gemrc"
+symlink "$topic/guard.rb"
+symlink "$topic/irbrc"
+symlink "$topic/pryrc"

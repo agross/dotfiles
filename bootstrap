@@ -66,11 +66,11 @@ home_directory () {
 
 symlink () {
   local src="${1?Need link source}"
-  # If dst is not given, use src file name in $HOME, prepended with ., minus .symlink extension.
+  # If dst is not given, use src file name in $HOME, prepended with a dot.
   local dst="$2"
   if [[ -z "$dst" ]]; then
     local filename="$(basename "$src")"
-    local dst="$HOME/.${filename%.*}"
+    local dst="$HOME/.$filename"
   fi
 
   local overwrite= backup= skip=
