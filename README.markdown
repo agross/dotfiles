@@ -16,7 +16,7 @@ I use these dotfiles on Windows, Cygwin and Linux. They should work on Mac OS X 
 
 ### Cygwin
 
-When you install dotfiles under Cygwin the `bootstrap` script tries to create native NTFS symlinks by `export`ing [`CYGWIN=winsymlinks:nativestrict`](https://cygwin.com/cygwin-ug-net/using.html#pathnames-symlinks)\.
+When you install dotfiles under Cygwin the `bootstrap` script tries to create native NTFS symlinks by running `ln` with [`CYGWIN=winsymlinks:nativestrict`](https://cygwin.com/cygwin-ug-net/using.html#pathnames-symlinks)\.
 
 Native NTFS symlinks can only be created if you are either an Administrator [in an elevated shell](http://stackoverflow.com/a/15330511/149264) or if you have the `SeCreateSymbolicLinkPrivilege` privilege. Check with
 
@@ -134,35 +134,33 @@ Each `topic/bootstrap` has the following environment variables available:
 | `$OSTYPE` | Normalized operating system, e.g. `linux`, `mac`, `windows` for msysgit and Git for Windows, `cygwin`, or the original `$OSTYPE` |
 | `$HOME`   | Home directory for the operating system, e.g. `$HOME` for all Linux-style `$OSTYPE`s and `/c/Users/<you>/` for `$OSTYPE == 'windows'` |
 
-
 ### [zsh](#shell)-specific files
 
 I use the excellent [zplug](https://github.com/zplug/zplug) project to manage my zsh plugins and initialization.
 
 You can configure verbose logging of the zsh startup process by [setting `ZSH_VERBOSE`](https://github.com/agross/dotfiles/blob/master/zsh/zshenv#L4) to a nonempty value.
 
-### topic/\*\*/zprofile.zsh
+#### topic/\*\*/zprofile.zsh
 
 These files are loaded for login shells only (i.e. `zsh --login`). I use them to [run `screen` or `tmux` when connecting to a server via SSH](https://github.com/agross/dotfiles/blob/master/ssh/zprofile.zsh).
 
-### topic/\*\*/path.zsh
+#### topic/\*\*/path.zsh
 
 These files are expected to modify the `PATH` environment variable and are loaded before other scripts below are run.
 
-### topic/\*\*/\*.zsh
+#### topic/\*\*/\*.zsh
 
 You can put anything you want in these, e.g. set up topic-specific aliases.
 
-### topic/\*\*/postinit.zsh
+#### topic/\*\*/postinit.zsh
 
 Postinit scripts are loaded last, i.e. after all [zplug](https://github.com/zplug/zplug) plugins are loaded and before completion setup is run. Put any last-minute setup here. I use them on Windows to make my Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
 
-### topic/\*\*/completion.zsh
+#### topic/\*\*/completion.zsh
 
 Completion scripts are run after [zplug](https://github.com/zplug/zplug) calls [zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html) to initializes the completion system. Put any completion-specific setup here.
 
-Thanks
-------
+# Thanks
 
 This work, especially the `boostrap` script, is based on the dotfiles of [Zach Holman](http://github.com/holman/dotfiles).
 
