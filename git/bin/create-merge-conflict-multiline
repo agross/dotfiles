@@ -1,12 +1,12 @@
 #!/bin/sh
 
-function commit()
+commit()
 {
-  mkdir -p "$(dirname "$2")"
+  mkdir --parents "$(dirname "$2")"
 
-  echo -e $1 > "$2"
+  printf "$1" > "$2"
   git add "$2"
-  git commit -m "$1"
+  git commit --message "$1"
 }
 
 file_name="some path/conflicted file"
