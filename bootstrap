@@ -167,7 +167,7 @@ install_dotfiles () {
     symlink "$dotfiles_root" "$HOME/.dotfiles"
 
     # Find direct child directories (topics).
-    local topics="$(/usr/bin/find "$dotfiles_root" -mindepth 1 -maxdepth 1 -type d)"
+    local topics="$(/usr/bin/find "$dotfiles_root" -mindepth 1 -maxdepth 1 -type d | sort)"
     while IFS=$'\n' read -r topic; do
       [[ -z "$topic" ]] && continue
 
