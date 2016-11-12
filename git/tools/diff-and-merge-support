@@ -1,105 +1,113 @@
 #!/bin/sh
 #
-# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
-#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging.
 
-function get_cygpath()
-{
-  local __result=$1
-  local cygpath=$(command -v cygpath)
+# Assume we are dot-sourced from a script in a subdirectory.
+_script_path="$(dirname "${0%/*}")"
 
-  if [ "x$cygpath" = "x" ]; then
-    # Assume a local copy of cygpath.exe and cygwin1.dll (e.g. for MSysGit)
-    local script_path=${0%/*}
-    cygpath=$script_path/cygpath
+find_cygpath() {
+  local cygpath
+
+  cygpath="$(command -v cygpath)"
+  if [ $? = 0 ]; then
+    printf "$cygpath"
+    return
   fi
 
-  if [ -n "${GIT_DIFFMERGE_VERBOSE-}" ]; then
-    echo "Cygpath: $cygpath"
+  # Try local copy of cygpath.exe and cygwin1.dll (e.g. for msysgit).
+  cygpath="$_script_path/cygpath.exe"
+  if [ -f "$cygpath" ] && [ -x "$cygpath" ]; then
+    printf "$cygpath"
+    return
   fi
 
-  if [[ "$__result" ]]; then
-    eval $__result="'$cygpath'"
-  else
-    echo "$cygpath"
-  fi
+  printf "\$PATH $_script_path"
+  return 1
 }
 
-function get_tool_path()
-{
-  local __result=$1
-  local path
-  get_cygpath path
+tool_path() {
+  [ $# = 0 ] && printf "Need tool candidate paths\n" >&2 && return 1
 
-  local tool=$($path $2)
+  for canditate in "$@"; do
+    if command -v "$canditate" > /dev/null; then
+      printf "$canditate"
+      return
+    fi
+  done
 
-  if [ -n "${GIT_DIFFMERGE_VERBOSE-}" ]; then
-    echo "Tool: $2 -> $tool"
-  fi
-
-  if [[ "$__result" ]]; then
-    eval $__result="'$tool'"
-  else
-    echo "$tool"
-  fi
+  printf "Tool executable not available at: %s\n" "$@" >&2
+  return 2
 }
 
-# Sets global variables: old, old_title, new, new_title
-function get_diff_args()
-{
-  local path
-  get_cygpath path
+# Sets global variables: left, left_title, right, right_title.
+diff_args() {
+  left="${1?Need left file}"
+  right="${2?Need right file}"
 
-  old=$($path --mixed "$1")
-  # Extract file name from git's temporary file: /tmp/<garbage>_filename, useful for e.g. renamed files
-  old_title="Old $(echo $1 | cut -d'_' -f 2-)"
-  if [ ! -f "$1" ] && [ ! -d "$1" ]; then
-    old=$($path --mixed $DOTFILES/git/tools/empty)
-    old_title="<File didn't exist>"
+  # Extract file name from git's temporary file: /tmp/<garbage>_filename.
+  left_title="Old: ${left#*_}"
+  if [ ! -f "$left" ] && [ ! -d "$left" ]; then
+    left_title="<File didn't exist>"
   fi
 
-  new=$($path --mixed "$2")
-  # Extract file name from git's temporary file: /tmp/<garbage>_filename, useful for e.g. renamed files
-  new_title="New $(echo $2 | cut -d'_' -f 2-)"
-  if [ ! -f "$2" ] && [ ! -d "$2" ]; then
-    new=$($path --mixed $DOTFILES/git/tools/empty)
-    new_title="<File has been deleted>"
-
-    # Extract file name from git's temporary file: /tmp/<garbage>_filename, useful for e.g. renamed files
-    old_title="Old $(echo $1 | cut -d'_' -f 2-)"
+  right_title="New: ${right#*_}"
+  if [ ! -f "$right" ] && [ ! -d "$right" ]; then
+    right_title="<File has been deleted>"
   fi
 
-  if [ -n "${GIT_DIFFMERGE_VERBOSE-}" ]; then
-    echo "Old: $1 -> Windows: $old ($old_title)"
-    echo "New: $2 -> Windows: $new ($new_title)"
-    echo
-    echo "Command line:"
+  if [ "$OSTYPE" = 'cygwin' ] || [ "$OSTYPE" = 'msys' ]; then
+    local cygpath
+    cygpath="$(find_cygpath)" || { printf "No cygpath in: %s\n" "$cygpath" >&2 && exit 1; }
+
+    if [ ! -f "$left" ] && [ ! -d "$left" ]; then
+      left="$_script_path/empty"
+    fi
+    left="$("$cygpath" --mixed "$left")"
+
+    if [ ! -f "$right" ] && [ ! -d "$right" ]; then
+      right="$_script_path/empty"
+    fi
+    right="$("$cygpath" --mixed "$right")"
+  fi
+
+  if [ -n "$GIT_DIFFMERGE_VERBOSE" ]; then
+    printf "Cygpath: %s\n"                     "$cygpath"
+    printf "Left:    %s -> %s (Title: %s)\n"   "$1" "$left"  "$left_title"
+    printf "Right:   %s -> %s (Title: %s)\n\n" "$2" "$right" "$right_title"
+    printf "Command line:\n"
     set -x
   fi
 }
 
-# Sets global variables: base, local, remote, result
-function get_merge_args()
-{
-  local path
-  get_cygpath path
+# Sets global variables: base, local, remote, result.
+merge_args() {
+  base="${1?Need base file}"
+  local="${2?Need local file}"
+  remote="${3?Need remote file}"
+  result="${4?Need result file}"
 
-  base=$($path --mixed "$1")
-  if [ ! -f "$1" ]; then
-    base=$($path --mixed $DOTFILES/git/tools/empty)
+  if [ "$OSTYPE" = 'cygwin' ] || [ "$OSTYPE" = 'msys' ]; then
+    local cygpath
+    cygpath="$(find_cygpath)" || { printf "No cygpath in: %s\n" "$cygpath" >&2 && exit 1; }
+
+    # Replace /dev/null with an empty file on Windows.
+    if [ ! -f "$base" ]; then
+      base="$_script_path/empty"
+    fi
+
+    base="$($cygpath --mixed "$base")"
+    local="$("$cygpath" --mixed "$local")"
+    remote="$("$cygpath" --mixed "$remote")"
+    result="$("$cygpath" --mixed "$result")"
   fi
 
-  local=$($path --mixed "$2")
-  remote=$($path --mixed "$3")
-  result=$($path --mixed "$4")
-
-  if [ -n "${GIT_DIFFMERGE_VERBOSE-}" ]; then
-    echo "Base: $1 -> Windows: $base"
-    echo "Local: $2 -> Windows: $local"
-    echo "Remote: $3 -> Windows: $remote"
-    echo "Result: $4 -> Windows: $result"
-    echo
-    echo "Command line:"
+  if [ -n "$GIT_DIFFMERGE_VERBOSE" ]; then
+    printf "Cygpath: %s\n"         "$cygpath"
+    printf "Base:    %s -> %s\n"   "$1" "$base"
+    printf "Local:   %s -> %s\n"   "$2" "$local"
+    printf "Remote:  %s -> %s\n"   "$3" "$remote"
+    printf "Result:  %s -> %s\n\n" "$4" "$result"
+    printf "Command line:\n"
     set -x
   fi
 }

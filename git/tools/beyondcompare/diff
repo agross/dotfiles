@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+
+script_path="${0%/*}"
+. "$script_path/../diff-and-merge-support"
+
+. "$script_path/tool"
+diff_args "$1" "$2" || exit $?
+
+"$tool" -solo \
+        -readonly \
+        "$left" \
+        "$right" \
+        -title1="$left_title" \
+        -title2="$right_title"

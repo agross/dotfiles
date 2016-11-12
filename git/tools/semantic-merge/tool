@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tool="$(tool_path "/c/Users/$USER/AppData/Local/PlasticSCM4/semanticmerge/semanticmergetool.exe")" || exit $?

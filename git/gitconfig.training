@@ -40,18 +40,20 @@
 	# prompt = false
 	# keepBackup = false
 [mergetool "diffmerge"]
-	cmd = ~/.dotfiles/git/tools/diffmerge-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/.dotfiles/git/tools/diffmerge/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [mergetool "bc"]
-	cmd = ~/.dotfiles/git/tools/beyondcompare-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/.dotfiles/git/tools/beyondcompare/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [mergetool "p4"]
-	cmd = ~/.dotfiles/git/tools/p4merge-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
-[mergetool "semanticmerge"]
-	cmd = ~/.dotfiles/git/tools/semanticmerge-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/.dotfiles/git/tools/p4/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[mergetool "semantic-merge"]
+	cmd = ~/.dotfiles/git/tools/semantic-merge/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = false
+[mergetool "meld"]
+	cmd = ~/.dotfiles/git/tools/meld/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [mergetool "winmerge"]
-	cmd = ~/.dotfiles/git/tools/winmerge-merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/.dotfiles/git/tools/winmerge/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [diff]
 	tool = diffmerge
@@ -60,15 +62,15 @@
 [difftool]
 	prompt = false
 [difftool "diffmerge"]
-	cmd = ~/.dotfiles/git/tools/diffmerge-diff \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/.dotfiles/git/tools/diffmerge/diff \"$LOCAL\" \"$REMOTE\"
 [difftool "bc"]
-	cmd = ~/.dotfiles/git/tools/beyondcompare-diff \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/.dotfiles/git/tools/beyondcompare/diff \"$LOCAL\" \"$REMOTE\"
 [difftool "p4"]
-	cmd = ~/.dotfiles/git/tools/p4merge-diff \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/.dotfiles/git/tools/p4/diff \"$LOCAL\" \"$REMOTE\"
 [difftool "meld"]
-	cmd = ~/.dotfiles/git/tools/meld-diff \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/.dotfiles/git/tools/meld/diff \"$LOCAL\" \"$REMOTE\"
 [difftool "winmerge"]
-	cmd = ~/.dotfiles/git/tools/winmerge-diff \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/.dotfiles/git/tools/winmerge/diff \"$LOCAL\" \"$REMOTE\"
 [clean]
 	# requireForce = false
 [rerere]

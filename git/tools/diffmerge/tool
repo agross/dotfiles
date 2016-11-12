@@ -1,0 +1,5 @@
+#!/bin/sh
+
+tool="$(tool_path "/c/Tools/DiffMerge/diffmerge.exe" \
+                  "diffmerge" \
+                  "/Applications/DiffMerge.app/Contents/MacOS/diffmerge")" || exit $?

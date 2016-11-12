@@ -1,0 +1,4 @@
+#!/bin/sh
+
+tool="$(tool_path "/c/Tools/Meld/meld/meld.exe" \
+                  "meld")" || exit $?
