@@ -10,6 +10,3 @@
 	cmd = ~/.dotfiles/git/tools/p4 diff \"$LOCAL\" \"$REMOTE\"
 [difftool "winmerge"]
 	cmd = ~/.dotfiles/git/tools/winmerge diff \"$LOCAL\" \"$REMOTE\"
-[mergetool "bc"]
-	cmd = ~/.dotfiles/git/tools/beyondcompare merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
-	trustExitCode = true
