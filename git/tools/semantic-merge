@@ -19,30 +19,30 @@ case "$op" in
   merge)
     merge_args "$1" "$2" "$3" "$4" || exit $?
 
-    "$mergetool" -b="$base" \
-                -d="$local" \
-                -s="$remote" \
-                -r="$result" \
-                -l=csharp \
-                -emt="mergetool.exe \
-                      -b=\"@basefile\" \
-                      -bn=\"@basesymbolic\" \
-                      -s=\"@sourcefile\" \
-                      -sn=\"@sourcesymbolic\" \
-                      -d=\"@destinationfile\" \
-                      -dn=\"@destinationsymbolic\" \
-                      -r=\"@output\" \
-                      -t=\"@filetype\" \
-                      -i=\"@comparationmethod\" \
-                      -e=\"@fileencoding\" \
-                      -edt=\"mergetool.exe \
-                      -s=\"@sourcefile\" \
-                      -sn=\"@sourcesymbolic\" \
-                      -d=\"@destinationfile\" \
-                      -dn=\"@destinationsymbolic\" \
-                      -t=\"@filetype\" \
-                      -i=\"@comparationmethod\" \
-                      -e=\"@fileencoding\""
+    "$tool" -b="$base" \
+            -d="$local" \
+            -s="$remote" \
+            -r="$result" \
+            -l=csharp \
+            -emt="mergetool.exe \
+                  -b=\"@basefile\" \
+                  -bn=\"@basesymbolic\" \
+                  -s=\"@sourcefile\" \
+                  -sn=\"@sourcesymbolic\" \
+                  -d=\"@destinationfile\" \
+                  -dn=\"@destinationsymbolic\" \
+                  -r=\"@output\" \
+                  -t=\"@filetype\" \
+                  -i=\"@comparationmethod\" \
+                  -e=\"@fileencoding\" \
+                  -edt=\"mergetool.exe \
+                  -s=\"@sourcefile\" \
+                  -sn=\"@sourcesymbolic\" \
+                  -d=\"@destinationfile\" \
+                  -dn=\"@destinationsymbolic\" \
+                  -t=\"@filetype\" \
+                  -i=\"@comparationmethod\" \
+                  -e=\"@fileencoding\""
     ;;
 
   *)
