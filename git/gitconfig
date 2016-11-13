@@ -52,14 +52,8 @@
 [mergetool]
 	prompt = false
 	keepBackup = false
-[mergetool "diffmerge"]
-	cmd = ~/.dotfiles/git/tools/diffmerge merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
-	trustExitCode = true
-[mergetool "meld"]
-	cmd = ~/.dotfiles/git/tools/meld merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
-[mergetool "bc"]
-	cmd = ~/.dotfiles/git/tools/beyondcompare merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
-	trustExitCode = true
+[include]
+	path = ~/.dotfiles/git/git-mergetools
 [diff]
 	tool = diffmerge
 	renames = copies
@@ -67,12 +61,8 @@
 	compactionHeuristic = true
 [difftool]
 	prompt = false
-[difftool "diffmerge"]
-	cmd = ~/.dotfiles/git/tools/diffmerge diff \"$LOCAL\" \"$REMOTE\"
-[difftool "meld"]
-	cmd = ~/.dotfiles/git/tools/meld diff \"$LOCAL\" \"$REMOTE\"
-[difftool "bc"]
-	cmd = ~/.dotfiles/git/tools/beyondcompare diff \"$LOCAL\" \"$REMOTE\"
+[include]
+	path = ~/.dotfiles/git/git-difftools
 [clean]
 	requireForce = false
 [rerere]

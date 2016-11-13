@@ -1,0 +1,19 @@
+[mergetool "bc"]
+	cmd = ~/.dotfiles/git/tools/beyondcompare merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[mergetool "diffmerge"]
+	cmd = ~/.dotfiles/git/tools/diffmerge merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[mergetool "kdiff3"]
+	cmd = ~/.dotfiles/git/tools/kdiff3 merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[mergetool "meld"]
+	cmd = ~/.dotfiles/git/tools/meld merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[mergetool "semantic-merge"]
+	cmd = ~/.dotfiles/git/tools/semantic-merge merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = false
+[mergetool "p4"]
+	cmd = ~/.dotfiles/git/tools/p4 merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[mergetool "winmerge"]
+	cmd = ~/.dotfiles/git/tools/winmerge merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
