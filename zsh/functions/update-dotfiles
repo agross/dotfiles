@@ -14,6 +14,9 @@ fi
 daemon_pidfile="$(mktemp --suffix=git-daemon)"
 
 function dotfiles::cleanup {
+  # Clear traps.
+  trap - EXIT SIGHUP SIGINT SIGTERM
+
   dotfiles::stop-git-daemon "$daemon_pidfile"
 
   unset daemon_pidfile
