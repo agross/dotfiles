@@ -47,18 +47,18 @@
 	rmdir = true
 	findcopiesharder = true
 [merge]
-	tool = diffmerge
+	tool = bc
 	log = true
 [mergetool]
 	prompt = false
 	keepBackup = false
 [mergetool "diffmerge"]
-	cmd = ~/.dotfiles/git/tools/diffmerge/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/.dotfiles/git/tools/diffmerge merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [mergetool "meld"]
-	cmd = ~/.dotfiles/git/tools/meld/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/.dotfiles/git/tools/meld merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [mergetool "bc"]
-	cmd = ~/.dotfiles/git/tools/beyondcompare/merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	cmd = ~/.dotfiles/git/tools/beyondcompare merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [diff]
 	tool = diffmerge
@@ -68,11 +68,11 @@
 [difftool]
 	prompt = false
 [difftool "diffmerge"]
-	cmd = ~/.dotfiles/git/tools/diffmerge/diff \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/.dotfiles/git/tools/diffmerge diff \"$LOCAL\" \"$REMOTE\"
 [difftool "meld"]
-	cmd = ~/.dotfiles/git/tools/meld/diff \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/.dotfiles/git/tools/meld diff \"$LOCAL\" \"$REMOTE\"
 [difftool "bc"]
-	cmd = ~/.dotfiles/git/tools/beyondcompare/diff \"$LOCAL\" \"$REMOTE\"
+	cmd = ~/.dotfiles/git/tools/beyondcompare diff \"$LOCAL\" \"$REMOTE\"
 [clean]
 	requireForce = false
 [rerere]

@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+
+script_path="${0%/*}"
+. "$script_path/diff-and-merge-support"
+
+tool="$(tool_path "/c/Tools/Beyond Compare/BCompare.exe" \
+                  "bcompare")" || exit $?
+
+op="$1"
+shift
+
+case "$op" in
+  diff)
+    diff_args "$1" "$2" || exit $?
+
+    "$tool" -solo \
+            -readonly \
+            "$left" \
+            "$right" \
+            -title1="$left_title" \
+            -title2="$right_title"
+    ;;
+
+  merge)
+    merge_args "$1" "$2" "$3" "$4" || exit $?
+
+    "$tool" -solo \
+            -automerge \
+            -reviewconflicts \
+            "$local" \
+            "$remote" \
+            "$base" \
+            "$result" \
+            -lefttitle="Mine" \
+            -centertitle="Base" \
+            -righttitle="Theirs" \
+            -outputtitle="Merged: $4"
+    ;;
+
+  *)
+    printf "Unknown operation: $op\n" >&2
+    exit 1
+    ;;
+esac

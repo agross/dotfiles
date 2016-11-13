@@ -2,8 +2,8 @@
 #
 # export GIT_DIFFMERGE_VERBOSE=1 to enable logging.
 
-# Assume we are dot-sourced from a script in a subdirectory.
-_script_path="$(dirname "${0%/*}")"
+# Assume we are dot-sourced from a script in our own directory.
+_script_path="${0%/*}"
 
 find_cygpath() {
   local cygpath

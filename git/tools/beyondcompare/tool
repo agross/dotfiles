@@ -1,4 +1,0 @@
-#!/bin/sh
-
-tool="$(tool_path "/c/Tools/Beyond Compare/BCompare.exe" \
-                  "bcompare")" || exit $?

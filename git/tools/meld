@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+
+script_path="${0%/*}"
+. "$script_path/diff-and-merge-support"
+
+tool="$(tool_path "/c/Tools/Meld/meld/meld.exe" \
+                  "meld")" || exit $?
+
+op="$1"
+shift
+
+case "$op" in
+  diff)
+    diff_args "$1" "$2" || exit $?
+
+    "$tool" --diff \
+            "$left" \
+            "$right"
+    ;;
+
+  merge)
+    merge_args "$1" "$2" "$3" "$4" || exit $?
+
+    "$tool" --auto-merge \
+            "$local" \
+            "$base" \
+            "$remote" \
+            --output="$result"
+    ;;
+
+  *)
+    printf "Unknown operation: $op\n" >&2
+    exit 1
+    ;;
+esac

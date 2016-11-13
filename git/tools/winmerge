@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+
+script_path="${0%/*}"
+. "$script_path/diff-and-merge-support"
+
+tool="$(tool_path "/c/Tools/WinMerge/WinMergeU.exe")" || exit $?
+
+op="$1"
+shift
+
+case "$op" in
+  diff)
+    diff_args "$1" "$2" || exit $?
+
+    "$tool" /e \
+            /u \
+            /dl "$left_title" \
+            /dr "$right_title" \
+            "$left" \
+            "$right"
+    ;;
+
+  merge)
+    merge_args "$1" "$2" "$3" "$4" || exit $?
+
+    "$tool" /e \
+            /u \
+            /wl \
+            /dl "Mine" \
+            /dr "Theirs" \
+            "$local" \
+            "$remote" \
+            "$result"
+    ;;
+
+  *)
+    printf "Unknown operation: $op\n" >&2
+    exit 1
+    ;;
+esac

@@ -1,3 +1,0 @@
-#!/bin/sh
-
-tool="$(tool_path "/c/Tools/WinMerge/WinMergeU.exe")" || exit $?

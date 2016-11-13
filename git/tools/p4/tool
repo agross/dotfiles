@@ -1,4 +1,0 @@
-#!/bin/sh
-
-tool="$(tool_path "/c/Tools/P4Merge/p4merge.exe" \
-                  "p4merge")" || exit $?

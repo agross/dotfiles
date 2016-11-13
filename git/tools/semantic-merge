@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+
+script_path="${0%/*}"
+. "$script_path/diff-and-merge-support"
+
+tool="$(tool_path "/c/Users/$USER/AppData/Local/PlasticSCM4/semanticmerge/semanticmergetool.exe")" || exit $?
+
+op="$1"
+shift
+
+case "$op" in
+  diff)
+    printf "Diff is not implemented for semantic-merge\n" >&2
+    exit 1
+    ;;
+
+  merge)
+    merge_args "$1" "$2" "$3" "$4" || exit $?
+
+    "$mergetool" -b="$base" \
+                -d="$local" \
+                -s="$remote" \
+                -r="$result" \
+                -l=csharp \
+                -emt="mergetool.exe \
+                      -b=\"@basefile\" \
+                      -bn=\"@basesymbolic\" \
+                      -s=\"@sourcefile\" \
+                      -sn=\"@sourcesymbolic\" \
+                      -d=\"@destinationfile\" \
+                      -dn=\"@destinationsymbolic\" \
+                      -r=\"@output\" \
+                      -t=\"@filetype\" \
+                      -i=\"@comparationmethod\" \
+                      -e=\"@fileencoding\" \
+                      -edt=\"mergetool.exe \
+                      -s=\"@sourcefile\" \
+                      -sn=\"@sourcesymbolic\" \
+                      -d=\"@destinationfile\" \
+                      -dn=\"@destinationsymbolic\" \
+                      -t=\"@filetype\" \
+                      -i=\"@comparationmethod\" \
+                      -e=\"@fileencoding\""
+    ;;
+
+  *)
+    printf "Unknown operation: $op\n" >&2
+    exit 1
+    ;;
+esac
