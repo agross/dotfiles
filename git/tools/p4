@@ -8,7 +8,7 @@ script_path="${0%/*}"
 tool="$(tool_path "/c/Tools/P4Merge/p4merge.exe" \
                   "p4merge")" || exit $?
 
-op="$1"
+op="${1?Need operation (diff or merge) as the first argument}"
 shift
 
 case "$op" in

@@ -9,7 +9,7 @@ tool="$(tool_path "/c/Tools/DiffMerge/diffmerge.exe" \
                   "diffmerge" \
                   "/Applications/DiffMerge.app/Contents/Resources/diffmerge.sh")" || exit $?
 
-op="$1"
+op="${1?Need operation (diff or merge) as the first argument}"
 shift
 
 case "$op" in
