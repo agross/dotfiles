@@ -123,7 +123,7 @@ The bootstrapper will create an implicit symlink for the dotfiles directory itse
 
 `bootstrap` will source each `topic/bootstrap` file and thereby run it using bash. The script can then
 
-* symlink files using the `symlink $source $target` function. `$target` may be omitted, e.g. `symlink $topic/foo` will create the symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo`.
+* symlink files using the [`symlink $source $target`](https://github.com/agross/dotfiles/blob/master/bootstrap#L67) function. `$target` may be omitted, e.g. `symlink $topic/foo` will create the symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo`.
 * install additional programs at the script's discretion.
 
 Each `topic/bootstrap` has the following environment variables available:
