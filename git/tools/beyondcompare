@@ -35,7 +35,7 @@ case "$op" in
             "$remote" \
             "$base" \
             "$result" \
-            -lefttitle="Mine" \
+            -lefttitle="Ours" \
             -centertitle="Base" \
             -righttitle="Theirs" \
             -outputtitle="Merged: $4" \

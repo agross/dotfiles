@@ -28,7 +28,7 @@ case "$op" in
     "$tool" /e \
             /u \
             /wl \
-            /dl "Mine" \
+            /dl "Ours" \
             /dr "Theirs" \
             "$local" \
             "$remote" \
