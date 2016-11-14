@@ -6,7 +6,8 @@ script_path="${0%/*}"
 . "$script_path/diff-and-merge-support"
 
 tool="$(tool_path "/c/Tools/Meld/meld/meld.exe" \
-                  "meld")" || exit $?
+                  "meld" \
+                  "/Applications/Meld.app/Contents/MacOS/Meld")" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
 shift

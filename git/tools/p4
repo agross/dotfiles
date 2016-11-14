@@ -6,7 +6,8 @@ script_path="${0%/*}"
 . "$script_path/diff-and-merge-support"
 
 tool="$(tool_path "/c/Tools/P4Merge/p4merge.exe" \
-                  "p4merge")" || exit $?
+                  "p4merge" \
+                  "/Applications/p4merge.app/Contents/MacOS/p4merge")" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
 shift
