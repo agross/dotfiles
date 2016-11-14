@@ -19,7 +19,8 @@ case "$op" in
     "$tool" "$left" \
             "$right" \
             --L1 "$left_title" \
-            --L2 "$right_title"
+            --L2 "$right_title"\
+            > /dev/null 2>&1
     ;;
 
   merge)
@@ -32,7 +33,8 @@ case "$op" in
             --output "$result" \
             --L1 "$4 (Base)" \
             --L2 "$4 (Local)" \
-            --L3 "$4 (Remote)"
+            --L3 "$4 (Remote)"\
+            > /dev/null 2>&1
     ;;
 
   *)

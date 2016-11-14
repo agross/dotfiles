@@ -21,7 +21,8 @@ case "$op" in
             "$left" \
             "$right" \
             -title1="$left_title" \
-            -title2="$right_title"
+            -title2="$right_title" \
+            > /dev/null 2>&1
     ;;
 
   merge)
@@ -37,7 +38,8 @@ case "$op" in
             -lefttitle="Mine" \
             -centertitle="Base" \
             -righttitle="Theirs" \
-            -outputtitle="Merged: $4"
+            -outputtitle="Merged: $4" \
+            > /dev/null 2>&1
     ;;
 
   *)
