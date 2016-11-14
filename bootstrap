@@ -38,11 +38,11 @@ fail () {
 
 platforms () {
   case "$OSTYPE" in
-    linux*) printf 'linux';;
-    darwin) printf 'mac';;
-    msys)   printf 'windows';;
-    cygwin) printf "cygwin\nwindows";;
-    *)      printf "$OSTYPE";;
+    linux*)  printf 'linux';;
+    darwin*) printf 'mac';;
+    msys)    printf 'windows';;
+    cygwin)  printf "cygwin\nwindows";;
+    *)       printf "$OSTYPE";;
   esac
 }
 
@@ -50,8 +50,8 @@ readlink_e () {
   local file="$1"
 
   if [[ "$(platforms)" == 'mac' ]]; then
-    printf "$(realpath "$file")"
-    return $?
+    perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$file"
+    return
   fi
 
   printf "$(readlink --canonicalize-existing "$file")"
@@ -138,7 +138,7 @@ symlink () {
 
   if [[ "$skip" != "true" ]]; then # "false" or empty.
     # Create native symlinks on Windows.
-    CYGWIN=winsymlinks:nativestrict ln --symbolic "$src" "$dst"
+    CYGWIN=winsymlinks:nativestrict ln -s "$src" "$dst"
 
     success "$(printf "Linked %b%s%b to %b%s%b" $green "$src" $reset_color $green "$dst" $reset_color)"
   fi
