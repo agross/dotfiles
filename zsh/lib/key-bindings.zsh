@@ -49,7 +49,6 @@ bindkey '^[[3;2~' delete-word          # Shift + Del
 
 bindkey '^D'      copy-prev-shell-word # Ctrl + D
 
-autoload -Uz paste-from-clipboard
 zle -N paste-from-clipboard
 bindkey '^V'      paste-from-clipboard # Ctrl + V
 

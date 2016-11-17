@@ -2,8 +2,25 @@
 # Note that /dev/clipboard will give you access to the clipboard
 # if you are on Cygwin.
 
-CLIPOUT=`cat /dev/clipboard`
-BUFFER=$LBUFFER$CLIPOUT$RBUFFER
-CURSOR=$[$CURSOR + ${#CLIPOUT}]
+case "$OSTYPE" in
+  linux*)
+    (( $+commands[xclip] )) || return 1
+    CLIPOUT="$(xclip -selection clipboard -out)"
+    ;;
+
+  darwin*)
+    CLIPOUT="$(pbpaste)"
+    ;;
+
+  cygwin)  CLIPOUT="$(cat /dev/clipboard)"
+    ;;
+
+  *)
+    return 1
+    ;;
+esac
+
+BUFFER="$LBUFFER$CLIPOUT$RBUFFER"
+CURSOR="$(($CURSOR + ${#CLIPOUT}))"
 
 # vim:set filetype=sh:
