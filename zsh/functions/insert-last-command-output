@@ -1,0 +1,5 @@
+zmodload -i zsh/parameter
+
+LBUFFER+="$(eval "$history[$((HISTCMD - 1))]")"
+
+# vim:set filetype=sh:

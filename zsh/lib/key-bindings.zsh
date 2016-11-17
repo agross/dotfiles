@@ -58,9 +58,5 @@ autoload -Uz copy-earlier-word
 zle -N copy-earlier-word
 bindkey '\em'     copy-earlier-word    # ESC, m
 
-zmodload -i zsh/parameter
-insert-last-command-output() {
-  LBUFFER+="$(eval $history[$((HISTCMD-1))])"
-}
 zle -N insert-last-command-output
 bindkey '\e1'     insert-last-command-output # ESC, 1
