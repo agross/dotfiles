@@ -1,4 +1,4 @@
-local bin_path="$(dirname "$(readlink --canonicalize-existing "$0")")/bin"
+local bin_path="$HOME/.dotfiles/git/bin"
 path=($bin_path $path)
 
 verbose Prepending $fg[yellow]$bin_path$reset_color to $fg[yellow]\$PATH$reset_color
