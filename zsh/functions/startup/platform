@@ -1,11 +1,9 @@
-if [[ "$OSTYPE" == *darwin* ]]; then
-  echo 'mac'
-elif [[ "$OSTYPE" == *linux* ]]; then
-  echo 'linux'
-elif [[ "$OSTYPE" == "cygwin" ]]; then
-  echo 'windows'
-else
-  echo 'unknown'
-fi
+case "$OSTYPE" in
+  linux*)  printf 'linux';;
+  darwin*) printf 'mac';;
+  msys)    printf 'windows';;
+  cygwin)  printf 'windows';;
+  *)       printf "$OSTYPE";;
+esac
 
 # vim:set filetype=sh:

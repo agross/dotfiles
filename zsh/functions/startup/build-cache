@@ -1,6 +1,6 @@
 local -a functions
 if [[ "$#" -eq 0 ]]; then
-  functions=(platform is-mintty)
+  functions=(is-mintty)
 else
   functions=($@)
 fi
