@@ -4,7 +4,7 @@ typeset -gaU cdpath
 if [[ "$(platform)" == "windows" ]]; then
   cdpath=(/gw /scratch /lab /lab/.NET /git-demos /gw/Kunden/*(N) $cdpath)
 else
-  cdpath=($HOME /etc /opt/jetbrains $cdpath)
+  cdpath=($HOME /etc $cdpath)
 fi
 
 # ZSH sets $CDPATH automatically from $cdpath.
