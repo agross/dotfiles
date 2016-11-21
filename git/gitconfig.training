@@ -36,6 +36,8 @@
 	# autoSetupRebase = always
 [merge]
 	tool = diffmerge
+[include]
+	path = ~/.dotfiles/git/git-mergetools
 [mergetool]
 	# prompt = false
 	# keepBackup = false
@@ -43,10 +45,10 @@
 	tool = diffmerge
 	# renames = copies
 	submodule = log
+[include]
+	path = ~/.dotfiles/git/git-difftools
 [difftool]
 	prompt = false
-[include]
-	path = ~/.dotfiles/git/git-diff-merge-tools
 [clean]
 	# requireForce = false
 [rerere]
