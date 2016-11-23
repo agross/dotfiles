@@ -2,5 +2,10 @@ symlink "$topic/gitconfig"
 symlink "$topic/gitconfig.training"
 symlink "$topic/git-wtfrc"
 
-[[ "$OSTYPE" == "windows" ]] && return
-symlink "$topic/gitshrc"
+if [[ "$OSTYPE" == 'mac' ]]; then
+  symlink "$topic/credential/osx-keychain.config" "$HOME/.git-config/credential.config"
+else
+  symlink "$topic/credential/cache.config" "$HOME/.git-config/credential.config"
+fi
+
+[[ "$OSTYPE" == 'windows' ]] || symlink "$topic/gitshrc"

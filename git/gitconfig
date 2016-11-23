@@ -96,3 +96,5 @@
 	newhighlight = bold green
 [url "git@github.com:"]
 	insteadOf = gh:
+[include]
+	path = ~/.git-config/credential.config
