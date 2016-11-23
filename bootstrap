@@ -137,6 +137,7 @@ symlink () {
   fi
 
   if [[ "$skip" != "true" ]]; then # "false" or empty.
+    mkdir -p "$(dirname "$dst")"
     # Create native symlinks on Windows.
     CYGWIN=winsymlinks:nativestrict ln -s "$src" "$dst"
 
