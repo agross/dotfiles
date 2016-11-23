@@ -26,9 +26,9 @@ case "$op" in
   merge)
     merge_args "$1" "$2" "$3" "$4" || exit $?
 
-    "$tool" -nl 'Ours' \
+    "$tool" -nl "Ours: $local_desc" \
             -nb 'Base' \
-            -nr 'Theirs' \
+            -nr "Theirs: $remote_desc" \
             -nm "Merged: $4" \
             "$base" \
             "$local" \

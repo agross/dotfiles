@@ -30,9 +30,9 @@ case "$op" in
             "$local" \
             "$base" \
             "$remote" \
-            --title1='Ours' \
+            --title1="Ours: $local_desc" \
             --title2="Merged: $4" \
-            --title3='Theirs'
+            --title3="Theirs: $remote_desc"
     ;;
 
   *)

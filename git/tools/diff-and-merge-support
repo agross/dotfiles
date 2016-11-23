@@ -79,12 +79,23 @@ diff_args() {
   fi
 }
 
-# Sets global variables: base, local, remote, result.
+# Sets global variables: base, local, remote, result, local_desc, remote_desc.
 merge_args() {
   base="${1?Need base file}"
   local="${2?Need local file}"
   remote="${3?Need remote file}"
   result="${4?Need result file}"
+
+  local_desc="$(git describe --all --always HEAD)"
+  remote_desc="Stashed changes"
+  local file
+  for file in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
+    file=".git/$file"
+    if [ -f "$file" ]; then
+      remote_desc="$(git describe --all --always "$(<$file)")"
+      break
+    fi
+  done
 
   if [ "$OSTYPE" = 'cygwin' ] || [ "$OSTYPE" = 'msys' ]; then
     local cygpath
@@ -102,11 +113,13 @@ merge_args() {
   fi
 
   if [ -n "$GIT_DIFFMERGE_VERBOSE" ]; then
-    printf "Cygpath: %s\n"         "$cygpath"
-    printf "Base:    %s -> %s\n"   "$1" "$base"
-    printf "Local:   %s -> %s\n"   "$2" "$local"
-    printf "Remote:  %s -> %s\n"   "$3" "$remote"
-    printf "Result:  %s -> %s\n\n" "$4" "$result"
+    printf "Cygpath:     %s\n"         "$cygpath"
+    printf "Base:        %s -> %s\n"   "$1" "$base"
+    printf "Local:       %s -> %s\n"   "$2" "$local"
+    printf "Local desc:  %s\n"         "$local_desc"
+    printf "Remote:      %s -> %s\n"   "$3" "$remote"
+    printf "Remote desc: %s\n"         "$remote_desc"
+    printf "Result:      %s -> %s\n\n" "$4" "$result"
     printf "Command line:\n"
     set -x
   fi

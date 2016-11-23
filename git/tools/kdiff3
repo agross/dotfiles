@@ -31,9 +31,9 @@ case "$op" in
             "$local" \
             "$remote" \
             --output "$result" \
-            --L1 "$4 (Base)" \
-            --L2 "$4 (Ours)" \
-            --L3 "$4 (Theirs)"\
+            --L1 "Base: $4" \
+            --L2 "Ours: $local_desc" \
+            --L3 "Theirs: $remote_desc"\
             > /dev/null 2>&1
     ;;
 

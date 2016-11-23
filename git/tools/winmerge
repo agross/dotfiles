@@ -28,8 +28,8 @@ case "$op" in
     "$tool" /e \
             /u \
             /wl \
-            /dl "Ours" \
-            /dr "Theirs" \
+            /dl "Ours: $local_desc" \
+            /dr "Theirs: $remote_desc" \
             "$local" \
             "$remote" \
             "$result"

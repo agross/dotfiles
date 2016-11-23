@@ -35,9 +35,9 @@ case "$op" in
             "$remote" \
             "$base" \
             "$result" \
-            -lefttitle="Ours" \
+            -lefttitle="Ours: $local_desc" \
             -centertitle="Base" \
-            -righttitle="Theirs" \
+            -righttitle="Theirs: $remote_desc" \
             -outputtitle="Merged: $4" \
             > /dev/null 2>&1
     ;;
