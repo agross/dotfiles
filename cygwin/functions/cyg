@@ -1,3 +1,0 @@
-# http://www.zsh.org/mla/users/2009/msg00183.html
-
-reply=("$(cygpath --windows $REPLY)")
