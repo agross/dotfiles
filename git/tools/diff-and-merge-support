@@ -87,9 +87,9 @@ merge_args() {
   result="${4?Need result file}"
 
   local_desc="$(git describe --all --always HEAD)"
-  remote_desc="Stashed changes"
+  remote_desc='Stashed changes'
   local file
-  for file in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
+  for file in rebase-merge/stopped-sha MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
     file=".git/$file"
     if [ -f "$file" ]; then
       remote_desc="$(git describe --all --always "$(<$file)")"
