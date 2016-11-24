@@ -92,7 +92,7 @@ merge_args() {
   for file in rebase-merge/stopped-sha MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
     file=".git/$file"
     if [ -f "$file" ]; then
-      remote_desc="$(git describe --all --always "$(<$file)")"
+      remote_desc="$(git describe --all --always --contains "$(<$file)")"
       break
     fi
   done
