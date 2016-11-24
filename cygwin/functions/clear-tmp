@@ -1,0 +1,23 @@
+setopt local_options extended_glob errreturn
+
+local directory=${TMP?Expected $TMP variable to be set}
+local exclude
+if [[ -n "$SSH_AUTH_SOCK" ]]; then
+  local ssh_socket_file="$(readlink --canonicalize-existing "$SSH_AUTH_SOCK")"
+  exclude="~$(dirname "$ssh_socket_file")"
+fi
+
+# Glob explanation:
+#   $directory/* = search below $directory
+#   $exclude     = exclude items matching $exclude
+#   N            = ignore no matches
+#   D            = include files starting with a dot
+#   u[$USER]     = include files owned by $USER
+#   ^t           = exclude entries with the stick bit (e.g. /tmp/uscreens)
+local pattern="$directory/*$exclude(NDu[$USER]^t)"
+
+# $~variable means zsh should expand the variable.
+# http://unix.stackexchange.com/a/80575/72946
+rm --recursive --force -- $~pattern
+
+# vim:set filetype=sh:
