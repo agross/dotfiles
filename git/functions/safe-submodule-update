@@ -1,0 +1,98 @@
+# This is just a draft and likely not a complete solution, especially if you use
+# nested submodules.
+
+function safe-submodule-update::colors {
+  local -A colors
+  colors[red]="$(git    config --get-color ''                      'bold red')"
+  colors[green]="$(git  config --get-color ''                      'bold green')"
+  colors[sha]="$(git    config --get-color ''                      'yellow')"
+  colors[head]="$(git   config --get-color 'color.decorate.HEAD'   'bold cyan')"
+  colors[branch]="$(git config --get-color 'color.decorate.branch' 'bold green')"
+  colors[reset]="$(git  config --get-color ''                      'reset')"
+
+  local key
+  if [[ -n "$ZSH_VERSION" ]]; then
+    # zsh associative array iteration.
+    for key in "${(@k)colors}"; do
+      printf "c_%s=%b " "$key" "${colors[$key]}"
+    done
+  else
+    # Bash-style array iteration.
+    for key in "${!colors[@]}"; do
+      printf "c_%s=%b " "$key" "${colors[$key]}"
+    done
+  fi
+}
+
+function safe-submodule-update::cleanup {
+  # Clear traps.
+  trap - EXIT SIGHUP SIGINT SIGTERM
+
+  local fun
+  for fun in colors cleanup check-and-update; do
+    # Undefine function.
+    unset -f safe-submodule-update::$fun
+  done
+}
+
+trap safe-submodule-update::cleanup EXIT SIGHUP SIGINT SIGTERM
+
+function safe-submodule-update::check-and-update {
+  local -a colors
+  colors=( $(safe-submodule-update::colors) )
+
+  local color
+  for color in ${colors[@]}; do
+    local $color
+  done
+
+  env ${colors[@]} git submodule foreach --recursive '
+    local head="$(git rev-parse --short HEAD)"
+    local ref="$(git describe --all --exact-match HEAD 2> /dev/null)"
+
+    if [[ -n "$ref" ]]; then
+      printf "  %b%s%b %bHEAD%b@%b%s%b is reachable by %b%s%b\n" \
+        $c_green \
+        ✔ \
+        $c_reset \
+        $c_head \
+        $c_reset \
+        $c_sha \
+        "$head" \
+        $c_reset \
+        $c_branch \
+        "$ref" \
+        $c_reset
+    else
+      printf "  %b%s%b %bHEAD%b@%b%s%b is not reachable by any ref, aborting\n" \
+        $c_red \
+        ✖ \
+        $c_reset \
+        $c_head \
+        $c_reset \
+        $c_sha \
+        "$head" \
+        $c_reset
+
+        return 1
+    fi
+    '
+
+  if [[ $? == 0 ]]; then
+    printf "%b%s%b All checks passed, updating submodules\n" \
+      $c_green \
+      ✔ \
+      $c_reset
+
+    git submodule update
+  else
+    printf "%b%s%b Some checks failed, refusing to update submodules\n" \
+      $c_red \
+      ✖ \
+      $c_reset
+
+    return 1
+  fi
+}
+
+safe-submodule-update::check-and-update
