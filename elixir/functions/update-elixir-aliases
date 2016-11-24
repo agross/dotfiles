@@ -2,7 +2,7 @@
 #
 # Files with shebang for shell are ignored.
 #
-# Glob qualifier (N.):
+# Glob explanation:
 #   N          = ignore no matches
 #   .          = yield plain files only
 #   +cyg_mixed = transform results using ../../cygwin/functions/cyg_mixed

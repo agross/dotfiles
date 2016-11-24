@@ -6,7 +6,7 @@
 # saves us from the tedious questions whether we really want to
 # "Terminate batch job (Y/N)?".
 #
-# Glob qualifier (N.):
+# Glob explanation:
 #   N          = ignore no matches
 #   .          = yield plain files only
 #   +cyg_mixed = transform results using ../../cygwin/functions/cyg_mixed
