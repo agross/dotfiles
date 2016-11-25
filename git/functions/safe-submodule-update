@@ -48,7 +48,7 @@ function safe-submodule-update::check-and-update {
 
   env ${colors[@]} git submodule foreach --recursive '
     local head="$(git rev-parse --short HEAD)"
-    local ref="$(git describe --all --exact-match HEAD 2> /dev/null)"
+    local ref="$(git name-rev --name-only --no-undefined HEAD 2> /dev/null)"
 
     if [[ -n "$ref" ]]; then
       printf "  %b%s%b %bHEAD%b@%b%s%b is reachable by %b%s%b\n" \
