@@ -5,7 +5,6 @@ function safe-submodule-update::colors {
   local -A colors
   colors[red]="$(git    config --get-color ''                      'bold red')"
   colors[green]="$(git  config --get-color ''                      'bold green')"
-  colors[sha]="$(git    config --get-color ''                      'yellow')"
   colors[head]="$(git   config --get-color 'color.decorate.HEAD'   'bold cyan')"
   colors[branch]="$(git config --get-color 'color.decorate.branch' 'bold green')"
   colors[reset]="$(git  config --get-color ''                      'reset')"
@@ -47,32 +46,28 @@ function safe-submodule-update::check-and-update {
   done
 
   env ${colors[@]} git submodule foreach --recursive '
-    local head="$(git rev-parse --short HEAD)"
+    local head="$(git log --color -1 --oneline)"
     local ref="$(git name-rev --name-only --no-undefined HEAD 2> /dev/null)"
 
     if [[ -n "$ref" ]]; then
-      printf "  %b%s%b %bHEAD%b@%b%s%b is reachable by %b%s%b\n" \
+      printf "  %b%s%b %bHEAD%b is reachable by %b%s%b: %s\n" \
         $c_green \
         ✔ \
         $c_reset \
         $c_head \
         $c_reset \
-        $c_sha \
-        "$head" \
-        $c_reset \
         $c_branch \
         "$ref" \
-        $c_reset
+        $c_reset \
+        "$head"
     else
-      printf "  %b%s%b %bHEAD%b@%b%s%b is not reachable by any ref, aborting\n" \
+      printf "  %b%s%b %bHEAD%b is not reachable by any ref: %s\n" \
         $c_red \
         ✖ \
         $c_reset \
         $c_head \
         $c_reset \
-        $c_sha \
-        "$head" \
-        $c_reset
+        "$head"
 
         return 1
     fi
