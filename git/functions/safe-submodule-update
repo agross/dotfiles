@@ -5,6 +5,7 @@ function safe-submodule-update::colors {
   local -A colors
   colors[red]="$(git    config --get-color ''                      'bold red')"
   colors[green]="$(git  config --get-color ''                      'bold green')"
+  colors[yellow]="$(git config --get-color ''                      'bold yellow')"
   colors[head]="$(git   config --get-color 'color.decorate.HEAD'   'bold cyan')"
   colors[branch]="$(git config --get-color 'color.decorate.branch' 'bold green')"
   colors[reset]="$(git  config --get-color ''                      'reset')"
@@ -28,24 +29,14 @@ function safe-submodule-update::cleanup {
   trap - EXIT SIGHUP SIGINT SIGTERM
 
   local fun
-  for fun in colors cleanup check-and-update; do
+  for fun in colors cleanup check update run; do
     # Undefine function.
     unset -f safe-submodule-update::$fun
   done
 }
 
-trap safe-submodule-update::cleanup EXIT SIGHUP SIGINT SIGTERM
-
-function safe-submodule-update::check-and-update {
-  local -a colors
-  colors=( $(safe-submodule-update::colors) )
-
-  local color
-  for color in ${colors[@]}; do
-    local $color
-  done
-
-  env ${colors[@]} git submodule foreach --recursive '
+function safe-submodule-update::check {
+  env $@ git submodule foreach --recursive '
     local head="$(git log --color -1 --oneline)"
     local ref="$(git name-rev --name-only --no-undefined HEAD 2> /dev/null)"
 
@@ -69,11 +60,31 @@ function safe-submodule-update::check-and-update {
         $c_reset \
         "$head"
 
-        return 1
+      [[ "$dry_run" == 'true' ]] && return 0
+      return 1
     fi
     '
+}
 
-  if [[ $? == 0 ]]; then
+function safe-submodule-update::update {
+  local check_success="$1"
+  shift
+
+  local arg
+  for arg in $@; do
+    local $arg
+  done
+
+  if [[ "$dry_run" == 'true' ]]; then
+    printf "%b%s%b Dry run requested, omitting submodule update\n" \
+      $c_yellow \
+      ! \
+      $c_reset
+
+    return
+  fi
+
+  if [[ "$check_success" == 0 ]]; then
     printf "%b%s%b All checks passed, updating submodules\n" \
       $c_green \
       ✔ \
@@ -90,4 +101,43 @@ function safe-submodule-update::check-and-update {
   fi
 }
 
-safe-submodule-update::check-and-update
+function safe-submodule-update::run {
+  trap safe-submodule-update::cleanup EXIT SIGHUP SIGINT SIGTERM
+
+  local function_name="$1"
+  shift
+
+  local -a args
+  args=( $(safe-submodule-update::colors) )
+
+  local opt
+  while getopts ':hn' opt; do
+    case "$opt" in
+      h)
+        printf "%s [-n] [-h]\n\
+\n\
+Checks whether submodule HEAD commits are reachable by branches before running 'git submodule update'\n\
+\n\
+Options:\n\
+  -n\tDry run, check but do not update submodules\n\
+  -h\tShow help\n" \
+          "$function_name"
+        return
+        ;;
+
+      n)
+        args+=('dry_run=true')
+        ;;
+
+      '?')
+        printf "Invalid option: -$OPTARG\n"
+        return 1
+        ;;
+    esac
+  done
+
+  safe-submodule-update::check "${args[@]}"
+  safe-submodule-update::update $? "${args[@]}"
+}
+
+safe-submodule-update::run ${0##*/} "$@"
