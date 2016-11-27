@@ -60,7 +60,7 @@ function safe-submodule-update::check {
         $c_reset \
         "$head"
 
-      [[ "$dry_run" == 'true' ]] && return 0
+      [[ "$dry_run" == 'true' || "$force_update" == 'true' ]] && return 0
       return 1
     fi
     '
@@ -85,10 +85,17 @@ function safe-submodule-update::update {
   fi
 
   if [[ "$check_success" == 0 ]]; then
-    printf "%b%s%b All checks passed, updating submodules\n" \
-      $c_green \
-      ✔ \
-      $c_reset
+    if [[ "$force_update" == 'true' ]]; then
+      printf "%b%s%b Forced update, updating submodules\n" \
+        $c_yellow \
+        ! \
+        $c_reset
+    else
+      printf "%b%s%b All checks passed, updating submodules\n" \
+        $c_green \
+        ✔ \
+        $c_reset
+    fi
 
     git submodule update
   else
@@ -111,15 +118,16 @@ function safe-submodule-update::run {
   args=( $(safe-submodule-update::colors) )
 
   local opt
-  while getopts ':hn' opt; do
+  while getopts ':hnf' opt; do
     case "$opt" in
       h)
-        printf "%s [-n] [-h]\n\
+        printf "%s [-n] [-f] [-h]\n\
 \n\
-Checks whether submodule HEAD commits are reachable by branches before running 'git submodule update'\n\
+Checks whether submodule HEAD commits are reachable by branches or tags before running 'git submodule update'\n\
 \n\
 Options:\n\
   -n\tDry run, check but do not update submodules\n\
+  -f\tForce submodule update regardless of submodule HEAD reachability\n\
   -h\tShow help\n" \
           "$function_name"
         return
@@ -127,6 +135,10 @@ Options:\n\
 
       n)
         args+=('dry_run=true')
+        ;;
+
+      f)
+        args+=('force_update=true')
         ;;
 
       '?')
