@@ -1,45 +1,6 @@
-if [[ ! "$OSTYPE" == 'mac' ]]; then
+if [[ "$OSTYPE" != 'mac' ]]; then
   return
 fi
 
 ensure_homebrew_installed
-
-# Tap homebrew/dupes in order to be able to install addtional utilities below
-# that are also provided with macOS.
-brew tap homebrew/dupes
-
-# Bash 3 that comes by default with macOS does not have associative arrays,
-# so we roll our own.
-# The "utils_" prefix will be removed to generate the formula name, remaining
-# underscores will be converted to dashes. The variable value may contain
-# parameters used for installation of the formula.
-# For example, utils_foo_bar='-x -y' will `brew install foo-bar -x -y`.
-utils_binutils=
-utils_coreutils=
-utils_diffutils=
-utils_file_formula=
-utils_findutils=--with-default-names
-utils_gawk=
-utils_gnu_getopt=
-utils_gnu_indent=--with-default-names
-utils_gnu_sed=-with-default-names
-utils_gnu_tar=--with-default-names
-utils_gnu_which=--with-default-names
-utils_gnutls=
-utils_gpatch=
-utils_grep=--with-default-names
-utils_gzip=
-utils_less=
-utils_make=
-utils_rsync=
-utils_unzip=
-utils_watch=
-
-# No quotes around utils: perform word-splitting on variable name list.
-for name in ${!utils_*}; do
-  key="${name#*_}"
-  key="${key//_/-}"
-  args="${!name}"
-
-  formula $key $args
-done
+brew bundle --verbose --file="$topic/Brewfile"

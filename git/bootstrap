@@ -4,6 +4,12 @@ symlink "$topic/git-wtfrc"
 
 if [[ "$OSTYPE" == 'mac' ]]; then
   formula git
+  cask beyond-compare
+  cask diffmerge
+  cask kdiff3
+  cask meld
+  cask p4merge
+
   symlink "$topic/credential/osx-keychain.config" "$HOME/.git-config/credential.config"
 else
   symlink "$topic/credential/cache.config" "$HOME/.git-config/credential.config"
