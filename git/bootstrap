@@ -10,9 +10,9 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   cask meld
   cask p4merge
 
-  symlink "$topic/credential/osx-keychain.config" "$HOME/.git-config/credential.config"
+  symlink "$topic/platform-specific/credential/osx-keychain.config" "$HOME/.git-config/credential.config"
 else
-  symlink "$topic/credential/cache.config" "$HOME/.git-config/credential.config"
+  symlink "$topic/platform-specific/credential/cache.config" "$HOME/.git-config/credential.config"
 fi
 
 [[ "$OSTYPE" == 'windows' ]] || symlink "$topic/gitshrc"
