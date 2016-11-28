@@ -11,6 +11,7 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   cask p4merge
 
   symlink "$topic/platform-specific/credential/osx-keychain.config" "$HOME/.git-config/credential.config"
+  symlink "$topic/platform-specific/macos-diff-highlight-colors.config" "$HOME/.git-config/diff-highlight-colors.config"
 else
   symlink "$topic/platform-specific/credential/cache.config" "$HOME/.git-config/credential.config"
 fi

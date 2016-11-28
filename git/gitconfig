@@ -94,6 +94,8 @@
 	oldhighlight = red bold
 	newnormal = green
 	newhighlight = bold green
+[include]
+	path = ~/.git-config/diff-highlight-colors.config
 [url "git@github.com:"]
 	insteadOf = gh:
 [include]
