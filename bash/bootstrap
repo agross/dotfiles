@@ -2,4 +2,3 @@
 
 symlink "$topic/bash_profile"
 symlink "$topic/bashrc"
-symlink "$topic/inputrc"
