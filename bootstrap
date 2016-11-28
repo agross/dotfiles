@@ -19,24 +19,24 @@ light_cyan="\e[01;36m"
 reset_color="\e[0m"
 clear_line="\e[2K"
 
-info () {
+info() {
   printf   "\r  [%b INFO %b] %b\n" $light_cyan $reset_color "$1"
 }
 
-user () {
+user() {
   printf   "\r  [%b  ?   %b] %b " $light_yellow $reset_color "$1"
 }
 
-success () {
+success() {
   printf "\r%b  [%b  OK  %b] %b\n" $clear_line $light_green $reset_color "$1"
 }
 
-fail () {
+fail() {
   printf "\r%b  [%b FAIL %b] %b\n\n" $clear_line $light_red $reset_color "$1"
   exit 1
 }
 
-platforms () {
+platforms() {
   case "$OSTYPE" in
     linux*)  printf 'linux';;
     darwin*) printf 'mac';;
@@ -46,7 +46,7 @@ platforms () {
   esac
 }
 
-readlink_e () {
+readlink_e() {
   local file="$1"
 
   if [[ "$(platforms)" == 'mac' ]]; then
@@ -57,14 +57,14 @@ readlink_e () {
   printf "$(readlink --canonicalize-existing "$file")"
 }
 
-home_directory () {
+home_directory() {
   case "${1?Need platform}" in
     windows) printf "$(cygpath --unix $USERPROFILE)";;
     *)       printf "$HOME";;
   esac
 }
 
-symlink () {
+symlink() {
   local src="${1?Need link source}"
   # If dst is not given, use src file name in $HOME, prepended with a dot.
   local dst="$2"
@@ -145,12 +145,14 @@ symlink () {
   fi
 }
 
-install_dotfiles () {
+install_dotfiles() {
   local dotfiles_root="$(dirname "$(readlink_e "$0")")"
 
   local overwrite_all=false backup_all=false skip_all=false
 
   info "$(printf "Installing dotfiles from %b%s%b" $green "$dotfiles_root" $reset_color)"
+
+  source "$dotfiles_root/macos/homebrew"
 
   local platforms="$(platforms)"
   while IFS=$'\n' read -r platform; do

@@ -1,3 +1,7 @@
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula gpg
+fi
+
 [[ "$OSTYPE" == 'windows' ]] && return
 
 symlink "$topic/gnupg"

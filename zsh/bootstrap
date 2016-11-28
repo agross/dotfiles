@@ -1,3 +1,7 @@
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula zsh
+fi
+
 [[ "$OSTYPE" == 'windows' ]] && return
 
 symlink "$topic/zprofile"

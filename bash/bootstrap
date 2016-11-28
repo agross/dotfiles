@@ -1,3 +1,7 @@
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula bash
+fi
+
 [[ "$OSTYPE" == 'windows' ]] && return
 
 symlink "$topic/bash_profile"

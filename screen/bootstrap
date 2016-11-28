@@ -1,3 +1,7 @@
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula screen
+fi
+
 [[ "$OSTYPE" == 'windows' ]] && return
 
 symlink "$topic/screenrc"

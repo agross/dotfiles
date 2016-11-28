@@ -3,6 +3,7 @@ symlink "$topic/gitconfig.training"
 symlink "$topic/git-wtfrc"
 
 if [[ "$OSTYPE" == 'mac' ]]; then
+  formula git
   symlink "$topic/credential/osx-keychain.config" "$HOME/.git-config/credential.config"
 else
   symlink "$topic/credential/cache.config" "$HOME/.git-config/credential.config"

@@ -1,3 +1,8 @@
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula reattach-to-user-namespace
+  formula tmux
+fi
+
 [[ "$OSTYPE" == 'windows' ]] && return
 
 symlink "$topic/tmux.conf"

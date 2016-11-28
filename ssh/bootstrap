@@ -1,3 +1,7 @@
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula openssh
+fi
+
 [[ "$OSTYPE" != 'cygwin' ]] && [[ "$OSTYPE" != 'windows' ]] && return
 
 symlink "$topic/ssh"
