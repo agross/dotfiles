@@ -2,3 +2,7 @@ symlink "$topic/gemrc"
 symlink "$topic/guard.rb"
 symlink "$topic/irbrc"
 symlink "$topic/pryrc"
+
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula terminal-notifier
+fi
