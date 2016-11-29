@@ -12,7 +12,8 @@ case "$OSTYPE" in
     CLIPOUT="$(pbpaste)"
     ;;
 
-  cygwin)  CLIPOUT="$(cat /dev/clipboard)"
+  cygwin)
+    CLIPOUT="$(cat /dev/clipboard)"
     ;;
 
   *)
