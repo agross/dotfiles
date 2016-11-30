@@ -24,6 +24,8 @@ brew 'rsync'
 brew 'unzip'
 brew 'watch'
 
+brew 'mas'
+
 # Apps without topic directories.
 cask 'android-file-transfer'
 cask 'dropbox'
