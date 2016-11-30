@@ -2,4 +2,8 @@
 [[ "$OSTYPE" == 'windows' ]] && \
 return
 
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula htop --with-ncurses
+fi
+
 symlink "$topic/htoprc"
