@@ -29,6 +29,7 @@ brew 'mas'
 # Apps without topic directories.
 cask 'android-file-transfer'
 cask 'dropbox'
+cask 'double-commander'
 cask 'flux'
 cask 'google-chrome'
 cask 'google-hangouts'
