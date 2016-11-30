@@ -1,5 +1,5 @@
 if [[ "$OSTYPE" == 'mac' ]]; then
-  formula wget
+  formula wget --with-iri
 fi
 
 symlink "$topic/wgetrc"

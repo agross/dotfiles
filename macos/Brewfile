@@ -1,5 +1,5 @@
-# Tap homebrew/dupes in order to be able to install addtional utilities below
-# that are also provided with macOS.
+# Tap homebrew/dupes to be able to install updates to the outdated utilities
+# that are shipped with macOS.
 tap 'homebrew/dupes'
 
 # GNU utilities.
@@ -24,15 +24,59 @@ brew 'rsync'
 brew 'unzip'
 brew 'watch'
 
-brew 'mas'
-
 # Apps without topic directories.
+brew 'curl', args: %w(with-libidn with-libssh2 with-nghttp2 with-openssl)
+brew 'imagemagick', args: %w(with-webp)
+brew 'm-cli'
+brew 'nmap'
+brew 'p7zip'
+brew 'speedtest_cli'
+brew 'ssh-copy-id'
+brew 'testssl'
+brew 'the_platinum_searcher'
+brew 'webkit2png'
+brew 'xz'
+cask 'alfred'
 cask 'android-file-transfer'
-cask 'dropbox'
+cask 'bartender'
+cask 'bettertouchtool'
+cask 'cleanmymac'
+cask 'dash'
 cask 'double-commander'
+cask 'dropbox'
+cask 'typinator'
+cask 'evernote'
 cask 'flux'
 cask 'google-chrome'
 cask 'google-hangouts'
 cask 'istat-menus'
+cask 'jitouch'
 cask 'karabiner-elements'
+cask 'launchbar'
+cask 'owncloud'
+cask 'path-finder'
+cask 'popclip'
+cask 'rambox'
+cask 'rubymine'
+cask 'sizeup'
 cask 'skype'
+cask 'teamviewer'
+cask 'ubar'
+cask 'watts'
+
+# Apps from the Mac App Store.
+# mas 'Paste', id: 967_805_235
+# mas 'PCalc', id: 403_504_866
+# mas 'Temps', id: 489_930_332
+mas 'Amphetamine', id: 937_984_704
+mas 'Better', id: 1_121_192_229
+mas 'CleanMyDrive', id: 523_620_159
+mas 'Monosnap', id: 540_348_655
+mas 'Newton', id: 1_059_655_371
+
+puts 'Manually install these:'
+[
+  'ConnectMeNow: http://www.tweaking4all.com/os-tips-and-tricks/macosx-tips-and-tricks/connect-network-shares-mac/',
+  'Specatable: https://spectableapp.com',
+  'Roboform: https://www.roboform.com/for-mac'
+].each { |app| puts app }
