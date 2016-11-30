@@ -1,0 +1,5 @@
+if [[ "$OSTYPE" != 'mac' ]]; then
+  return
+fi
+
+cask iterm2
