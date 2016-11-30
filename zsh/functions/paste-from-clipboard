@@ -2,26 +2,29 @@
 # Note that /dev/clipboard will give you access to the clipboard
 # if you are on Cygwin.
 
+local clipboard
+
 case "$OSTYPE" in
   linux*)
     (( $+commands[xclip] )) || return 1
-    CLIPOUT="$(xclip -selection clipboard -out)"
+    clipboard="$(xclip -selection clipboard -out)"
     ;;
 
   darwin*)
-    CLIPOUT="$(pbpaste)"
+    clipboard="$(pbpaste)"
     ;;
 
   cygwin)
-    CLIPOUT="$(cat /dev/clipboard)"
+    clipboard="$(cat /dev/clipboard)"
     ;;
 
   *)
+    >&2 printf 'Unsupported OS: %s\n' "$OSTYPE"
     return 1
     ;;
 esac
 
-BUFFER="$LBUFFER$CLIPOUT$RBUFFER"
-CURSOR="$(($CURSOR + ${#CLIPOUT}))"
+BUFFER="$LBUFFER$clipboard$RBUFFER"
+CURSOR="$(($CURSOR + ${#clipboard}))"
 
 # vim:set filetype=sh:

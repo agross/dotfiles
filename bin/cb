@@ -1,8 +1,41 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+# This script allows you to use the clipboard from your shell:
+#
+#  some-command | cb # copies some-command's stdout to the clipboard
+#  cb | some-command # use clipboard contents as stdin for some-command
 
 # test -t 0 checks if the terminal is a tty. If so, it returns success and we
-# output /dev/clipboard to stdin. Otherwhise, e.g. when we pipe some command's
+# output the clipboard to stdin. Otherwhise, e.g. when we pipe some command's
 # output to this script, we read from stdin and redirect the output to
-# /dev/clipboard.
+# the clipboard.
 
-test -t 0 && cat /dev/clipboard || cat >/dev/clipboard
+case "$OSTYPE" in
+  linux*)
+    if ! command -v xclip > /dev/null; then
+      >&2 printf 'Need xclip to be installed\n'
+      exit 1
+    fi
+
+    [[ -t 0 ]] \
+      && xclip -selection clipboard -out \
+      || xclip -selection clipboard -in
+    ;;
+
+  darwin*)
+    [[ -t 0 ]] \
+      && pbpaste \
+      || pbcopy
+    ;;
+
+  cygwin)
+    [[ -t 0 ]] \
+      && cat /dev/clipboard \
+      || cat > /dev/clipboard
+    ;;
+
+  *)
+    >&2 printf 'Unsupported OS: %s\n' "$OSTYPE"
+    exit 2
+    ;;
+esac
