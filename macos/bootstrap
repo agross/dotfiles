@@ -4,3 +4,4 @@ fi
 
 ensure_homebrew_installed
 brew bundle --verbose --file="$topic/Brewfile"
+brew cleanup
