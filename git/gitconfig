@@ -59,6 +59,7 @@
 	renames = copies
 	submodule = log
 	compactionHeuristic = true
+	indentHeuristic = true
 [difftool]
 	prompt = false
 [include]
