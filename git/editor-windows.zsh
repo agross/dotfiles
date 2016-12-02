@@ -1,11 +1,9 @@
-# Use Notepad++ as the git editor on Windows.
-
 if [[ "$(platform)" != "windows" ]]; then
   return
 fi
 
 if [[ -n "$SSH_CONNECTION" ]]; then
-  # SSH and Notepad++ won't work.
+  # SSH and visual editors won't work.
   return
 fi
 
