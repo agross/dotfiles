@@ -1,5 +1,12 @@
 if [[ "$OSTYPE" == 'mac' ]]; then
   formula bash
+
+  # Allow users to chsh to homebrew-installed bash.
+  brew_bash="$(brew --prefix)/bin/bash"
+  shells=/etc/shells
+  if ! grep -F -q "$brew_bash" "$shells"; then
+    echo "$brew_bash" | sudo -p "Adding $brew_bash to $shells. Password:" -- tee -a "$shells" > /dev/null
+  fi
 fi
 
 [[ "$OSTYPE" == 'windows' ]] && return
