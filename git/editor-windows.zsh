@@ -10,7 +10,7 @@ if [[ -n "$SSH_CONNECTION" ]]; then
 fi
 
 # Visual Studio Code.
-export GIT_EDITOR='file="$(cygpath --windows --absolute "$1")"; shift $#; /c/Tools/Code/bin/code --new-window --wait --disable-extensions "$file"'
+export GIT_EDITOR='file="$(cygpath --windows --absolute "$1")"; shift $#; /c/Tools/Code/bin/code --new-window --wait "$file"'
 
 # Notepad++ with custom syntax.
 # Files will be renamed to <name>.git before invoking Notepad++ and renamed
