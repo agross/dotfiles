@@ -8,8 +8,6 @@
 [apply]
 	whitespace = nowarn
 [alias]
-	ui = !/c/Tools/QGit/qgit.exe --all &
-
 	# This is a sample alias that
 	# - will be invoked by the shell (!) and not prefixed with 'git'
 	# - supports parameters ($1-default_value)
@@ -17,6 +15,8 @@
 	# - supports semicolons inside the string (alias needs to be enclosed by ")
 	#
 	# hello = "!sh -c 'echo \"hello, ${1-world}\"' --"
+[include]
+	path = ~/.git-config/alias-ui.config
 [color]
 	ui = auto
 	wtf = true

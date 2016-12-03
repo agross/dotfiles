@@ -7,7 +7,7 @@
 [apply]
 	whitespace = nowarn
 [include]
-	path = ~/.git-config/windows/qgit-ui.config
+	path = ~/.git-config/alias-ui.config
 	path = ~/.git-config/windows/ruby-aliases.config
 [color]
 	ui = auto
