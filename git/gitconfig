@@ -6,8 +6,9 @@
 	quotepath = false
 [apply]
 	whitespace = nowarn
-[alias]
-	ui = !/c/Tools/QGit/qgit.exe --all &
+[include]
+	path = ~/.git-config/windows/qgit-ui.config
+	path = ~/.git-config/windows/ruby-aliases.config
 [color]
 	ui = auto
 	wtf = true
@@ -81,11 +82,11 @@
 	diffFilter = diff-so-fancy
 [color "diff-highlight"]
 	oldnormal = red
-	oldhighlight = red bold
+	oldhighlight = red bold 52
 	newnormal = green
-	newhighlight = bold green
+	newhighlight = bold green 22
 [include]
-	path = ~/.git-config/diff-highlight-colors.config
+	path = ~/.git-config/windows/diff-highlight-colors.config
 [url "git@github.com:"]
 	insteadOf = gh:
 [include]
