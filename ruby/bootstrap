@@ -4,5 +4,6 @@ symlink "$topic/irbrc"
 symlink "$topic/pryrc"
 
 if [[ "$OSTYPE" == 'mac' ]]; then
+  formula rbenv
   formula terminal-notifier
 fi
