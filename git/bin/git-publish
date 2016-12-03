@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# git publish [-d] [remote]
+#
+# Either push --set-upstream the current branch to the remote named origin or
+# delete it from the remote.
+
+set -o errexit
+set -o pipefail
+
+branch="$(git symbolic-ref --short HEAD)"
+
+if [[ "$1" == '-d' ]]; then
+  remote=${2:-origin}
+  git push --delete "$remote" "$branch"
+else
+  remote=${1:-origin}
+  git push --set-upstream "$remote" "$branch"
+fi

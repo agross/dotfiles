@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # This is just a draft and likely not a complete solution, especially if you use
 # nested submodules.
 
@@ -11,17 +13,9 @@ function safe-submodule-update::colors {
   colors[reset]="$(git  config --get-color ''                      'reset')"
 
   local key
-  if [[ -n "$ZSH_VERSION" ]]; then
-    # zsh associative array iteration.
-    for key in "${(@k)colors}"; do
-      printf "c_%s=%b " "$key" "${colors[$key]}"
-    done
-  else
-    # Bash-style array iteration.
-    for key in "${!colors[@]}"; do
-      printf "c_%s=%b " "$key" "${colors[$key]}"
-    done
-  fi
+  for key in "${!colors[@]}"; do
+    printf "c_%s=%b " "$key" "${colors[$key]}"
+  done
 }
 
 function safe-submodule-update::cleanup {

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Merge HEAD into another branch but do not try to merge files. Instead, take
+# our files as-is.
+#
+# This is useful if
+#   - you have long-living stabilization branches
+#   - your workflow ensures that all hotfixes on release branches are merged
+#     into the stabilization branch before you create a new release
+#   - you do not want to perform merges but rather use the HEAD tree as-is
+
+if [[ -z "$1" ]]; then
+  >&2 echo Need branch to merge into
+  exit 1
+fi
+
+# Fail on errors.
+set -e
+set -o pipefail
+
+MERGE_INTO="$1"
+CURRENT_BRANCH="$(git symbolic-ref --short HEAD)"
+
+git checkout "$MERGE_INTO"
+git commit-tree $CURRENT_BRANCH^{tree} \
+                -p $MERGE_INTO \
+                -p $CURRENT_BRANCH \
+                -m "Merge $CURRENT_BRANCH into $MERGE_INTO" | \
+  xargs --max-args=1 git reset --hard

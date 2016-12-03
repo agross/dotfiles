@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+git add --all && \
+  git commit --no-verify --message "Feierabendcommit $(date)" && \
+  git push --force origin HEAD:refs/private/$USER/$(git symbolic-ref --short HEAD)

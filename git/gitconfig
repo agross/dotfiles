@@ -7,18 +7,7 @@
 [apply]
 	whitespace = nowarn
 [alias]
-	some = !git-some.sh
-	flow = !$ZPLUG_HOME/repos/nvie/gitflow/git-flow
-	standup = !git-standup
 	ui = !/c/Tools/QGit/qgit.exe --all &
-	clobber = !~/.dotfiles/git/bin/git-cleanup
-
-	wtf = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-wtf.rb)\" --all --relations
-	rank = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-rank-contributors.rb)\" $*
-	publish = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-publish-branch.rb)\" $*
-	biggest-commits = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-biggest-commits.rb)\" $*
-	personal = !ruby \"$(cygpath --windows --absolute ~/.dotfiles/git/bin/git-personal-build.rb)\" agross $*
-	make-this-the-new = "!_() { [ -z \"$1\" ] && >&2 echo Need branch to merge into && exit 1; MERGE_INTO=$1; CURRENT_BRANCH=$(git symbolic-ref --short HEAD) && git checkout $MERGE_INTO && git commit-tree $CURRENT_BRANCH^{tree} -p $MERGE_INTO -p $CURRENT_BRANCH -m \"Merge $CURRENT_BRANCH into $MERGE_INTO\" | xargs --max-args=1 git reset --hard; }; _ $1"
 [color]
 	ui = auto
 	wtf = true
