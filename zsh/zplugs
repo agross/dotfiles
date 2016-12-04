@@ -15,6 +15,7 @@ nice=-19; zplug "$DOTFILES", \
 
 # Set theme.
 nice=-18; zplug "$DOTFILES/zsh/themes", \
+                as:theme, \
                 from:local, \
                 nice:$nice, \
                 use:'agross.zsh-theme'
