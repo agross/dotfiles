@@ -5,7 +5,8 @@
 script_path="${0%/*}"
 . "$script_path/diff-and-merge-support"
 
-tool="$(tool_path "/c/Tools/DiffMerge/diffmerge.exe" \
+tool="$(tool_path "/c/Tools/DiffMerge/sgdm.exe" \
+                  "/c/Tools/DiffMerge/diffmerge.exe" \
                   "diffmerge" \
                   "/Applications/DiffMerge.app/Contents/Resources/diffmerge.sh")" || exit $?
 
