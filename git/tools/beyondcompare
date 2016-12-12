@@ -16,30 +16,30 @@ case "$op" in
   diff)
     diff_args "$1" "$2" || exit $?
 
-    "$tool" -solo \
-            -readonly \
-            "$left" \
-            "$right" \
-            -title1="$left_title" \
-            -title2="$right_title" \
-            > /dev/null 2>&1
+    exec "$tool" -solo \
+                 -readonly \
+                 "$left" \
+                 "$right" \
+                 -title1="$left_title" \
+                 -title2="$right_title" \
+                 > /dev/null 2>&1
     ;;
 
   merge)
     merge_args "$1" "$2" "$3" "$4" || exit $?
 
-    "$tool" -solo \
-            -automerge \
-            -reviewconflicts \
-            "$local" \
-            "$remote" \
-            "$base" \
-            "$result" \
-            -lefttitle="Ours: $local_desc" \
-            -centertitle="Base" \
-            -righttitle="Theirs: $remote_desc" \
-            -outputtitle="Merged: $4" \
-            > /dev/null 2>&1
+    exec "$tool" -solo \
+                 -automerge \
+                 -reviewconflicts \
+                 "$local" \
+                 "$remote" \
+                 "$base" \
+                 "$result" \
+                 -lefttitle="Ours: $local_desc" \
+                 -centertitle="Base" \
+                 -righttitle="Theirs: $remote_desc" \
+                 -outputtitle="Merged: $4" \
+                 > /dev/null 2>&1
     ;;
 
   *)

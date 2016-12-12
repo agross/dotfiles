@@ -16,19 +16,19 @@ case "$op" in
   diff)
     diff_args "$1" "$2" || exit $?
 
-    "$tool" --diff \
-            "$left" \
-            "$right"
+    exec "$tool" --diff \
+                 "$left" \
+                 "$right"
     ;;
 
   merge)
     merge_args "$1" "$2" "$3" "$4" || exit $?
 
-    "$tool" --auto-merge \
-            "$local" \
-            "$base" \
-            "$remote" \
-            --output="$result"
+    exec "$tool" --auto-merge \
+                 "$local" \
+                 "$base" \
+                 "$remote" \
+                 --output="$result"
     ;;
 
   *)

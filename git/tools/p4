@@ -16,24 +16,24 @@ case "$op" in
   diff)
     diff_args "$1" "$2" || exit $?
 
-    "$tool" -nl "$left_title" \
-            -nr "$right_title" \
-            "$left" \
-            "$right"
+    exec "$tool" -nl "$left_title" \
+                 -nr "$right_title" \
+                 "$left" \
+                 "$right"
 
     ;;
 
   merge)
     merge_args "$1" "$2" "$3" "$4" || exit $?
 
-    "$tool" -nl "Ours: $local_desc" \
-            -nb 'Base' \
-            -nr "Theirs: $remote_desc" \
-            -nm "Merged: $4" \
-            "$base" \
-            "$local" \
-            "$remote" \
-            "$result"
+    exec "$tool" -nl "Ours: $local_desc" \
+                 -nb 'Base' \
+                 -nr "Theirs: $remote_desc" \
+                 -nm "Merged: $4" \
+                 "$base" \
+                 "$local" \
+                 "$remote" \
+                 "$result"
     ;;
 
   *)

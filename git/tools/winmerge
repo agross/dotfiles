@@ -14,25 +14,25 @@ case "$op" in
   diff)
     diff_args "$1" "$2" || exit $?
 
-    "$tool" /e \
-            /u \
-            /dl "$left_title" \
-            /dr "$right_title" \
-            "$left" \
-            "$right"
+    exec "$tool" /e \
+                 /u \
+                 /dl "$left_title" \
+                 /dr "$right_title" \
+                 "$left" \
+                 "$right"
     ;;
 
   merge)
     merge_args "$1" "$2" "$3" "$4" || exit $?
 
-    "$tool" /e \
-            /u \
-            /wl \
-            /dl "Ours: $local_desc" \
-            /dr "Theirs: $remote_desc" \
-            "$local" \
-            "$remote" \
-            "$result"
+    exec "$tool" /e \
+                 /u \
+                 /wl \
+                 /dl "Ours: $local_desc" \
+                 /dr "Theirs: $remote_desc" \
+                 "$local" \
+                 "$remote" \
+                 "$result"
     ;;
 
   *)
