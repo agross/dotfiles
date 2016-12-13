@@ -83,3 +83,6 @@
 
   # git clean.
   cleanf = clean -xdf
+
+  # Disable pager.
+  np = !git --no-pager
