@@ -23,5 +23,3 @@ if [[ "$OSTYPE" == 'cygwin' || "$OSTYPE" == 'windows' ]]; then
   symlink "$topic/platform-specific/windows/diff-highlight-colors.config" "$HOME/.git-config/windows/diff-highlight-colors.config"
   symlink "$topic/platform-specific/windows/ruby-aliases.config"          "$HOME/.git-config/windows/ruby-aliases.config"
 fi
-
-[[ "$OSTYPE" == 'windows' ]] || symlink "$topic/gitshrc"

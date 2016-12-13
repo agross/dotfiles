@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+green='\e[1;32m'
+reset_color='\e[0m'
+
+base_path="$(readlink --canonicalize-existing "${1:-$PWD}")"
+
+echo -e Serving ${green}$base_path$reset_color
+exec git daemon --verbose --export-all --base-path="$base_path"

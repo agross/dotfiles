@@ -7,6 +7,7 @@
 [apply]
 	whitespace = nowarn
 [include]
+	path = ~/.dotfiles/git/git-aliases
 	# Those are symlinked by the bootstrapper:
 	path = ~/.git-config/alias-ui.config
 	path = ~/.git-config/credential.config
