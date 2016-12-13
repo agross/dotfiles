@@ -16,7 +16,10 @@
 	#
 	# hello = "!sh -c 'echo \"hello, ${1-world}\"' --"
 [include]
+	# Those are symlinked by the bootstrapper:
 	path = ~/.git-config/alias-ui.config
+	path = ~/.git-config/credential.config
+	path = ~/.git-config/windows/ruby-aliases.config
 [color]
 	ui = auto
 	wtf = true
@@ -51,6 +54,7 @@
 	# enabled = true
 	# autoupdate = true
 [push]
+	# default = simple
 	# default = matching
 [rebase]
 	# autoSquash = true

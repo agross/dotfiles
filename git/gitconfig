@@ -7,7 +7,9 @@
 [apply]
 	whitespace = nowarn
 [include]
+	# Those are symlinked by the bootstrapper:
 	path = ~/.git-config/alias-ui.config
+	path = ~/.git-config/credential.config
 	path = ~/.git-config/windows/ruby-aliases.config
 [color]
 	ui = auto
@@ -89,5 +91,3 @@
 	path = ~/.git-config/windows/diff-highlight-colors.config
 [url "git@github.com:"]
 	insteadOf = gh:
-[include]
-	path = ~/.git-config/credential.config
