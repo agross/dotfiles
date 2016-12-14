@@ -1,3 +1,0 @@
-[[ "$OSTYPE" == 'windows' ]] && return
-
-symlink "$topic/inputrc"

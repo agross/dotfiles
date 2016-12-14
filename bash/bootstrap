@@ -11,5 +11,4 @@ fi
 
 [[ "$OSTYPE" == 'windows' ]] && return
 
-symlink "$topic/bash_profile"
 symlink "$topic/bashrc"
