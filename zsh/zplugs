@@ -1,7 +1,7 @@
-# Load everything but the zprofile, completion and postinit files.
+# Load everything but the zprofile, completion, postinit and aliases files.
 zplug "$DOTFILES", \
       from:local, \
-      use:'**/(^(zprofile|completion|postinit)).zsh'
+      use:'**/(^(zprofile|completion|postinit|aliases)).zsh'
 
 # Set theme last.
 zplug "$DOTFILES/zsh/themes", \
@@ -10,11 +10,11 @@ zplug "$DOTFILES/zsh/themes", \
       defer:1, \
       use:'agross.zsh-theme'
 
-# Load postinit last.
+# Load aliases and postinit last.
 zplug "$DOTFILES", \
       from:local, \
       defer:1, \
-      use:'**/postinit.zsh'
+      use:'**/(aliases|postinit).zsh'
 
 # Load completions after compinit was run.
 zplug "$DOTFILES", \
