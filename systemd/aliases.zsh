@@ -1,6 +1,4 @@
-if ((! $+commands[systemctl])); then
-  return
-fi
+(($+commands[systemctl])) || return 0
 
 verbose Setting up $fg[red]systemd$reset_color aliases
 

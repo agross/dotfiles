@@ -1,6 +1,4 @@
-if [[ "$(platform)" != "windows" ]]; then
-  return
-fi
+[[ "$(platform)" == 'windows' ]] || return 0
 
 local prefix="$(cygpath --unix "$APPDATA/npm")"
 local completion

@@ -1,6 +1,4 @@
-if [[ "$(platform)" != "windows" ]]; then
-  return
-fi
+[[ "$(platform)" == 'windows' ]] || return 0
 
 typeset -gA RAPID_GIT_COLORS
 RAPID_GIT_COLORS[reset]=$reset_color

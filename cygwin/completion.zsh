@@ -1,6 +1,4 @@
-if [[ "$(platform)" != "windows" ]]; then
-  return
-fi
+[[ "$(platform)" == 'windows' ]] || return 0
 
 # Drives that cannot be reached by globbing.
 local drives=($(mount | /bin/grep --perl-regexp '^\w: on /\w ' | cut --delimiter=' ' --fields=3))

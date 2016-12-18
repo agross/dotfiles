@@ -1,5 +1,3 @@
-if ((!$+commands[htop])); then
-  return
-fi
+(($+commands[htop])) || return 0
 
 export HTOPRC=~/.htoprc

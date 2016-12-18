@@ -1,6 +1,4 @@
-if ((!$+commands[docker])); then
-  return
-fi
+(($+commands[docker])) || return 0
 
 verbose Setting up $fg[red]docker$reset_color aliases
 

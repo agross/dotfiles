@@ -1,12 +1,9 @@
-if [[ "$(platform)" != "windows" ]]; then
-  return
-fi
+[[ "$(platform)" == 'windows' ]] || return 0
 
 # Some Cygwin programs like to produce stackdumps.
 alias rsd='rm -f *.exe.stackdump'
 
-if (( $+commands[cygstart] )); then
-  verbose Setting up $fg[red]cygstart$reset_color aliases
+(($+commands[cygstart])) || return 0
 
-  alias sudo='cygstart --action=runas'
-fi
+verbose Setting up $fg[red]cygstart$reset_color aliases
+alias sudo='cygstart --action=runas'

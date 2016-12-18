@@ -1,6 +1,4 @@
-if [[ "$(platform)" != "windows" ]]; then
-  return
-fi
+[[ "$(platform)" == 'windows' ]] || return 0
 
 # Have zsh automatically sync $cygwin and global exported $CYGWIN, minus duplicates.
 typeset -gxaUT CYGWIN cygwin ' '

@@ -1,7 +1,7 @@
 # Remove duplicates from global array $cdpath.
 typeset -gaU cdpath
 
-if [[ "$(platform)" == "windows" ]]; then
+if [[ "$(platform)" == 'windows' ]]; then
   cdpath=(/gw /scratch /lab /lab/.NET /git-demos /gw/Kunden/*(N) $cdpath)
 else
   cdpath=($HOME /etc $cdpath)

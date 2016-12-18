@@ -1,6 +1,4 @@
-if (( ! $+commands[etckeeper] )); then
-  return
-fi
+(($+commands[etckeeper])) || return 0
 
 verbose Setting up $fg[red]etckeeper$reset_color aliases
 
