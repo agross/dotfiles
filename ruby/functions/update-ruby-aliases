@@ -14,6 +14,9 @@
 # We need the extended_glob option for the glob.
 setopt local_options extended_glob
 
+fpath=($DOTFILES/cygwin/functions $fpath)
+autoload -Uz cyg_mixed
+
 local executable
 for executable in $(dirname "$commands[ruby]")/^?*.*(N.+cyg_mixed); do
   local alias="$(basename "$executable")"
