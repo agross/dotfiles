@@ -1,24 +1,34 @@
 # dotfiles
 
-dotfiles store your personal settings. These are mine. When compared to Windows' broken registry, dotfiles are bliss.
+dotfiles store your personal settings. These are mine. When compared to Windows'
+broken registry, dotfiles are bliss.
 
 ## Shell
 
-I use [zsh](http://zsh.sourceforge.net/) as my shell, because it's so much better than bash. Want to search your history using wildcards? No problem! Just `bindkey '^R' history-incremental-pattern-search-backward`.
+I use [zsh](http://zsh.sourceforge.net/) as my shell, because it's so much
+better than bash. Want to search your history using wildcards? No problem! Just
+`bindkey '^R' history-incremental-pattern-search-backward`.
 
-zsh runs on Windows only through Cygwin. Other platforms support it natively through `<package manager> install zsh; chsh --shell /bin/zsh`
+zsh runs on Windows only through Cygwin. Other platforms support it natively
+through `<package manager> install zsh; chsh --shell /bin/zsh`
 
 Don't expect a fancy bash setup, my dotfiles are organized around zsh.
 
 ## Supported Platforms
 
-I use these dotfiles on Windows, Cygwin and Linux. They should work on Mac OS X and msysgit (a.k.a [Git for Windows](https://git-scm.com/download/win)) as well, but I don't use these on a daily basis.
+I use these dotfiles on Windows, Cygwin and Linux. They should work on macOS
+and msysgit (a.k.a [Git for Windows](https://git-scm.com/download/win)) as well,
+but I don't use these on a daily basis.
 
 ### Cygwin
 
-When you install dotfiles under Cygwin the `bootstrap` script tries to create native NTFS symlinks by running `ln` with [`CYGWIN=winsymlinks:nativestrict`](https://cygwin.com/cygwin-ug-net/using.html#pathnames-symlinks)\.
+When you install dotfiles under Cygwin the `bootstrap` script tries to create
+native NTFS symlinks by running `ln` with
+[`CYGWIN=winsymlinks:nativestrict`](https://cygwin.com/cygwin-ug-net/using.html#pathnames-symlinks)\.
 
-Native NTFS symlinks can only be created if you are either an Administrator [in an elevated shell](http://stackoverflow.com/a/15330511/149264) or if you have the `SeCreateSymbolicLinkPrivilege` privilege. Check with
+Native NTFS symlinks can only be created if you are either an Administrator
+[in an elevated shell](http://stackoverflow.com/a/15330511/149264) or if you
+have the `SeCreateSymbolicLinkPrivilege` privilege. Check with
 
 * `%SystemRoot%\system32\whoami.exe /priv` (`cmd.exe`)
 * `$SYSTEMROOT/system32/whoami.exe /priv` (`bash` or `zsh`)
@@ -27,9 +37,14 @@ and if necessary [grant yourself this privilege](http://security.stackexchange.c
 
 ### msysgit (a.k.a [Git for Windows](https://git-scm.com/download/win))
 
-msysgit's implementation of `ln` just [copies the file/directory to the symlink target](https://groups.google.com/forum/#!topic/msysgit/_0QJUPgLm84).
+msysgit's implementation of `ln` just
+[copies the file/directory to the symlink target](https://groups.google.com/forum/#!topic/msysgit/_0QJUPgLm84).
 
-As I don't use msysgit, I didn't bother working around this limitation. If you're interested in having native NTFS symlinks, you may want to code up a solution that works using [this answer](http://stackoverflow.com/a/25394801/149264) as a starting point and submit a pull request.
+As I don't use msysgit, I didn't bother working around this limitation. If
+you're interested in having native NTFS symlinks, you may want to code up a
+solution that works using
+[this answer](http://stackoverflow.com/a/25394801/149264) as a starting point
+and submit a pull request.
 
 ## Installation
 
@@ -41,7 +56,10 @@ $ ./bootstrap
 
 The `bootstrap` script installs dotfiles to your home directory.
 
-The bootstrapper does not delete existing files; it will ask you for permission to overwrite files. Existing files can also be backed up before overwriting. You can run `boostrap` as often as you like, for example after adding new [dotfiles or topics](#structure).
+The bootstrapper does not delete existing files; it will ask you for permission
+to overwrite files. Existing files can also be backed up before overwriting.
+You can run `boostrap` as often as you like, for example after adding new
+[dotfiles or topics](#structure).
 
 This is what you can expect from the boostrapper on a Linux system:
 
@@ -92,7 +110,11 @@ $ ./bootstrap
 
 ## Structure
 
-dotfiles are structured around topics. Topics are directories under the dotfiles root. Each topic directory contains settings specific to the application. This organization allows for a nice separation of concerns. E.g. if you have a new application with dotfile(s) or if the application requires setup in your shell sessions, just create a new topic directory and put files underneath.
+dotfiles are structured around topics. Topics are directories under the dotfiles
+root. Each topic directory contains settings specific to the application. This
+organization allows for a nice separation of concerns. E.g. if you have a new
+application with dotfile(s) or if the application requires setup in your shell
+sessions, just create a new topic directory and put files underneath.
 
 ```
 dotfiles
@@ -113,15 +135,21 @@ dotfiles
    └─ ...
 ```
 
-There are some special files that either the `bootstrap` script or [zsh](#shell) reads.
+There are some special files that either the `bootstrap` script or
+[zsh](#shell) reads.
 
 ### `bootstrap`-specific files
 
-The bootstrapper will create an implicit symlink for the dotfiles directory itself. It will always be symlinked to `$HOME/.dotfiles` (unless you [`git clone`d the dotfiles](#installation) there.) This makes it easier to refer to other dotfiles from within dotfiles as you can use a static path. For example, [my git mergetool scripts point to `$HOME/.dotfiles/git/tools`](https://github.com/agross/dotfiles/blob/master/git/gitconfig#L56).
+The bootstrapper will create an implicit symlink for the dotfiles directory
+itself. It will always be symlinked to `$HOME/.dotfiles` (unless you
+[`git clone`d the dotfiles](#installation) there.) This makes it easier to refer
+to other dotfiles from within dotfiles as you can use a static path. For
+example, [my git mergetool scripts point to `$HOME/.dotfiles/git/tools`](https://github.com/agross/dotfiles/blob/master/git/gitconfig#L49).
 
 #### topic/bootstrap
 
-`bootstrap` will source each `topic/bootstrap` file and thereby run it using bash. The script can then
+`bootstrap` will source each `topic/bootstrap` file and thereby run it using
+bash. The script can then
 
 * symlink files using the [`symlink $source $target`](https://github.com/agross/dotfiles/blob/master/bootstrap#L67) function. `$target` may be omitted, e.g. `symlink $topic/foo` will create the symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo`.
 * install additional programs at the script's discretion.
@@ -136,13 +164,17 @@ Each `topic/bootstrap` has the following environment variables available:
 
 ### [zsh](#shell)-specific files
 
-I use the excellent [zplug](https://github.com/zplug/zplug) project to manage my zsh plugins and initialization.
+I use the excellent [zplug](https://github.com/zplug/zplug) project to manage my
+zsh plugins and initialization.
 
-You can configure verbose logging of the zsh startup process by [setting `ZSH_VERBOSE`](https://github.com/agross/dotfiles/blob/master/zsh/zshenv#L4) to a nonempty value.
+You can configure verbose logging of the zsh startup process by
+[setting `ZSH_VERBOSE`](https://github.com/agross/dotfiles/blob/master/zsh/zshenv#L4)
+to a nonempty value.
 
 #### topic/\*\*/zprofile.zsh
 
-These files are loaded for login shells only (i.e. `zsh --login`). I use them to [run `screen` or `tmux` when connecting to a server via SSH](https://github.com/agross/dotfiles/blob/master/ssh/zprofile.zsh).
+These files are loaded for login shells only (i.e. `zsh --login`). I use them to
+[run `screen` or `tmux` when connecting to a server via SSH](https://github.com/agross/dotfiles/blob/master/ssh/zprofile.zsh).
 
 #### topic/\*\*/\*.zsh
 
@@ -150,14 +182,21 @@ You can put anything you want in these, e.g. set up topic-specific aliases.
 
 #### topic/\*\*/aliases.zsh, topic/\*\*/postinit.zsh
 
-These scripts are loaded last, i.e. after all [zplug](https://github.com/zplug/zplug) plugins are loaded and before completion setup is run. Put any last-minute setup here. I use them on Windows to make my Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
+These scripts are loaded last, i.e. after all
+[zplug](https://github.com/zplug/zplug) plugins are loaded and before completion
+setup is run. Put any last-minute setup here. I use them on Windows to make my
+Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
 
 #### topic/\*\*/completion.zsh
 
-Completion scripts are run after [zplug](https://github.com/zplug/zplug) calls [zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html) to initializes the completion system. Put any completion-specific setup here.
+Completion scripts are run after [zplug](https://github.com/zplug/zplug) calls
+[zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html)
+to initializes the completion system. Put any completion-specific setup here.
 
 # Thanks
 
-This work, especially the `boostrap` script, is based on the dotfiles of [Zach Holman](http://github.com/holman/dotfiles).
+This work, especially the `boostrap` script, is based on the dotfiles of
+[Zach Holman](http://github.com/holman/dotfiles).
 
-[git-sh](https://github.com/rtomayko/git-sh) by Ryan Tomayko has been adapted to my needs.
+[git-sh](https://github.com/rtomayko/git-sh) by Ryan Tomayko has been adapted to
+my needs.
