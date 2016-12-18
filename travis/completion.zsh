@@ -1,1 +1,3 @@
-[[ -f ~/.travis/travis.sh ]] && source ~/.travis/travis.sh
+[[ -f ~/.travis/travis.sh ]] || return 0
+
+source ~/.travis/travis.sh
