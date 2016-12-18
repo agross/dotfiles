@@ -99,12 +99,12 @@ dotfiles
 ├─ example
 |  ├─ bootstrap              # bootstrapper: script to symlink files and install additional programs
 |  ├─ zprofile.zsh           # zsh #1: run for login shells
-|  ├─ path.zsh               # zsh #2: modifies $PATH
 |  ├─ something.zsh          # zsh #3: additional setup
-|  ├─ postinit.zsh           # zsh #4: run after additional setup
+|  ├─ postinit.zsh           # zsh #4: run after additional setup (no guaranteed order)
+|  ├─ aliases.zsh            # zsh #4: run after additional setup (no guaranteed order)
 |  └─ completion.zsh         # zsh #5: zsh completion setup
 └─ git
-   ├─ bin                    # contains git scripts
+   ├─ bin                    # contains git scripts, invoke with git specific-script
    |  └─ git-specific-script
    ├─ bootstrap              # bootstrapper to create symlinks
    ├─ gitconfig              # symlinked to ~/.gitconfig by bootstrap
@@ -144,17 +144,13 @@ You can configure verbose logging of the zsh startup process by [setting `ZSH_VE
 
 These files are loaded for login shells only (i.e. `zsh --login`). I use them to [run `screen` or `tmux` when connecting to a server via SSH](https://github.com/agross/dotfiles/blob/master/ssh/zprofile.zsh).
 
-#### topic/\*\*/path.zsh
-
-These files are expected to modify the `PATH` environment variable and are loaded before other scripts below are run.
-
 #### topic/\*\*/\*.zsh
 
 You can put anything you want in these, e.g. set up topic-specific aliases.
 
-#### topic/\*\*/postinit.zsh
+#### topic/\*\*/aliases.zsh, topic/\*\*/postinit.zsh
 
-Postinit scripts are loaded last, i.e. after all [zplug](https://github.com/zplug/zplug) plugins are loaded and before completion setup is run. Put any last-minute setup here. I use them on Windows to make my Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
+These scripts are loaded last, i.e. after all [zplug](https://github.com/zplug/zplug) plugins are loaded and before completion setup is run. Put any last-minute setup here. I use them on Windows to make my Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
 
 #### topic/\*\*/completion.zsh
 
