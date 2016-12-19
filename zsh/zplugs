@@ -61,7 +61,7 @@ zplug 'bobthecow/git-flow-completion'
 zplug 'grossweber/git-some', \
       if:"(($+commands[git]))", \
       as:command, \
-      use:'git-some.sh'
+      use:'git-some'
 zplug 'rapid-git/rapid-git', \
       if:"(($+commands[git]))"
 zplug 'kamranahmedse/git-standup', \
