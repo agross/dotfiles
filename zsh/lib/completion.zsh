@@ -65,6 +65,9 @@ zstyle ':completion:*' matcher-list '' \
 # Ignore completion functions (until the _ignored completer).
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
+# Ignore Windows executables as external commands.
+zstyle ':completion:*:complete:-command-:*' ignored-patterns '*.(manifest|bat|dll|exe)'
+
 # Attempt shell expansion on the current word up to cursor.
 bindkey '^I'               expand-or-complete-prefix     # Tab
 
