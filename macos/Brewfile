@@ -24,6 +24,11 @@ brew 'rsync'
 brew 'unzip'
 brew 'watch'
 
+# SixXS, https://www.sixxs.net/wiki/Aiccu/Installation
+# Currently not available on Sierra :(
+# brew 'tuntap'
+# brew 'aiccu'
+
 # Apps without topic directories.
 brew 'curl', args: %w(with-libidn with-libssh2 with-nghttp2 with-openssl)
 brew 'imagemagick', args: %w(with-webp)
@@ -36,33 +41,33 @@ brew 'testssl'
 brew 'the_platinum_searcher'
 brew 'webkit2png'
 brew 'xz'
-cask 'alfred'
+
 cask 'android-file-transfer'
 cask 'bartender'
 cask 'bettertouchtool'
 cask 'cleanmymac'
+cask 'clipmenu'
 cask 'dash'
 cask 'double-commander'
 cask 'dropbox'
-cask 'typinator'
 cask 'evernote'
 cask 'flux'
 cask 'google-chrome'
 cask 'google-hangouts'
 cask 'istat-menus'
-cask 'jitouch'
+cask 'kap'
 cask 'karabiner-elements'
-cask 'launchbar'
+cask 'lumen'
 cask 'owncloud'
 cask 'path-finder'
 cask 'popclip'
-cask 'rambox'
 cask 'rubymine'
 cask 'sizeup'
 cask 'skype'
+cask 'symboliclinker'
 cask 'teamviewer'
-cask 'ubar'
-cask 'watts'
+cask 'typinator'
+cask 'vlc'
 
 # Apps from the Mac App Store.
 # mas 'Paste', id: 967_805_235
@@ -71,12 +76,25 @@ cask 'watts'
 mas 'Amphetamine', id: 937_984_704
 mas 'Better', id: 1_121_192_229
 mas 'CleanMyDrive', id: 523_620_159
+mas 'EasyRes', id: 688_211_836
 mas 'Monosnap', id: 540_348_655
 mas 'Newton', id: 1_059_655_371
 
 puts 'Manually install these:'
 [
-  'ConnectMeNow: http://www.tweaking4all.com/os-tips-and-tricks/macosx-tips-and-tricks/connect-network-shares-mac/',
-  'Specatable: https://spectableapp.com',
+  'AnyDesk: https://anydesk.de/',
+  'Spectacle: https://www.spectacleapp.com/',
   'Roboform: https://www.roboform.com/for-mac'
 ].each { |app| puts app }
+
+unless File.exist?('/usr/local/bin/macmounter.py')
+  require 'tmpdir'
+  require 'rake'
+
+  Dir.mktmpdir('macmounter') do |tmp|
+    Dir.chdir(tmp) do
+      RakeFileUtils.sh(*%w(git clone https://github.com/roubles/macmounter.git .))
+      RakeFileUtils.sh(*%w(sudo ./install.sh))
+    end
+  end
+end
