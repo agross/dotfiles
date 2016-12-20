@@ -2,6 +2,26 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   formula openssh
 fi
 
-[[ "$OSTYPE" != 'cygwin' ]] && [[ "$OSTYPE" != 'windows' ]] && return
+local ids="$topic/ssh"
 
-symlink "$topic/ssh"
+local reset_nullglob="$(shopt -p nullglob)"
+local reset_dotglob="$(shopt -p dotglob)"
+shopt -s nullglob
+shopt -u dotglob
+local ids_available=($ids/*)
+$reset_nullglob
+$reset_dotglob
+
+if ((!${#ids_available[*]})); then
+  info "$(printf "Omitting symlink for %b%s%b as there are no IDs available" \
+        $green "$ids" $reset_color)"
+  return
+fi
+
+symlink "$ids"
+
+local id
+for id in id_rsa capistrano letsencrypt teamcity; do
+  local private_key="$HOME/.ssh/$id"
+  [[ -f "$private_key" ]] && chmod 600 "$private_key"
+done
