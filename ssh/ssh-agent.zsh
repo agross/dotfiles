@@ -1,5 +1,8 @@
 zstyle :omz:plugins:ssh-agent agent-forwarding on
 
+# https://github.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain
+[[ "$(platform)" == 'mac' ]] && /usr/bin/ssh-add -A
+
 [[ "$(platform)" == 'windows' && -z "$SSH_CONNECTION" ]] || return 0
 
 # We started on Windows without coming through SSH.
