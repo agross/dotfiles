@@ -40,9 +40,6 @@ zplug 'plugins/systemd', \
 
 # Other useful plugins.
 zplug 'Tarrasch/zsh-bd'
-zplug 'holman/dotfiles', \
-      as:command, \
-      use:'bin/e'
 zplug 'zsh-users/zsh-completions'
 zplug 'plugins/gem', \
       from:oh-my-zsh, \
