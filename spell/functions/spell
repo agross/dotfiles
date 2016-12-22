@@ -1,13 +1,24 @@
-local parent_directory=${${(%):-%x}:h:h}
+autoload -U colors && colors
 
-local dict="$parent_directory/dictionary-de"
+local dictionaries="${${(%):-%x}:h:h}/dictionaries"
+
+local dict="$dictionaries/de"
 if [[ "$1" =~ ^- ]]; then
-  dict="$parent_directory/dictionary$1"
+  dict="$dictionaries/${1#-}"
   shift
 fi
 
 if [[ ! -f "$dict" ]]; then
   >&2 echo Dictionary $dict not found.
+
+  # Glob qualifiers:
+  #  .  = plain files only
+  #  on = sort files by name
+  #  N  = no matches are OK
+  #  ^D = do not match files starting with dot
+  #  :t = print file name only
+  local available="$(print $dictionaries/*(.onN^D:t))"
+  >&2 echo -e Available dictionaries \(enable with -\<name\>\): ${fg_bold[green]}${available}${reset_color}
   return 1
 fi
 
