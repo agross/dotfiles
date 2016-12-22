@@ -1,3 +1,4 @@
 *.swp
 *~
 .remote-sync.json
+.DS_Store
