@@ -4,17 +4,17 @@ zgitinit
 autoload -U zgit-ext-rebaseinfo
 
 function {
-  local history_index="%{$fg[cyan]%}%h%{$reset_color%}"
-  local user_host="%{$fg[green]%}%n@%m%{$reset_color%}"
-  local cwd="%{$fg[yellow]%}\$(_prompt_agross_cwd)%{$reset_color%}"
-  local git_branch="%{$fg[green]%}\$(_prompt_agross_scm_branch)%{$reset_color%}"
-  local git_status_symbols="%{$fg_bold[red]%}\$(_prompt_agross_scm_status)%{$reset_color%}"
-  local jobs="%(1j.%{$fg_bold[magenta]%} %j jobs%{$reset_color%}.)"
-  local git_or_exit_status="%(?.\$(_prompt_agross_symbol).%{$fg_bold[red]%}%S↑%s%{$reset_color%})"
+  # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+  local history_index='%F{cyan}%h%f'
+  local user_host='%F{green}%n@%m%f'
+  local cwd='%F{yellow}$(_prompt::agross::cwd)%f'
+  local git_branch='%F{green}$(_prompt::agross::git_branch)%f'
+  local git_status_symbols='%B%F{red}$(_prompt::agross::git_status)%f%b'
+  local jobs='%(1j|%B%F{magenta} %j job%(2j|s|)%f%b|)'
+  local git_or_exit_status='%(?|$(_prompt::agross::symbol)|%F{red}%K{white}%B%S↑%s%b%k%f)'
 
   # Start with newline.
-  PROMPT='
-'
+  PROMPT=$'\n'
 
   # Display history number on mintty terminals.
   if is-mintty; then
@@ -22,56 +22,41 @@ function {
     PROMPT+="$history_index "
   fi
 
-  PROMPT+="$user_host $cwd $git_branch$git_status_symbols$jobs%E
-$git_or_exit_status "
+  PROMPT+="$user_host $cwd $git_branch$git_status_symbols$jobs%E"
+  PROMPT+=$'\n'
+  PROMPT+="$git_or_exit_status %E"
 
-  RPROMPT=''
+  RPROMPT=
 }
 
-function _prompt_agross_cwd() {
-  echo -n ${PWD/#$HOME/\~}
+function _prompt::agross::cwd() {
+  printf ${PWD/#$HOME/\~}
 }
 
-function _prompt_agross_scm_branch() {
+function _prompt::agross::symbol {
+  zgit_isgit && printf '±' && return
+  printf '$'
+}
+
+function _prompt::agross::git_branch() {
   zgit_isgit || return
   zgit-ext-rebaseinfo
 
-  local extra=''
+  local extra
 
-  if zgit_ingitdir; then
-    extra='GIT_DIR! '
-  fi
+  zgit_ingitdir && extra='GIT_DIR! '
+  zgit_isbare   && extra='BARE! '
 
-  if zgit_isbare; then
-    extra='BARE! '
-  fi
-
-  echo -n "$extra@$(zgit_head)$zgit_info[rebase]"
+  printf "$extra@$(zgit_head)$zgit_info[rebase]"
 }
 
-function _prompt_agross_symbol {
-  zgit_isgit && echo '±' && return
-  echo '$'
-}
-
-function _prompt_agross_scm_status() {
+function _prompt::agross::git_status() {
   zgit_inworktree || return
 
-  if ! zgit_isworktreeclean; then
-    echo -n '*'
-  fi
-
-  if zgit_hasuntracked; then
-    echo -n '?'
-  fi
-
-  if ! zgit_isindexclean; then
-    echo -n "^"
-  fi
-
-  if zgit_hasunmerged; then
-    echo -n 'Y'
-  fi
+  zgit_isworktreeclean || printf '*'
+  zgit_hasuntracked    && printf '?'
+  zgit_isindexclean    || printf '^'
+  zgit_hasunmerged     && printf 'Y'
 }
 
 # vim:set filetype=sh:
