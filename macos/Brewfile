@@ -1,11 +1,13 @@
 # Tap homebrew/dupes to be able to install updates to the outdated utilities
 # that are shipped with macOS.
 tap 'homebrew/dupes'
+tap 'domt4/autoupdate'
 
 # GNU utilities.
 brew 'binutils'
 brew 'coreutils'
 brew 'diffutils'
+brew 'dos2unix'
 brew 'file-formula'
 brew 'findutils', args: %w(with-default-names)
 brew 'gawk'
@@ -21,69 +23,100 @@ brew 'gzip'
 brew 'less'
 brew 'make'
 brew 'rsync'
+brew 'tree'
 brew 'unzip'
 brew 'watch'
 
+# QuickLook plugins, https://github.com/sindresorhus/quick-look-plugins
+cask 'betterzipql'
+cask 'qlcolorcode'
+cask 'qlimagesize'
+cask 'qlmarkdown'
+cask 'qlprettypatch'
+cask 'qlstephen'
+cask 'qlvideo'
+cask 'quicklook-csv'
+cask 'quicklook-json'
+cask 'quicklookase'
+cask 'suspicious-package'
+cask 'webpquicklook'
+
 # SixXS, https://www.sixxs.net/wiki/Aiccu/Installation
-# Currently not available on Sierra :(
-# brew 'tuntap'
-# brew 'aiccu'
+cask 'tuntap'
+brew 'aiccu'
+
+# FUSE.
+tap 'homebrew/fuse'
+cask 'osxfuse'
+brew 'sshfs'
 
 # Apps without topic directories.
 brew 'curl', args: %w(with-libidn with-libssh2 with-nghttp2 with-openssl)
+brew 'httpie'
 brew 'imagemagick', args: %w(with-webp)
+brew 'jid'
 brew 'm-cli'
+brew 'ncdu'
 brew 'nmap'
 brew 'p7zip'
+brew 'shellcheck'
 brew 'speedtest_cli'
 brew 'ssh-copy-id'
 brew 'testssl'
 brew 'the_platinum_searcher'
+brew 'wakeonlan'
 brew 'webkit2png'
 brew 'xz'
 
 cask 'android-file-transfer'
+cask 'atext'
 cask 'bartender'
 cask 'bettertouchtool'
 cask 'cleanmymac'
 cask 'clipmenu'
 cask 'dash'
+cask 'docker'
 cask 'double-commander'
 cask 'dropbox'
 cask 'evernote'
 cask 'flux'
 cask 'google-chrome'
 cask 'google-hangouts'
+cask 'hosts'
+cask 'hyperdock'
+cask 'hyperswitch'
 cask 'istat-menus'
+cask 'java'
 cask 'kap'
 cask 'karabiner-elements'
 cask 'lumen'
+cask 'macdown'
+cask 'mono-mdk'
 cask 'owncloud'
-cask 'path-finder'
 cask 'popclip'
 cask 'rubymine'
-cask 'sizeup'
 cask 'skype'
 cask 'symboliclinker'
 cask 'teamviewer'
-cask 'typinator'
 cask 'vlc'
+cask 'xnviewmp'
 
 # Apps from the Mac App Store.
-# mas 'Paste', id: 967_805_235
-# mas 'PCalc', id: 403_504_866
-# mas 'Temps', id: 489_930_332
 mas 'Amphetamine', id: 937_984_704
 mas 'Better', id: 1_121_192_229
 mas 'CleanMyDrive', id: 523_620_159
 mas 'EasyRes', id: 688_211_836
+mas 'FruitJuice', id: 671_736_912
+mas 'Microsoft Remote Desktop', id: 715_768_417
 mas 'Monosnap', id: 540_348_655
+mas 'Moom', id: 419_330_170
 mas 'Newton', id: 1_059_655_371
+mas 'PCalc', id: 403_504_866
+mas 'Tweetbot', id: 557_168_941
 
 puts 'Manually install these:'
 [
   'AnyDesk: https://anydesk.de/',
-  'Spectacle: https://www.spectacleapp.com/',
   'Roboform: https://www.roboform.com/for-mac'
 ].each { |app| puts app }
 
