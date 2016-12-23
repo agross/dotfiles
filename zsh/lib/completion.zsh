@@ -69,7 +69,10 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:complete:-command-:*' ignored-patterns '*.(manifest|bat|dll|exe)'
 
 # Attempt shell expansion on the current word up to cursor.
-bindkey '^I'               expand-or-complete-prefix     # Tab
+# Do not re-bind key if fzf completion has been loaded before.
+if [[ $(bindkey '^I') != *fzf-completion ]]; then
+  bindkey '^I'             expand-or-complete-prefix     # Tab
+fi
 
 # Perform history expansion and insert a space into the buffer. This is intended to be bound to SPACE.
 bindkey ' '                magic-space

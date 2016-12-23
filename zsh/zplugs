@@ -45,10 +45,14 @@ zplug 'plugins/gem', \
       from:oh-my-zsh, \
       ignore:oh-my-zsh.sh, \
       if:"(($+commands[gem])) || [[ -d ~/.rbenv/bin ]]"
+zplug 'junegunn/fzf', \
+      as:command, \
+      use:'bin/{fzf,fzf-tmux}', \
+      if:"[[ $OSTYPE == linux* || $OSTYPE == darwin* ]]", \
+      hook-build:'./install --key-bindings --completion --no-update-rc'
 
 # Plugins related to git.
 zplug 'so-fancy/diff-so-fancy', \
-      if:"(($+commands[git] + $+commands[perl] + $(perl -e 'use open qw(:std :utf8);' 2> /dev/null && echo 1 || echo 0) == 3))", \
       as:command, \
       use:'diff-so-fancy'
 zplug 'nvie/gitflow', \
