@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+
+function dnd::enabled() {
+  plutil \
+    -convert xml1 \
+    -o - \
+    ~/Library/Preferences/ByHost/com.apple.notificationcenterui.*.plist | \
+    grep --quiet doNotDisturbDate
+}
+
+function dnd::toggle() {
+  # http://apple.stackexchange.com/a/244130
+  osascript <<EOD
+    tell application "System Events" to tell process "SystemUIServer"
+      try
+        key down option
+        click menu bar item 1 of menu bar 1
+        key up option
+      on error errStr number errorNumber
+        key up option
+        error errStr number errorNumber
+      end try
+    end tell
+EOD
+}
+
+function dnd::on()  dnd::enabled || dnd::toggle && echo DND turned on
+function dnd::off() dnd::enabled && dnd::toggle && echo DND turned off
+
+(($+commands[m])) || {
+  >&2 printf 'Need m executable from https://github.com/rgcr/m-cli\n'
+  exit 1
+}
+
+if [[ $# -gt 0 ]]; then
+  m volume unmute
+
+  dnd::off
+else
+  m nosleep until $((9 * 60 * 60)) &
+  m volume mute
+
+  dnd::on
+fi
