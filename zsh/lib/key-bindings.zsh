@@ -8,8 +8,8 @@
 # bindkey -M menuselect
 # About widgets: http://sgeb.io/articles/zsh-zle-closer-look-custom-widgets/
 
-# How to obtain key codes in zsh:
-# Ctrl+X, followed by the key combination desired to bind prints the code to the console.
+# To obtain key codes type Ctrl+X, followed by the key combination.
+# The code is then printed to the console.
 bindkey '^X'      quoted-insert        # Ctrl + X
 
 bindkey '\eb'     kill-region          # ESC, b
@@ -20,11 +20,8 @@ bindkey '^Z'      undo                 # Ctrl + Z
 bindkey '^Y'      redo                 # Ctrl + Y
 
 bindkey '^R'      history-incremental-pattern-search-backward # Ctrl + R
-bindkey '^H'      history-incremental-pattern-search-backward # Ctrl + H
 bindkey '^J'      history-incremental-pattern-search-forward  # Ctrl + J
 
-bindkey '^[[5~'   up-line-or-history   # Shift + up arrow
-bindkey '^[[6~'   down-line-or-history # Shift + down arrow
 bindkey '^[[A'    up-line-or-history   # Up arrow
 bindkey '^[[B'    down-line-or-history # Down arrow
 
@@ -34,13 +31,13 @@ bindkey '\e[1;2B' down-line-or-search  # Shift + Down arrow
 
 zmodload -i zsh/terminfo
 [[ -n "$terminfo[khome]" ]] && bindkey $terminfo[khome] beginning-of-line # Home
-bindkey '^[[1~'   beginning-of-line                                       # Home
+bindkey '^[[1~'   beginning-of-line                                       # Home, Cmd + left arrow
 [[ -n "$terminfo[kend]" ]]  && bindkey $terminfo[kend]  end-of-line       # End
-bindkey '^[[4~'   end-of-line                                             # End
+bindkey '^[[4~'   end-of-line                                             # End, Cmd + right arrow
 [[ -n "$terminfo[kdch1]" ]] && bindkey $terminfo[kdch1] delete-char       # Del
 
-bindkey '^[[1;5D' backward-word        # Ctrl + left arrow
-bindkey '^[[1;5C' forward-word         # Ctrl + right arrow
+bindkey '^[[1;5D' backward-word        # Ctrl + left arrow, Option + left arrow
+bindkey '^[[1;5C' forward-word         # Ctrl + right arrow, Option + right arrow
 bindkey '^_'      backward-delete-word # Ctrl + Backspace
 bindkey '^[[3;5~' delete-word          # Ctrl + Del
 bindkey '^[[3;2~' delete-word          # Shift + Del
