@@ -14,6 +14,7 @@ autoload -Uz $DOTFILES/zsh/functions/startup/*(:t)
 # Load color support.
 autoload -U colors && colors
 
-verbose Loaded $fg[green]zshenv$reset_color
+# https://github.com/zplug/zplug/issues/332
+# verbose Loaded $fg[green]zshenv$reset_color
 
 # vim:set filetype=sh:
