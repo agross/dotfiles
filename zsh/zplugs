@@ -1,22 +1,30 @@
-# Load everything but the zprofile, completion, postinit and aliases files.
+# Load paths and function paths first.
 zplug "$DOTFILES", \
       from:local, \
-      use:'**/(^(zprofile|completion|postinit|aliases)).zsh'
+      priority:3, \
+      use:'**/(path|fpath).zsh'
 
-# Set theme last.
+# Load everything but the path, function path, zprofile, completion and postinit
+# files second.
+zplug "$DOTFILES", \
+      from:local, \
+      priority:2, \
+      use:'**/(^(path|fpath|zprofile|completion|postinit)).zsh'
+
+# Load theme before compinit.
 zplug "$DOTFILES/zsh/themes", \
       as:theme, \
       from:local, \
       defer:1, \
       use:'agross.zsh-theme'
 
-# Load aliases and postinit last.
+# Load postinit before compinit.
 zplug "$DOTFILES", \
       from:local, \
       defer:1, \
-      use:'**/(aliases|postinit).zsh'
+      use:'**/postinit.zsh'
 
-# Load completions after compinit was run.
+# Load completions after compinit.
 zplug "$DOTFILES", \
       from:local, \
       defer:2, \
