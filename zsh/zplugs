@@ -89,11 +89,13 @@ zplug 'plugins/docker-compose', \
       if:"(($+commands[docker-compose]))"
 
 # Plugins to be loaded after compinit was run.
-zplug 'zsh-users/zsh-syntax-highlighting', \
-      defer:2, \
-      if:"[[ "$(platform)" != "windows" ]]"
+zplug 'hlissner/zsh-autopair', \
+      defer:2
 zplug 'knu/z', \
       use:'z.sh', \
       defer:2
+zplug 'zsh-users/zsh-syntax-highlighting', \
+      defer:3, \
+      if:"[[ "$(platform)" != "windows" ]]"
 
 # vim:set filetype=sh:
