@@ -11,6 +11,10 @@ typeset -Ua fpath
 fpath=("$DOTFILES/zsh/functions/startup" $fpath)
 autoload -Uz $DOTFILES/zsh/functions/startup/*(:t)
 
+# Language settings: This variable determines the locale category for any
+# category not specifically selected via a variable starting with `LC_'.
+export LANG=en_US.UTF-8
+
 # Load color support.
 autoload -U colors && colors
 
