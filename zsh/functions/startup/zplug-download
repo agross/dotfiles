@@ -5,6 +5,7 @@ verbose Downloading $fg[cyan]zplug$reset_color to $fg[green]$ZPLUG_HOME$reset_co
   return 1
 }
 
+setopt local_options pipefail
 curl --silent --location zplug.sh/installer | zsh
 
 if [[ $? -ne 0 ]]; then
