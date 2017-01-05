@@ -31,7 +31,8 @@ zplug "$DOTFILES", \
       use:'**/completion.zsh'
 
 # Manage zplug with zplug.
-zplug 'zplug/zplug'
+zplug 'zplug/zplug', \
+      hook-build:'zplug --self-manage'
 
 # oh-my-zsh plugins.
 zplug 'plugins/ssh-agent', \
