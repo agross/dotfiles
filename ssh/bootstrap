@@ -1,5 +1,6 @@
 if [[ "$OSTYPE" == 'mac' ]]; then
   formula openssh
+  formula ssh-copy-id
 fi
 
 local ids="$topic/ssh"
