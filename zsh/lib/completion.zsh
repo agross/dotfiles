@@ -54,13 +54,16 @@ zstyle ':completion:*'              select-prompt '%SScrolling active: current s
 
 # 1. Try case-sensitive completion.
 # 2. Map German umlauts, allow case-insensitive completion.
-# 3. Partial-word completion.
+# 3. Partial word completion.
 # 4. Substring completion.
 # http://stackoverflow.com/a/24237590/149264
-zstyle ':completion:*' matcher-list '' \
-                                    'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' \
-                                    'r:|[._-]=* r:|=*' \
-                                    'l:|=* r:|=*'
+# Way too slow on Windows.
+if [[ "$(platform)" != 'windows' ]]; then
+  zstyle ':completion:*' matcher-list '' \
+                                      'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' \
+                                      'r:|[._-]=* r:|=*' \
+                                      'l:|=* r:|=*'
+fi
 
 # Ignore completion functions (until the _ignored completer).
 zstyle ':completion:*:functions' ignored-patterns '_*'
