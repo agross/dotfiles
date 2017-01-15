@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+# As a first line of defense, detect whether we're called from sudo.
+parent_process="$(ps -o comm= -p $PPID)"
+if [ ! "$parent_process" = 'sudo' ]; then
+  >&2 echo Not running from sudo.
+  exit 1
+fi
+
+security find-generic-password -gwa "$USER" "$HOME/Library/Keychains/Local Accounts.keychain-db"
