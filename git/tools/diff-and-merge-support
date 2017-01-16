@@ -1,5 +1,3 @@
-#!/bin/sh
-#
 # export GIT_DIFFMERGE_VERBOSE=1 to enable logging.
 
 # Assume we are dot-sourced from a script in our own directory.
