@@ -22,6 +22,12 @@ function dnd::toggle() {
       end try
     end tell
 EOD
+
+  if [[ $? != 0 ]]; then
+    >&2 printf "You need to grant %s accessibility access in Preferences\n" "$TERM_PROGRAM"
+    open /System/Library/PreferencePanes/Security.prefPane/
+    exit 1
+  fi
 }
 
 function dnd::on()  dnd::enabled || dnd::toggle && echo DND turned on
