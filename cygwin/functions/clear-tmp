@@ -13,7 +13,7 @@ fi
 #   N            = ignore no matches
 #   D            = include files starting with a dot
 #   u[$USER]     = include files owned by $USER
-#   ^t           = exclude entries with the stick bit (e.g. /tmp/uscreens)
+#   ^t           = exclude entries with the sticky bit (e.g. /tmp/uscreens)
 local pattern="$directory/*$exclude(NDu[$USER]^t)"
 
 # $~variable means zsh should expand the variable.
