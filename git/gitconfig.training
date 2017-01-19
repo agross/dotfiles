@@ -25,12 +25,14 @@
 	ui = auto
 	wtf = true
 [color "branch"]
-	local = bold green
-	remote = bold red
+	local = green
+	remote = red
+[color "diff"]
+	meta = blue
 [color "decorate"]
-	head = bold blue
-	branch = bold green
-	remoteBranch = bold red
+	head = blue
+	branch = green
+	remoteBranch = red
 	tag = bold magenta
 [branch]
 	# autoSetupRebase = always
