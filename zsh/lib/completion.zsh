@@ -71,6 +71,11 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 # Ignore Windows executables as external commands.
 zstyle ':completion:*:complete:-command-:*' ignored-patterns '*.(manifest|bat|dll|exe)'
 
+# Ignore .DS_Store and .localized as files on macOS.
+if [[ "$(platform)" == 'mac' ]]; then
+  zstyle ':completion:*:*:*:*:*files' ignored-patterns '.DS_Store|.localized'
+fi
+
 # Attempt shell expansion on the current word up to cursor.
 # Do not re-bind key if fzf completion has been loaded before.
 if [[ $(bindkey '^I') != *fzf-completion ]]; then
