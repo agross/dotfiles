@@ -27,7 +27,7 @@ zgit_info_update() {
   zgit_info=()
 
   local -a info
-  info=($(git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree --show-toplevel 2> /dev/null))
+  info=("${(@f)$(git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree --show-toplevel 2> /dev/null)}")
   if [ $? -ne 0 ] || [ -z "$info[1]" ]; then
     return
   fi
