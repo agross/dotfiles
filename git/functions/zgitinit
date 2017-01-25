@@ -27,7 +27,7 @@ zgit_info_update() {
   zgit_info=()
 
   local -a info
-  info=($(git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree 2> /dev/null))
+  info=($(git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree --show-toplevel 2> /dev/null))
   if [ $? -ne 0 ] || [ -z "$info[1]" ]; then
     return
   fi
@@ -36,6 +36,7 @@ zgit_info_update() {
   zgit_info[ingitdir]=$info[2]
   zgit_info[bare]=$info[3]
   zgit_info[inwork]=$info[4]
+  zgit_info[toplevel]=$info[5]
 }
 
 zgit_isgit() {
@@ -193,7 +194,7 @@ zgit_hasuntracked() {
   zgit_inworktree || return 1
 
   local -a flist
-  flist=($(git ls-files --others --exclude-standard 2> /dev/null))
+  flist=($(git -C "${zgit_info[toplevel]}" ls-files --others --exclude-standard 2> /dev/null))
   if [ $#flist -gt 0 ]; then
     return 0
   else
