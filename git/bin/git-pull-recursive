@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+root="${1-.}"
+some_failed=0
+first=true
+
+if [[ -t 1 ]]; then
+  red='\e[1;31m'
+  green='\e[1;32m'
+  yellow='\e[1;33m'
+  reset='\e[0m'
+fi
+
+while IFS= read -d $'\0' -r dotgit; do
+  repo="${dotgit%.git}"
+
+  # Detect whether this is a submodule directory and skip.
+  if [[ -f "$dotgit" ]] && grep --quiet '\.git/modules/' "$dotgit"; then
+    printf '%bIgnored submodule directory%b %b%s%b\n' \
+           "$yellow" "$reset" "$green" "$repo" "$reset"
+    continue
+  fi
+
+  if [[ "$first" == 'false' ]]; then
+    printf '\n'
+  fi
+  first=false
+
+  printf 'Updating %b%s%b\n' "$green" "$repo" "$reset"
+  git -C "$repo" pull
+  exit_status=$?
+
+  if [[ "$exit_status" == 0 ]]; then
+    printf '%b✔%b Success\n' "$green" "$reset"
+  else
+    some_failed=$exit_status
+    printf '%b✘%b Failed with exit status %d\n' "$red" "$reset" "$exit_status"
+  fi
+done < <(find "$root" \( -type d -o -type f \) -name .git -print0)
+
+exit $some_failed
