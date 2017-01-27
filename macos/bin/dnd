@@ -31,7 +31,8 @@ EOD
 }
 
 function dnd::on()  dnd::enabled || dnd::toggle && echo DND turned on
-function dnd::off() dnd::enabled && dnd::toggle && echo DND turned off
+function dnd::off() dnd::enabled && dnd::toggle && echo DND turned off || \
+                      echo DND does not seem to be enabled && return 1
 
 (($+commands[m])) || {
   >&2 printf 'Need m executable from https://github.com/rgcr/m-cli\n'
@@ -39,12 +40,15 @@ function dnd::off() dnd::enabled && dnd::toggle && echo DND turned off
 }
 
 if [[ $# -gt 0 ]]; then
+  killall caffeinate 2> /dev/null
   m volume unmute
-
+  open -a Flux
   dnd::off
 else
-  m nosleep until $((9 * 60 * 60)) &
+  # http://unix.stackexchange.com/a/148698/72946
+  # http://stackoverflow.com/a/10408906/149264
+  nohup caffeinate -u -t $((9 * 60 * 60)) < /dev/null > /dev/null 2>&1 &disown
   m volume mute
-
+  killall Flux 2> /dev/null
   dnd::on
 fi
