@@ -8,8 +8,10 @@ case "$(platform)" in
     # Visual Studio Code.
     export GIT_EDITOR='file="$(cygpath --windows --absolute "$1")"; shift $#; /c/Tools/Code/bin/code --new-window --wait "$file"'
     ;;
+
   *)
     (($+commands[code])) && export GIT_EDITOR='code --new-window --wait'
+    return 0
     ;;
 esac
 
