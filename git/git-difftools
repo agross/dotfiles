@@ -1,5 +1,7 @@
 [difftool "bc"]
 	cmd = ~/.dotfiles/git/tools/beyondcompare diff \"$LOCAL\" \"$REMOTE\"
+[difftool "code"]
+	cmd = ~/.dotfiles/git/tools/code diff \"$LOCAL\" \"$REMOTE\"
 [difftool "diffmerge"]
 	cmd = ~/.dotfiles/git/tools/diffmerge diff \"$LOCAL\" \"$REMOTE\"
 [difftool "kdiff3"]

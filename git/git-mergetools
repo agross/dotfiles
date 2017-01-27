@@ -1,6 +1,8 @@
 [mergetool "bc"]
 	cmd = ~/.dotfiles/git/tools/beyondcompare merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
+[mergetool "code"]
+	cmd = ~/.dotfiles/git/tools/code merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 [mergetool "diffmerge"]
 	cmd = ~/.dotfiles/git/tools/diffmerge merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true

@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# export GIT_DIFFMERGE_VERBOSE=1 to enable logging
+
+script_path="${0%/*}"
+. "$script_path/diff-and-merge-support"
+
+tool="$(tool_path "/c/Tools/Code/Code.exe" \
+                  "code")" || exit $?
+
+op="${1?Need operation (diff or merge) as the first argument}"
+shift
+
+case "$op" in
+  diff)
+    diff_args "$1" "$2" || exit $?
+
+    exec "$tool" --wait \
+                 --diff \
+                 "$left" \
+                 "$right" \
+                 > /dev/null 2>&1
+    ;;
+
+  merge)
+    # You might want to install this extension:
+    # https://marketplace.visualstudio.com/items?itemName=pprice.better-merge
+    merge_args "$1" "$2" "$3" "$4" || exit $?
+
+    exec "$tool" --wait \
+                 "$result" \
+                 > /dev/null 2>&1
+    ;;
+
+  *)
+    printf "Unknown operation: $op\n" >&2
+    exit 1
+    ;;
+esac
