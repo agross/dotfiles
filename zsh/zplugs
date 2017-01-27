@@ -37,7 +37,8 @@ zplug 'zplug/zplug', \
 # oh-my-zsh plugins.
 zplug 'plugins/ssh-agent', \
       from:oh-my-zsh, \
-      ignore:oh-my-zsh.sh
+      ignore:oh-my-zsh.sh, \
+      if:"[[ $OSTYPE != darwin* ]]"
 zplug 'plugins/sudo', \
       from:oh-my-zsh, \
       ignore:oh-my-zsh.sh, \
