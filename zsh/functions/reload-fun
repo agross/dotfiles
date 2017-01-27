@@ -1,7 +1,8 @@
 local fun
 
 for fun in $*; do
-  unfunction $fun
-  autoload -U $fun
-  echo Forced reload of $fun
+  if unfunction $fun; then
+    autoload -U $fun
+    echo Forced reload of $fun
+  fi
 done
