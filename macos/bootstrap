@@ -7,3 +7,4 @@ brew bundle --verbose --file="$topic/Brewfile"
 brew cleanup
 
 brew link --force curl
+brew autoupdate --start --upgrade --cleanup
