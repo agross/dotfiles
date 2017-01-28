@@ -1,0 +1,3 @@
+if [[ "$OSTYPE" == 'mac' ]]; then
+  cask docker
+fi
