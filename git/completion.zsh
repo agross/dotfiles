@@ -2,8 +2,9 @@
 local -a user_commands
 local user_command
 
-# (*) = executable files.
-for user_command in $HOME/.dotfiles/git/bin/git-*(*); do
+# * = executable files
+# N = ignore no matches
+for user_command in ${0%/*}/bin/git-*(*N); do
   local name="$(basename "$user_command")"
   name="${name#git-}"
   name="${name%.*}"
