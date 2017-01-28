@@ -43,10 +43,6 @@ cask 'quicklookase'
 cask 'suspicious-package'
 cask 'webpquicklook'
 
-# SixXS, https://www.sixxs.net/wiki/Aiccu/Installation
-cask 'tuntap'
-brew 'aiccu'
-
 # FUSE.
 tap 'homebrew/fuse'
 cask 'osxfuse'

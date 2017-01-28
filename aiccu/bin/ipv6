@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+op=start
+if [ $# != 0 ]; then
+  op=stop
+fi
+
+sudo brew services $op aiccu
