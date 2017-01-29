@@ -9,6 +9,7 @@ if (($+commands[pt])); then
   }
 fi
 
+export FZF_DEFAULT_OPTS='--height 80%'
 export FZF_CTRL_R_OPTS='--exact'
 
 if (($+commands[tree])); then
