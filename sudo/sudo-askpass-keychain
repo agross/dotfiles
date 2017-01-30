@@ -2,8 +2,9 @@
 
 # As a first line of defense, detect whether we're called from sudo.
 parent_process="$(ps -o comm= -p $PPID)"
-if [ ! "$parent_process" = 'sudo' ]; then
-  >&2 echo Not running from sudo.
+if [ "$parent_process" != 'sudo' ] && \
+   [ "$parent_process" != "$(which sudo)" ]; then
+  >&2 echo "SSH_ASKPASS $0: Not running from sudo but from $parent_process."
   exit 1
 fi
 
