@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# Prune all unreachable objects from the object database.
-git prune --expire=now --verbose
-
-# Cleanup unnecessary files and optimize the local repository.
-git gc --aggressive --prune=now

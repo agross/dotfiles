@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+git count-objects -v
+echo -e "\nCompressing objects in repository..."
+git repack -Ad      # Kill in-pack garbage.
+git prune           # Kill loose garbage.
+echo
+git count-objects -v
+
