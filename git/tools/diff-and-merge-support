@@ -86,9 +86,13 @@ merge_args() {
 
   local_desc="$(git describe --all --always HEAD)"
   remote_desc='Stashed changes'
+  local gitdir="$(git rev-parse --git-dir)"
   local file
-  for file in rebase-merge/stopped-sha MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
-    file=".git/$file"
+  for file in rebase-merge/stopped-sha \
+              MERGE_HEAD \
+              CHERRY_PICK_HEAD \
+              REVERT_HEAD; do
+    file="$gitdir/$file"
     if [ -f "$file" ]; then
       remote_desc="$(git describe --all --always --contains "$(<$file)")"
       break
