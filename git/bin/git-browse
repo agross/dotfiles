@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+# --height=100% leads to broken output after the first commit inspection
+# with Ctrl+M (which is the same as Enter).
+
+git log --graph \
+        --color=always \
+        --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' \
+        "$@" |
+  fzf --ansi \
+      --height=99% \
+      --no-sort \
+      --reverse \
+      --tiebreak=index \
+      --toggle-sort=\` \
+      --bind "ctrl-m:execute:
+                (grep --only-matching --extended-regexp '\b[a-f0-9]+' |
+                head -n 1 |
+                xargs -I % sh -c 'GIT_PAGER_ARGS= git show %') << 'FZF-EOF'
+                  {}
+FZF-EOF"

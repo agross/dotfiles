@@ -78,9 +78,13 @@
 [stash]
 	showPatch = true
 [pager]
-	log = diff-so-fancy | less
-	show = diff-so-fancy | less --pattern='^(added|deleted|modified): '
-	diff = diff-so-fancy | less --pattern='^(added|deleted|modified): '
+	# --no-init             - keep screen contents after quitting less (do not use alternative screen)
+	# --quit-at-eof         - quit less if EOF is reached
+	#  --quit-if-one-screen - quit immediately if output fits the screen
+	# --RAW-CONTROL-CHARS   - colorize output
+	log  = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof --quit-if-one-screen} --RAW-CONTROL-CHARS
+	show = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof} --RAW-CONTROL-CHARS --pattern='^(commit .*|(added|deleted|modified): )'
+	diff = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof} --RAW-CONTROL-CHARS --pattern='^(added|deleted|modified): '
 [interactive]
 	diffFilter = diff-so-fancy
 [color "diff-highlight"]
