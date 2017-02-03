@@ -36,7 +36,7 @@ case "$op" in
     ;;
 
   *)
-    printf "Unknown operation: $op\n" >&2
+    printf 'Unknown operation: %s\n' "$op" >&2
     exit 1
     ;;
 esac

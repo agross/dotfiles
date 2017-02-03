@@ -6,20 +6,19 @@ _script_path="${0%/*}"
 find_cygpath() {
   local cygpath
 
-  cygpath="$(command -v cygpath)"
-  if [ $? = 0 ]; then
-    printf "$cygpath"
+  if cygpath="$(command -v cygpath)"; then
+    printf '%s' "$cygpath"
     return
   fi
 
   # Try local copy of cygpath.exe and cygwin1.dll (e.g. for msysgit).
   cygpath="$_script_path/cygpath.exe"
   if [ -f "$cygpath" ] && [ -x "$cygpath" ]; then
-    printf "$cygpath"
+    printf '%s' "$cygpath"
     return
   fi
 
-  printf "\$PATH $_script_path"
+  printf "No cygpath in: \$PATH, %s\n" "$_script_path" >&2
   return 1
 }
 
@@ -28,7 +27,7 @@ tool_path() {
 
   for canditate in "$@"; do
     if command -v "$canditate" > /dev/null; then
-      printf "$canditate"
+      printf '%s' "$canditate"
       return
     fi
   done
@@ -55,7 +54,7 @@ diff_args() {
 
   if [ "$OSTYPE" = 'cygwin' ] || [ "$OSTYPE" = 'msys' ]; then
     local cygpath
-    cygpath="$(find_cygpath)" || { printf "No cygpath in: %s\n" "$cygpath" >&2 && exit 1; }
+    cygpath="$(find_cygpath)" || exit 1
 
     if [ ! -f "$left" ] && [ ! -d "$left" ]; then
       left="$_script_path/empty"
@@ -86,22 +85,28 @@ merge_args() {
 
   local_desc="$(git describe --all --always HEAD)"
   remote_desc='Stashed changes'
-  local gitdir="$(git rev-parse --git-dir)"
+
+  local git_dir
+  if ! git_dir="$(git rev-parse --git-dir 2> /dev/null)"; then
+    printf "Could not get git directory, exit status %s\n" "$?" >&2
+    exit 1
+  fi
+
   local file
   for file in rebase-merge/stopped-sha \
               MERGE_HEAD \
               CHERRY_PICK_HEAD \
               REVERT_HEAD; do
-    file="$gitdir/$file"
+    file="$git_dir/$file"
     if [ -f "$file" ]; then
-      remote_desc="$(git describe --all --always --contains "$(<$file)")"
+      remote_desc="$(git describe --all --always --contains "$(<"$file")")"
       break
     fi
   done
 
   if [ "$OSTYPE" = 'cygwin' ] || [ "$OSTYPE" = 'msys' ]; then
     local cygpath
-    cygpath="$(find_cygpath)" || { printf "No cygpath in: %s\n" "$cygpath" >&2 && exit 1; }
+    cygpath="$(find_cygpath)" || exit 1
 
     # Replace /dev/null with an empty file on Windows.
     if [ ! -f "$base" ]; then
