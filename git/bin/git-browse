@@ -1,21 +1,105 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # --height=100% leads to broken output after the first commit inspection
 # with Ctrl+M (which is the same as Enter).
 
+function parse_args() {
+  preview=(--preview "$(show_commit --preview)")
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --no-preview)
+        preview=()
+        ;;
+
+      *)
+        printf 'Unknown option: %s\n\n' "$1" >&2
+        show_help >&2
+        exit 1
+        ;;
+    esac
+
+    shift
+  done
+}
+
+function show_help() {
+  local help
+
+  help=$(cat << 'EOS'
+%s [--no-preview]
+
+Browse git history using fzf.
+
+Options:
+  --no-preview  Do not show preview with the commit diff
+
+Key bindings:
+  Ctrl+H        Preview pane page down
+  Ctrl+L        Preview pane page up
+  Ctrl+J        Preview pane line down
+  Ctrl+K        Preview pane line up
+  Ctrl+P        Toggle preview
+  Ctrl+M        Show commit
+  Enter         Show commit
+  Tab           Copy commit SHA to the clipboard
+EOS
+)
+
+  printf "$help\n" "${0##*/}"
+}
+
+function extract_sha_and() {
+  if [[ $# == 0 ]]; then
+    printf 'Need action for extracted SHA\n' >&2
+    exit 1
+  fi
+
+  cat << EOS
+  (grep --only-matching --extended-regexp '\b[a-f0-9]+' |
+  head -n 1 |
+  xargs -I % sh -c '$@') << 'FZF-EOF'
+    {}
+  FZF-EOF
+EOS
+}
+
+function show_commit() {
+  local color
+  local diff_so_fancy
+
+  if [[ "$1" == --preview ]]; then
+    # fzf preview is not a pty, so we need to force colors.
+    color='--color=always'
+
+    # Prettify with diff-so-fancy if available.
+    if hash diff-so-fancy > /dev/null 2>&1; then
+      diff_so_fancy='| diff-so-fancy'
+    fi
+  fi
+
+  extract_sha_and "GIT_PAGER_ARGS= git show $color % $diff_so_fancy"
+}
+
+function copy_sha() {
+  # Use ~/.dotfiles/bin/cb for multi-platform clipboard support.
+  extract_sha_and 'git rev-parse % | cb'
+}
+
+parse_args "$@"
+
 git log --graph \
         --color=always \
-        --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' \
-        "$@" |
+        --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' |
   fzf --ansi \
       --height=99% \
       --no-sort \
       --reverse \
       --tiebreak=index \
       --toggle-sort=\` \
-      --bind "ctrl-m:execute:
-                (grep --only-matching --extended-regexp '\b[a-f0-9]+' |
-                head -n 1 |
-                xargs -I % sh -c 'GIT_PAGER_ARGS= git show %') << 'FZF-EOF'
-                  {}
-FZF-EOF"
+      "${preview[@]}" \
+      --bind 'ctrl-j:preview-down,ctrl-k:preview-up' \
+      --bind 'ctrl-h:preview-page-down,ctrl-l:preview-page-up' \
+      --bind 'ctrl-p:toggle-preview' \
+      --bind "tab:execute($(copy_sha))" \
+      --bind "ctrl-m:execute($(show_commit))"
