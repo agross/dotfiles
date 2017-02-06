@@ -1,1 +1,1 @@
-[[ "$OSTYPE" == 'mac' ]] && formula thefuck
+[[ "$OSTYPE" == 'mac' ]] && formula thefuck || return 0

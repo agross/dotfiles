@@ -1,1 +1,1 @@
-[[ "$OSTYPE" == 'mac' ]] && formula midnight-commander
+[[ "$OSTYPE" == 'mac' ]] && formula midnight-commander || return 0
