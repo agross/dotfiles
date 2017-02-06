@@ -75,9 +75,9 @@ function _fzf::git::hash() {
   local extract_sha inspect preview
   extract_sha="command grep --only-matching '[a-f0-9]\{7,\}' <<< {} | head --lines=1"
   inspect="$extract_sha | \
-           xargs -I % sh -c 'GIT_PAGER_ARGS= git show %'"
+           xargs --no-run-if-empty -I % sh -c 'GIT_PAGER_ARGS= git show %'"
   preview="$extract_sha | \
-           xargs git show --color=always \
+           xargs --no-run-if-empty git show --color=always \
            $(_fzf::git::diff-so-fancy)"
 
   git log --graph \
