@@ -1,0 +1,21 @@
+# https://github.com/zplug/zplug/issues/314
+
+local branch=origin/priority-tag
+
+local p
+for p in $ZPLUG_HOME $ZPLUG_REPOS/zplug/zplug; do
+  if ! pushd "$p" > /dev/null 2>&1; then
+    return
+  fi
+
+  if ! git merge-base --is-ancestor $branch HEAD 2> /dev/null; then
+    git fetch && \
+      git reset --hard origin/master && \
+      git merge --no-edit $branch
+  fi
+
+  popd > /dev/null
+done
+
+# Force symlink to $ZPLUG_REPOS/zplug/zplug/init.zsh.
+(($+functions[zplug])) && zplug --self-manage

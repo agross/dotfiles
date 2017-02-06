@@ -10,6 +10,9 @@ if [[ ! -f "$zplug_init" && ! -L "$zplug_init" ]]; then
   fi
 fi
 
+local hook="$1"
+$hook
+
 verbose Loading $fg[cyan]zplug$reset_color from $fg[green]$zplug_init$reset_color
 source "$zplug_init"
 
