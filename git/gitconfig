@@ -83,8 +83,8 @@
 	#  --quit-if-one-screen - quit immediately if output fits the screen
 	# --RAW-CONTROL-CHARS   - colorize output
 	log  = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof --quit-if-one-screen} --RAW-CONTROL-CHARS
-	show = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof} --RAW-CONTROL-CHARS --pattern='^(commit .*|(added|deleted|modified): )'
-	diff = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof} --RAW-CONTROL-CHARS --pattern='^(added|deleted|modified): '
+	show = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof} --RAW-CONTROL-CHARS --pattern='^(commit .*|(added|deleted|modified|renamed): )'
+	diff = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof} --RAW-CONTROL-CHARS --pattern='^(added|deleted|modified|renamed): '
 [interactive]
 	diffFilter = diff-so-fancy
 [color "diff-highlight"]
