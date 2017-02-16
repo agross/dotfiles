@@ -13,6 +13,15 @@ function _fzf::git::diff-so-fancy() {
 function _fzf::git::file() {
   _fzf::git::is_repo || return
 
+  git ls-files |
+    fzf-tmux --multi \
+             --cycle \
+             --preview "cat {}"
+}
+
+function _fzf::git::status-file() {
+  _fzf::git::is_repo || return
+
   # Preview doesn't work perfectly with renames, but cat works with files with spaces.
   git -c color.status=always \
       status \
@@ -127,6 +136,7 @@ function _fzf::git::bind-keys() {
 # These will be defined as key bindings: ^g^<key> for _fzf::git::<value>
 local -A bindings
 bindings[f]=file
+bindings[g]=status-file
 bindings[b]=branch
 bindings[t]=tag
 bindings[r]=remote
