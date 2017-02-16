@@ -5,6 +5,8 @@
 	# editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession -noPlugins \"$(cygpath --windows --absolute \"$1\")\"
 	# Notepad++ on msysgit (a.k.a. Git for Windows).
 	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession -noPlugins
+[include]
+	path = ~/.git-config/gitignore.config
 [apply]
 	whitespace = nowarn
 [alias]
