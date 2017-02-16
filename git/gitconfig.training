@@ -5,8 +5,6 @@
 	# editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession -noPlugins \"$(cygpath --windows --absolute \"$1\")\"
 	# Notepad++ on msysgit (a.k.a. Git for Windows).
 	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession -noPlugins
-[include]
-	path = ~/.git-config/gitignore.config
 [apply]
 	whitespace = nowarn
 [alias]
@@ -21,8 +19,9 @@
 	path = ~/.dotfiles/git/git-aliases
 	# Those are symlinked by the bootstrapper:
 	path = ~/.git-config/alias-ui.config
-	path = ~/.git-config/credential.config
-	path = ~/.git-config/windows/ruby-aliases.config
+	path = ~/.git-config/credential-helper.config
+	path = ~/.git-config/gitignore.config
+	path = ~/.git-config/ruby-aliases.config
 [color]
 	ui = auto
 	wtf = true

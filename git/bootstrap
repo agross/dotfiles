@@ -11,16 +11,42 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   cask p4merge
   cask fork
   cask gitup
-
-  symlink "$topic/platform-specific/credential/osx-keychain.config" "$HOME/.git-config/credential.config"
-  symlink "$topic/platform-specific/macos/alias-ui.config"          "$HOME/.git-config/alias-ui.config"
-  symlink "$topic/platform-specific/macos/gitignore.config"         "$HOME/.git-config/gitignore.config"
-else
-  symlink "$topic/platform-specific/credential/cache.config" "$HOME/.git-config/credential.config"
 fi
 
-if [[ "$OSTYPE" == 'cygwin' || "$OSTYPE" == 'windows' ]]; then
-  symlink "$topic/platform-specific/windows/alias-ui.config"              "$HOME/.git-config/alias-ui.config"
-  symlink "$topic/platform-specific/windows/diff-highlight-colors.config" "$HOME/.git-config/windows/diff-highlight-colors.config"
-  symlink "$topic/platform-specific/windows/ruby-aliases.config"          "$HOME/.git-config/windows/ruby-aliases.config"
-fi
+case "$OSTYPE" in
+  mac)
+    dir=macos
+    ;;
+
+  cygwin|windows)
+    dir=windows
+    ;;
+
+  *)
+    dir=
+    ;;
+esac
+
+[[ -n "$dir" ]] && platform_specific="$topic/platform-specific/$dir"
+
+# Find platform-specific and generic configs with generics sorted last.
+processed=()
+find "$platform_specific" "$topic/platform-specific/_" \
+     -name '*.config' \
+     -type f \
+     -print0 2> /dev/null | \
+  while read -r -d $'\0' config; do
+
+  name="$(basename "$config")"
+  target="$HOME/.git-config/${name%%.*}.config"
+
+  for p in "${processed[@]}"; do
+    if [[ "$p" == "$target" ]]; then
+      success "$(printf "Skipped %b%s%b (already has been linked)" $green "$config" $reset_color)"
+      continue 2
+    fi
+  done
+
+  symlink "$config" "$target"
+  processed+=("$target")
+done
