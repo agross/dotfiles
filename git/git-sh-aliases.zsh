@@ -121,6 +121,19 @@ function gitconfig_aliases() {
   done
 }
 
+# Set up aliases for git-* commands.
+function gitcommand_aliases() {
+  local cmd
+  for cmd in ${(M)${(ok)commands}:#git-*}; do
+    local alias=${cmd#git-}
+
+    verbose Adding $fg[green]git command$reset_color alias: \
+            $fg[red]$alias$reset_color = $fg[red]git $alias$reset_color
+
+    alias $alias="git $alias"
+  done
+}
+
 # gitalias <alias>='<command> [<args>...]' [nogit]
 #
 # Define a new shell alias (as with the alias builtin) named <alias>.
@@ -149,6 +162,9 @@ unfunction porcelain_aliases
 
 gitconfig_aliases
 unfunction gitconfig_aliases
+
+gitcommand_aliases
+unfunction gitcommand_aliases
 
 # Source the system-wide rc file.
 [[ -r /etc/gitshrc ]] && source /etc/gitshrc
