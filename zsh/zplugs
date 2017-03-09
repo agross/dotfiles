@@ -9,7 +9,14 @@ zplug "$DOTFILES", \
 zplug "$DOTFILES", \
       from:local, \
       priority:2, \
-      use:'**/(^(path|fpath|zprofile|completion|postinit)).zsh'
+      use:'**/(^(path|fpath|aliases|zprofile|completion|postinit)).zsh'
+
+# Load aliases after the files above since some of them check for programs to
+# be available.
+zplug "$DOTFILES", \
+      from:local, \
+      defer:1, \
+      use:'**/aliases.zsh'
 
 # Load theme before compinit.
 zplug "$DOTFILES/zsh/themes", \
