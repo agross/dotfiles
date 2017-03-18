@@ -548,7 +548,7 @@
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>476 148 918 512 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 114 1392 764 0 0 1440 878 </string>
+	<string>48 92 1392 786 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -6370,6 +6370,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/agross/.dotfiles/iterm2</string>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>PromptOnQuit</key>
 	<false/>
 	<key>SUAutomaticallyUpdate</key>
@@ -6383,7 +6385,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-02-18T17:14:55Z</date>
+	<date>2017-03-13T19:34:15Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
