@@ -32,7 +32,7 @@ EOD
 
 function dnd::on()  dnd::enabled || dnd::toggle && echo DND turned on
 function dnd::off() dnd::enabled && dnd::toggle && echo DND turned off || \
-                      echo DND does not seem to be enabled && return 1
+                      echo DND does not seem to be enabled
 
 (($+commands[m])) || {
   >&2 printf 'Need m executable from https://github.com/rgcr/m-cli\n'
