@@ -536,9 +536,9 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame NSColorPanel</key>
-	<string>574 178 228 297 0 0 1440 878 </string>
+	<string>574 142 228 297 0 0 1440 878 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>929 110 445 237 0 0 1440 878 </string>
+	<string>751 111 623 207 0 0 1440 878 </string>
 	<key>NSWindow Frame ProfilesPanel</key>
 	<string>137 366 735 382 0 0 1440 878 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -546,9 +546,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 142 606 456 0 0 1440 878 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>476 148 918 512 0 0 1440 878 </string>
+	<string>464 226 918 381 0 0 1440 878 </string>
+	<key>NSWindow Frame com.apple.typography_panel_FiraCode-Regular</key>
+	<string>246 248 260 312 0 0 1440 878 </string>
+	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
+	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 92 1392 786 0 0 1440 878 </string>
+	<string>48 0 1210 878 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1232,7 +1236,7 @@
 			<key>Name</key>
 			<string>zsh</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 12</string>
+			<string>Menlo-Regular 15</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
@@ -1332,7 +1336,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<false/>
+			<true/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -2013,7 +2017,7 @@
 			<key>Name</key>
 			<string>bash</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 12</string>
+			<string>Menlo-Regular 15</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
@@ -2085,7 +2089,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<false/>
+			<true/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -2131,26 +2135,26 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.1573527604341507</real>
+				<real>0.035294117647058823</real>
 				<key>Color Space</key>
 				<string>Calibrated</string>
 				<key>Green Component</key>
-				<real>0.88062918186187744</real>
+				<real>0.5490196078431373</real>
 				<key>Red Component</key>
-				<real>0.48162278532981873</real>
+				<real>0.25098039215686274</real>
 			</dict>
 			<key>Ansi 11 Color</key>
 			<dict>
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.24724644422531128</real>
+				<real>0.023529411764705882</real>
 				<key>Color Space</key>
 				<string>Calibrated</string>
 				<key>Green Component</key>
-				<real>0.9057852029800415</real>
+				<real>0.56470588235294117</real>
 				<key>Red Component</key>
-				<real>0.98381024599075317</real>
+				<real>0.71764705882352942</real>
 			</dict>
 			<key>Ansi 12 Color</key>
 			<dict>
@@ -2209,26 +2213,26 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.035418007522821426</real>
+				<real>0.035294117647058823</real>
 				<key>Color Space</key>
 				<string>Calibrated</string>
 				<key>Green Component</key>
-				<real>0.54833769798278809</real>
+				<real>0.5490196078431373</real>
 				<key>Red Component</key>
-				<real>0.25104412436485291</real>
+				<real>0.25098039215686274</real>
 			</dict>
 			<key>Ansi 3 Color</key>
 			<dict>
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.023636789992451668</real>
+				<real>0.023529411764705882</real>
 				<key>Color Space</key>
 				<string>Calibrated</string>
 				<key>Green Component</key>
-				<real>0.56648606061935425</real>
+				<real>0.56470588235294117</real>
 				<key>Red Component</key>
-				<real>0.71574509143829346</real>
+				<real>0.71764705882352942</real>
 			</dict>
 			<key>Ansi 4 Color</key>
 			<dict>
@@ -2776,7 +2780,7 @@
 			<key>Name</key>
 			<string>zsh Trainings</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 12</string>
+			<string>Menlo-Regular 18</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
@@ -2863,6 +2867,8 @@
 			<array/>
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
+			<key>Thin Strokes</key>
+			<integer>1</integer>
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Triggers</key>
@@ -2889,7 +2895,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<false/>
+			<true/>
 			<key>Use Tab Color</key>
 			<true/>
 			<key>Vertical Spacing</key>
@@ -3683,7 +3689,7 @@
 			<key>Name</key>
 			<string>irb</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 12</string>
+			<string>Menlo-Regular 15</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
@@ -3783,7 +3789,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<false/>
+			<true/>
 			<key>Use Tab Color</key>
 			<true/>
 			<key>Vertical Spacing</key>
@@ -4589,7 +4595,7 @@
 			<key>Name</key>
 			<string>iex</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 12</string>
+			<string>Monaco 15</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
@@ -4700,7 +4706,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<false/>
+			<true/>
 			<key>Use Tab Color</key>
 			<true/>
 			<key>Vertical Spacing</key>
@@ -5398,7 +5404,7 @@
 			<key>Name</key>
 			<string>Hotkey Window</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 12</string>
+			<string>Menlo-Regular 15</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
@@ -5498,7 +5504,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<false/>
+			<true/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -6179,7 +6185,7 @@
 			<key>Name</key>
 			<string>bash macOS</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 12</string>
+			<string>Monaco 15</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
@@ -6251,7 +6257,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<false/>
+			<true/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -6385,7 +6391,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-03-13T19:34:15Z</date>
+	<date>2017-03-23T10:13:21Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
