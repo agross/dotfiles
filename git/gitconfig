@@ -23,7 +23,7 @@
 [color "branch"]
 	current = bold green
 	local = green
-	remote = bold red
+	remote = red
 	upstream = bold red
 	plain = bold yellow
 [color "status"]
