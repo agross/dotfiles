@@ -10,7 +10,7 @@ while getopts ':hnr:' opt; do
   case "$opt" in
     h)
       usage=$(cat <<EOF
-%s [-h] [-r ROOT] COMMAND
+%s [-h] [-n] [-r ROOT] COMMAND
 
 Run git command recursively inside all git repositories under the current directory.
 
