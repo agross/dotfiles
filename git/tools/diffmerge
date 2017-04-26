@@ -20,7 +20,8 @@ case "$op" in
     exec "$tool" "$left" \
                  "$right" \
                  --title1="$left_title" \
-                 --title2="$right_title"
+                 --title2="$right_title" \
+                 > /dev/null 2>&1
     ;;
 
   merge)

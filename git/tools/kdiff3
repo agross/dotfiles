@@ -19,7 +19,7 @@ case "$op" in
     exec "$tool" "$left" \
                  "$right" \
                  --L1 "$left_title" \
-                 --L2 "$right_title"\
+                 --L2 "$right_title" \
                  > /dev/null 2>&1
     ;;
 
@@ -33,7 +33,7 @@ case "$op" in
                  --output "$result" \
                  --L1 "Base: $4" \
                  --L2 "Ours: $local_desc" \
-                 --L3 "Theirs: $remote_desc"\
+                 --L3 "Theirs: $remote_desc" \
                  > /dev/null 2>&1
     ;;
 

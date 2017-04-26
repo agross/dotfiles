@@ -19,7 +19,8 @@ case "$op" in
                  /dl "$left_title" \
                  /dr "$right_title" \
                  "$left" \
-                 "$right"
+                 "$right" \
+                 > /dev/null 2>&1
     ;;
 
   merge)
@@ -32,7 +33,8 @@ case "$op" in
                  /dr "Theirs: $remote_desc" \
                  "$local" \
                  "$remote" \
-                 "$result"
+                 "$result" \
+                 > /dev/null 2>&1
     ;;
 
   *)

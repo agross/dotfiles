@@ -19,7 +19,8 @@ case "$op" in
     exec "$tool" -nl "$left_title" \
                  -nr "$right_title" \
                  "$left" \
-                 "$right"
+                 "$right" \
+                 > /dev/null 2>&1
 
     ;;
 
@@ -33,7 +34,8 @@ case "$op" in
                  "$base" \
                  "$local" \
                  "$remote" \
-                 "$result"
+                 "$result" \
+                 > /dev/null 2>&1
     ;;
 
   *)
