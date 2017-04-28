@@ -10,14 +10,15 @@ ZPLUG_LOADFILE="$DOTFILES/zsh/zplugs"
 # Use extended_glob option for zplug subshells. We need to change it for zplug's use tags containing extended globs.
 zstyle ":zplug:config:setopt" only_subshell extended_glob
 
-zplug-init zplug-fix-314
+zplug-init zplug-apply-unreleased-fixes
 if [[ $? -ne 0 ]]; then
   return 1
 fi
 
 zplug-install
 
-zplug-fix-314
+# Need to apply fixes once more after installing because zplug installs itself.
+zplug-apply-unreleased-fixes
 
 # Source plugins and add commands to the PATH.
 zplug load ${ZSH_VERBOSE/true/--verbose}

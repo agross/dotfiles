@@ -1,0 +1,23 @@
+# https://github.com/zplug/zplug/issues/387
+# https://github.com/zplug/zplug/pull/372
+
+local remote=origin
+local pr=refs/pull/372/head
+local branch=${pr#refs/}
+
+local p
+for p in $ZPLUG_HOME $ZPLUG_REPOS/zplug/zplug; do
+  if ! pushd "$p" > /dev/null 2>&1; then
+    continue
+  fi
+
+  if ! git rev-parse --verify $branch > /dev/null 2>&1; then
+    git fetch $remote $pr:$branch
+  fi
+
+  if ! git merge-base --is-ancestor $branch HEAD 2> /dev/null; then
+    git merge --no-edit $branch
+  fi
+
+  popd > /dev/null
+done

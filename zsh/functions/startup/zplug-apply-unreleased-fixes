@@ -1,0 +1,7 @@
+local this_directory=${${(%):-%x}:h}
+local fun
+
+for fun in $this_directory/zplug-fix-*(:t); do
+  verbose Running $fg[cyan]zplug fix$reset_color $fg[green]$fun$reset_color
+  $fun
+done
