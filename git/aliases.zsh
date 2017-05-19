@@ -1,4 +1,4 @@
-(($+commands[etckeeper])) || return 0
+(($+commands[git])) || return 0
 
 alias g=git
 # Mnemonic: Git upstream.
