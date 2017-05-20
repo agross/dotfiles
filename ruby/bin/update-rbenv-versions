@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# On Linux, rbenv versions need to be updated before being available to install.
+
+ruby_build=~/.rbenv/plugins/ruby-build
+
+if [ ! -d "$ruby_build" ]; then
+  printf '%s does not exist, skipping update\n' "$ruby_build"
+  exit 1
+fi
+
+git -C "$ruby_build" pull
+
+# vim:set filetype=sh:
