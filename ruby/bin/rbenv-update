@@ -1,6 +1,14 @@
 #!/usr/bin/env sh
+#
+# Summary: Update rbenv versions (only required on Linux)
+#
+# Usage: rbenv update
+#
+# On Linux, rbenv versions need to be updated before being
+# available to install.
 
-# On Linux, rbenv versions need to be updated before being available to install.
+set -e
+[ -n "$RBENV_DEBUG" ] && set -x
 
 ruby_build=~/.rbenv/plugins/ruby-build
 
