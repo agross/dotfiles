@@ -1,9 +1,16 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-git count-objects -v
+before="$(git count-objects -v)"
+
 printf "\nCompressing objects in repository...\n"
 git repack -Ad      # Kill in-pack garbage.
 git prune           # Kill loose garbage.
-echo
-git count-objects -v
 
+after="$(git count-objects -v)"
+
+if diff --brief <(echo "$before" ) <(echo "$after") > /dev/null; then
+  printf "\nNo changes were made:\n%s\n" "$before"
+else
+  printf "\nRepository was compressed:\n"
+  diff --unified=42 --color=always <(echo "$before" ) <(echo "$after") | tail -n +4
+fi
