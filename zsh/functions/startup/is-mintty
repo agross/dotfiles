@@ -12,7 +12,7 @@ local mintty="$commands[mintty]"
 
 local parent=${parents[1]}
 while [[ "$parent" != "1" ]]; do
-  parent="$(ps | /bin/grep --extended-regexp -e "^\s+$parent\s" | tr --squeeze-repeats ' ' | cut --fields=3 --delimiter=' ')"
+  parent="$(ps | command grep --extended-regexp -e "^\s+$parent\s" | tr --squeeze-repeats ' ' | cut --fields=3 --delimiter=' ')"
 
   if [[ -z "$parent" ]]; then
     break;
