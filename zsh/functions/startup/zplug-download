@@ -6,7 +6,7 @@ verbose Downloading $fg[cyan]zplug$reset_color to $fg[green]$ZPLUG_HOME$reset_co
 }
 
 setopt local_options pipefail
-curl --silent --location --proto-redir -all,https https://zplug.sh/installer | zsh
+curl --silent --location --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 
 if [[ $? -ne 0 ]]; then
   FORCE=1 verbose Failed to install $fg[cyan]zplug$reset_color to $fg[green]$ZPLUG_HOME$reset_color. ZSH startup will continue without $fg[cyan]zplug$reset_color.
