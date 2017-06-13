@@ -81,13 +81,16 @@ function _fzf::git::remote() {
 function _fzf::git::hash() {
   _fzf::git::is_repo || return
 
-  local extract_sha inspect preview
+  local extract_sha inspect preview height
   extract_sha="command grep --only-matching '[a-f0-9]\{7,\}' <<< {} | head --lines=1"
   inspect="$extract_sha | \
            xargs --no-run-if-empty -I % sh -c 'GIT_PAGER_ARGS= git show %'"
   preview="$extract_sha | \
            xargs --no-run-if-empty git show --color=always \
            $(_fzf::git::diff-so-fancy)"
+  if [[ $OSTYPE != cygwin* ]]; then
+    height=--height=99%
+  fi
 
   git log --graph \
           --all \
@@ -95,7 +98,7 @@ function _fzf::git::hash() {
           --color=always \
           --format='%C(auto)%h%d %s %C(black)%C(bold)%cr' |
     fzf-tmux --ansi \
-             --height=99% \
+             $height \
              --no-sort \
              --reverse \
              --cycle \

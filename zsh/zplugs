@@ -65,8 +65,11 @@ zplug 'plugins/gem', \
 zplug 'junegunn/fzf', \
       as:command, \
       use:'bin/{fzf,fzf-tmux}', \
-      if:"[[ $OSTYPE == linux* || $OSTYPE == darwin* ]]", \
-      hook-build:'./install --key-bindings --completion --no-update-rc'
+      hook-build:"
+        ./install --all --key-bindings --completion --no-update-rc &&
+        [[ $OSTYPE = cygwin* ]] &&
+          sed --in-place --regexp-extended 's/--height \\\\$\{FZF_TMUX_HEIGHT.....\}//g' shell/*
+      "
 
 # Plugins related to git.
 zplug 'so-fancy/diff-so-fancy', \
