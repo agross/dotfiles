@@ -28,5 +28,8 @@ if (($+commands[tree])); then
   export FZF_CTRL_T_OPTS="--preview '(cat {} || tree -C {}) 2> /dev/null'"
 fi
 
+# SSH connections to Windows hosts yield 'character set not supported'.
+[[ -n $SSH_CONNECTION && $OSTYPE == cygwin* ]] && return 0
+
 [[ -f ~/.fzf.zsh ]] || return 0
 source ~/.fzf.zsh
