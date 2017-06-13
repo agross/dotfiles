@@ -546,13 +546,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 142 606 456 0 0 1440 878 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>464 226 918 381 0 0 1440 878 </string>
+	<string>424 168 1016 502 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_FiraCode-Regular</key>
 	<string>246 248 260 312 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 0 1210 878 0 0 1440 878 </string>
+	<string>48 114 1392 764 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1246,7 +1246,7 @@
 			<key>Open Toolbelt</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>
 			<false/>
 			<key>Prompt Before Closing 2</key>
@@ -2790,7 +2790,7 @@
 			<key>Open Toolbelt</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>
 			<false/>
 			<key>Prompt Before Closing 2</key>
@@ -5414,7 +5414,7 @@
 			<key>Open Toolbelt</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prevent Opening in a Tab</key>
 			<false/>
 			<key>Prompt Before Closing 2</key>
@@ -6391,7 +6391,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-03-23T10:13:21Z</date>
+	<date>2017-06-13T08:30:50Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -6435,7 +6435,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.14</string>
+	<string>3.0.15</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>7</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
