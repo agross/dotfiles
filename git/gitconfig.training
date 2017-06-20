@@ -5,6 +5,15 @@
 	# editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession -noPlugins \"$(cygpath --windows --absolute \"$1\")\"
 	# Notepad++ on msysgit (a.k.a. Git for Windows).
 	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession -noPlugins
+#[mergetool "bcomp"]
+#	cmd = '/C/Program Files (x86)/Beyond Compare 4/BComp.exe' -solo -automerge -reviewconflicts \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$RESULT\"
+#	trustExitCode = true
+#[merge]
+#	tool = bcomp
+#[difftool "bcomp"]
+# 	cmd = '/C/Program Files (x86)/Beyond Compare 4/BComp.exe' -solo -readonly \"$LOCAL\" \"$REMOTE\"
+#[diff]
+#	tool = bcomp
 [apply]
 	whitespace = nowarn
 [alias]
