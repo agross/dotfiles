@@ -1,9 +1,0 @@
-local git_config="$(readlink --canonicalize-existing "$HOME/.gitconfig")"
-
-pushd -q "$(dirname "$git_config")"
-
-git checkout -- "$(basename "$git_config")"
-
-popd -q
-
-# vim:set filetype=sh:
