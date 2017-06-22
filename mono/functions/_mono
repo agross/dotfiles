@@ -10,6 +10,7 @@ local -A opt_args
 # parentheses of option names and argument numbers".
 _arguments -C \
   '(- :)'{--help,-h}'[Show help]' \
+  '(- :)'--version'[Show version]' \
   '(--verbose -v)'{--verbose,-v}'[Increases the verbosity level]' \
   '(--config)'--config'[Loads FILE as the Mono config]:config file:_files' \
   '(--runtime)'--runtime=-'[Use the VERSION runtime, instead of autodetecting]:runtime: ' \
