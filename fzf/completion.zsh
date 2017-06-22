@@ -10,6 +10,7 @@ if (($+commands[pt])) && [[ $commands[pt] != *Program\ Files* ]]; then
 fi
 
 export FZF_DEFAULT_OPTS='
+  --color=light
   --bind ctrl-j:preview-down,ctrl-k:preview-up
   --bind ctrl-h:preview-page-down,ctrl-l:preview-page-up
   --bind ctrl-p:toggle-preview
