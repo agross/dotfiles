@@ -25,9 +25,9 @@ WORDCHARS=''
 # Enable colored completion.
 zmodload -i zsh/complist
 
-# Completion cache.
-zstyle ':completion::complete:*' use-cache on
-zstyle ':completion::complete:*' cache-path $HOME/.cache/zsh-completion/$HOST
+# Enable completion cache.
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path $HOME/.cache/zsh-completion
 
 # Completion menu is always shown, show selection when >=3 entries.
 zstyle ':completion:*' menu yes select=3
