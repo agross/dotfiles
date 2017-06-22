@@ -2,7 +2,8 @@
 
 # Zsh completion script for mono (http://www.mono-project.com/).
 
-local curcontext=$curcontext state line
+local curcontext=$curcontext state
+local -a line
 local -A opt_args
 
 # For more information, see http://zsh.sourceforge.net/Doc/Release/Completion-System.html
@@ -21,7 +22,7 @@ _arguments -C \
   '(--nollvm --llvm)'--nollvm'[Disable the runtime to use LLVM to compile code]' \
   '(--gc)'--gc=-'[Select SGen or Boehm GC (runs mono or mono-sgen)]:garbage collector:(sgen boehm)' \
   '(--arch)'--arch=-'[Select architecture (runs mono32 or mono64)]:architecture:(32 64)' \
-  ':program:_files -g "*.exe"' \
+  '(-):program:_files -g "*.exe"' \
   '*:program option:_precommand' \
 && return 0
 
