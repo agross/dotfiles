@@ -82,7 +82,7 @@ function _fzf::git::hash() {
   _fzf::git::is_repo || return
 
   local extract_sha inspect preview height
-  extract_sha="command grep --only-matching '[a-f0-9]\{7,\}' <<< {} | head --lines=1"
+  extract_sha="grep --only-matching '[a-f0-9]\{7,\}' <<< {} | head --lines=1"
   inspect="$extract_sha | \
            xargs --no-run-if-empty -I % sh -c 'GIT_PAGER_ARGS= git show %'"
   preview="$extract_sha | \
