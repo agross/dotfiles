@@ -3,7 +3,7 @@ symlink "$topic/gitconfig.training"
 symlink "$topic/git-wtfrc"
 
 if [[ "$OSTYPE" == 'mac' ]]; then
-  formula git
+  formula git --without-completions
   cask beyond-compare
   cask diffmerge
   cask kdiff3
