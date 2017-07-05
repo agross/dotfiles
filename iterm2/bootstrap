@@ -5,3 +5,4 @@ fi
 cask iterm2
 
 symlink "$topic/scripts/git trainings.scpt" "$HOME/Library/Application Support/iTerm/Scripts/git trainings.scpt"
+symlink "$topic/scripts/trainings.scpt"     "$HOME/Library/Application Support/iTerm/Scripts/trainings.scpt"
