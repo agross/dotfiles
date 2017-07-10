@@ -6,6 +6,11 @@ local user_command
 # N = ignore no matches
 for user_command in ${0%/*}/bin/git-*(*N); do
   local name="$(basename "$user_command")"
+
+  # If there is a completion function it likely has a #description in the second
+  # line and is picked up automatically.
+  (( $+functions[_$name] )) && continue
+
   name="${name#git-}"
   name="${name%.*}"
   user_commands+=($name:"run $user_command")

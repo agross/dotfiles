@@ -1,0 +1,6 @@
+#compdef git-serve
+#description serve local git repositories
+
+_git-serve() {
+  _arguments '1:base directory:_directories'
+}
