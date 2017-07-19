@@ -20,4 +20,5 @@ export PROMPT_COMMAND='history -a'
 alias ls='ls --color=auto -l --all --human-readable'
 
 alias g=git
+_completion_loader git
 complete -o default -o nospace -F _git g
