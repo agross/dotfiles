@@ -4,5 +4,16 @@ verbose Setting up $fg[red]systemd$reset_color aliases
 
 alias sc=systemctl
 alias scf='systemctl --failed'
-alias ju='journalctl --since="1 hour ago" --unit'
-alias jf='journalctl --follow --unit'
+alias jf='_() {
+  local arg
+  local -a args
+  for arg in $@; do
+    if [[ $arg != -* ]] then
+      args+=(--unit $arg)
+    else
+      args+=($arg)
+    fi
+  done
+  journalctl --follow ${args[@]}
+}
+_'
