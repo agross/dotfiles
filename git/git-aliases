@@ -86,3 +86,4 @@
 
   # Disable pager.
   np = !git --no-pager
+  dp = !git -c pager.show='less -FRX' -c pager.log='less -FRX' -c pager.diff='less -FRX'
