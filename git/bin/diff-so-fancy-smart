@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+pattern="${1?Need pattern}"
+
+out="$(cat - | diff-so-fancy)"
+
+remove-colors() {
+  sed --regexp-extended "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"
+}
+
+if echo "$out" | remove-colors | grep --silent --perl-regexp "$pattern"; then
+  echo "$out" | \
+    LESS= \
+      less ${GIT_PAGER_ARGS---no-init --quit-at-eof} \
+           --RAW-CONTROL-CHARS \
+           "--pattern=$pattern"
+else
+  echo "$out" | \
+    less ${GIT_PAGER_ARGS---no-init --quit-at-eof} \
+          --RAW-CONTROL-CHARS
+fi
+
