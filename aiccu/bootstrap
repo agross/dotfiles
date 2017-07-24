@@ -1,5 +1,0 @@
-if [[ "$OSTYPE" == 'mac' ]]; then
-  # SixXS, https://www.sixxs.net/wiki/Aiccu/Installation
-  cask tuntap
-  formula aiccu
-fi
