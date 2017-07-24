@@ -65,6 +65,7 @@ zplug 'plugins/gem', \
 zplug 'junegunn/fzf', \
       as:command, \
       use:'bin/{fzf,fzf-tmux}', \
+      if:"[[ $(($+commands[wget] + $+commands[curl])) -gt 0 ]] && (($+commands[unzip]))", \
       hook-build:$'
         ./install --all --key-bindings --completion --no-update-rc &&
         [[ $OSTYPE == cygwin* ]] &&
