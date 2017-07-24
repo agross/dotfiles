@@ -12,11 +12,11 @@ case "$TERM" in
     # Executed just after a command has been read and is about to be executed.
     function preexec() {
       if [[ -n $SSH_CONNECTION ]]; then
-        local user_at_host="%n@$HOST: "
+        local user_at_host="$(print -Pn '%n@$HOST: ')"
       fi
 
       # Print command line that is executed.
-      print -Pn "\e]0;$user_at_host$1\a"
+      print -nf "\e]0;%s%s\a" "$user_at_host" "$1"
     }
 
     # Executed before each prompt.
