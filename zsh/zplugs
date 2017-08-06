@@ -95,11 +95,11 @@ zplug 'kamranahmedse/git-standup', \
 zplug 'plugins/docker', \
       from:oh-my-zsh, \
       ignore:oh-my-zsh.sh, \
-      if:"(($+commands[docker]))"
+      if:"(($+commands[docker])) && [[ ! -d /Applications/Docker.app ]]"
 zplug 'plugins/docker-compose', \
       from:oh-my-zsh, \
       ignore:oh-my-zsh.sh, \
-      if:"(($+commands[docker-compose]))"
+      if:"(($+commands[docker-compose])) && [[ ! -d /Applications/Docker.app ]]"
 
 # Plugins to be loaded after compinit was run.
 zplug 'hlissner/zsh-autopair', \
