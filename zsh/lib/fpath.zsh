@@ -1,11 +1,14 @@
 # Find all topic/functions directories, add them to $fpath and autoload these
 # functions so you can just call them.
-for topic_folder ($DOTFILES/*/functions(/N)); do
-  verbose Adding autoloaded function path $fg[green]$topic_folder$reset_color
-  fpath=($topic_folder $fpath)
+local topic
+for topic in $DOTFILES/*/functions(/N); do
+  verbose Adding autoloaded function path $fg[green]$topic$reset_color
+  fpath=($topic $fpath)
 
-  # Autoload all functions from our functions path. Just execute the function,
-  # no need to autoload <function> before.
+  # Autoload all functions from the topic/functions directory, excluding
+  # directories without functions. Just execute the function, no need to
+  # autoload <function> before.
   # See http://zsh.sourceforge.net/FAQ/zshfaq03.html, section 3.11.
-  autoload -Uz $topic_folder/*(:t)
+  local funs=($topic/*(N:t))
+  [[ ${#funs} -gt 0 ]] && autoload -Uz $funs
 done
