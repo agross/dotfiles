@@ -98,6 +98,11 @@ cask 'teamviewer'
 cask 'vlc'
 cask 'xnviewmp'
 
+# Fonts.
+tap 'caskroom/fonts'
+cask 'font-fira-code'
+cask 'font-hasklig'
+
 # Apps from the Mac App Store.
 mas 'Amphetamine', id: 937_984_704
 mas 'Better', id: 1_121_192_229
