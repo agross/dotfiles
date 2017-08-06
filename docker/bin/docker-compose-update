@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -e
+
+VERSION="$(curl --silent \
+                --output /dev/null \
+                --head \
+                --write-out "%{redirect_url}\n" https://github.com/docker/compose/releases/latest | \
+           grep --only-matching --perl-regexp '[0-9]+(\.[0-9]+)+$')"
+
+printf 'Installing docker-compose %s...\n' "$VERSION"
+
+curl --location \
+     "https://github.com/docker/compose/releases/download/$VERSION/docker-compose-$(uname -s)-$(uname -m)" \
+     --output /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+/usr/local/bin/docker-compose --version
+
+if [[ -d '/usr/share/zsh/vendor-completions' ]]; then
+  curl --location \
+       https://raw.githubusercontent.com/docker/compose/master/contrib/completion/zsh/_docker-compose \
+       --output /usr/share/zsh/vendor-completions/_docker-compose
+fi
