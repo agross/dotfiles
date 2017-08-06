@@ -191,7 +191,7 @@ Cygwin [SSH agent environment variables known system-wide](https://github.com/ag
 
 Completion scripts are run after [zplug](https://github.com/zplug/zplug) calls
 [zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html)
-to initializes the completion system. Put any completion-specific setup here.
+to initialize the completion system. Put any completion-specific setup here.
 
 # Thanks
 
