@@ -21,6 +21,8 @@ else
     r="|MERGING"
   elif [ -f $zgit_info[dir]/BISECT_LOG ]; then
     r="|BISECTING"
+  elif [ -f $zgit_info[dir]/CHERRY_PICK_HEAD ]; then
+    r="|CHERRY-PICKING"
   fi
 fi
 
