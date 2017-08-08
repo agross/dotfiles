@@ -538,21 +538,21 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>574 142 228 297 0 0 1440 878 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>751 111 623 207 0 0 1440 878 </string>
+	<string>773 252 623 268 0 0 1440 878 </string>
 	<key>NSWindow Frame ProfilesPanel</key>
-	<string>137 366 735 382 0 0 1440 878 </string>
+	<string>49 496 735 382 0 0 1440 878 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>434 364 620 392 0 0 1440 878 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 142 606 456 0 0 1440 878 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>424 168 1016 502 0 0 1440 878 </string>
+	<string>49 321 918 495 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_FiraCode-Regular</key>
 	<string>246 248 260 312 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 114 1392 764 0 0 1440 878 </string>
+	<string>50 92 1387 786 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1236,11 +1236,11 @@
 			<key>Name</key>
 			<string>zsh</string>
 			<key>Non Ascii Font</key>
-			<string>Menlo-Regular 15</string>
+			<string>Menlo-Regular 14</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 14</string>
+			<string>Menlo-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -2017,11 +2017,11 @@
 			<key>Name</key>
 			<string>bash</string>
 			<key>Non Ascii Font</key>
-			<string>Menlo-Regular 15</string>
+			<string>Menlo-Regular 14</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 14</string>
+			<string>Menlo-Regular 14</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -2780,11 +2780,11 @@
 			<key>Name</key>
 			<string>zsh Trainings</string>
 			<key>Non Ascii Font</key>
-			<string>Menlo-Regular 18</string>
+			<string>Menlo-Regular 16</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 16</string>
+			<string>Menlo-Regular 16</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -3689,11 +3689,11 @@
 			<key>Name</key>
 			<string>irb</string>
 			<key>Non Ascii Font</key>
-			<string>Menlo-Regular 15</string>
+			<string>Menlo-Regular 14</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 14</string>
+			<string>Menlo-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -4595,11 +4595,11 @@
 			<key>Name</key>
 			<string>iex</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 15</string>
+			<string>Menlo-Regular 14</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 14</string>
+			<string>Menlo-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -5404,11 +5404,11 @@
 			<key>Name</key>
 			<string>Hotkey Window</string>
 			<key>Non Ascii Font</key>
-			<string>Menlo-Regular 15</string>
+			<string>Hasklig-Regular 14</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 14</string>
+			<string>Hasklig-Regular 15</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -6185,11 +6185,11 @@
 			<key>Name</key>
 			<string>bash macOS</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 15</string>
+			<string>Menlo-Regular 14</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 14</string>
+			<string>Menlo-Regular 14</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -6391,7 +6391,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-06-13T08:30:50Z</date>
+	<date>2017-08-07T20:15:53Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
