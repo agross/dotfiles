@@ -1,3 +1,6 @@
+# Additional completion directory.
+fpath=(~/.zsh/completion $fpath)
+
 # Find all topic/functions directories, add them to $fpath and autoload these
 # functions so you can just call them.
 local topic

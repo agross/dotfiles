@@ -1,13 +1,18 @@
-# If unset, the cursor is set to the end of the word if completion is started. Otherwise it stays there and completion is done from both ends.
+# If unset, the cursor is set to the end of the word if completion is started.
+# Otherwise it stays there and completion is done from both ends.
 setopt complete_in_word
 
 # Automatically list choices on an ambiguous completion.
 setopt auto_list
 
-# If a completion is performed with the cursor within a word, and a full completion is inserted, the cursor is moved to the end of the word. That is, the cursor is moved to the end of the word if either a single match is inserted or menu completion is performed.
+# If a completion is performed with the cursor within a word, and a full
+# completion is inserted, the cursor is moved to the end of the word. That is,
+# the cursor is moved to the end of the word if either a single match is
+# inserted or menu completion is performed.
 setopt always_to_end
 
-# If a parameter is completed whose content is the name of a directory, then add a trailing slash instead of a space.
+# If a parameter is completed whose content is the name of a directory, then add
+# a trailing slash instead of a space.
 unsetopt auto_param_slash
 
 # Do not require a leading `.' in a filename to be matched explicitly.
@@ -16,10 +21,12 @@ setopt globdots
 # In completion, recognize exact matches even if they are ambiguous.
 setopt rec_exact
 
-# On an ambiguous completion, instead of listing possibilities or beeping, insert the first match immediately.
+# On an ambiguous completion, instead of listing possibilities or beeping,
+# insert the first match immediately.
 setopt menu_complete
 
-# A list of non-alphanumeric characters considered part of a word by the line editor.
+# A list of non-alphanumeric characters considered part of a word by the line
+# editor.
 WORDCHARS=''
 
 # Enable colored completion.
