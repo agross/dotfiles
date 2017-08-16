@@ -2,7 +2,7 @@
 
 set -e
 
-term="${1?Need folder to play}"
+term="$1"
 
 album="$(find -L ~/Music -type d | fzf --reverse --tiebreak=index --select-1 --exact --query "$term")"
 
