@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+url=https://github.com/${1?Need GitHub username/repo}
+
+case "$OSTYPE" in
+  cygwin)
+    program=cygstart
+    ;;
+
+  darwin*)
+    program=open
+    ;;
+
+  *)
+    printf 'Unsupported platform: %s\n' "$OSTYPE"
+    exit 1
+    ;;
+esac
+
+$program "$url"
