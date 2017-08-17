@@ -1,6 +1,5 @@
 if [[ "$OSTYPE" == 'mac' ]]; then
   formula gpg
-  cask gpgtools
 fi
 
 [[ "$OSTYPE" == 'windows' ]] && return

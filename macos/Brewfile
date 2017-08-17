@@ -66,12 +66,14 @@ brew 'webkit2png'
 brew 'xz'
 
 cask 'android-file-transfer'
+cask 'anydesk'
 cask 'atext'
 cask 'bartender'
 cask 'bettertouchtool'
 cask 'cleanmymac'
 cask 'clipmenu'
 cask 'dash'
+cask 'dotnet-sdk'
 cask 'double-commander'
 cask 'dropbox'
 cask 'evernote'
@@ -116,9 +118,8 @@ mas 'Newton', id: 1_059_655_371
 mas 'PCalc', id: 403_504_866
 mas 'Tweetbot', id: 557_168_941
 
-puts 'Manually install these:'
+puts "\e[31;1mManually install these:\e[0m"
 [
-  'AnyDesk: https://anydesk.de/',
   'Roboform: https://www.roboform.com/for-mac'
 ].each { |app| puts app }
 
