@@ -2772,7 +2772,7 @@
 				<real>0.023000000044703484</real>
 			</dict>
 			<key>Log Directory</key>
-			<string>/private/tmp</string>
+			<string>/Users/agross</string>
 			<key>Minimum Contrast</key>
 			<real>0.0</real>
 			<key>Mouse Reporting</key>
@@ -6391,7 +6391,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-08-07T20:15:53Z</date>
+	<date>2017-08-18T20:00:24Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
