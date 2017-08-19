@@ -1,45 +1,140 @@
-#!/bin/sh
+#!/usr/bin/env bash
+#
+# Convert a SVN repository to git. Convert SVN branches to local git branches
+# and SVN tags to local git tags. The conversion includes svn:externals for
+# trunk (master) and branches.
+#
+# Based on http://git-scm.com/book/en/Git-and-Other-Systems-Migrating-to-Git
+#
+# Caveats:
+#   * Only works with SVN standard layout (trunk, tags, branches)
+#   * Only adds svn:externals for the latest revisions in trunk (master) and
+#     branches
+#   * svn:externals are not processed recursively
+#
+# Example:
+# git svn-clone-externals \
+#   svn://svn.code.sf.net/p/svn-to-git/code/ \
+#   test-import \
+#   authors.txt
+#
+# With authors.txt containing:
+#   <SVN user> = git user information
+#   alexandergross = Alexander Groß <agross@therightstuff.de>
+#   (no author) = nobody <nobody@example.com>
+#   zc2 = zc2 <zc2@example.com>
+#
+# The "(no author)" line in $users may be required if the first commit was
+# created automatically by the SVN hoster (Google Code did that). It needs to be
+# mapped to valid gut username/email information, otherwise git would refuse to
+# import it.
 
 set -e
+set -o pipefail
 
-svn_remote=$1
-dir=$2
-git svn clone $svn_remote $dir
+remote="${1?Pass SVN URL as the first parameter}"
+# Ensure trailing slash.
+[[ "$remote" != */ ]] && remote="${remote}/"
+path="${2?Pass clone directory as the second parameter}"
+users="${3?Pass user mapping file as the third parameter}"
 
-cd $dir
-git clean -df
+git svn clone "$remote" \
+              "--authors-file=$users" \
+              --stdlayout \
+              "$path"
 
-git svn show-externals | \
-  grep "^/" | \
-  while read line;
-  do
-    # The path always starts with /, remove it using sed.
-    dir=$(echo $line | cut -f 1 --delimiter=\  | sed 's/^.//')
-    url=$(echo $line | cut -f 2 --delimiter=\ )
+pushd "$path" > /dev/null
 
-    echo -e "Path: $dir\n URL: $url"
+# Convert SVN tags to git tags.
+prefix=refs/remotes/origin/tags/
+git for-each-ref '--format=%(refname)' "$prefix" |
+  while read -r tag; do
+    git tag "${tag#$prefix}" "$tag"
+    git branch --remotes --delete "${tag#refs/remotes/}"
+  done
 
-    if [ -d "$dir" ]; then
-      echo -e "$dir already exists\n"
+# Convert SVN branches to git local branches.
+prefix=refs/remotes/origin/
+git for-each-ref '--format=%(refname)' "$prefix" |
+  while read -r branch; do
+    git branch "${branch#$prefix}" "$branch"
+    git branch --remotes --delete "${branch#refs/remotes/}"
+  done
+git branch -d trunk
+
+printf '\nTags:\n'
+git tag
+
+printf '\nBranches:\n'
+git branch --all
+
+# Convert svn:externals.
+root=
+svn propget \
+    --recursive \
+    --non-interactive \
+    svn:externals \
+    "$remote" | \
+  grep -v ^$ | \
+  while read -r line; do
+    declare -a "line=($line)"
+
+    if [[ "${line[1]}" = '-' ]]; then
+      root="${line[0]#$remote}"
+      # Ensure trailing slash.
+      [[ "$root" != */ ]] && root="${root}/"
+
+      # URL decode.
+      root="${root//%/\\x}"
+      root="$(echo -e "$root")"
+
+      [[ "$root" == trunk/* ]] && {
+        ref=master
+        root="${root#trunk/}"
+      }
+      [[ "$root" == branches/* ]] && {
+        root="${root#branches/}"
+        ref="${root%%/*}"
+        root="${root#*/}"
+      }
+    fi
+
+    dir="$root${line[-1]}"
+
+    # Remove the (optional) revision: url@rev.
+    url="${line[-2]%@*}"
+
+    # Get revision from URL, fall back to HEAD if none is specified.
+    revision="${line[-2]#*@}"
+    if [[ "$url" == "$revision" ]]; then
+      revision=HEAD
+    fi
+
+    printf 'Ref %s, path: %s -> URL: %s, revision %s\n' "$ref" "$dir" "$url" "$revision"
+
+    git checkout "$ref"
+    if [[ -d "$dir" ]]; then
+      printf '%s already exists, skipping\n' "$dir"
       continue
     fi
 
     name=git-svn-external
-    ref=refs/remotes/$name
+    remote_ref="refs/remotes/$name"
 
     # Fetch the external into a separate subtree.
-    git config svn-remote.$name.url $url
-    git config svn-remote.$name.fetch :$ref
-    git svn fetch $name
+    git config svn-remote.$name.url "$url"
+    git config svn-remote.$name.fetch ":$remote_ref"
+    git svn fetch --revision "1:$revision" "$name"
 
     # Merge the subtree into the svn:external folder.
-    git merge --strategy=ours --no-ff --no-commit $ref
-    git read-tree --prefix="$dir" -u $ref
-    git commit --message="Merge svn:external $dir from $url"
+    git merge --allow-unrelated-histories --strategy=ours --no-ff --no-commit $remote_ref
+    git read-tree --prefix="$dir" -u $remote_ref
+    git commit --message="Merge svn:external in $dir from $url, revision $revision"
 
     # Remove the svn:external subtree.
     git config --remove-section svn-remote.$name
     git branch --delete --remotes $name
-    rm -r "$(git rev-parse --git-dir)/svn/$ref"
+    rm -r "$(git rev-parse --git-dir)/svn/$remote_ref"
     git svn gc
   done
+
