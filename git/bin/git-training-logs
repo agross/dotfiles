@@ -1,11 +1,12 @@
 #!/usr/bin/env zsh
 
 local day="${1?Need day index}"
+shift
 local part=1
 
 local log
 # Normal files, sorted by name, prevent warning when there are no files.
-for log in ~/$(date +%Y%m%d)_*.zsh\ Trainings.*.log(N.on); do
+for log in ~/$(date +%Y%m%d "$@")_*.zsh\ Trainings.*.log(N.on); do
   du -h $log
   printf 'Convert part %s? [y/N]\n' $part
   if ! read -qs; then
