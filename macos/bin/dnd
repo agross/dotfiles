@@ -43,6 +43,7 @@ if [[ $# -gt 0 ]]; then
   killall caffeinate 2> /dev/null
   m volume unmute
   open -a Flux
+  osascript <<< 'tell application "PopClip" to set enabled to true'
   dnd::off
 else
   # http://unix.stackexchange.com/a/148698/72946
@@ -50,5 +51,6 @@ else
   nohup caffeinate -u -t $((9 * 60 * 60)) < /dev/null > /dev/null 2>&1 &disown
   m volume mute
   killall Flux 2> /dev/null
+  osascript <<< 'tell application "PopClip" to set enabled to false'
   dnd::on
 fi
