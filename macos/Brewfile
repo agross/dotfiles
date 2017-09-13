@@ -118,6 +118,7 @@ mas 'Monosnap', id: 540_348_655
 mas 'Moom', id: 419_330_170
 mas 'Newton', id: 1_059_655_371
 mas 'PCalc', id: 403_504_866
+mas 'Trello', id: 1_278_508_951
 mas 'Tweetbot', id: 557_168_941
 
 puts "\e[31;1mManually install these:\e[0m"
