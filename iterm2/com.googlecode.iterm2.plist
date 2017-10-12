@@ -10,6 +10,8 @@
 	<integer>0</integer>
 	<key>AppleSmoothFixedFontsSizeThreshold</key>
 	<integer>1</integer>
+	<key>AppleWindowTabbingMode</key>
+	<string>manual</string>
 	<key>Coprocess MRU</key>
 	<array/>
 	<key>Custom Color Presets</key>
@@ -554,13 +556,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 142 606 469 0 0 1440 878 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>216 322 916 485 0 0 1440 878 </string>
+	<string>311 196 918 381 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_FiraCode-Regular</key>
 	<string>246 248 260 312 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 154 1392 724 0 0 1440 878 </string>
+	<string>48 878 1392 748 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -5508,6 +5510,8 @@
 	</array>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
+	<key>NoSyncHaveUsedCopyMode</key>
+	<true/>
 	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
@@ -5629,7 +5633,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-08-24T16:35:20Z</date>
+	<date>2017-10-01T12:48:20Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -5674,10 +5678,12 @@
 	<string>/-+\~_.</string>
 	<key>findIgnoreCase_iTerm</key>
 	<true/>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.beta.7</string>
+	<string>3.1.3.beta.1</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>7</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
