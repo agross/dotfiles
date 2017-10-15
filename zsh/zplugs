@@ -108,8 +108,7 @@ zplug 'hlissner/zsh-autopair', \
 zplug 'knu/z', \
       use:'z.sh', \
       defer:2
-zplug 'zsh-users/zsh-syntax-highlighting', \
-      defer:3, \
-      if:"[[ "$(platform)" != "windows" ]]"
+zplug 'zdharma/fast-syntax-highlighting', \
+      defer:2
 
 # vim:set filetype=sh:
