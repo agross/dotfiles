@@ -1,6 +1,6 @@
 if [[ -n $ZSH_VERBOSE || -n $FORCE ]]; then
   for p in $@; do
-    printf "%s " "$p"
+    printf '%s ' "$p"
   done
   unset p
   printf '\n'
