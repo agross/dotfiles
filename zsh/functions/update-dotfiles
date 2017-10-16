@@ -45,21 +45,22 @@ function dotfiles::stop-git-daemon() {
 
 function dotfiles::update() {
   local host="$1"
-  shift
+  local cmd="$2"
+  local update=$(cat <<UPDATE
+echo "Expecting dotfiles in $fg_bold[red]\$DOTFILES$reset_color (currently set to $fg[green]\$DOTFILES$reset_color)" && \
+  cd "\$DOTFILES" && \
+  git fetch git://localhost:55555/ && \
+  git reset --hard FETCH_HEAD && \
+  ./bootstrap
+UPDATE
+)
 
-  echo "\nUpdating dotfiles on $fg_bold[blue]$host$reset_color"
-  ssh -n -A $host -R 55555:localhost:55555 'echo "Expecting dotfiles in $fg_bold[red]\$DOTFILES$reset_color (currently set to $fg[green]$DOTFILES$reset_color)" && \
-    cd "$DOTFILES" && \
-    git fetch git://localhost:55555/ && \
-    git reset --hard FETCH_HEAD && \
-    ./bootstrap'
+  if [[ -n "$cmd" ]]; then
+    update="$cmd '$update'"
+  fi
 
-  while [[ $# -gt 0 ]]; do
-    echo Running command $fg[red]$1$reset_color on $fg[green]$host$reset_color
-    ssh -n -A $host "$1"
-
-    shift
-  done
+  printf '\nUpdating dotfiles on %b%s%b\n' "$fg_bold[blue]" "$host" "$reset_color"
+  ssh -n -A "$host" -R 55555:localhost:55555 "$update"
 }
 
 trap dotfiles::cleanup EXIT SIGHUP SIGINT SIGTERM
@@ -67,9 +68,9 @@ trap dotfiles::cleanup EXIT SIGHUP SIGINT SIGTERM
 dotfiles::start-git-daemon "$DOTFILES"
 [[ $? -eq 0 ]] || return $?
 
-local host
-while read -r host; do
-  dotfiles::update "$host" "$@"
-done < $hostsfile
+local host cmd
+while read -r host cmd; do
+  dotfiles::update "$host" "$cmd"
+done < "$hostsfile"
 
 # vim:set filetype=sh:
