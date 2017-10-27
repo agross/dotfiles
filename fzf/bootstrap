@@ -1,0 +1,4 @@
+if [[ "$OSTYPE" == 'mac' ]]; then
+  formula pt
+  formula ripgrep
+fi

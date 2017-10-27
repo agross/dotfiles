@@ -1,11 +1,24 @@
 (($+commands[fzf])) || (($+commands[fzf-tmux])) || return 0
 
-if (($+commands[pt])) && [[ $commands[pt] != *Program\ Files* ]]; then
-  export FZF_DEFAULT_COMMAND='pt --hidden --ignore .git -g ""'
+if (($+commands[pt])) && [[ $commands[pt] != *Program\ Files* ]] && (($+commands[ruby])); then
+  export FZF_DEFAULT_COMMAND='pt --ignore .git -g ""'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND | only-dir"
+fi
 
-  function _fzf_compgen_path() {
-    eval $FZF_DEFAULT_COMMAND "$1"
+if (($+commands[rg])) && (($+commands[ruby])); then
+  export FZF_DEFAULT_COMMAND='rg --files --no-messages'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND | only-dir"
+fi
+
+if [[ -n "$FZF_DEFAULT_COMMAND" ]]; then
+  _fzf_compgen_path() {
+    eval $FZF_DEFAULT_COMMAND "$1" | with-dir "$1"
+  }
+
+  _fzf_compgen_dir() {
+    eval $FZF_DEFAULT_COMMAND "$1" | only-dir "$1"
   }
 fi
 
