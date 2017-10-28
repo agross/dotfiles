@@ -2,10 +2,15 @@
 #
 # export GIT_DIFFMERGE_VERBOSE=1 to enable logging
 
+# PLEASE DO NOT USE WINMERGE. IT IS INFERIOR TO ALL OTHER TOOLS LISTED HERE AND
+# DOES NOT SUPPORT THREE-WAY MERGES.
+#
+# SEE: http://manual.winmerge.org/Faq.html#d0e9896
+
 script_path="${0%/*}"
 . "$script_path/diff-and-merge-support"
 
-tool="$(tool_path "/c/Tools/WinMerge/WinMergeU.exe")" || exit $?
+tool="$(tool_path '/c/Tools/WinMerge/WinMergeU.exe')" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
 shift

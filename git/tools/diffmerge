@@ -5,10 +5,12 @@
 script_path="${0%/*}"
 . "$script_path/diff-and-merge-support"
 
-tool="$(tool_path "/c/Tools/DiffMerge/sgdm.exe" \
-                  "/c/Tools/DiffMerge/diffmerge.exe" \
-                  "diffmerge" \
-                  "/Applications/DiffMerge.app/Contents/Resources/diffmerge.sh")" || exit $?
+tool="$(tool_path '/c/Tools/DiffMerge/sgdm.exe' \
+                  '/c/Tools/DiffMerge/diffmerge.exe' \
+                  '/mnt/c/Tools/DiffMerge/sgdm.exe' \
+                  '/mnt/c/Tools/DiffMerge/diffmerge.exe' \
+                  'diffmerge' \
+                  '/Applications/DiffMerge.app/Contents/Resources/diffmerge.sh')" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
 shift

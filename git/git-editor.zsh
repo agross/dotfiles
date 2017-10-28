@@ -3,11 +3,21 @@ if [[ -n "$SSH_CONNECTION" ]]; then
   return
 fi
 
-case "$(platform)" in
-  windows)
+case "$OSTYPE" in
+  cygwin)
     # Visual Studio Code.
     export GIT_EDITOR='file="$(cygpath --windows --absolute "$1")"; shift $#; /c/Tools/Code/bin/code --new-window --wait "$file"'
     ;;
+
+  linux*)
+    if [[ -f /proc/version ]] && \
+       grep --quiet Microsoft /proc/version && \
+       [[ -f /mnt/c/Tools/Code/bin/code ]]; then
+      # Visual Studio Code on WSL, there currently is nothing like cygpath, so try with relative paths.
+      export GIT_EDITOR='file="$(realpath --relative-to=. "$1")"; shift $#; /mnt/c/Tools/Code/bin/code --new-window --wait "$file"'
+    fi
+    # Fall through.
+    ;&
 
   *)
     (($+commands[code])) && export GIT_EDITOR='code --new-window --wait'

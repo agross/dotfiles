@@ -5,9 +5,10 @@
 script_path="${0%/*}"
 . "$script_path/diff-and-merge-support"
 
-tool="$(tool_path "/c/Tools/Beyond Compare/BComp.exe" \
-                  "bcompare" \
-                  "/Applications/Beyond Compare.app/Contents/MacOS/bcomp")" || exit $?
+tool="$(tool_path '/c/Tools/Beyond Compare/BComp.exe' \
+                  '/mnt/c/Tools/Beyond Compare/BComp.exe' \
+                  'bcompare' \
+                  '/Applications/Beyond Compare.app/Contents/MacOS/bcomp')" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
 shift

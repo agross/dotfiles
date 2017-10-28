@@ -5,9 +5,10 @@
 script_path="${0%/*}"
 . "$script_path/diff-and-merge-support"
 
-tool="$(tool_path "/c/Tools/KDiff3/kdiff3.exe" \
-                  "kdiff3" \
-                  "/Applications/kdiff3.app/Contents/MacOS/kdiff3")" || exit $?
+tool="$(tool_path '/c/Tools/KDiff3/kdiff3.exe' \
+                  '/mnt/c/Tools/KDiff3/kdiff3.exe' \
+                  'kdiff3' \
+                  '/Applications/kdiff3.app/Contents/MacOS/kdiff3')" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
 shift
