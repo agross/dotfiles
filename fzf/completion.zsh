@@ -8,7 +8,7 @@ fi
 
 if (($+commands[rg])) && (($+commands[ruby])); then
   export FZF_DEFAULT_COMMAND='rg --files --no-messages'
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND -uuu"
   export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND | only-dir"
 fi
 
