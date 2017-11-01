@@ -29,6 +29,7 @@ function {
 
   PROMPT+="$user_host $cwd $git_branch$git_status_symbols$jobs%E"
   PROMPT+=$'\n'
+  (($+functions[iterm2_prompt_mark])) && PROMPT+='%{$(iterm2_prompt_mark)%}'
   PROMPT+="$git_or_exit_status %E"
 
   RPROMPT=
