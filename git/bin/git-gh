@@ -1,6 +1,20 @@
 #!/usr/bin/env sh
 
-url=https://github.com/${1?Need GitHub username/repo}
+if [ -z "$1" ]; then
+  for url in $(git remote 2> /dev/null | xargs --max-args 1 git remote get-url --all 2> /dev/null); do
+    case "$url" in
+      https://github.com/*)
+        suffix="${url#https://github.com/}"
+        ;;
+      git@github.com:*)
+        suffix="${url#git@github.com:}"
+        ;;
+    esac
+    suffix="${suffix%.git}"
+  done
+fi
+
+url=https://github.com/${suffix:-${1?Need GitHub username/repo}}
 
 case "$OSTYPE" in
   cygwin)
