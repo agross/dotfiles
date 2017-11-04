@@ -75,7 +75,6 @@ zplug 'BurntSushi/ripgrep', \
       from:gh-r, \
       as:command, \
       rename-to:rg, \
-      use:'ripgrep-*/complete', \
       if:"[[ $OSTYPE = linux* && ! -f /proc/syno_cpu_arch ]]"
 
 # Plugins related to git.
