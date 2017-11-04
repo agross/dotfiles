@@ -76,7 +76,7 @@ zplug 'BurntSushi/ripgrep', \
       as:command, \
       rename-to:rg, \
       use:'ripgrep-*/complete', \
-      if:"[[ $OSTYPE = linux* ]]"
+      if:"[[ $OSTYPE = linux* && ! -f /proc/syno_cpu_arch ]]"
 
 # Plugins related to git.
 zplug 'so-fancy/diff-so-fancy', \
