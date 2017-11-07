@@ -29,6 +29,11 @@ bindkey '^[[B'    down-line-or-history # Down arrow
 bindkey '\e[1;2A' up-line-or-search    # Shift + Up arrow
 bindkey '\e[1;2B' down-line-or-search  # Shift + Down arrow
 
+# Bring up a menu of history commands starting with what was entered.
+autoload -Uz history-beginning-search-menu
+zle -N history-beginning-search-menu-end history-beginning-search-menu
+bindkey '^X^X' history-beginning-search-menu-end
+
 zmodload -i zsh/terminfo
 [[ -n "$terminfo[khome]" ]] && bindkey $terminfo[khome] beginning-of-line # Home
 bindkey '^[[1~'   beginning-of-line                                       # Home, Cmd + left arrow
