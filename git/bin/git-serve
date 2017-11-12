@@ -6,23 +6,24 @@ reset_color='\e[0m'
 base_path="$(readlink --canonicalize-existing "${1:-$PWD}")"
 
 printf 'Based on your IP addresses git remote URLs start with:\n'
-if hash ipconfig 2> /dev/null && [[ "$OSTYPE" == darwin* ]]; then
-  ifconfig | \
-    grep 'inet' | \
-    grep -Fv -e 127.0.0.1 -e ::1 | \
-    awk '{sub("%.*$", "", $2); print "git://" $2 "/" }' | \
-    sort | \
-    uniq
+if hash ifconfig 2> /dev/null && [[ "$OSTYPE" == darwin* ]]; then
+  urls=(
+    $(ifconfig | \
+      grep 'inet' | \
+      awk '{sub("%.*$", "", $2); print "git://" $2 "/" }')
+    )
 elif hash hostname 2> /dev/null ; then
   read -ra ips <<< "$(hostname --all-ip-addresses)"
 
-  printf 'git://%s/\n' "${ips[@]}" | \
-    grep -Fv -e 127.0.0.1 -e ::1 -e 0.0.0.0 | \
-    sort | \
-    uniq
+  urls=($(printf 'git://%s/\n' "${ips[@]}"))
 else
   >&2 printf 'Could not determine IP addresses\n'
 fi
+
+printf '%s\n' "${urls[@]}" | \
+  grep -Fv -e 'git://127.0.0.1/' -e 'git://0.0.0.0/' -e 'git://::1/' | \
+  sort | \
+  uniq
 
 printf 'Serving %b%s%b\n' "$green" "$base_path" "$reset_color"
 exec git daemon --verbose --export-all --base-path="$base_path"
