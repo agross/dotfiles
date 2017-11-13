@@ -24,5 +24,7 @@ symlink "$ids"
 local id
 for id in id_rsa capistrano letsencrypt teamcity; do
   local private_key="$HOME/.ssh/$id"
-  [[ -f "$private_key" ]] && chmod 600 "$private_key"
+  if [[ -f "$private_key" ]]; then
+    chmod 600 "$private_key"
+  fi
 done
