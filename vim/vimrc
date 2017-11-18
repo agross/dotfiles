@@ -273,7 +273,9 @@ autocmd BufNewFile,BufRead *.boo setf boo
 
 " Automatically cd into the directory of the edited file.
 " alternatively: autocmd BufEnter * cd %:p:h
-set autochdir
+if exists("&autochdir")
+  set autochdir
+endif
 
 " a.vim
 nmap <silent> <Leader>h :A<CR>
