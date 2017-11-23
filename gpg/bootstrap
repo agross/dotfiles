@@ -1,5 +1,6 @@
 if [[ "$OSTYPE" == 'mac' ]]; then
   formula gpg
+  formula pinentry-mac
 fi
 
 [[ "$OSTYPE" == 'windows' ]] && return
