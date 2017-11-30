@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+brew info --installed --json=v1 | \
+  jq 'map(select(.installed | length > 1)) |
+      map({ key: .name, value: [.installed[].version] }) |
+      from_entries'

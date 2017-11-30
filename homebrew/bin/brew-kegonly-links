@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+brew info --installed --json=v1 | \
+  jq 'map(select(.keg_only == true)) |
+      map({ key: .name, value: .linked_keg }) |
+      from_entries'
