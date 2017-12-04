@@ -2,17 +2,14 @@
 
 case $1 in
   config)
-    shift 1
     command=config
     ;;
 
   logs)
-    shift 1
     command=logs
     ;;
 
   pr)
-    shift 1
     command=pr
     ;;
 
@@ -21,12 +18,16 @@ case $1 in
     ;;
 esac
 
+if [[ $command != usage ]]; then
+  shift 1
+fi
+
 git-training::usage() {
   if [[ -n $1 ]]; then
-    printf 'Unsupported command: %s\n' "$1"
+    printf 'Unsupported command: %s\n\n' "$1"
   fi
 
-  printf '\nSupported commands:\n'
+  printf 'Supported commands:\n'
   printf '  config  Manage git configuration\n'
   printf '  logs    Convert shell logs to HTML\n'
   printf '  pr      Undo Pull Request demo\n'
@@ -37,23 +38,43 @@ git-training::usage() {
 git-training::config() {
   local git_config="$(readlink --canonicalize-existing "$HOME/.gitconfig")"
 
-  if [[ "$1" == 'reset' ]]; then
-    git -C "$(dirname "$git_config")" checkout -- "$(basename "$git_config")"
-    return $?
-  fi
+  case "$1" in
+    --reset)
+      git -C "$(dirname "$git_config")" checkout -- "$(basename "$git_config")"
+      return $?
+      ;;
 
-  # Only enable training config if ~/.gitconfig is unchanged (first day of training).
-  if git -C "$(dirname "$git_config")" diff-index --quiet HEAD -- "$(basename "$git_config")"; then
-    cp "$git_config.training" "$HOME/.gitconfig" && \
-      printf 'git training config enabled\n'
-  else
-    printf '%s is modified, not enabling git training config\n' "$git_config"
-    return 1
-  fi
+    --stash)
+      git -C "$(dirname "$git_config")" stash -- "$(basename "$git_config")"
+      return $?
+      ;;
+
+    --pop)
+      git -C "$(dirname "$git_config")" stash pop
+      return $?
+      ;;
+
+    *)
+      # Only enable training config if ~/.gitconfig is unchanged
+      # (i.e. first day of training).
+      if git -C "$(dirname "$git_config")" \
+             diff-index \
+             --quiet \
+             HEAD \
+             -- \
+             "$(basename "$git_config")"; then
+        cp "$git_config.training" "$HOME/.gitconfig" && \
+          printf 'git training config enabled\n'
+      else
+        printf '%s is modified, not enabling git training config\n' "$git_config"
+        return 1
+      fi
+      ;;
+  esac
 }
 
 git-training::logs() {
-  if [[ "$1" == 'clear' ]]; then
+  if [[ "$1" == '--clear' ]]; then
     rm --interactive -- ~/*_*.zsh\ Trainings.*.log(N.on)
     return $?
   fi

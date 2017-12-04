@@ -1,0 +1,55 @@
+#compdef git-training
+#description manage git training config and logs
+
+_git-training() {
+  local context curcontext="$curcontext" state line
+  typeset -A opt_args
+  local ret=1
+
+  _arguments -C \
+    '1: :_git-training::commands' \
+    '*::arg:->args'  \
+  && ret=0
+
+  case "$state" in
+    (args)
+      case $line[1] in
+        logs)
+          _arguments \
+            '1:day index:(1 2 3)' \
+            '2::date offset: ' \
+            '(--clear)--clear[Remove shell log files]' \
+            && ret=0
+          ;;
+
+        config)
+          _arguments \
+            '(--stash --pop --reset)--stash[Stash modified configuration]' \
+            '(--stash --pop --reset)--pop[Apply modified configuration]' \
+            '(--stash --pop --reset)--reset[Return to default configuration]' \
+            && ret=0
+          ;;
+
+        *)
+          _message 'no more arguments' \
+            && ret=0
+          ;;
+      esac
+  esac
+
+  return ret
+}
+
+(( $+functions[_git-training::commands] )) ||
+_git-training::commands() {
+  local -a commands
+  commands=(
+    'config:Manage git config for trainings'
+    'logs:Convert shell logs to HTML'
+    'pr:Undo Pull Request demo'
+  )
+
+  _describe -t commands 'git-training command' commands "$@"
+}
+
+_git-training "$@"
