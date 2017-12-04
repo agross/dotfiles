@@ -11,6 +11,11 @@ case $1 in
     command=logs
     ;;
 
+  pr)
+    shift 1
+    command=pr
+    ;;
+
   *)
     command=usage
     ;;
@@ -24,6 +29,7 @@ git-training::usage() {
   printf '\nSupported commands:\n'
   printf '  config  Manage git configuration\n'
   printf '  logs    Convert shell logs to HTML\n'
+  printf '  pr      Undo Pull Request demo\n'
 
   return 1
 }
@@ -76,6 +82,22 @@ git-training::logs() {
 
     part=$((part + 1))
   done
+}
+
+git-training::pr() {
+  local dir=$(mktemp --directory)
+  trap "rm -rf $dir" EXIT SIGHUP SIGINT SIGTERM
+
+  pushd -q $dir && \
+    git clone git@github.com:Archivists/archive-bundler . && \
+    git push --force origin a838142:refs/heads/master
+  popd -q
+
+  printf '\n'
+  curl --include \
+       --request DELETE \
+       --header "Authorization: token $GITHUB_DELETE_REPO_API_TOKEN" \
+       https://api.github.com/repos/agross/archive-bundler
 }
 
 git-training::$command "$@"
