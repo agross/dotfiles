@@ -4,3 +4,5 @@
 _git-serve() {
   _arguments '1:base directory:_directories'
 }
+
+_git-serve "$@"
