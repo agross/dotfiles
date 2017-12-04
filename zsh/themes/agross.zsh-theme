@@ -59,10 +59,11 @@ function _prompt::agross::git_branch() {
 function _prompt::agross::git_status() {
   zgit_inworktree || return
 
-  zgit_isworktreeclean || printf '*'
-  zgit_hasuntracked    && printf '?'
-  zgit_isindexclean    || printf '^'
-  zgit_hasunmerged     && printf 'Y'
+  zgit_isworktreeclean      || printf '*'
+  zgit_hasuntracked         && printf '?'
+  zgit_isindexclean         || printf '^'
+  zgit_hasunmerged          && printf 'Y'
+  zgit_has-assume-unchanged && printf '%b!%b' "$(tput blink)" "$(tput sgr0)"
 }
 
 # vim:set filetype=sh:

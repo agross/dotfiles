@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AboutToPasteTabsWithCancel</key>
+	<true/>
+	<key>AboutToPasteTabsWithCancel_selection</key>
+	<integer>2</integer>
 	<key>AlternateMouseScroll</key>
 	<false/>
 	<key>AppleAntiAliasingThreshold</key>
@@ -594,7 +598,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 142 606 469 0 0 1440 878 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>311 243 1016 512 0 0 1440 878 </string>
+	<string>429 151 918 492 0 0 1440 878 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>99 294 592 584 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_FiraCode-Regular</key>
@@ -602,7 +606,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 878 1392 724 0 0 1440 878 </string>
+	<string>48 154 1392 724 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -855,7 +859,7 @@
 				<real>1</real>
 			</dict>
 			<key>Blink Allowed</key>
-			<false/>
+			<true/>
 			<key>Blinking Cursor</key>
 			<false/>
 			<key>Blur</key>
@@ -1663,7 +1667,7 @@
 				<real>1</real>
 			</dict>
 			<key>Blink Allowed</key>
-			<false/>
+			<true/>
 			<key>Blinking Cursor</key>
 			<false/>
 			<key>Blur</key>
@@ -5679,11 +5683,13 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-11-07T21:25:34Z</date>
+	<date>2017-12-04T11:35:17Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
 	<true/>
+	<key>Secure Input</key>
+	<false/>
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
@@ -5731,7 +5737,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.5.beta.1</string>
+	<string>3.1.5.beta.2</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>7</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
