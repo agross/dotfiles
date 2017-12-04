@@ -125,15 +125,3 @@ puts "\e[31;1mManually install these:\e[0m"
 [
   'Roboform: https://www.roboform.com/for-mac'
 ].each { |app| puts app }
-
-unless File.exist?('/usr/local/bin/macmounter.py')
-  require 'tmpdir'
-  require 'rake'
-
-  Dir.mktmpdir('macmounter') do |tmp|
-    Dir.chdir(tmp) do
-      RakeFileUtils.sh(*%w(git clone https://github.com/roubles/macmounter.git .))
-      RakeFileUtils.sh(*%w(sudo ./install.sh))
-    end
-  end
-end
