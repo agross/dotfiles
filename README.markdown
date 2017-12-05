@@ -10,21 +10,21 @@ better than bash. Want to search your history using wildcards? No problem! Just
 `bindkey '^R' history-incremental-pattern-search-backward`.
 
 zsh runs on Windows only through Cygwin. Other platforms support it natively
-through `<package manager> install zsh; chsh --shell /bin/zsh`
+through `<package manager> install zsh; chsh --shell $(which zsh)`
 
 Don't expect a fancy bash setup, my dotfiles are organized around zsh.
 
 ## Supported Platforms
 
-I use these dotfiles on Windows, Cygwin and Linux. They should work on macOS
-and msysgit (a.k.a [Git for Windows](https://git-scm.com/download/win)) as well,
-but I don't use these on a daily basis.
+I use these dotfiles on Windows, Cygwin, macOS and Linux. They should work on
+msysgit (a.k.a. [Git for Windows](https://git-scm.com/download/win)) as well,
+but I don't use it on a daily basis.
 
 ### Cygwin
 
 When you install dotfiles under Cygwin the `bootstrap` script tries to create
 native NTFS symlinks by running `ln` with
-[`CYGWIN=winsymlinks:nativestrict`](https://cygwin.com/cygwin-ug-net/using.html#pathnames-symlinks)\.
+[`CYGWIN=winsymlinks:nativestrict`](https://cygwin.com/cygwin-ug-net/using.html#pathnames-symlinks).
 
 Native NTFS symlinks can only be created if you are either an Administrator
 [in an elevated shell](http://stackoverflow.com/a/15330511/149264) or if you
@@ -35,7 +35,7 @@ have the `SeCreateSymbolicLinkPrivilege` privilege. Check with
 
 and if necessary [grant yourself this privilege](http://security.stackexchange.com/a/10198).
 
-### msysgit (a.k.a [Git for Windows](https://git-scm.com/download/win))
+### msysgit (a.k.a. [Git for Windows](https://git-scm.com/download/win))
 
 msysgit's implementation of `ln` just
 [copies the file/directory to the symlink target](https://groups.google.com/forum/#!topic/msysgit/_0QJUPgLm84).
@@ -49,12 +49,12 @@ and submit a pull request.
 ## Installation
 
 ```bash
-$ git clone --recursive https://github.com/agross/dotfiles.git <somewhere>
-$ cd <somewhere>
+$ git clone --recursive https://github.com/agross/dotfiles.git ~/.dotfiles
+$ cd ~/.dotfiles
 $ ./bootstrap
 ```
 
-The `bootstrap` script installs dotfiles to your home directory.
+The `bootstrap` script installs (symlinks) dotfiles to your home directory.
 
 The bootstrapper does not delete existing files; it will ask you for permission
 to overwrite files. Existing files can also be backed up before overwriting.
@@ -141,17 +141,21 @@ There are some special files that either the `bootstrap` script or
 ### `bootstrap`-specific files
 
 The bootstrapper will create an implicit symlink for the dotfiles directory
-itself. It will always be symlinked to `$HOME/.dotfiles` (unless you
-[`git clone`d the dotfiles](#installation) there.) This makes it easier to refer
-to other dotfiles from within dotfiles as you can use a static path. For
-example, [my git mergetool scripts point to `$HOME/.dotfiles/git/tools`](https://github.com/agross/dotfiles/blob/master/git/gitconfig#L49).
+itself. `$HOME/.dotfiles` will point to the dotfiles clone directory unless you
+[`git clone`d the dotfiles](#installation) into `$HOME/.dotfiles`.
+
+This makes it easier to refer to other dotfiles from within dotfiles as you can
+use a static path. For example, [my `git mergetool` scripts point to
+`$HOME/.dotfiles/git/tools`](https://github.com/agross/dotfiles/blob/master/git/git-mergetools#L2).
 
 #### topic/bootstrap
 
 `bootstrap` will source each `topic/bootstrap` file and thereby run it using
 bash. The script can then
 
-* symlink files using the [`symlink $source $target`](https://github.com/agross/dotfiles/blob/master/bootstrap#L67) function. `$target` may be omitted, e.g. `symlink $topic/foo` will create the symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo`.
+* symlink files using the [`symlink $source $target`](https://github.com/agross/dotfiles/blob/master/bootstrap#L67)
+  function. `$target` may be omitted, e.g. `symlink $topic/foo` will create the
+  symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo`.
 * install additional programs at the script's discretion.
 
 Each `topic/bootstrap` has the following environment variables available:
