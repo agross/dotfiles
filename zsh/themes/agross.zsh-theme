@@ -10,7 +10,6 @@ function {
   unsetopt auto_name_dirs
 
   # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
-  local history_index='%F{cyan}%h%f'
   local user_host='%F{green}%n@%m%f'
   local cwd='%F{yellow}$(_prompt::agross::cwd)%f'
   local git_branch='%F{green}$(_prompt::agross::git_branch)%f'
@@ -20,13 +19,6 @@ function {
 
   # Start with newline.
   PROMPT=$'\n'
-
-  # Display history number on mintty terminals.
-  if is-mintty; then
-    verbose Enabling history index in $fg[yellow]\$PROMPT$reset_color because $fg[red]mintty$reset_color was started
-    PROMPT+="$history_index "
-  fi
-
   PROMPT+="$user_host $cwd $git_branch$git_status_symbols$jobs%E"
   PROMPT+=$'\n'
   (($+functions[iterm2_prompt_mark])) && PROMPT+='%{$(iterm2_prompt_mark)%}'

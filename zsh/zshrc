@@ -2,9 +2,6 @@
 
 verbose Loading $fg[green]zshrc$reset_color
 
-# Cache function results.
-build-cache
-
 ZPLUG_LOADFILE="$DOTFILES/zsh/zplugs"
 
 # Use extended_glob option for zplug subshells. We need to change it for zplug's use tags containing extended globs.
