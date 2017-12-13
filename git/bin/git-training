@@ -9,8 +9,8 @@ case $1 in
     command=logs
     ;;
 
-  pr)
-    command=pr
+  cleanup)
+    command=cleanup
     ;;
 
   *)
@@ -105,7 +105,9 @@ git-training::logs() {
   done
 }
 
-git-training::pr() {
+git-training::cleanup() {
+  rm -rf ~/git-schulung
+
   local dir=$(mktemp --directory)
   trap "rm -rf $dir" EXIT SIGHUP SIGINT SIGTERM
 

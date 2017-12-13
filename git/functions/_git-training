@@ -44,9 +44,9 @@ _git-training() {
 _git-training::commands() {
   local -a commands
   commands=(
+    'cleanup:Remove sample repositories and undo Pull Request demo'
     'config:Manage git config for trainings'
     'logs:Convert shell logs to HTML'
-    'pr:Undo Pull Request demo'
   )
 
   _describe -t commands 'git-training command' commands "$@"
