@@ -5,39 +5,40 @@
 # %~          expands to directory, replacing $HOME with '~'
 # There are many more expansions available: see the zshmisc man page.
 
-verbose Setting up $fg[red]precmd$reset_color and $fg[red]preexec$reset_color hooks for $fg[yellow]$TERM$reset_color
+_terminal-title::ssh-prefix() {
+  if [[ -n $SSH_CONNECTION ]]; then
+    print -n '%n@%m: '
+  fi
+}
+
+_terminal-title::preexec() {
+  # Executed just after a command has been read and is about to be executed.
+
+  # Print command line that is executed, but expand aliases ($2 instead of $1).
+  print -Pnf '\e]0;%s%s\a' "$(_terminal-title::ssh-prefix)" "$2"
+}
+
+_terminal-title::precmd() {
+  # Executed before each prompt.
+
+  local cwd="${PWD/#$HOME/~}"
+
+  # Print current path.
+  print -Pnf '\e]0;%s%s\a' "$(_terminal-title::ssh-prefix)" "$cwd"
+
+  if [[ "$TERM" == screen* ]]; then
+    # screen title as shown in windowlist, shortcut: ^A"
+    print -Pnf '\ekzsh: %s%s\e\\' "$(_terminal-title::ssh-prefix)" "$cwd"
+  fi
+}
 
 case "$TERM" in
   xterm*|rxvt*|cygwin|screen*)
-    # Executed just after a command has been read and is about to be executed.
-    function preexec() {
-      if [[ -n $SSH_CONNECTION ]]; then
-        local user_at_host="$(print -Pn '%n@$HOST: ')"
-      fi
+    verbose Setting up $fg[red]precmd$reset_color and \
+            $fg[red]preexec$reset_color hooks for $fg[yellow]$TERM$reset_color
 
-      # Print command line that is executed.
-      print -nf "\e]0;%s%s\a" "$user_at_host" "$1"
-    }
-
-    # Executed before each prompt.
-    function precmd() {
-      if [[ -n $SSH_CONNECTION ]]; then
-        local user_at_host="%n@$HOST: "
-      fi
-
-      local cwd="${PWD/#$HOME/\~}"
-
-      # Print current path.
-      print -Pn "\e]0;$user_at_host$cwd\a"
-
-      if [[ -n $STY ]]; then
-        # screen title (in ^A").
-        print -Pn "\ekzsh $user_at_host$cwd\e\\"
-      fi
-    }
-
-    # Executed whenever the current working directory is changed.
-    function chpwd() {
-    }
+    autoload -Uz add-zsh-hook
+    add-zsh-hook preexec _terminal-title::preexec
+    add-zsh-hook precmd _terminal-title::precmd
     ;;
 esac
