@@ -21,7 +21,10 @@ function {
   PROMPT=$'\n'
   PROMPT+="$user_host $cwd $git_branch$git_status_symbols$jobs%E"
   PROMPT+=$'\n'
-  (($+functions[iterm2_prompt_mark])) && PROMPT+='%{$(iterm2_prompt_mark)%}'
+  if (($+functions[iterm2_prompt_mark])) && \
+     [[ "$ITERM_PROFILE" != 'zsh Trainings' ]]; then
+    PROMPT+='%{$(iterm2_prompt_mark)%}'
+  fi
   PROMPT+="$git_or_exit_status %E"
 
   RPROMPT=
