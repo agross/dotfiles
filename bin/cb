@@ -12,7 +12,7 @@
 
 case "$OSTYPE" in
   linux*)
-    if ! command -v xclip > /dev/null; then
+    if ! hash xclip 2> /dev/null; then
       >&2 printf 'Need xclip to be installed\n'
       exit 1
     fi
