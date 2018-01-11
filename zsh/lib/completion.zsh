@@ -59,6 +59,13 @@ zstyle ':completion:*:-command-'    group-order builtins commands functions
 zstyle ':completion:*'              list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*'              select-prompt '%SScrolling active: current selection at %p%s'
 
+# Complete in history with ESC, , and /
+# http://zsh.sourceforge.net/Guide/zshguide06.html#l163
+zstyle ':completion:history-words:*' list yes
+zstyle ':completion:history-words:*' sort yes
+zstyle ':completion:history-words:*' range 500
+zstyle ':completion:history-words:*' remove-all-dups yes
+
 # 1. Try case-sensitive completion.
 # 2. Map German umlauts, allow case-insensitive completion.
 # 3. Partial word completion.
