@@ -43,21 +43,25 @@ zstyle ':completion:*' menu yes select=3
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
 
 # Allow one error for every three characters typed in approximate completer.
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX+$#SUFFIX)/3 )) numeric )'
+zstyle -e ':completion:*:approximate:*' max-errors \
+                                        'reply=($(( ($#PREFIX + $#SUFFIX) / 25 )) numeric)'
 
 # Insert all expansions for expand completer.
 zstyle ':completion:*:expand:*' tag-order all-expansions
 
 # Formatting and messages.
 zstyle ':completion:*'              verbose yes
-zstyle ':completion:*:descriptions' format "Completing $fg_bold[blue]%d$reset_color"
+zstyle ':completion:*:descriptions' format '%B• Completing %F{blue}%d%f%b'
 zstyle ':completion:*:messages'     format '%d'
-zstyle ':completion:*:warnings'     format 'No matches for: %d'
-zstyle ':completion:*:corrections'  format '%B%d (errors: %e)%b'
+zstyle ':completion:*:warnings'     format '%B%F{red}No matches for%f%b: %d'
+zstyle ':completion:*:corrections'  format \
+                                    '%B• Completing %F{green}%d%f%b (%B%F{red}%e error%(2e|s|)%f%b)'
 zstyle ':completion:*'              group-name ''
 zstyle ':completion:*:-command-'    group-order builtins commands functions
-zstyle ':completion:*'              list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*'              select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*'              list-prompt \
+                                    '%B%K{blue}At %p (%l): Hit TAB for more, or the character to insert%k%b'
+zstyle ':completion:*'              select-prompt \
+                                    '%B%K{blue}At %p (%l): Hit TAB to complete, scrolling active%k%b'
 
 # Complete in history with ESC, , and /
 # http://zsh.sourceforge.net/Guide/zshguide06.html#l163
