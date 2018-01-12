@@ -44,7 +44,7 @@ zstyle ':completion:*' completer _expand _complete _ignored _approximate
 
 # Allow one error for every three characters typed in approximate completer.
 zstyle -e ':completion:*:approximate:*' max-errors \
-                                        'reply=($(( ($#PREFIX + $#SUFFIX) / 25 )) numeric)'
+                                        'reply=($(( ($#PREFIX + $#SUFFIX) / 3 )) numeric)'
 
 # Insert all expansions for expand completer.
 zstyle ':completion:*:expand:*' tag-order all-expansions
