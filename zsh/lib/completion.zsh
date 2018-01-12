@@ -55,7 +55,7 @@ zstyle ':completion:*:descriptions' format '%B• Completing %F{blue}%d%f%b'
 zstyle ':completion:*:messages'     format '%d'
 zstyle ':completion:*:warnings'     format '%B%F{red}No matches for%f%b: %d'
 zstyle ':completion:*:corrections'  format \
-                                    '%B• Completing %F{green}%d%f%b (%B%F{red}%e error%(2e|s|)%f%b)'
+                                    '%B• Completing %F{green}%d%f%b (%B%F{red}errors: %e%f%b)'
 zstyle ':completion:*'              group-name ''
 zstyle ':completion:*:-command-'    group-order builtins commands functions
 zstyle ':completion:*'              list-prompt \
