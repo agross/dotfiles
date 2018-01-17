@@ -8,7 +8,7 @@ script_path="${0%/*}"
 tool="$(tool_path '/c/Tools/P4Merge/p4merge.exe' \
                   '/mnt/c/Tools/P4Merge/p4merge.exe' \
                   'p4merge' \
-                  '/Applications/p4merge.app/Contents/MacOS/p4merge')" || exit $?
+                  '/Applications/p4merge.app/Contents/Resources/launchp4merge')" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
 shift
@@ -20,9 +20,7 @@ case "$op" in
     exec "$tool" -nl "$left_title" \
                  -nr "$right_title" \
                  "$left" \
-                 "$right" \
-                 > /dev/null 2>&1
-
+                 "$right"
     ;;
 
   merge)
@@ -35,8 +33,7 @@ case "$op" in
                  "$base" \
                  "$local" \
                  "$remote" \
-                 "$result" \
-                 > /dev/null 2>&1
+                 "$result"
     ;;
 
   *)
