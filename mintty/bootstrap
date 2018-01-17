@@ -1,3 +1,0 @@
-[[ "$OSTYPE" != 'cygwin' ]] && return
-
-symlink "$topic/minttyrc"
