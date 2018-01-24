@@ -1,8 +1,11 @@
-alias -g L=' | less'
-alias -g M=' | less'
-alias -g H=' | head'
-alias -g T=' | tail'
-alias -g G=' | grep'
+alias -g L='| less'
+alias -g M='| less'
+alias -g H='| head'
+alias -g T='| tail'
+alias -g G='| grep'
+
+alias -g DN='> /dev/null'
+alias -g 2DN='2> /dev/null'
 
 alias md='mkdir --parents'
 alias grep='grep --color=auto --ignore-case --binary-files=without-match --line-number --initial-tab'
