@@ -67,7 +67,7 @@
   l    = log --oneline --max-count=15
   ld   = log --oneline --max-count=15 --decorate
   lp   = log --patch
-  gl   = log --graph --oneline --decorate --branches --all
+  gl   = log --graph --oneline --decorate --branches --exclude=refs/stash --all
   # Mnemomic: who did what?
   wdw  = log --date=relative --pretty='format:%C(yellow)%h%Creset %C(bold blue)%an%Creset %C(bold green)%cr%Creset %s'
 
