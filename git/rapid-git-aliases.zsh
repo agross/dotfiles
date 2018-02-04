@@ -1,18 +1,33 @@
-# Aliases for file operations.
-alias qs='rapid status'
-alias qa='nocorrect rapid stage'
-alias qn='nocorrect rapid track'
-alias qap='nocorrect rapid stage --patch'
-alias qd='nocorrect rapid diff'
-alias qdc='nocorrect rapid diff --staged'
-alias qc='nocorrect rapid drop'
-alias qcp='nocorrect rapid drop --patch'
-alias qu='nocorrect rapid unstage'
-alias qup='nocorrect rapid unstage --patch'
-alias qrm='nocorrect rapid remove'
+function {
+  local rapid='nocorrect rapid'
+  local custom="$rapid custom"
 
-# Aliases for branch operations.
-alias qb='nocorrect rapid branch'
-alias qco='nocorrect rapid checkout'
-alias qm='nocorrect rapid merge'
-alias qr='nocorrect rapid rebase'
+  # Aliases for file operations.
+  alias  qs="$rapid status"
+
+  # Mnemonic: new.
+  alias  qn="$custom untracked stage 'git add'"
+
+  # Mnemonic: add and add --patch.
+  alias  qa="$custom worktree  stage 'git add'"
+  alias qap="$custom worktree  stage 'git add --patch'"
+
+  # Mnemonic: diff and diff --cached.
+  alias  qd="$custom worktree  false 'git diff'"
+  alias qdc="$custom index     false 'git diff --staged'"
+
+  # Mnemonic: checkout and checkout --patch.
+  alias  qc="$custom worktree  drop  'git checkout'"
+  alias qcp="$custom worktree  drop  'git checkout --patch'"
+
+  # Mnemonic: unstage and unstage --patch.
+  alias  qu="$custom index     reset 'git reset HEAD --quiet '"
+  alias qup="$custom index     reset 'git reset HEAD --quiet --patch'"
+
+  # Mnemonic: remove.
+  alias  qr="$custom untracked drop  'git rm -rf'"
+
+  # Mnemonic: ignore and unignore.
+  alias  qi="$custom worktree  stage 'git update-index --assume-unchanged'"
+  alias qui="$custom worktree  drop  'git update-index --no-assume-unchanged'"
+}
