@@ -35,4 +35,10 @@ function {
   alias  qe="$custom worktree  false 'code -r'"
   alias qes="$custom index     false 'code -r'"
   alias qeu="$custom untracked false 'code -r'"
+
+  # Mnemonic: make executable with chmod +x, make not executable with chmod -x.
+  alias  qe+="$custom worktree  stage 'git update-index --chmod=+x'"
+  alias qe+s="$custom index     reset 'git update-index --chmod=+x'"
+  alias  qe-="$custom worktree  stage 'git update-index --chmod=-x'"
+  alias qe-s="$custom index     reset 'git update-index --chmod=-x'"
 }
