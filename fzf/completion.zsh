@@ -1,11 +1,5 @@
 (($+commands[fzf])) || (($+commands[fzf-tmux])) || return 0
 
-if (($+commands[pt])) && [[ $commands[pt] != *Program\ Files* ]] && (($+commands[ruby])); then
-  export FZF_DEFAULT_COMMAND='pt --ignore .git -g ""'
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND | only-dir"
-fi
-
 if (($+commands[rg])) && (($+commands[ruby])); then
   export FZF_DEFAULT_COMMAND='rg --files --no-messages'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND -uuu"
