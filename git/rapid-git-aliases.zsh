@@ -30,4 +30,9 @@ function {
   # Mnemonic: ignore and unignore.
   alias  qi="$custom worktree  stage 'git update-index --assume-unchanged'"
   alias qui="$custom worktree  drop  'git update-index --no-assume-unchanged'"
+
+  # Mnemonic: edit, edit staged, edit untracked.
+  alias  qe="$custom worktree  false 'code -r'"
+  alias qes="$custom index     false 'code -r'"
+  alias qeu="$custom untracked false 'code -r'"
 }
