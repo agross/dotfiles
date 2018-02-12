@@ -48,6 +48,7 @@
   r  = rebase --interactive
   rc = rebase --continue
   ra = rebase --abort
+  rs = rebase --skip
 
   # git diff.
   d       = diff
