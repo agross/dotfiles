@@ -94,6 +94,8 @@ merge_args() {
 
   local file
   for file in rebase-merge/stopped-sha \
+              rebase-merge/original-commit \
+              rebase-apply/original-commit \
               MERGE_HEAD \
               CHERRY_PICK_HEAD \
               REVERT_HEAD; do
