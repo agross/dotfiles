@@ -42,7 +42,7 @@ cask 'osxfuse'
 brew 'sshfs'
 
 # Apps without topic directories.
-brew 'curl', args: %w(with-libidn with-libssh2 with-nghttp2 with-openssl)
+brew 'curl', args: %w(with-libssh2 with-nghttp2)
 brew 'httpie'
 brew 'imagemagick', args: %w(with-webp)
 brew 'jid'
