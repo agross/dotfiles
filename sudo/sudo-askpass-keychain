@@ -8,4 +8,4 @@ if [ "$parent_process" != 'sudo' ] && \
   exit 1
 fi
 
-security find-generic-password -gwa "$USER" "$HOME/Library/Keychains/Local Accounts.keychain-db"
+security find-generic-password -gwa "$USER" "$SUDO_ASKPASS_KEYCHAIN"
