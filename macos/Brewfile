@@ -38,7 +38,6 @@ cask 'suspicious-package'
 cask 'webpquicklook'
 
 # FUSE.
-tap 'homebrew/fuse'
 cask 'osxfuse'
 brew 'sshfs'
 
