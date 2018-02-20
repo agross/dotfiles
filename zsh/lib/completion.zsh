@@ -120,6 +120,8 @@ bindkey -M menuselect '^I' magic-space                   # Tab
 bindkey -M menuselect ' '  magic-space
 
 # Process completion.
-zstyle ':completion:*:*:*:*:processes' command "ps --user \"$USER\""
+zstyle ':completion:*:*:*:*:processes' command 'ps -u "$USER"'
+# Process name completion for e.g. killall.
+zstyle ':completion:*:*:*:*:processes-names' command 'ps -u "$USER" -o comm='
 # PID in red, rest default-colored.
 zstyle ':completion:*:*:(wkill|kill):*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
