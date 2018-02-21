@@ -1,3 +1,8 @@
+if [[ "$OSTYPE" != darwin* ]]; then
+  printf 'Unsupported platform: %s\n' "$OSTYPE" >&2
+  return 1
+fi
+
 cols=$((COLUMNS / 3))
 sep='{::}'
 

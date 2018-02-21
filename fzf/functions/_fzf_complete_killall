@@ -1,3 +1,5 @@
+(($+commands[killall])) || return 1
+
 # Create the "post" function on the fly based on our function name.
 local fname="${(%):-%N}"
 "${fname}_post"() {
