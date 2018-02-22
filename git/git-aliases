@@ -42,7 +42,7 @@
 
   # git remote.
   rv = remote --verbose
-  pf = push --force
+  pf = push --force-with-lease
 
   # git rebase.
   r  = rebase --interactive
