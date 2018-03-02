@@ -608,7 +608,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 878 1392 724 0 0 1440 878 </string>
+	<string>48 262 1392 616 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1417,7 +1417,7 @@
 			<key>Use Tab Color</key>
 			<true/>
 			<key>Vertical Spacing</key>
-			<real>0.9</real>
+			<real>0.90000000000000002</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -2234,7 +2234,7 @@
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<real>0.9</real>
+			<real>0.90000000000000002</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -2835,7 +2835,7 @@
 					<key>Action</key>
 					<integer>10</integer>
 					<key>Text</key>
-					<string>[1;5D</string>
+					<string>b</string>
 				</dict>
 				<key>0xf702-0x260000</key>
 				<dict>
@@ -2851,6 +2851,13 @@
 					<key>Text</key>
 					<string>b</string>
 				</dict>
+				<key>0xf702-0x300000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x01</string>
+				</dict>
 				<key>0xf703-0x220000</key>
 				<dict>
 					<key>Action</key>
@@ -2863,7 +2870,7 @@
 					<key>Action</key>
 					<integer>10</integer>
 					<key>Text</key>
-					<string>[1;5C</string>
+					<string>f</string>
 				</dict>
 				<key>0xf703-0x260000</key>
 				<dict>
@@ -2878,6 +2885,13 @@
 					<integer>10</integer>
 					<key>Text</key>
 					<string>f</string>
+				</dict>
+				<key>0xf703-0x300000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x05</string>
 				</dict>
 				<key>0xf704-0x20000</key>
 				<dict>
@@ -3130,7 +3144,7 @@
 			<key>Use Tab Color</key>
 			<true/>
 			<key>Vertical Spacing</key>
-			<real>0.9</real>
+			<real>0.90000000000000002</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -3743,7 +3757,7 @@
 					<key>Action</key>
 					<integer>10</integer>
 					<key>Text</key>
-					<string>[1;5D</string>
+					<string>b</string>
 				</dict>
 				<key>0xf702-0x260000</key>
 				<dict>
@@ -3759,6 +3773,13 @@
 					<key>Text</key>
 					<string>b</string>
 				</dict>
+				<key>0xf702-0x300000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x01</string>
+				</dict>
 				<key>0xf703-0x220000</key>
 				<dict>
 					<key>Action</key>
@@ -3771,7 +3792,7 @@
 					<key>Action</key>
 					<integer>10</integer>
 					<key>Text</key>
-					<string>[1;5C</string>
+					<string>f</string>
 				</dict>
 				<key>0xf703-0x260000</key>
 				<dict>
@@ -3786,6 +3807,13 @@
 					<integer>10</integer>
 					<key>Text</key>
 					<string>f</string>
+				</dict>
+				<key>0xf703-0x300000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x05</string>
 				</dict>
 				<key>0xf704-0x20000</key>
 				<dict>
@@ -4049,7 +4077,7 @@
 			<key>Use Tab Color</key>
 			<true/>
 			<key>Vertical Spacing</key>
-			<real>0.9</real>
+			<real>0.90000000000000002</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -4804,7 +4832,7 @@
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<real>0.9</real>
+			<real>0.90000000000000002</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -5559,7 +5587,7 @@
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<real>0.9</real>
+			<real>0.90000000000000002</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -5753,7 +5781,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.5.beta.2</string>
+	<string>3.1.6beta3</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>7</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
