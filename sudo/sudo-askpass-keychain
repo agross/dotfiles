@@ -4,7 +4,12 @@
 parent_process="$(ps -o comm= -p $PPID)"
 if [ "$parent_process" != 'sudo' ] && \
    [ "$parent_process" != "$(which sudo)" ]; then
-  >&2 echo "SSH_ASKPASS $0: Not running from sudo but from $parent_process."
+  >&2 printf 'SSH_ASKPASS %s: Not running from sudo but from %s.\n' "$0" "$parent_process"
+  exit 1
+fi
+
+if [ -z "$SUDO_ASKPASS_KEYCHAIN" ]; then
+  >&2 printf 'SSH_ASKPASS %s: $SUDO_ASKPASS_KEYCHAIN is empty.\n' "$0"
   exit 1
 fi
 
