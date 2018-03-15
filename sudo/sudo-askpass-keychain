@@ -8,9 +8,7 @@ if [ "$parent_process" != 'sudo' ] && \
   exit 1
 fi
 
-if [ -z "$SUDO_ASKPASS_KEYCHAIN" ]; then
-  >&2 printf 'SSH_ASKPASS %s: $SUDO_ASKPASS_KEYCHAIN is empty.\n' "$0"
-  exit 1
-fi
-
-security find-generic-password -gwa "$USER" "$SUDO_ASKPASS_KEYCHAIN"
+security find-generic-password \
+         -gwa \
+         "$USER" \
+         "$HOME/Library/Keychains/Local Accounts.keychain-db"

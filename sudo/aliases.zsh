@@ -7,9 +7,7 @@ if [[ ! -f /proc/syno_cpu_arch ]]; then
 fi
 
 if [[ "$OSTYPE" == darwin* && -z "$SSH_CONNECTION" ]]; then
-  export SUDO_ASKPASS_KEYCHAIN="$HOME/Library/Keychains/Local Accounts.keychain-db"
-
-  [[ -f "$SUDO_ASKPASS_KEYCHAIN" ]] || return 0
+  [[ -f "$HOME/Library/Keychains/Local Accounts.keychain-db" ]] || return 0
 
   export SUDO_ASKPASS="${0%/*}/sudo-askpass-keychain"
   alias sudo='command sudo -A '
