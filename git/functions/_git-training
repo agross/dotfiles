@@ -44,8 +44,8 @@ _git-training() {
 _git-training::commands() {
   local -a commands
   commands=(
-    'cleanup:Remove sample repositories and undo Pull Request demo'
-    'config:Manage git config for trainings'
+    'cleanup:Undo Pull Request demo, remove samples, reset VS Code'
+    'config:Manage temporary git configuration'
     'logs:Convert shell logs to HTML'
   )
 
