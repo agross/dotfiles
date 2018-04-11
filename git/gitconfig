@@ -86,8 +86,6 @@
 	log  = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof --quit-if-one-screen} --RAW-CONTROL-CHARS
 	show = diff-so-fancy-smart '^(commit [a-f0-9]+|(added|deleted|modified|renamed): )'
 	diff = diff-so-fancy-smart '^(added|deleted|modified|renamed): '
-[interactive]
-	diffFilter = diff-so-fancy
 [color "diff-highlight"]
 	oldnormal = red
 	oldhighlight = red bold 52
