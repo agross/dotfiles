@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+case "$OSTYPE" in
+  cygwin)
+    prefix=/usr/share/doc/git/html/RelNotes
+    ;;
+
+  darwin*)
+    install_dir="$(dirname "$(realpath "$(which git)")")"
+    prefix="$install_dir/../../share/doc/git-doc/RelNotes"
+    ;;
+
+  linux*)
+    prefix=/usr/share/doc/git/RelNotes
+    ;;
+
+  *)
+    printf 'Unsupported $OSTYPE: %s\n' "$OSTYPE"
+    exit 1
+    ;;
+esac
+
+file="$(find "$prefix" -type f -iname '*.txt' | \
+         sort --reverse --version-sort | \
+         fzf --exact \
+             --no-sort \
+             --reverse \
+             --cycle \
+             --exit-0 \
+             --delimiter / \
+             --with-nth -1 \
+             --preview-window=right:80 \
+             --preview 'cat {}')"
+
+less "$(realpath "$file")"
