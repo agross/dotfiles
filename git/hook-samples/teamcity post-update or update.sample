@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+
+# This script can run as either an update or post-receive hook to trigger
+# TeamCity builds.
+#
+# The main differences are:
+#   * update runs separately for each updated ref
+#   * update can exit != 0 and abort the upload for this branch
+#
+#   * post-receive runs once after the upload has finished for all updated refs
+#   * exiting != 0 does not abort the upload
+#
+# NOTE: Running as an update hook is currently not implemented.
+#
+# You need to configure the following (using e.g. git config):
+#   * hooks.teamcity.baseurl
+#     TeamCity Server base URL
+#   * hooks.teamcity.user
+#     User to authenticate the web request
+#   * hooks.teamcity.password
+#     Password to authenticate the web request
+#   * hooks.teamcity.buildids
+#     Space-separated list of TeamCity build configuration IDs to trigger
+
+set -euo pipefail
+
+setup_colors() {
+  red='\e[1;31m'
+  green='\e[1;32m'
+  cyan='\e[1;34m'
+  reset_color='\e[0m'
+}
+
+error() {
+  >&2 printf '%bfatal:%b %s/%s: %s\n' \
+             "$red" \
+             "$reset_color" \
+             "$PWD" \
+             "$0" \
+             "$1"
+
+  exit 1
+}
+
+verifiy_git_repo()
+{
+  if ! git rev-parse --git-dir > /dev/null 2>&1; then
+    error 'Cannot determine git repository directory.'
+  fi
+}
+
+get_teamcity_config()
+{
+  declare -gA teamcity=()
+  teamcity[baseurl]='TeamCity Server base URL'
+  teamcity[user]='User to authenticate the web request'
+  teamcity[password]='Password to authenticate the web request'
+  teamcity[buildids]='Space-separated list of TeamCity build configuration IDs to trigger'
+
+  for var in baseurl user password buildids; do
+    info="${teamcity[$var]}"
+
+    if ! teamcity[$var]="$(git config --get hooks.teamcity.$var)"; then
+      message="$(printf 'hooks.teamcity.%s is unset. Please configure it with:\n\ngit -C '\''%s'\'' config hooks.teamcity.%s '\''%s'\''' \
+                        "$var" \
+                        "$PWD" \
+                        "$var" \
+                        "$info")"
+      error "$message"
+    fi
+  done
+}
+
+trigger_build()
+{
+  local newrev refname build_id branch_name logical_branch_name post_data
+
+  newrev="$(git rev-parse "$1")"
+  refname="$2"
+
+  if [[ "$newrev" == "$(printf '0%.0s' {1..40})" ]]; then
+    printf 'Skipped triggering build for %b%s%b because is has been deleted (%b%s%b).\n' \
+           "$cyan" \
+           "$refname" \
+           "$reset_color" \
+           "$red" \
+           "${newrev:0:7}" \
+           "$reset_color"
+    return
+  fi
+
+  for build_id in ${teamcity[buildids]}; do
+    printf 'Triggering build ID %b%s%b for %b%s%b@%b%s%b\n' \
+           "$green" \
+           "$build_id" \
+           "$reset_color" \
+           "$cyan" \
+           "$refname" \
+           "$reset_color" \
+           "$red" \
+           "${newrev:0:7}" \
+           "$reset_color"
+
+    if [[ "$refname" = "refs/heads/develop" ]]; then
+      # Default branch.
+      branch_name=
+      logical_branch_name="$refname"
+    else
+      # All other branches need a logical branch name as per TeamCity
+      # conventions, e.g. a TeamCity "Additional branch specification" of
+      # refs/heads/(feature/*) needs the part in parenthesis.
+      logical_branch_name="${refname/refs\/heads\/feature\//}"
+      printf 'Translated %b%s%b to TeamCity logical branch name %b%s%b.\n' \
+             "$cyan" \
+             "$refname" \
+             "$reset_color" \
+             "$cyan" \
+             "$logical_branch_name" \
+             "$reset_color"
+
+      branch_name="branchName=\"$logical_branch_name\""
+    fi
+
+    post_data="$(printf \
+                '<build %s>
+                  <buildType id="%s" />
+                  <comment>
+                    <text>Triggered by %s hook for %s@%s (TeamCity logical branch name %s)</text>
+                  </comment>
+                </build>' \
+                "$branch_name" \
+                "$build_id" \
+                "${0##*/}" \
+                "$refname" \
+                "${newrev:0:7}" \
+                "$logical_branch_name")"
+
+    if ! curl --silent \
+              --fail \
+              --user "${teamcity[user]}:${teamcity[password]}" \
+              --header 'Content-Type: application/xml' \
+              --request POST \
+              --data-binary "$post_data" \
+              "${teamcity[baseurl]}/app/rest/buildQueue" > /dev/null; then
+      error 'Triggering build failed, cURL exit status not zero.'
+    fi
+  done
+}
+
+setup_colors
+verifiy_git_repo
+get_teamcity_config
+
+while read -r _oldrev newrev refname; do
+  trigger_build "$newrev" "$refname"
+done
