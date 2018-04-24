@@ -25,6 +25,15 @@
 set -euo pipefail
 
 setup_colors() {
+  # No colors during tests, it makes asserting output easier.
+  if [[ -n "$BATS_CWD" ]]; then
+    red=
+    green=
+    cyan=
+    reset_color=
+    return
+  fi
+
   red='\e[1;31m'
   green='\e[1;32m'
   cyan='\e[1;34m'
@@ -89,6 +98,26 @@ trigger_build()
     return
   fi
 
+  if [[ "$refname" = "refs/heads/develop" ]]; then
+    # Default branch.
+    branch_name=
+    logical_branch_name="$refname"
+  else
+    # All other branches need a logical branch name as per TeamCity
+    # conventions, e.g. a TeamCity "Additional branch specification" of
+    # refs/heads/(feature/*) needs the part in parenthesis.
+    logical_branch_name="${refname/refs\/heads\/feature\//}"
+    printf 'Translated %b%s%b to TeamCity logical branch name %b%s%b.\n' \
+            "$cyan" \
+            "$refname" \
+            "$reset_color" \
+            "$cyan" \
+            "$logical_branch_name" \
+            "$reset_color"
+
+    branch_name="branchName=\"$logical_branch_name\""
+  fi
+
   for build_id in ${teamcity[buildids]}; do
     printf 'Triggering build ID %b%s%b for %b%s%b@%b%s%b\n' \
            "$green" \
@@ -100,26 +129,6 @@ trigger_build()
            "$red" \
            "${newrev:0:7}" \
            "$reset_color"
-
-    if [[ "$refname" = "refs/heads/develop" ]]; then
-      # Default branch.
-      branch_name=
-      logical_branch_name="$refname"
-    else
-      # All other branches need a logical branch name as per TeamCity
-      # conventions, e.g. a TeamCity "Additional branch specification" of
-      # refs/heads/(feature/*) needs the part in parenthesis.
-      logical_branch_name="${refname/refs\/heads\/feature\//}"
-      printf 'Translated %b%s%b to TeamCity logical branch name %b%s%b.\n' \
-             "$cyan" \
-             "$refname" \
-             "$reset_color" \
-             "$cyan" \
-             "$logical_branch_name" \
-             "$reset_color"
-
-      branch_name="branchName=\"$logical_branch_name\""
-    fi
 
     post_data="$(printf \
                 '<build %s>
