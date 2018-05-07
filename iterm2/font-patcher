@@ -10,7 +10,11 @@ dir="$(mktemp --directory)"
 
 pushd "$dir" > /dev/null
 
-git clone --depth 1 "$ligaturizer" "$dir"
+git clone "$ligaturizer" "$dir"
+
+# https://github.com/ToxicFrog/Ligaturizer/issues/29
+git reset --hard 8533408f7a868c5cf171bd296a125e8c43224e60~
+
 rm -rf input-fonts/* output-fonts/*
 
 url="$(curl --fail \
