@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 ligaturizer=https://github.com/rojiani/Ligaturizer.git
 meslo_repo=andreberg/Meslo-Font
