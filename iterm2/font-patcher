@@ -11,7 +11,7 @@ dir="$(mktemp --directory)"
 pushd "$dir" > /dev/null
 
 git clone --depth 1 "$ligaturizer" "$dir"
-rm -f input-fonts/* output-fonts/*
+rm -rf input-fonts/* output-fonts/*
 
 url="$(curl --fail \
            --silent \
