@@ -40,17 +40,39 @@ git-training::config() {
 
   case "$1" in
     --reset)
-      git -C "$(dirname "$git_config")" checkout -- "$(basename "$git_config")"
+      git -C "$(dirname "$git_config")" \
+          checkout \
+          -- \
+          "$(basename "$git_config")"
       return $?
       ;;
 
     --stash)
-      git -C "$(dirname "$git_config")" stash -- "$(basename "$git_config")"
+      git -C "$(dirname "$git_config")" \
+          stash \
+          push \
+          --message 'git-training config' \
+          -- \
+          "$(basename "$git_config")"
       return $?
       ;;
 
     --pop)
-      git -C "$(dirname "$git_config")" stash pop
+      entry="$(git -C "$(dirname "$git_config")" \
+                   stash \
+                   list \
+                   --grep='git-training config' \
+                   --max-count=1 \
+                   --pretty=%gD)"
+      if [[ -z "$entry" ]]; then
+        printf 'No stash entry for git-training config\n'
+        return 1
+      fi
+
+      git -C "$(dirname "$git_config")" \
+          stash \
+          pop \
+          "$entry"
       return $?
       ;;
 
