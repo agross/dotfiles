@@ -35,6 +35,38 @@ git-training::usage() {
   return 1
 }
 
+git-training::config::find-stash() {
+  local entry
+
+  if entry="$(git -C "$(dirname "$git_config")" \
+                  stash \
+                  list \
+                  --grep='git-training config' \
+                  --max-count=1 \
+                  --pretty=%gD)"; then
+    if [[ -z "$entry" ]]; then
+      return 2
+    fi
+
+    printf '%s' "$entry"
+    return
+  fi
+
+  return 1
+}
+
+git-training::config::pop() {
+  if ! entry="$(git-training::config::find-stash)"; then
+    printf 'No stash entry for git-training config\n'
+    return 1
+  fi
+
+  git -C "$(dirname "$git_config")" \
+      stash \
+      pop \
+      "$entry"
+}
+
 git-training::config() {
   local git_config="$(readlink --canonicalize-existing "$HOME/.gitconfig")"
 
@@ -44,7 +76,6 @@ git-training::config() {
           checkout \
           -- \
           "$(basename "$git_config")"
-      return $?
       ;;
 
     --stash)
@@ -54,26 +85,10 @@ git-training::config() {
           --message 'git-training config' \
           -- \
           "$(basename "$git_config")"
-      return $?
       ;;
 
     --pop)
-      entry="$(git -C "$(dirname "$git_config")" \
-                   stash \
-                   list \
-                   --grep='git-training config' \
-                   --max-count=1 \
-                   --pretty=%gD)"
-      if [[ -z "$entry" ]]; then
-        printf 'No stash entry for git-training config\n'
-        return 1
-      fi
-
-      git -C "$(dirname "$git_config")" \
-          stash \
-          pop \
-          "$entry"
-      return $?
+      git-training::config::pop
       ;;
 
     *)
@@ -85,6 +100,14 @@ git-training::config() {
              HEAD \
              -- \
              "$(basename "$git_config")"; then
+
+        # If there is a stash entry, apply it.
+        if entry="$(git-training::config::find-stash)"; then
+          git-training::config::pop
+          printf 'git training config enabled\n'
+          return
+        fi
+
         cp "$git_config.training" "$HOME/.gitconfig" && \
           printf 'git training config enabled\n'
       else
