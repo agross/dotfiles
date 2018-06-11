@@ -1,0 +1,16 @@
+local key value start=0 end=0
+
+for key in ${(ko)FAST_HIGHLIGHT_STYLES}; do
+  value=${FAST_HIGHLIGHT_STYLES[$key]}
+
+  PREDISPLAY+="$key -> $value "$'\n'
+
+  # 4 == Space occupied by ' -> '.
+  start=$((start + ${#key} + 4))
+  end=$((start + ${#value}))
+
+  region_highlight+=("P$start $end $value")
+
+  # Trailing newline.
+  start=$((end + 2))
+done
