@@ -115,6 +115,7 @@ zplug 'knu/z', \
       use:'z.sh', \
       defer:2
 zplug 'zdharma/fast-syntax-highlighting', \
-      defer:2
+      defer:2, \
+      hook-load:'FAST_HIGHLIGHT=()'
 
 # vim:set filetype=sh:
