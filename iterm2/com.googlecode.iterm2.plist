@@ -16,6 +16,8 @@
 	<integer>1</integer>
 	<key>AppleWindowTabbingMode</key>
 	<string>manual</string>
+	<key>AutoLogFormat</key>
+	<string>\(session.creationTimeString).\(session.name).\(iterm2.pid).log</string>
 	<key>CheckTestRelease</key>
 	<true/>
 	<key>CloseBookmarksWindowAfterOpening</key>
@@ -564,10 +566,8 @@
 		<key>CurrentItems</key>
 		<array>
 			<string>iTermTouchBarIdentifierManPage</string>
-			<string>iTermTouchBarIdentifierFunctionKeys</string>
+			<string>iTermTouchBarFunctionKeysScrollView</string>
 			<string>NSTouchBarItemIdentifierFlexibleSpace</string>
-			<string>touchbar:E844127B-4985-44B7-8BD5-6C98341050EC</string>
-			<string>touchbar:9B704B28-4B57-409F-8D84-C9294AB6B065</string>
 			<string>NSTouchBarItemIdentifierOtherItemsProxy</string>
 			<string>iTermTouchBarIdentifierAddMark</string>
 			<string>iTermTouchBarIdentifierPreviousMark</string>
@@ -588,9 +588,9 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>574 142 228 297 0 0 1440 878 </string>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>801 137 639 223 0 0 1440 878 </string>
+	<string>801 132 639 249 0 0 1440 878 </string>
 	<key>NSWindow Frame ProfilesPanel</key>
-	<string>608 373 735 382 0 0 1440 878 </string>
+	<string>349 272 735 382 0 0 1440 878 </string>
 	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
 	<string>436 528 616 174 0 0 1440 878 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
@@ -600,7 +600,7 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 142 606 469 0 0 1440 878 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>429 190 796 473 0 0 1440 878 </string>
+	<string>235 323 1018 447 0 0 1440 878 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>99 294 592 584 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_FiraCode-Regular</key>
@@ -608,7 +608,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 262 1392 616 0 0 1440 878 </string>
+	<string>48 220 1392 658 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1320,7 +1320,7 @@
 			<key>Screen</key>
 			<integer>-1</integer>
 			<key>Scrollback Lines</key>
-			<integer>1000</integer>
+			<integer>0</integer>
 			<key>Selected Text Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -5727,7 +5727,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-03-02T00:03:31Z</date>
+	<date>2018-09-04T20:55:54Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -5781,7 +5781,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.6beta3</string>
+	<string>3.2.1beta2</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>7</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
