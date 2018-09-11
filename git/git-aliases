@@ -74,9 +74,11 @@
   wdw  = log --date=relative --pretty='format:%C(yellow)%h%Creset %C(bold blue)%an%Creset %C(bold green)%cr%Creset %s'
 
   # Reviewing patches.
-  review       = log --patch --max-count=1
-  reviewwd     = log --patch --word-diff --max-count=1
-  reviewf      = log --name-only --max-count=1
+  # You can append -<number> to increase the number of commits to show.
+  sns          = show --name-status
+  sno          = show --name-only
+  review       = show
+  reviewwd     = show --word-diff
   most-changed = !git log --format=%n --name-only | grep -v '^$' | sort | uniq --count | sort --numeric-sort --reverse | head --lines=50
 
   # git cherry-pick.
