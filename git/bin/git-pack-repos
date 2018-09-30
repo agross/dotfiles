@@ -4,21 +4,26 @@
 # compress your repositories to the smallest size possible. May be useful if the
 # repositories receive a lot of forced pushes.
 
-green='\e[1;32m'
-no_color='\e[0m'
+set -euo pipefail
 
-for dir in $(find . -name *.git -type d); do
-  pushd . > /dev/null
-  printf  '\n%b%s%b\n' "$green" "$dir" "$no_color"
-  cd "$dir"
+# shellcheck disable=SC1004
+find . -name '*.git' -type d -exec bash -c '
+  green="\e[1;32m"
+  no_color="\e[0m"
 
-  before="$(git count-objects -v)"
+  dir="$1"
 
-  printf "\nCompressing objects in repository...\n"
-  git repack -Ad      # Kill in-pack garbage.
-  git prune           # Kill loose garbage.
+  printf "\nCompressing objects in repository at %b%s%b\n" \
+         "$green" \
+         "$dir" \
+         "$no_color"
 
-  after="$(git count-objects -v)"
+  before="$(git -C "$dir" count-objects -v)"
+
+  git -C "$dir" repack -Ad      # Kill in-pack garbage.
+  git -C "$dir" prune           # Kill loose garbage.
+
+  after="$(git -C "$dir" count-objects -v)"
 
   if diff --brief <(echo "$before" ) <(echo "$after") > /dev/null; then
     printf "\nNo changes were made:\n%s\n" "$before"
@@ -26,6 +31,4 @@ for dir in $(find . -name *.git -type d); do
     printf "\nRepository was compressed:\n"
     diff --unified=42 --color=always <(echo "$before" ) <(echo "$after") | tail -n +4
   fi
-
-  popd > /dev/null
-done
+' -- {} \;

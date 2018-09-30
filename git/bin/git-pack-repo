@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 before="$(git count-objects -v)"
 
-printf "\nCompressing objects in repository...\n"
+printf '\nCompressing objects in repository...\n'
 git repack -Ad      # Kill in-pack garbage.
 git prune           # Kill loose garbage.
 
 after="$(git count-objects -v)"
 
 if diff --brief <(echo "$before" ) <(echo "$after") > /dev/null; then
-  printf "\nNo changes were made:\n%s\n" "$before"
+  printf '\nNo changes were made:\n%s\n' "$before"
 else
-  printf "\nRepository was compressed:\n"
+  printf '\nRepository was compressed:\n'
   diff --unified=42 --color=always <(echo "$before" ) <(echo "$after") | tail -n +4
 fi
