@@ -1,44 +1,43 @@
 #!/usr/bin/env zsh
 
-function dnd::enabled() {
-  plutil \
-    -convert xml1 \
-    -o - \
-    ~/Library/Preferences/ByHost/com.apple.notificationcenterui.*.plist | \
-    grep --quiet doNotDisturbDate
+autoload -U colors && colors
+
+defaults=(
+  defaults
+  -currentHost
+  write
+  ~/Library/Preferences/ByHost/com.apple.notificationcenterui
+)
+
+function dnd::on() {
+  local enabledAt=$(date -u '+%Y-%m-%d %H:%M:%S +0000')
+
+  $defaults doNotDisturb -boolean true
+  $defaults doNotDisturbDate -date "$enabledAt"
+
+  killall NotificationCenter
+
+  printf 'DND turned %bon%b\n' "$fg[green]" "$reset_color"
 }
 
-function dnd::toggle() {
-  # http://apple.stackexchange.com/a/244130
-  osascript <<EOD
-    tell application "System Events" to tell process "SystemUIServer"
-      try
-        key down option
-        click menu bar item 1 of menu bar 1
-        key up option
-      on error errStr number errorNumber
-        key up option
-        error errStr number errorNumber
-      end try
-    end tell
-EOD
+function dnd::off() {
+  $defaults doNotDisturb -boolean false
+  defaults -currentHost \
+           delete \
+           ~/Library/Preferences/ByHost/com.apple.notificationcenterui \
+           doNotDisturbDate
 
-  if [[ $? != 0 ]]; then
-    >&2 printf "You need to grant %s accessibility access in Preferences\n" "$TERM_PROGRAM"
-    open /System/Library/PreferencePanes/Security.prefPane/
-    exit 1
-  fi
+  killall NotificationCenter
+
+  printf 'DND turned %boff%b\n' "$fg[red]" "$reset_color"
 }
-
-function dnd::on()  dnd::enabled || dnd::toggle && echo DND turned on
-function dnd::off() dnd::enabled && dnd::toggle && echo DND turned off || \
-                      echo DND does not seem to be enabled
 
 (($+commands[m])) || {
   >&2 printf 'Need m executable from https://github.com/rgcr/m-cli\n'
   exit 1
 }
 
+# Pass any argument to turn off DND.
 if [[ $# -gt 0 ]]; then
   killall caffeinate 2> /dev/null
   m volume unmute
