@@ -1,5 +1,5 @@
 function {
-  local rapid='nocorrect rapid'
+  local rapid='rapid'
   local custom="$rapid custom"
 
   # Aliases for file operations.

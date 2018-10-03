@@ -1,8 +1,8 @@
 (($+commands[ruby])) || return 0
 
 # Aliases with disabled zsh correction.
-alias bun='nocorrect bundle'
-alias bex='nocorrect bundle exec'
+alias bun='bundle'
+alias bex='bundle exec'
 
 [[ "$(platform)" == 'windows' ]] || return 0
 
