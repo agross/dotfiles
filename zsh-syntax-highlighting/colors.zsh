@@ -17,6 +17,7 @@ FAST_HIGHLIGHT_STYLES[for-loop-variable]='fg=green,bold'
 FAST_HIGHLIGHT_STYLES[globbing]='fg=cyan,bold'
 FAST_HIGHLIGHT_STYLES[mathnum]='fg=green,bold'
 FAST_HIGHLIGHT_STYLES[path]=underline
+FAST_HIGHLIGHT_STYLES[path-to-dir]=underline
 FAST_HIGHLIGHT_STYLES[precommand]='fg=green,bold'
 FAST_HIGHLIGHT_STYLES[redirection]='fg=magenta,bold'
 FAST_HIGHLIGHT_STYLES[reserved-word]='fg=magenta,bold'
