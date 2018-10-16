@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -uo pipefail
+
 # This is just a draft and likely not a complete solution, especially if you use
 # nested submodules.
 
@@ -14,7 +16,7 @@ function safe-submodule-update::colors {
 
   local key
   for key in "${!colors[@]}"; do
-    printf "c_%s=%b " "$key" "${colors[$key]}"
+    printf 'c_%s=%b ' "$key" "${colors[$key]}"
   done
 }
 
@@ -30,12 +32,20 @@ function safe-submodule-update::cleanup {
 }
 
 function safe-submodule-update::check {
-  env $@ git submodule foreach --recursive '
-    local head="$(git log --color -1 --oneline)"
-    local ref="$(git name-rev --name-only --no-undefined HEAD 2> /dev/null)"
+  local check results
+
+  # git submodule foreach fails as soon as we exit 1 for any check.
+  # To communicate to this script whether any check failed, we use a temporary
+  # file and delete it as soon as any check failed. After git submodule foreach
+  # we check whether the file still exists. If it's gone, we failed.
+  success="$(mktemp)"
+
+  IFS='' read -r -d '' check <<"EOF" || true
+    head="$(git log --color -1 --oneline)"
+    ref="$(git name-rev --name-only --no-undefined HEAD 2> /dev/null)"
 
     if [[ -n "$ref" ]]; then
-      printf "  %b%s%b %bHEAD%b is reachable by %b%s%b: %s\n" \
+      printf '  %b%s%b %bHEAD%b is reachable by %b%s%b: %s\n' \
         $c_green \
         ✔ \
         $c_reset \
@@ -46,7 +56,7 @@ function safe-submodule-update::check {
         $c_reset \
         "$head"
     else
-      printf "  %b%s%b %bHEAD%b is not reachable by any ref: %s\n" \
+      printf '  %b%s%b %bHEAD%b is not reachable by any ref: %s\n' \
         $c_red \
         ✖ \
         $c_reset \
@@ -54,10 +64,17 @@ function safe-submodule-update::check {
         $c_reset \
         "$head"
 
-      [[ "$dry_run" == 'true' || "$force_update" == 'true' ]] && return 0
-      return 1
+      if [[ -n "$dry_run" || -n "$force_update" ]]; then
+        :
+      else
+        rm -f "$success"
+      fi
     fi
-    '
+EOF
+
+  env "$@" "success=$success" git submodule foreach --recursive "$check"
+
+  [[ -f "$success" ]]
 }
 
 function safe-submodule-update::update {
@@ -65,38 +82,38 @@ function safe-submodule-update::update {
   shift
 
   local arg
-  for arg in $@; do
-    local $arg
+  for arg in "$@"; do
+    local "$arg"
   done
 
-  if [[ "$dry_run" == 'true' ]]; then
-    printf "%b%s%b Dry run requested, omitting submodule update\n" \
-      $c_yellow \
+  if [[ -v dry_run ]]; then
+    printf '%b%s%b Dry run requested, omitting submodule update\n' \
+      "$c_yellow" \
       ! \
-      $c_reset
+      "$c_reset"
 
     return
   fi
 
   if [[ "$check_success" == 0 ]]; then
-    if [[ "$force_update" == 'true' ]]; then
-      printf "%b%s%b Forced update, updating submodules\n" \
-        $c_yellow \
+    if [[ -v force_update ]]; then
+      printf '%b%s%b Forced update, updating submodules\n' \
+        "$c_yellow" \
         ! \
-        $c_reset
+        "$c_reset"
     else
-      printf "%b%s%b All checks passed, updating submodules\n" \
-        $c_green \
+      printf '%b%s%b All checks passed, updating submodules\n' \
+        "$c_green" \
         ✔ \
-        $c_reset
+        "$c_reset"
     fi
 
     git submodule update
   else
-    printf "%b%s%b Some checks failed, refusing to update submodules\n" \
-      $c_red \
+    printf '%b%s%b Some checks failed, refusing to update submodules\n' \
+      "$c_red" \
       ✖ \
-      $c_reset
+      "$c_reset"
 
     return 1
   fi
@@ -115,14 +132,14 @@ function safe-submodule-update::run {
   while getopts ':hnf' opt; do
     case "$opt" in
       h)
-        printf "%s [-n] [-f] [-h]\n\
-\n\
-Checks whether submodule HEAD commits are reachable by branches or tags before running 'git submodule update'\n\
-\n\
-Options:\n\
-  -n\tDry run, check but do not update submodules\n\
-  -f\tForce submodule update regardless of submodule HEAD reachability\n\
-  -h\tShow help\n" \
+        printf '%s [-n] [-f] [-h]
+
+Checks whether submodule HEAD commits are reachable by branches or tags before running "git submodule update"
+
+Options:
+  -n\tDry run, check but do not update submodules
+  -f\tForce submodule update regardless of submodule HEAD reachability
+  -h\tShow help\n' \
           "$function_name"
         return
         ;;
@@ -136,7 +153,7 @@ Options:\n\
         ;;
 
       '?')
-        printf "Invalid option: -$OPTARG\n"
+        printf 'Invalid option: -%s\n' "$OPTARG"
         return 1
         ;;
     esac
@@ -146,4 +163,4 @@ Options:\n\
   safe-submodule-update::update $? "${args[@]}"
 }
 
-safe-submodule-update::run ${0##*/} "$@"
+safe-submodule-update::run "${0##*/}" "$@"
