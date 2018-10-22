@@ -9,7 +9,20 @@ case "$OSTYPE" in
 
   darwin*)
     install_dir="$(dirname "$(realpath "$(which git)")")"
-    prefix="$install_dir/../../share/doc/git-doc/RelNotes"
+    # $install_dir is
+    # /usr/local/Cellar/git/2.19.0_1/libexec/git-core for git 2.19.0_1
+    # and
+    # /usr/local/Cellar/git/2.19.1/bin for newer versions (where symlinks are
+    # installed.)
+    # Remove anything after the first "/git/<version>/" path component.
+    if [[ "$install_dir" =~ (/git/[[:digit:]._]*/) ]]; then
+      version="${BASH_REMATCH[1]}"
+    else
+      >&2 printf 'Cannot determine git version. Do you use Apple git from the macOS Developer Command Line Tools?\n'
+      exit 1
+    fi
+    install_dir="${install_dir/\/git\/*/$version}"
+    prefix="$(find "$install_dir/share/doc" -type d -name RelNotes | head -n1)"
     ;;
 
   linux*)
@@ -17,10 +30,15 @@ case "$OSTYPE" in
     ;;
 
   *)
-    printf 'Unsupported $OSTYPE: %s\n' "$OSTYPE"
+    >&2 printf 'Unsupported $OSTYPE: %s\n' "$OSTYPE"
     exit 1
     ;;
 esac
+
+if [[ ! -d "$prefix" ]]; then
+  >&2 printf 'Doc directory not found: %s\n' "$prefix"
+  exit 1
+fi
 
 file="$(find "$prefix" -type f -iname '*.txt' | \
          sort --reverse --version-sort | \
