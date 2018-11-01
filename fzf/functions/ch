@@ -15,3 +15,5 @@ sqlite3 -separator "$sep" \
   fzf --ansi --multi |
   sed 's#.*\(https*://\)#\1#' |
   xargs --no-run-if-empty open
+
+# vim: set ft=zsh ts=2 sw=2 et:

@@ -20,4 +20,4 @@ local pattern="$directory/*$exclude(NDu[$USER]^t)"
 # http://unix.stackexchange.com/a/80575/72946
 rm --recursive --force -- $~pattern
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

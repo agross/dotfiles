@@ -61,4 +61,4 @@ function _prompt::agross::git_status() {
   zgit_has-assume-unchanged && printf '%b!%b' "$(tput blink)" "$(tput sgr0)"
 }
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

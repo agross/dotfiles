@@ -19,3 +19,5 @@
 [mergetool "winmerge"]
 	cmd = ~/.dotfiles/git/tools/winmerge merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
+
+# vim: set ft=gitconfig ts=2 sw=2 noet:

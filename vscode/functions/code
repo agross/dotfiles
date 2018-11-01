@@ -41,3 +41,5 @@ if [[ -z "$custom_binary" ]]; then
 else
   $custom_binary $args
 fi
+
+# vim: set ft=zsh ts=2 sw=2 et:

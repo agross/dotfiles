@@ -50,3 +50,5 @@ find "$platform_specific" "$topic/platform-specific/_" \
   symlink "$config" "$target"
   processed+=("$target")
 done
+
+# vim: set ft=sh ts=2 sw=2 et:

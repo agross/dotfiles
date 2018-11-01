@@ -6,3 +6,5 @@ fi
 
 symlink "$topic/vim"
 symlink "$topic/vimrc"
+
+# vim: set ft=sh ts=2 sw=2 et:

@@ -7,4 +7,4 @@ for profile in $DOTFILES/**/zprofile.zsh(N); do
   source $profile
 done
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

@@ -48,3 +48,5 @@ def copy_history
   puts content
   copy content
 end
+
+# vim: set ft=ruby ts=2 sw=2 et:

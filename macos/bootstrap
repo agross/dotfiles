@@ -8,3 +8,5 @@ brew cleanup
 
 brew link --force curl
 brew autoupdate --start --upgrade --cleanup --enable-notification || true
+
+# vim: set ft=sh ts=2 sw=2 et:

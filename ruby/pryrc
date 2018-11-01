@@ -7,3 +7,5 @@ if defined?(PryByebug)
   Pry.commands.alias_command 'n', 'next'
   Pry.commands.alias_command 'f', 'finish'
 end
+
+# vim: set ft=ruby ts=2 sw=2 et:

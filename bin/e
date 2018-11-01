@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 #
 # Source: https://github.com/holman/dotfiles/blob/master/bin/e
 # Why I can't use it with zplug: https://github.com/zplug/zplug/issues/321

@@ -21,4 +21,4 @@ autoload -U colors && colors
 # https://github.com/zplug/zplug/issues/332
 # verbose Loaded $fg[green]zshenv$reset_color
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

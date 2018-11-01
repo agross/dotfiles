@@ -43,4 +43,4 @@ for char in ${(s::)word}; do
   echo -e $fg_bold[green]$char$reset_color  $fg_bold[blue]$dictionary[$char:l]$reset_color
 done
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

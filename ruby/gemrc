@@ -5,3 +5,5 @@
 :update_sources: true
 :bulk_threshold: 1000
 gem: --no-ri --no-rdoc
+
+# vim: set ft=yaml ts=2 sw=2 et:

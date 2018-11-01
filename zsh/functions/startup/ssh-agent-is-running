@@ -4,4 +4,4 @@ fi
 
 ps x | grep ${SSH_AGENT_PID} | grep ssh-agent > /dev/null
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

@@ -73,4 +73,4 @@ while read -r host cmd; do
   dotfiles::update "$host" "$cmd"
 done < "$hostsfile"
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

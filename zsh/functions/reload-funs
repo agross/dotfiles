@@ -13,3 +13,5 @@ for arg in $*; do
     reload-fun $fun
   done
 done
+
+# vim: set ft=zsh ts=2 sw=2 et:

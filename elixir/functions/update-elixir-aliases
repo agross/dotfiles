@@ -26,4 +26,4 @@ for executable in $(dirname "$commands[elixir]")/^?*.*(N.+cyg_mixed); do
   alias "$alias"="$command"
 done
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

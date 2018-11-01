@@ -19,4 +19,4 @@ done
 verbose Loading $fg[cyan]zplug$reset_color from $fg[green]$zplug_init$reset_color
 source "$zplug_init"
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

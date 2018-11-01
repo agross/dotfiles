@@ -6,3 +6,5 @@ fi
 [[ "$OSTYPE" == 'windows' ]] && return
 
 symlink "$topic/tmux.conf"
+
+# vim: set ft=sh ts=2 sw=2 et:

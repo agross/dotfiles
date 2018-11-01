@@ -9,4 +9,4 @@ if read -q; then
   zplug install
 fi
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

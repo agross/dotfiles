@@ -5,3 +5,5 @@ for fun in $this_directory/zplug-fix-*(:t); do
   verbose Running $fg[cyan]zplug fix$reset_color $fg[green]$fun$reset_color
   $fun
 done
+
+# vim: set ft=zsh ts=2 sw=2 et:

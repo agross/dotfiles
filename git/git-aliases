@@ -1,92 +1,94 @@
 [alias]
-  s = status
+	s = status
 
-  # Set executable bit on file systems that do not support it.
-  set-x   = update-index --chmod=+x
-  unset-x = update-index --chmod=-x
+	# Set executable bit on file systems that do not support it.
+	set-x   = update-index --chmod=+x
+	unset-x = update-index --chmod=-x
 
-  # Temporarily ignoring files.
-  ignore     = update-index --assume-unchanged
-  unignore   = update-index --no-assume-unchanged
-  ignored    = !git ls-files -v | grep ^h | cut --characters=3-
+	# Temporarily ignoring files.
+	ignore     = update-index --assume-unchanged
+	unignore   = update-index --no-assume-unchanged
+	ignored    = !git ls-files -v | grep ^h | cut --characters=3-
 
-  gitignored = ls-files --others --directory --ignored --exclude-standard
+	gitignored = ls-files --others --directory --ignored --exclude-standard
 
-  # git commit.
-  ci   = commit
-  cim  = commit --message
-  cima = commit --all --message
+	# git commit.
+	ci   = commit
+	cim  = commit --message
+	cima = commit --all --message
 
-  # Correcting commits.
-  amend  = commit --amend --no-edit
-  reword = commit --amend --message
-  aua    = commit --amend --no-edit --all
-  aaa    = !git add --all && git commit --amend --no-edit
-  fixup  = commit --fixup
-  undo   = reset HEAD~1
-  rh     = reset --hard
+	# Correcting commits.
+	amend  = commit --amend --no-edit
+	reword = commit --amend --message
+	aua    = commit --amend --no-edit --all
+	aaa    = !git add --all && git commit --amend --no-edit
+	fixup  = commit --fixup
+	undo   = reset HEAD~1
+	rh     = reset --hard
 
-  # Index-related commands.
-  a       = add
-  au      = add --update
-  aa      = add --all
-  ap      = add --patch
-  cop     = checkout --patch
-  rp      = reset HEAD --patch
-  unstage = reset HEAD
+	# Index-related commands.
+	a       = add
+	au      = add --update
+	aa      = add --all
+	ap      = add --patch
+	cop     = checkout --patch
+	rp      = reset HEAD --patch
+	unstage = reset HEAD
 
-  # git branch and remote.
-  co  = checkout
-  cob = "! f() { branch=\"${1?Need branch name}\"; remote=\"${2-origin}\"; if git rev-parse \"$branch\" > /dev/null 2>&1; then git checkout \"$branch\"; else git checkout -b \"$branch\" \"$remote/$branch\"; fi }; f"
-  b   = branch
-  brs = branch --all --verbose
+	# git branch and remote.
+	co  = checkout
+	cob = "! f() { branch=\"${1?Need branch name}\"; remote=\"${2-origin}\"; if git rev-parse \"$branch\" > /dev/null 2>&1; then git checkout \"$branch\"; else git checkout -b \"$branch\" \"$remote/$branch\"; fi }; f"
+	b   = branch
+	brs = branch --all --verbose
 
-  # git remote.
-  rv = remote --verbose
-  pf = push --force-with-lease
+	# git remote.
+	rv = remote --verbose
+	pf = push --force-with-lease
 
-  # git rebase.
-  r  = rebase --interactive
-  rc = rebase --continue
-  ra = rebase --abort
-  rs = rebase --skip
+	# git rebase.
+	r  = rebase --interactive
+	rc = rebase --continue
+	ra = rebase --abort
+	rs = rebase --skip
 
-  # git diff.
-  d       = diff
-  wd      = diff --word-diff
-  dt      = difftool
+	# git diff.
+	d       = diff
+	wd      = diff --word-diff
+	dt      = difftool
 
-  dc      = diff --staged
-  wdc     = diff --staged --word-diff
-  preview = diff --staged
+	dc      = diff --staged
+	wdc     = diff --staged --word-diff
+	preview = diff --staged
 
-  # Handling merges.
-  mt        = mergetool
-  unresolve = checkout --conflict=merge
+	# Handling merges.
+	mt        = mergetool
+	unresolve = checkout --conflict=merge
 
-  # git log.
-  ll   = log
-  l    = log --oneline --max-count=15
-  ld   = log --oneline --max-count=15 --decorate
-  lp   = log --patch
-  gl   = log --graph --oneline --decorate --branches --exclude=refs/stash --all
-  # Mnemomic: who did what?
-  wdw  = log --date=relative --pretty='format:%C(yellow)%h%Creset %C(bold blue)%an%Creset %C(bold green)%cr%Creset %s'
+	# git log.
+	ll   = log
+	l    = log --oneline --max-count=15
+	ld   = log --oneline --max-count=15 --decorate
+	lp   = log --patch
+	gl   = log --graph --oneline --decorate --branches --exclude=refs/stash --all
+	# Mnemomic: who did what?
+	wdw  = log --date=relative --pretty='format:%C(yellow)%h%Creset %C(bold blue)%an%Creset %C(bold green)%cr%Creset %s'
 
-  # Reviewing patches.
-  # You can append -<number> to increase the number of commits to show.
-  sns          = show --name-status
-  sno          = show --name-only
-  review       = show
-  reviewwd     = show --word-diff
-  most-changed = !git log --format=%n --name-only | grep -v '^$' | sort | uniq --count | sort --numeric-sort --reverse | head --lines=50
+	# Reviewing patches.
+	# You can append -<number> to increase the number of commits to show.
+	sns          = show --name-status
+	sno          = show --name-only
+	review       = show
+	reviewwd     = show --word-diff
+	most-changed = !git log --format=%n --name-only | grep -v '^$' | sort | uniq --count | sort --numeric-sort --reverse | head --lines=50
 
-  # git cherry-pick.
-  pick = cherry-pick
+	# git cherry-pick.
+	pick = cherry-pick
 
-  # git clean.
-  cleanf = clean -xdf
+	# git clean.
+	cleanf = clean -xdf
 
-  # Disable pager.
-  np = !git --no-pager
-  dp = !git -c pager.show='less -FRX' -c pager.log='less -FRX' -c pager.diff='less -FRX'
+	# Disable pager.
+	np = !git --no-pager
+	dp = !git -c pager.show='less -FRX' -c pager.log='less -FRX' -c pager.diff='less -FRX'
+
+# vim: set ft=gitconfig ts=2 sw=2 noet:

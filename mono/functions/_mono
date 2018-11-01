@@ -41,4 +41,4 @@ case "$state" in
   ;;
 esac
 
-# vim: ft=zsh sw=2 ts=2 et
+# vim: set ft=zsh ts=2 sw=2 et:

@@ -13,4 +13,4 @@ if [[ $? -ne 0 ]]; then
   return 2
 fi
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

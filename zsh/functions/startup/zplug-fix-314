@@ -16,3 +16,5 @@ for p in $ZPLUG_HOME $ZPLUG_REPOS/zplug/zplug; do
 
   popd > /dev/null
 done
+
+# vim: set ft=zsh ts=2 sw=2 et:

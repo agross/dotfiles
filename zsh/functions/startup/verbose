@@ -6,4 +6,4 @@ if [[ -n $ZSH_VERBOSE || -n $FORCE ]]; then
   printf '\n'
 fi
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

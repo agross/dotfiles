@@ -14,3 +14,5 @@ for key in ${(ko)FAST_HIGHLIGHT_STYLES}; do
   # Trailing newline.
   start=$((end + 2))
 done
+
+# vim: set ft=zsh ts=2 sw=2 et:

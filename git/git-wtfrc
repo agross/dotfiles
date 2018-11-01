@@ -7,3 +7,5 @@ integration-branches:
 - heads/edge
 max_commits: 5
 ignore: []
+
+# vim: set ft=yaml ts=2 sw=2 et:

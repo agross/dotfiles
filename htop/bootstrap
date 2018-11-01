@@ -7,3 +7,5 @@ if [[ "$OSTYPE" == 'mac' ]]; then
 fi
 
 symlink "$topic/htoprc"
+
+# vim: set ft=sh ts=2 sw=2 et:

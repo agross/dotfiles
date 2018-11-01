@@ -27,4 +27,4 @@ esac
 BUFFER="$LBUFFER$clipboard$RBUFFER"
 CURSOR="$(($CURSOR + ${#clipboard}))"
 
-# vim:set filetype=sh:
+# vim: set ft=zsh ts=2 sw=2 et:

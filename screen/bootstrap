@@ -5,3 +5,5 @@ fi
 [[ "$OSTYPE" == 'windows' ]] && return
 
 symlink "$topic/screenrc"
+
+# vim: set ft=sh ts=2 sw=2 et:

@@ -12,3 +12,5 @@
 	cmd = ~/.dotfiles/git/tools/p4 diff \"$LOCAL\" \"$REMOTE\"
 [difftool "winmerge"]
 	cmd = ~/.dotfiles/git/tools/winmerge diff \"$LOCAL\" \"$REMOTE\"
+
+# vim: set ft=gitconfig ts=2 sw=2 noet:

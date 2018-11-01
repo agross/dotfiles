@@ -17,3 +17,5 @@ fi
 symlink "$topic/zprofile"
 symlink "$topic/zshenv"
 symlink "$topic/zshrc"
+
+# vim: set ft=sh ts=2 sw=2 et:

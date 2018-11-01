@@ -7,3 +7,5 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   formula rbenv
   formula terminal-notifier
 fi
+
+# vim: set ft=sh ts=2 sw=2 et:

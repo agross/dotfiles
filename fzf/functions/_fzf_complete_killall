@@ -10,3 +10,5 @@ FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview='echo {} | cut -d \" \"  -f1 | xar
   _fzf_complete '--cycle --multi --with-nth=2..' "$@" < <(
   command ps -u "$USER" -o pid=,comm= | sed 's/^[[:blank:]]*//;s/[[:blank:]]*$//'
 )
+
+# vim: set ft=zsh ts=2 sw=2 et:

@@ -28,3 +28,5 @@ for id in id_rsa capistrano letsencrypt teamcity; do
     chmod 600 "$private_key"
   fi
 done
+
+# vim: set ft=sh ts=2 sw=2 et:
