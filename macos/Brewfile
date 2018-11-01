@@ -18,7 +18,6 @@ brew 'gnutls'
 brew 'gpatch'
 brew 'grep', args: %w(with-default-names)
 brew 'gzip'
-brew 'less'
 brew 'make'
 brew 'rsync'
 brew 'tree'
