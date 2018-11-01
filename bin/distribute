@@ -1,0 +1,45 @@
+#!/usr/bin/env zsh
+
+# Distribute files into subdirectories of a target directory. The target
+# directory will be created if it does not exist.
+#
+# Subdirectory names are extracted from file names. The prefix length is
+# defined by PREFIX_LENGTH.
+#
+# Default parameters are read from ./.distribute in case that file exists. In it
+# you may specify TARGET_DIRECTORY, PREFIX_LENGTH and GLOB. This file also will not
+# be distributed, even if GLOB matches it.
+
+set -eu
+setopt PIPE_FAIL
+
+if [[ -f .distribute ]]; then
+  source .distribute
+fi
+
+[[ ! -v TARGET_DIRECTORY ]] && TARGET_DIRECTORY="${1?Need target directory}" && shift
+[[ ! -v PREFIX_LENGTH ]] && PREFIX_LENGTH="${1?Need prefix length}" && shift
+# Recursively find plain files and omit "no matches" error.
+[[ ! -v PREFIX_LENGTH ]] && GLOB=**/*(.N)
+
+trap times EXIT
+
+# Exclude .distribute from being matched.
+unsetopt GLOB_DOTS
+setopt EXTENDED_GLOB
+for f in $~GLOB; do
+  # Extract filename.
+  base="${f##*/}"
+  # Remove extension.
+  base="${base%.*}"
+  # Remove whitespace.
+  base="${base// /}"
+
+  # Extract lowercase prefix.
+  prefix="${(L)base:0:$PREFIX_LENGTH}"
+
+  target="$TARGET_DIRECTORY/$prefix"
+  mkdir -p -- "$target"
+
+  mv --no-clobber --verbose -- "$f" "$target"
+done
