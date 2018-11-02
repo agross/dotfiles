@@ -20,26 +20,47 @@ fi
 [[ ! -v TARGET_DIRECTORY ]] && TARGET_DIRECTORY="${1?Need target directory}" && shift
 [[ ! -v PREFIX_LENGTH ]] && PREFIX_LENGTH="${1?Need prefix length}" && shift
 # Recursively find plain files and omit "no matches" error.
-[[ ! -v PREFIX_LENGTH ]] && GLOB=**/*(.N)
+[[ ! -v GLOB ]] && GLOB=**/*(.N)
 
 trap times EXIT
 
-# Exclude .distribute from being matched.
-unsetopt GLOB_DOTS
 setopt EXTENDED_GLOB
-for f in $~GLOB; do
+for file in $~GLOB; do
   # Extract filename.
-  base="${f##*/}"
+  name=${file##*/}
+
+  # Exclude .distribute from being processed.
+  [[ $name == '.distribute' ]] && continue
+
   # Remove extension.
-  base="${base%.*}"
+  basename=${name%.*}
   # Remove whitespace.
-  base="${base// /}"
+  basename=${basename// /}
 
   # Extract lowercase prefix.
-  prefix="${(L)base:0:$PREFIX_LENGTH}"
+  prefix=${(L)basename:0:$PREFIX_LENGTH}
 
-  target="$TARGET_DIRECTORY/$prefix"
-  mkdir -p -- "$target"
+  target=$TARGET_DIRECTORY/$prefix/$name
+  mkdir --parents -- ${target%/*}
 
-  mv --no-clobber --verbose -- "$f" "$target"
+  if [[ -f $target ]]; then
+    printf 'Computing checksums: %s <-> %s\n' $file $target
+    new=$(md5sum -- $file | cut --delimiter ' ' --fields 1)
+    existing=$(md5sum -- $target | cut --delimiter ' ' --fields 1)
+
+    if [[ $new == $existing ]]; then
+      printf 'Same content, deleting source: %s\n' $file
+      rm -- $file
+    fi
+
+    continue
+  fi
+
+  mv --no-clobber --verbose -- $file $target
 done
+
+omitted=($~GLOB)
+if (( $#omitted != 0 )); then
+  printf '%s file(s) omitted:\n' $#omitted
+  print -l $~GLOB
+fi
