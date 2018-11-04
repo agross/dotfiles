@@ -81,7 +81,7 @@
 [pager]
 	# --no-init             - keep screen contents after quitting less (do not use alternative screen)
 	# --quit-at-eof         - quit less if EOF is reached
-	#  --quit-if-one-screen - quit immediately if output fits the screen
+	# --quit-if-one-screen  - quit immediately if output fits the screen
 	# --RAW-CONTROL-CHARS   - colorize output
 	log  = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof --quit-if-one-screen} --RAW-CONTROL-CHARS
 	show = diff-so-fancy-smart '^(commit [a-f0-9]+|(added|deleted|modified|renamed): )'
