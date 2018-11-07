@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Inspect container health.
+
+set -euo pipefail
+
+pretty=(cat)
+if hash jq 2> /dev/null; then
+  pretty=(jq)
+fi
+
+docker container \
+       inspect \
+       --format="{{json .State.Health}}" \
+       "$@" |
+       "${pretty[@]}"

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Restart systemd services with that are based on outdated docker images.
+
+set -euo pipefail
+
+docker container \
+       ls \
+       --no-trunc \
+       --format '{{.Image}}\t{{.Names}}' |
+  grep --extended-regexp '^sha256:[0-9a-f]{64}' |
+  cut --fields 2 |
+  cut --delimiter _ \
+      --fields 1 |
+  sort |
+  uniq |
+  xargs --no-run-if-empty \
+        --verbose \
+        systemctl restart

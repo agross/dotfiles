@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Pull images without the "local" label. I use this label to mark images built
+# locally.
+
+set -euo pipefail
+
+docker image \
+       ls \
+       --quiet \
+       --format '{{.Repository}}:{{.Tag}}' |
+  grep -v ':<none>' |
+  while read -r image; do
+    [[ -z "$(docker image \
+                    inspect \
+                    --format '{{ index .Config.Labels "local" }}' \
+                    "$image")" ]] && \
+      docker image \
+             pull \
+             "$image"
+done
