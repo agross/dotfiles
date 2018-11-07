@@ -82,10 +82,6 @@ zplug 'BurntSushi/ripgrep', \
 zplug 'so-fancy/diff-so-fancy', \
       as:command, \
       use:'diff-so-fancy'
-zplug 'nvie/gitflow', \
-      if:"(($+commands[git]))", \
-      as:command
-zplug 'bobthecow/git-flow-completion'
 zplug 'grossweber/git-some', \
       if:"(($+commands[git]))", \
       as:command, \
