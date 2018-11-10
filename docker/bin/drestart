@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 # Restart systemd services with that are based on outdated docker images.
+#
+# If systemd service units are templated, assume the docker containers are named
+# with `@` replaced by `_`, e.g. the container created by
+# service@instance.service is named service_instance.
 
 set -euo pipefail
 
