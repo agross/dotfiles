@@ -56,6 +56,8 @@ zplug 'plugins/systemd', \
       if:"(($+commands[systemctl]))"
 
 # Other useful plugins.
+zplug 'zdharma/fast-syntax-highlighting', \
+      hook-load:'FAST_HIGHLIGHT=()'
 zplug 'Tarrasch/zsh-bd'
 zplug 'zsh-users/zsh-completions'
 zplug 'plugins/gem', \
@@ -110,8 +112,5 @@ zplug 'hlissner/zsh-autopair', \
 zplug 'knu/z', \
       use:'z.sh', \
       defer:2
-zplug 'zdharma/fast-syntax-highlighting', \
-      defer:2, \
-      hook-load:'FAST_HIGHLIGHT=()'
 
 # vim: set ft=zsh ts=2 sw=2 et:
