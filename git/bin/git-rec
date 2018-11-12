@@ -3,13 +3,12 @@
 root="$PWD"
 nogit=
 error_exit=0
-first=true
 
 opt=
 while getopts ':hnr:' opt; do
   case "$opt" in
     h)
-      usage=$(cat <<EOF
+      read -r -d '' usage <<"EOF"
 %s [-h] [-n] [-r ROOT] COMMAND
 
 Run git command recursively inside all git repositories under the current directory.
@@ -19,9 +18,8 @@ Options:
 -n\tDo not imply git command (i.e. do not prefix 'git' to COMMAND)
 -h\tShow help
 EOF
-)
 
-      printf "$usage\n" "${0##*/}"
+      printf "$usage\\n" "${0##*/}"
       exit 0
       ;;
 
@@ -57,33 +55,50 @@ if [[ -t 1 ]]; then
   reset='\e[0m'
 fi
 
-printf "Running %b%s%b in git repositories below %b%s%b:\n\n" "$red" "$command_as_string" "$reset" "$green" "$root" "$reset"
+printf 'Running %b%s%b in git repositories below %b%s%b:\n' \
+       "$red" \
+       "$command_as_string" \
+       "$reset" \
+       "$green" \
+       "$root" \
+       "$reset"
 while IFS= read -d $'\0' -r dotgit; do
   repo="${dotgit%.git}"
 
   # Detect whether this is a submodule directory and skip.
-  if [[ -f "$dotgit" ]] && grep --quiet '\.git/modules/' "$dotgit"; then
-    printf '%bIgnored submodule directory%b %b%s%b\n' \
-           "$yellow" "$reset" "$green" "$repo" "$reset"
+  if [[ -f "$dotgit" ]] && \
+     grep --quiet '\.git/modules/' "$dotgit"; then
+    printf '\n%bIgnored submodule directory%b %b%s%b\n' \
+           "$yellow" \
+           "$reset" \
+           "$green" \
+           "$repo" \
+           "$reset"
     continue
   fi
 
-  if [[ "$first" == 'false' ]]; then
-    printf '\n'
-  fi
-  first=false
+  printf '\nRunning %b%s%b in %b%s%b\n' \
+         "$red" \
+         "$command_as_string" \
+         "$reset" \
+         "$green" \
+         "$repo" \
+         "$reset"
 
-  printf 'Running %b%s%b in %b%s%b\n' "$red" "$command_as_string" "$reset" "$green" "$repo" "$reset"
-  pushd "$repo" > /dev/null
-  "${command[@]}"
-  exit_status=$?
-  popd > /dev/null
+  if pushd "$repo" > /dev/null; then
+    "${command[@]}"
+    exit_status=$?
+    popd > /dev/null
+  fi
 
   if [[ "$exit_status" == 0 ]]; then
     printf '%b✔%b Success\n' "$green" "$reset"
   else
     error_exit=$exit_status
-    printf '%b✘%b Failed with exit status %d\n' "$red" "$reset" "$exit_status"
+    printf '%b✘%b Failed with exit status %d\n' \
+           "$red" \
+           "$reset" \
+           "$exit_status"
   fi
 done < <(find "$root" \( -type d -o -type f \) -name .git -print0 | sort --zero-terminated)
 
