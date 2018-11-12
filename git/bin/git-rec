@@ -13,6 +13,8 @@ while getopts ':hnr:' opt; do
 
 Run git command recursively inside all git repositories under the current directory.
 
+Execute `git config --local git-rec.ignore true` inside a repository to ignore it.
+
 Options:
 -r\tSpecify another root directory
 -n\tDo not imply git command (i.e. do not prefix 'git' to COMMAND)
@@ -69,6 +71,17 @@ while IFS= read -d $'\0' -r dotgit; do
   if [[ -f "$dotgit" ]] && \
      grep --quiet '\.git/modules/' "$dotgit"; then
     printf '\n%bIgnored submodule directory%b %b%s%b\n' \
+           "$yellow" \
+           "$reset" \
+           "$green" \
+           "$repo" \
+           "$reset"
+    continue
+  fi
+
+  # Detect whether this repo is ignored and skip.
+  if [[ "$(git -C "$repo" config --local --get git-rec.ignore)" == 'true' ]]; then
+    printf '\n%bIgnored repository%b %b%s%b\n' \
            "$yellow" \
            "$reset" \
            "$green" \
