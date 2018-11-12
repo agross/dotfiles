@@ -44,6 +44,12 @@ command=()
 if [[ -z "$nogit" ]]; then
   command=(git)
 fi
+
+if [[ $# -eq 0 ]]; then
+  printf 'Need command\n'
+  exit 2
+fi
+
 shift $((OPTIND - 1))
 command+=("$@")
 
