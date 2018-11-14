@@ -43,4 +43,10 @@ function {
   alias  qx+="$custom worktree  stage 'git update-index --chmod=+x'"
   alias qx-s="$custom index     reset 'git update-index --chmod=-x'"
   alias  qx-="$custom worktree  stage 'git update-index --chmod=-x'"
+
+  # Mnemonic: do something to (s)staged, unstaged and (n)ew files.
+  # E.g. qdo 1 2 | xargs tail -f
+  alias qsdo="$custom index false 'print -f %q\n'"
+  alias  qdo="$custom worktree false 'print -f %q\n'"
+  alias qudo="$custom untracked false 'print -f %q\n'"
 }
