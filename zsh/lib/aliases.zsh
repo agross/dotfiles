@@ -3,6 +3,7 @@ alias -g M='| less'
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
+alias -g XA='| xargs'
 
 alias -g DN='> /dev/null'
 alias -g 2DN='2> /dev/null'
