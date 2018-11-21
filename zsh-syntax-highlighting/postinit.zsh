@@ -8,8 +8,6 @@
 
 zle -N fast-colors
 
-FAST_HIGHLIGHT[use_brackets]=1
-
 # Save compiled theme to temporary directory as I use different themes based
 # on the iTerm profile.
 FAST_WORK_DIR=$(mktemp --directory --suffix zsh-highlight-theme)
