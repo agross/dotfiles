@@ -16,11 +16,17 @@ typeset -Ua overlays
 overlays=(
   8/overlay.ini
   $(echotc Co)/overlay.ini
-  $ITERM_PROFILE/overlay.ini
 )
+
+if ((${+ITERM_PROFILE})); then
+  overlays+=($ITERM_PROFILE/overlay.ini)
+fi
 
 local overlay
 for overlay in $overlays; do
   overlay=${0%/*}/colors/$overlay
-  [[ -f $overlay ]] && fast-theme $overlay > /dev/null
+
+  if [[ -f $overlay ]]; then
+    fast-theme $overlay > /dev/null
+  fi
 done
