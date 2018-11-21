@@ -5,9 +5,7 @@
 script_path="${0%/*}"
 . "$script_path/diff-and-merge-support"
 
-tool="$(tool_path '/c/Tools/Code/Code.exe' \
-                  '/mnt/c/Tools/Code/bin/code' \
-                  'code')" || exit $?
+tool="$(tool_path 'code')" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
 shift

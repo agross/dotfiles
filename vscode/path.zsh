@@ -1,3 +1,4 @@
-if [[ "$OSTYPE" == 'cygwin' && -x '/C/Tools/Code/bin/code' ]]; then
-  VSCODE='/C/Tools/Code/bin/code'
-fi
+local bin_path="${0%/*}/bin"
+path=($bin_path $path)
+
+verbose Prepending $fg[yellow]$bin_path$reset_color to $fg[yellow]\$PATH$reset_color

@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+[[ -v CODE_DEBUG ]] && set -x
+
+# This script makes it possible to start Visual Studio Code with Unix paths on
+# Cygwin or WSL. On other platforms it just calls `code` and assumes the
+# executable is in the $PATH.
+#
+# Arguments in front of a double dash (`--`) are tested whether they exist on
+# the file system. If they exist, the argument will be translated to an absolute
+# Windows path and passed along unchanged otherwise. Arguments following a
+# double dash are always translated to absolute Windows paths.
+#
+# Path translation is done using `cygpath` on Cygwin or `wslpath` on WSL.
+#
+# code relative/path -> translated if it exist
+# code /absolute/path -> translated if it exist
+# code -- relative/path -> always translated
+# code -- /absolute/path -> always translated
+#
+# You can debug this script by setting the CODE_DEBUG environment variable, e.g.:
+#
+# CODE_DEBUG= git commit
+#
+# You might wonder why we need to go through this hassle:
+#
+# If you use Cygwin custom mount points in e.g. /etc/fstab.d/<user> and git
+# starts the editor (e.g. `code --new-window --wait`) for a repository that
+# resides on a custom mount point, the editor will be invoked with an absolute
+# path to the custom mount directory, e.g.:
+#
+# $EDITOR /custom-mount/repo/.git/COMMIT_EDITMSG
+#
+# Because VS Code has no idea about what /custom-mount is from a Windows
+# filesystem perspective, we need to convert the file name to a Windows path
+# before running VS Code.
+
+get-translation-type() {
+  translate_path=()
+
+  case "$OSTYPE" in
+    cygwin)
+      translate_path=(cygpath --absolute --windows --)
+      ;;
+
+    linux*)
+      if [[ -f /proc/version ]] &&
+        grep --quiet Microsoft /proc/version &&
+        hash wslpath 2> /dev/null; then
+        translate_path=(wslpath -aw --)
+      fi
+      ;;
+  esac
+}
+
+translate-args() {
+  args=("$@")
+
+  get-translation-type
+  if ((${#translate_path[@]} == 0)); then
+    return
+  fi
+
+  for ((i = 0; i < ${#args[@]}; i++)); do
+    if [[ -v dash_dash_seen ]] ||
+       [[ -e "${args[$i]}" ]]; then
+      args[$i]="$("${translate_path[@]}" "${args[$i]}")"
+    fi
+
+    # Arguments following '--' are always translated to paths.
+    if [[ "${args[$i]}" == '--' ]]; then
+      dash_dash_seen=yes
+    fi
+  done
+
+}
+
+run() {
+  local code="$1"
+  shift
+  local args=("$@")
+
+  [[ -v CODE_DEBUG ]] && typeset -p args
+
+  while IFS= read -r executable; do
+    # Prevent calling ourselves.
+    if [[ "$executable" != "${BASH_SOURCE[0]}" ]]; then
+      exec "$executable" "${args[@]}"
+    fi
+  done < <(type -ap "$code" 2> /dev/null)
+
+  exit 127
+}
+
+translate-args "$@"
+run code "${args[@]}"
