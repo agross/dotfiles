@@ -12,6 +12,10 @@ for topic in $DOTFILES/*/functions(/N); do
   # directories without functions. Just execute the function, no need to
   # autoload <function> before.
   # See http://zsh.sourceforge.net/FAQ/zshfaq03.html, section 3.11.
-  local funs=($topic/*(N:t))
-  [[ ${#funs} -gt 0 ]] && autoload -Uz $funs
+  local -a funs
+  funs=($topic/*(.N:t))
+  if (($#funs)); then
+    verbose Autoloading $fg[red]$funs$reset_color
+    autoload -Uz $funs
+  fi
 done
