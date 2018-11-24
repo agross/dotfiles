@@ -176,30 +176,6 @@ git-training::cleanup() {
        --request DELETE \
        --header "Authorization: token $GITHUB_DELETE_REPO_API_TOKEN" \
        https://api.github.com/repos/agross/archive-bundler
-
-  osascript <<EOS
-  tell application "Visual Studio Code"
-    activate
-    delay 15
-
-    -- Reset theme.
-    tell application "System Events"
-      keystroke "P" using {shift down, command down}
-      keystroke "Preferences: Color Theme"
-      key code 36 -- Return
-      delay 1
-      keystroke "Monokai"
-      key code 36 -- Return
-    end tell
-
-    -- Reset font size.
-    tell application "System Events"
-      keystroke "P" using {shift down, command down}
-      keystroke "Reset editor font size"
-      key code 36 -- Return
-    end tell
-  end tell
-EOS
 }
 
 git-training::$command "$@"
