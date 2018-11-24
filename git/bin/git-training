@@ -153,6 +153,8 @@ git-training::logs() {
 git-training::cleanup() {
   rm -rf ~/git-schulung
 
+  git training config --reset
+
   local dir=$(mktemp --directory)
   trap "rm -rf $dir" EXIT SIGHUP SIGINT SIGTERM
 
