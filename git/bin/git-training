@@ -156,10 +156,20 @@ git-training::cleanup() {
   local dir=$(mktemp --directory)
   trap "rm -rf $dir" EXIT SIGHUP SIGINT SIGTERM
 
-  pushd -q $dir && \
-    git clone git@github.com:Archivists/archive-bundler . && \
-    git push --force origin a838142:refs/heads/master
-  popd -q
+  remote=git@github.com:Archivists/archive-bundler
+  branch=refs/heads/master
+  reset_to=a838142
+
+  if ! git ls-remote \
+           --refs \
+           --heads \
+           --exit-code \
+           $remote \
+           $branch |
+       grep --quiet "^$reset_to"; then
+    git clone $remote $dir && \
+    git -C $dir push --force origin $reset_to:$branch
+  fi
 
   printf '\n'
   curl --include \
