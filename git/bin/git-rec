@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 root="$PWD"
 nogit=
 error_exit=0
@@ -105,19 +107,18 @@ while IFS= read -d $'\0' -r dotgit; do
          "$reset"
 
   if pushd "$repo" > /dev/null; then
-    "${command[@]}"
-    exit_status=$?
-    popd > /dev/null
-  fi
+    if "${command[@]}"; then
+      printf '%b✔%b Success\n' "$green" "$reset"
+    else
+      error_exit=$?
 
-  if [[ "$exit_status" == 0 ]]; then
-    printf '%b✔%b Success\n' "$green" "$reset"
-  else
-    error_exit=$exit_status
-    printf '%b✘%b Failed with exit status %d\n' \
-           "$red" \
-           "$reset" \
-           "$exit_status"
+      printf '%b✘%b Failed with exit status %d\n' \
+             "$red" \
+             "$reset" \
+             "$error_exit"
+    fi
+
+    popd > /dev/null
   fi
 done < <(find "$root" \( -type d -o -type f \) -name .git -print0 | sort --zero-terminated)
 
