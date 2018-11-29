@@ -9,6 +9,7 @@ tool="$(tool_path '/c/Tools/DiffMerge/sgdm.exe' \
                   '/c/Tools/DiffMerge/diffmerge.exe' \
                   '/mnt/c/Tools/DiffMerge/sgdm.exe' \
                   '/mnt/c/Tools/DiffMerge/diffmerge.exe' \
+                  'sgdm' \
                   'diffmerge' \
                   '/Applications/DiffMerge.app/Contents/Resources/diffmerge.sh')" || exit $?
 
