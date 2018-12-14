@@ -14,5 +14,7 @@ if diff --brief <(echo "$before" ) <(echo "$after") > /dev/null; then
   printf '\nNo changes were made:\n%s\n' "$before"
 else
   printf '\nRepository was compressed:\n'
-  diff --unified=42 --color=always <(echo "$before" ) <(echo "$after") | tail -n +4
+  diff --unified=42 --color=always <(echo "$before") <(echo "$after") |
+    tail -n +4 \
+    || true
 fi
