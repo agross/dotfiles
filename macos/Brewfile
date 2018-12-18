@@ -92,7 +92,6 @@ cask 'roboform'
 cask 'skype'
 cask 'symboliclinker'
 cask 'teamviewer'
-cask 'vlc'
 cask 'xnviewmp'
 
 # Apps from the Mac App Store.
