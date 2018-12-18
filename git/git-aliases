@@ -62,7 +62,7 @@
 
 	# Handling merges.
 	mt        = mergetool
-	unresolve = checkout --conflict=merge
+	unresolve = checkout --merge
 
 	# git log.
 	ll   = log
