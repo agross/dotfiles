@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 local -a all_functions
 all_functions=(${(ok)functions})
 

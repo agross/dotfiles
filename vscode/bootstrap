@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 if [[ "$OSTYPE" == 'mac' ]]; then
   cask visual-studio-code
 fi

@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # Define an alias for extensionless files inside the Elixir bin directory.
 #
 # Files with shebang for shell are ignored.

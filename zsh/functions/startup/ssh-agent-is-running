@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 if [[ -z "$SSH_AGENT_PID" ]]; then
   return 1
 fi

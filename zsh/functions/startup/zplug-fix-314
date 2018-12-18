@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # https://github.com/zplug/zplug/issues/314
 
 local branch=origin/priority-tag

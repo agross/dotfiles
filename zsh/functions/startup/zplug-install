@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # Install plugins if there are plugins that have not been installed.
 if zplug check --verbose; then
   return

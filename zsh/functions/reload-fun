@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 local fun
 
 for fun in $*; do

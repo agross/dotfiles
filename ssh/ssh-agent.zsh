@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 zstyle :omz:plugins:ssh-agent agent-forwarding on
 
 # https://github.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain

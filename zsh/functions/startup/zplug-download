@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 verbose Downloading $fg[cyan]zplug$reset_color to $fg[green]$ZPLUG_HOME$reset_color
 
 (($+commands[curl])) || {

@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # Get all styles with:
 #
 # print -l ${(ko)FAST_HIGHLIGHT_STYLES}

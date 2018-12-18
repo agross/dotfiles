@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 [[ "$(platform)" == 'windows' ]] || return 0
 
 # If we started an SSH agent on Windows or got SSH_AUTH_SOCK via agent forwarding,

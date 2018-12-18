@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # Define an alias for extensionless files inside the Ruby bin directory.
 #
 # Windows Ruby installs gem binaries as an extensionless file as well as one

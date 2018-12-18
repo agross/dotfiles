@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 symlink "$topic/gemrc"
 symlink "$topic/guard.rb"
 symlink "$topic/irbrc"

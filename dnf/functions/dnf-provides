@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # http://dnf.readthedocs.io/en/latest/cli_vs_yum.html#dnf-provides-complies-with-the-yum-documentation-of-the-command
 
 if [[ -z $1 ]]; then

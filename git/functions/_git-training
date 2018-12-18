@@ -1,5 +1,6 @@
 #compdef git-training
 #description manage git training config and logs
+# shellcheck disable=SC2148
 
 _git-training() {
   local context curcontext="$curcontext" state line

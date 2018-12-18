@@ -1,4 +1,5 @@
 #compdef mono
+# shellcheck disable=SC2148
 
 # Zsh completion script for mono (http://www.mono-project.com/).
 

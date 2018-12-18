@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 zgit_inworktree || return
 
 local r=''

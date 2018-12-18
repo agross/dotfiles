@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 [[ "$OSTYPE" == 'mac' ]] && formula midnight-commander || return 0
 
 # vim: set ft=sh ts=2 sw=2 et:

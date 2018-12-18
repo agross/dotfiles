@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 if [[ "$OSTYPE" == 'mac' ]]; then
   formula zsh
 

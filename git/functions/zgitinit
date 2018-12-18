@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 ##
 ## Load with `autoload -U zgitinit; zgitinit'
 ##

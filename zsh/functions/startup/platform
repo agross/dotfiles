@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 case "$OSTYPE" in
   linux*)  printf 'linux';;
   darwin*) printf 'mac';;

@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 local bin_path="${0%/*}"
 path=($bin_path $path)
 

@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 local dir="$1"
 mkdir --parents "$dir" && cd "$dir"
 

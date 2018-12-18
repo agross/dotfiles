@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # Create a widget from the function paste-from clipboard.
 # Note that /dev/clipboard will give you access to the clipboard
 # if you are on Cygwin.

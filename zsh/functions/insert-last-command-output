@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 zmodload -i zsh/parameter
 
 LBUFFER+="$(eval "$history[$((HISTCMD - 1))]")"

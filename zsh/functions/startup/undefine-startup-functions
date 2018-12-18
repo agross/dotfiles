@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # Unfunction every function defined in the same folder as this file.
 # http://stackoverflow.com/a/28336473/149264
 local this_directory=${${(%):-%x}:h}

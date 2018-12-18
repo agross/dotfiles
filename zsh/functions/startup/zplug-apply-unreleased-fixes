@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 local this_directory=${${(%):-%x}:h}
 local fun
 

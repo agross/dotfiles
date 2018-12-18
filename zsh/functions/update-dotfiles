@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 autoload -U colors && colors
 
 local hostsfile="$HOME/.dotfiles-hosts"

@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 if [[ -n $ZSH_VERBOSE || -n $FORCE ]]; then
   for p in $@; do
     printf '%s ' "$p"

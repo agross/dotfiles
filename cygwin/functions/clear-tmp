@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 setopt local_options extended_glob errreturn
 
 local directory=${TMP?Expected $TMP variable to be set}
