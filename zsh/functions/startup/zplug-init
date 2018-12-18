@@ -5,9 +5,7 @@ export ZPLUG_HOME="$HOME/.cache/zplug"
 local zplug_init="$ZPLUG_HOME/init.zsh"
 
 if [[ ! -f "$zplug_init" && ! -L "$zplug_init" ]]; then
-  zplug-download
-
-  if [[ $? -ne 0 ]]; then
+  if ! zplug-download; then
     return 1
   fi
 fi

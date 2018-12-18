@@ -5,7 +5,7 @@ case "$OSTYPE" in
   darwin*) printf 'mac';;
   msys)    printf 'windows';;
   cygwin)  printf 'windows';;
-  *)       printf "$OSTYPE";;
+  *)       printf '%s' "$OSTYPE";;
 esac
 
 # vim: set ft=zsh ts=2 sw=2 et:
