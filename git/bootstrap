@@ -15,25 +15,21 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   cask gitup
 fi
 
+local platform_specific=()
 case "$OSTYPE" in
   mac)
-    dir=macos
+    platform_specific=("$topic/platform-specific/macos")
     ;;
 
   cygwin|windows)
-    dir=windows
-    ;;
-
-  *)
-    dir=
+    platform_specific=("$topic/platform-specific/windows")
     ;;
 esac
-
-[[ -n "$dir" ]] && platform_specific="$topic/platform-specific/$dir"
+platform_specific+=("$topic/platform-specific/_")
 
 # Find platform-specific and generic configs with generics sorted last.
 processed=()
-find "$platform_specific" "$topic/platform-specific/_" \
+find "${platform_specific[@]}" \
      -name '*.config' \
      -type f \
      -print0 2> /dev/null | \
@@ -44,7 +40,8 @@ find "$platform_specific" "$topic/platform-specific/_" \
 
   for p in "${processed[@]}"; do
     if [[ "$p" == "$target" ]]; then
-      success "$(printf "Skipped %b%s%b (already has been linked)" $green "$config" $reset_color)"
+      success "$(printf "Skipped %b%s%b (already has been linked)" \
+                        "$green" "$config" "$reset_color")"
       continue 2
     fi
   done

@@ -2,37 +2,41 @@
 #
 # bootstrap installs things.
 #
-# Graciously taken from https://github.com/holman/dotfiles.
+# Based on https://github.com/holman/dotfiles.
 
 # Fail on errors.
-set -e
+set -euo pipefail
 
 # Show executed commands.
 # set -x
 
-light_red="\e[01;31m"
-green="\e[0;32m"
-light_green="\e[01;32m"
-light_yellow="\e[01;33m"
-cyan="\e[0;36m"
-light_cyan="\e[01;36m"
-reset_color="\e[0m"
-clear_line="\e[2K"
+light_red='\e[01;31m'
+green='\e[0;32m'
+light_green='\e[01;32m'
+light_yellow='\e[01;33m'
+cyan='\e[0;36m'
+light_cyan='\e[01;36m'
+reset_color='\e[0m'
+clear_line='\e[2K'
 
 info() {
-  printf   "\r  [%b INFO %b] %b\n" $light_cyan $reset_color "$1"
+  printf   "\r  [%b INFO %b] %b\n" \
+           "$light_cyan" "$reset_color" "$1"
 }
 
 user() {
-  printf   "\r  [%b  ?   %b] %b " $light_yellow $reset_color "$1"
+  printf   "\r  [%b  ?   %b] %b " \
+           "$light_yellow" "$reset_color" "$1"
 }
 
 success() {
-  printf "\r%b  [%b  OK  %b] %b\n" $clear_line $light_green $reset_color "$1"
+  printf "\r%b  [%b  OK  %b] %b\n" \
+         "$clear_line" "$light_green" "$reset_color" "$1"
 }
 
 fail() {
-  printf "\r%b  [%b FAIL %b] %b\n\n" $clear_line $light_red $reset_color "$1"
+  printf "\r%b  [%b FAIL %b] %b\n\n" \
+         "$clear_line" "$light_red" "$reset_color" "$1"
   exit 1
 }
 
@@ -42,7 +46,7 @@ platforms() {
     darwin*) printf 'mac';;
     msys)    printf 'windows';;
     cygwin)  printf "cygwin\nwindows";;
-    *)       printf "$OSTYPE";;
+    *)       printf '%s' "$OSTYPE";;
   esac
 }
 
@@ -54,94 +58,101 @@ readlink_e() {
     return
   fi
 
-  printf "$(readlink --canonicalize-existing "$file")"
+  readlink --canonicalize-existing "$file"
 }
 
 home_directory() {
   case "${1?Need platform}" in
-    windows) printf "$(cygpath --unix $USERPROFILE)";;
-    *)       printf "$HOME";;
+    windows) printf '%s' "$(cygpath --unix "$USERPROFILE")";;
+    *)       printf '%s' "$HOME";;
   esac
 }
 
 symlink() {
   local src="${1?Need link source}"
   # If dst is not given, use src file name in $HOME, prepended with a dot.
-  local dst="$2"
-  if [[ -z "$dst" ]]; then
-    local filename="$(basename "$src")"
-    local dst="$HOME/.$filename"
+  local dst="$HOME/.${src##*/}"
+  if [[ $# -ge 2 ]]; then
+    dst="$2"
   fi
 
-  local overwrite= backup= skip=
-  local action=
+  local overwrite=false backup=false skip=false
 
   if [[ -f "$dst" ]] || \
      [[ -d "$dst" ]] || \
      [[ -L "$dst" ]]; then
-    if [[ "$overwrite_all" == "false" ]] && \
-       [[ "$backup_all" == "false" ]] && \
-       [[ "$skip_all" == "false" ]]; then
-      local current_target="$(readlink_e "$dst")"
+    if [[ "$overwrite_all" == 'false' ]] && \
+       [[ "$backup_all" == 'false' ]] && \
+       [[ "$skip_all" == 'false' ]]; then
+      local current_target
+      current_target="$(readlink_e "$dst")"
 
       if [[ "$current_target" == "$src" ]]; then
-        skip=true;
+        skip=true
       else
         user "$(printf "File already exists: %b%s%b (%b%s%b)
-           Will be linked to: %b%s%b
-           What do you want to do? (%bs%b)kip, (%bS%b)kip all, (%bo%b)verwrite, (%bO%b)verwrite all, (%bb%b)ackup, (%bB%b)ackup all?" \
-           $green "$dst" $reset_color \
-           $cyan "$(file --brief "$dst")" $reset_color \
-           $green "$src" $reset_color \
-           $light_yellow $reset_color \
-           $light_yellow $reset_color \
-           $light_yellow $reset_color \
-           $light_yellow $reset_color \
-           $light_yellow $reset_color \
-           $light_yellow $reset_color)"
+                       Will be linked to: %b%s%b
+                       What do you want to do? (%bs%b)kip, (%bS%b)kip all, (%bo%b)verwrite, (%bO%b)verwrite all, (%bb%b)ackup, (%bB%b)ackup all?" \
+                       "$green" "$dst" "$reset_color" \
+                       "$cyan" "$(file --brief "$dst")" "$reset_color" \
+                       "$green" "$src" "$reset_color" \
+                       "$light_yellow" "$reset_color" \
+                       "$light_yellow" "$reset_color" \
+                       "$light_yellow" "$reset_color" \
+                       "$light_yellow" "$reset_color" \
+                       "$light_yellow" "$reset_color" \
+                       "$light_yellow" "$reset_color")"
 
         while true; do
           # Read from tty, needed because we read in outer loop.
-          read -n 1 action < /dev/tty
+          local action
+          read -rn 1 action < /dev/tty
 
           case "$action" in
             o) overwrite=true;     break;;
             O) overwrite_all=true; break;;
             b) backup=true;        break;;
-            B) backup_all=true     break;;
+            B) backup_all=true;    break;;
             s) skip=true;          break;;
-            S) skip_all=true;      break ;;
+            S) skip_all=true;      break;;
             *) ;;
           esac
         done
       fi
     fi
 
-    overwrite=${overwrite:-$overwrite_all}
-    backup=${backup:-$backup_all}
-    skip=${skip:-$skip_all}
+    overwrite="${overwrite:-$overwrite_all}"
+    backup="${backup:-$backup_all}"
+    skip="${skip:-$skip_all}"
 
-    if [[ "$overwrite" == "true" ]]; then
-      rm -rf "$dst"
-      success "$(printf "Removed %b%s%b" $green "$dst" $reset_color)"
+    if [[ "$overwrite" == 'true' ]]; then
+      rm -rf -- "$dst"
+      success "$(printf 'Removed %b%s%b' \
+                        "$green" "$dst" "$reset_color")"
     fi
 
-    if [[ "$backup" == "true" ]]; then
-      mv "$dst" "${dst}.backup"
-      success "$(printf "Moved %b%s%b to %b%s%b" $green "$dst" $reset_color $green "${dst}.backup" $reset_color)"
+    if [[ "$backup" == 'true' ]]; then
+      mv -- "$dst" "${dst}.backup"
+      success "$(printf 'Moved %b%s%b to %b%s%b' \
+                        "$green" "$dst" "$reset_color" \
+                        "$green" "${dst}.backup" "$reset_color")"
     fi
 
-    if [[ "$skip" == "true" ]]; then
-      success "$(printf "Skipped %b%s%b == %b%s%b" $green "$src" $reset_color $green "$dst" $reset_color)"
+    if [[ "$skip" == 'true' ]]; then
+      success "$(printf 'Skipped %b%s%b == %b%s%b' \
+                        "$green" "$src" "$reset_color" \
+                        "$green" "$dst" "$reset_color")"
     fi
   fi
 
-  if [[ "$skip" != "true" ]]; then # "false" or empty.
-    mkdir -p "$(dirname "$dst")"
+  if [[ "$skip" != 'true' ]]; then
+    mkdir -p "$(dirname -- "$dst")"
     # Create native symlinks on Windows.
     CYGWIN=winsymlinks:nativestrict ln -s "$src" "$dst"
 
-    success "$(printf "Linked %b%s%b to %b%s%b" $green "$src" $reset_color $green "$dst" $reset_color)"
+    success "$(printf 'Linked %b%s%b to %b%s%b' \
+                      "$green" "$src" "$reset_color" \
+                      "$green" "$dst" "$reset_color")"
   fi
 }
 
@@ -150,24 +161,23 @@ install_dotfiles() {
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  info "$(printf "Installing dotfiles from %b%s%b" $green "$dotfiles_root" $reset_color)"
+  info "$(printf "Installing dotfiles from %b%s%b" \
+                 "$green" "$dotfiles_root" "$reset_color")"
 
   source "$dotfiles_root/macos/homebrew"
 
   local platforms="$(platforms)"
   while IFS=$'\n' read -r platform; do
-    local HOME="$(home_directory "$platform")"
-    local OSTYPE="$platform"
+    local home="$(home_directory "$platform")"
 
-    echo
     info "$(printf "Installing dotfiles to %b\$HOME%b=%b%s%b for %b\$OSTYPE%b=%b%s%b" \
-      $light_red $reset_color \
-      $green "$HOME" $reset_color \
-      $light_red $reset_color \
-      $light_yellow "$OSTYPE" $reset_color)"
+                   "$light_red" "$reset_color" \
+                   "$green" "$home" "$reset_color" \
+                   "$light_red" "$reset_color" \
+                   "$light_yellow" "$platform" "$reset_color")"
 
     # First, add a symlink for this dotfiles directory.
-    symlink "$dotfiles_root" "$HOME/.dotfiles"
+    symlink "$dotfiles_root" "$home/.dotfiles"
 
     # Find direct child directories (topics).
     local topics="$(/usr/bin/find "$dotfiles_root" -mindepth 1 -maxdepth 1 -type d | sort)"
@@ -177,17 +187,17 @@ install_dotfiles() {
       # Find (optional) topic/bootstrap script and run it.
       local bootstrap="$topic/bootstrap"
       if [[ -f "$bootstrap" ]]; then
-        info "$(printf "Running %b%s%b" \
-          $green "$bootstrap" $reset_color)"
+        info "$(printf 'Running %b%s%b' \
+                        "$green" "$bootstrap" "$reset_color")"
 
         # Run script from inside topic.
-        source "$bootstrap"
+        HOME="$home" OSTYPE="$platform" source "$bootstrap"
       fi
     done <<< "$topics"
   done <<< "$platforms"
 
-  echo
-  info "$(printf "All installed from %b%s%b" $green "$dotfiles_root" $reset_color)"
+  info "$(printf 'All installed from %b%s%b' \
+                 "$green" "$dotfiles_root" "$reset_color")"
 }
 
 install_dotfiles
