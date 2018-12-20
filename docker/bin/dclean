@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Remove images that are not used by containers and are not used as base images
+# for other images.
+
+set -euo pipefail
+
+# Remove dangling images (those without a tag).
+docker image prune --force
+
+# Remove images not being used by containers.
+used-by-container() {
+  local image="${1?Need image}"
+
+  [[ -n "$(docker container \
+                  ls \
+                  --all \
+                  --quiet \
+                  --no-trunc \
+                  --filter "ancestor=$image")" ]]
+}
+
+docker image \
+       ls \
+       --quiet \
+       --no-trunc |
+  while read -r image; do
+    if ! used-by-container "$image"; then
+      docker image \
+             rm \
+             "$image"
+    fi
+  done

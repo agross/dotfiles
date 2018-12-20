@@ -5,17 +5,24 @@
 
 set -euo pipefail
 
+is-local() {
+  local image="${1?Need image}"
+
+  [[ -n "$(docker image \
+                  inspect \
+                  --format '{{ index .Config.Labels "local" }}' \
+                  "$image")" ]]
+}
+
 docker image \
        ls \
        --quiet \
        --format '{{.Repository}}:{{.Tag}}' |
-  grep -v ':<none>' |
+  grep --invert-match ':<none>' |
   while read -r image; do
-    [[ -z "$(docker image \
-                    inspect \
-                    --format '{{ index .Config.Labels "local" }}' \
-                    "$image")" ]] && \
+    if ! is-local "$image"; then
       docker image \
              pull \
              "$image"
-done
+    fi
+  done
