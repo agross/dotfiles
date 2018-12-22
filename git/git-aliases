@@ -91,7 +91,7 @@
 	np = !git --no-pager
 	dp = !git -c pager.show='less -FRX' -c pager.log='less -FRX' -c pager.diff='less -FRX'
 
-	# Recursively mirror GW repos to GitLab.
-	mirror-gitlab = "!git rec -n sh -c 'url=$(git remote get-url origin); url=${url#git@grossweber.com:}; git push ssh://git@gitlab.grossweber.com:10022/$url --all'"
+	# Push GW repo to GitLab.
+	sync-gitlab = !"url=$(git remote get-url origin); url=${url#git@grossweber.com:}; git push ssh://git@gitlab.grossweber.com:10022/$url --all"
 
 # vim: set ft=gitconfig ts=2 sw=2 noet:
