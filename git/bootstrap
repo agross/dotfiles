@@ -28,26 +28,26 @@ esac
 platform_specific+=("$topic/platform-specific/_")
 
 # Find platform-specific and generic configs with generics sorted last.
-processed=()
+local processed=()
 find "${platform_specific[@]}" \
      -name '*.config' \
      -type f \
      -print0 2> /dev/null | \
   while read -r -d $'\0' config; do
+    name="$(basename "$config")"
+    target="$HOME/.git-config/${name%%.*}.config"
 
-  name="$(basename "$config")"
-  target="$HOME/.git-config/${name%%.*}.config"
+    # https://stackoverflow.com/questions/7577052/
+    for p in "${processed[@]:+${processed[@]}}"; do
+      if [[ "$p" == "$target" ]]; then
+        success "$(printf "Skipped %b%s%b (already has been linked)" \
+                          "$green" "$config" "$reset_color")"
+        continue 2
+      fi
+    done
 
-  for p in "${processed[@]}"; do
-    if [[ "$p" == "$target" ]]; then
-      success "$(printf "Skipped %b%s%b (already has been linked)" \
-                        "$green" "$config" "$reset_color")"
-      continue 2
-    fi
+    symlink "$config" "$target"
+    processed+=("$target")
   done
-
-  symlink "$config" "$target"
-  processed+=("$target")
-done
 
 # vim: set ft=sh ts=2 sw=2 et:
