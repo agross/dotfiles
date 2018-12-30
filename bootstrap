@@ -76,34 +76,38 @@ symlink() {
     dst="$2"
   fi
 
-  local overwrite=false backup=false skip=false
+  local overwrite= backup= skip= same=
 
   if [[ -f "$dst" ]] || \
      [[ -d "$dst" ]] || \
      [[ -L "$dst" ]]; then
-    if [[ "$overwrite_all" == 'false' ]] && \
-       [[ "$backup_all" == 'false' ]] && \
-       [[ "$skip_all" == 'false' ]]; then
-      local current_target
-      current_target="$(readlink_e "$dst")"
+    local current_target
+    current_target="$(readlink_e "$dst")"
 
-      if [[ "$current_target" == "$src" ]]; then
-        skip=true
-      else
-        user "$(printf "File already exists: %b%s%b (%b%s%b)
-                       Will be linked to: %b%s%b
-                       What do you want to do? (%bs%b)kip, (%bS%b)kip all, (%bo%b)verwrite, (%bO%b)verwrite all, (%bb%b)ackup, (%bB%b)ackup all?" \
-                       "$green" "$dst" "$reset_color" \
-                       "$cyan" "$(file --brief "$dst")" "$reset_color" \
-                       "$green" "$src" "$reset_color" \
-                       "$light_yellow" "$reset_color" \
-                       "$light_yellow" "$reset_color" \
-                       "$light_yellow" "$reset_color" \
-                       "$light_yellow" "$reset_color" \
-                       "$light_yellow" "$reset_color" \
-                       "$light_yellow" "$reset_color")"
+    if [[ "$current_target" == "$src" ]]; then
+      success "$(printf 'Already linked %b%s%b <-> %b%s%b' \
+                        "$green" "$src" "$reset_color" \
+                        "$green" "$dst" "$reset_color")"
+      return
+    fi
 
-        while true; do
+    if [[ "$overwrite_all" != 'true' ]] && \
+       [[ "$backup_all" != 'true' ]] && \
+       [[ "$skip_all" != 'true' ]]; then
+      user "$(printf "File already exists: %b%s%b (%b%s%b)
+                     Will be linked to: %b%s%b
+                     What do you want to do? (%bs%b)kip, (%bS%b)kip all, (%bo%b)verwrite, (%bO%b)verwrite all, (%bb%b)ackup, (%bB%b)ackup all?" \
+                     "$green" "$dst" "$reset_color" \
+                     "$cyan" "$(file --brief "$dst")" "$reset_color" \
+                     "$green" "$src" "$reset_color" \
+                     "$light_yellow" "$reset_color" \
+                     "$light_yellow" "$reset_color" \
+                     "$light_yellow" "$reset_color" \
+                     "$light_yellow" "$reset_color" \
+                     "$light_yellow" "$reset_color" \
+                     "$light_yellow" "$reset_color")"
+
+      while true; do
           # Read from tty, needed because we read in outer loop.
           local action
           read -rn 1 action < /dev/tty
@@ -117,13 +121,19 @@ symlink() {
             S) skip_all=true;      break;;
             *) ;;
           esac
-        done
-      fi
+      done
     fi
 
     overwrite="${overwrite:-$overwrite_all}"
     backup="${backup:-$backup_all}"
     skip="${skip:-$skip_all}"
+
+    if [[ "$skip" == 'true' ]]; then
+      success "$(printf 'Skipped %b%s%b <-> %b%s%b' \
+                        "$green" "$src" "$reset_color" \
+                        "$green" "$dst" "$reset_color")"
+      return
+    fi
 
     if [[ "$overwrite" == 'true' ]]; then
       rm -rf -- "$dst"
@@ -137,29 +147,21 @@ symlink() {
                         "$green" "$dst" "$reset_color" \
                         "$green" "${dst}.backup" "$reset_color")"
     fi
-
-    if [[ "$skip" == 'true' ]]; then
-      success "$(printf 'Skipped %b%s%b == %b%s%b' \
-                        "$green" "$src" "$reset_color" \
-                        "$green" "$dst" "$reset_color")"
-    fi
   fi
 
-  if [[ "$skip" != 'true' ]]; then
-    mkdir -p "$(dirname -- "$dst")"
-    # Create native symlinks on Windows.
-    CYGWIN=winsymlinks:nativestrict ln -s "$src" "$dst"
+  mkdir -p "$(dirname -- "$dst")"
+  # Create native symlinks on Windows.
+  CYGWIN=winsymlinks:nativestrict ln -s "$src" "$dst"
 
-    success "$(printf 'Linked %b%s%b to %b%s%b' \
-                      "$green" "$src" "$reset_color" \
-                      "$green" "$dst" "$reset_color")"
-  fi
+  success "$(printf 'Linked %b%s%b to %b%s%b' \
+                    "$green" "$src" "$reset_color" \
+                    "$green" "$dst" "$reset_color")"
 }
 
 install_dotfiles() {
   local dotfiles_root="$(dirname "$(readlink_e "$0")")"
 
-  local overwrite_all=false backup_all=false skip_all=false
+  local overwrite_all= backup_all= skip_all=
 
   info "$(printf "Installing dotfiles from %b%s%b" \
                  "$green" "$dotfiles_root" "$reset_color")"
