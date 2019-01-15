@@ -1,3 +1,5 @@
+set encoding=utf8
+
 " Run as VIM not VI.
 set nocompatible
 
@@ -233,7 +235,7 @@ set timeoutlen=300
 "nmap <silent> <Leader>xo :wincmd j<CR>
 
 " The following will make tabs and trailing spaces visible when requested.
-set listchars=tab:>-,trail:·,eol:$
+set listchars=tab:>-,space:·,trail:~,eol:¶,precedes:«,extends:»
 " ,s shows trailing whitespace.
 nmap <silent> <leader>s :set nolist!<CR>
 
