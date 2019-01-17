@@ -6,6 +6,8 @@
 	<true/>
 	<key>AboutToPasteTabsWithCancel_selection</key>
 	<integer>2</integer>
+	<key>AdjustWindowForFontSizeChange</key>
+	<false/>
 	<key>AlternateMouseScroll</key>
 	<false/>
 	<key>AppleAntiAliasingThreshold</key>
@@ -374,11 +376,15 @@
 	<string>979E3573-C41E-43D8-8946-A95270BE1667</string>
 	<key>DimBackgroundWindows</key>
 	<false/>
+	<key>DimInactiveSplitPanes</key>
+	<true/>
 	<key>DimOnlyText</key>
-	<false/>
+	<true/>
 	<key>DisableFullscreenTransparency</key>
 	<false/>
 	<key>DockIconTogglesWindow</key>
+	<true/>
+	<key>EnableDivisionView</key>
 	<true/>
 	<key>EnableProxyIcon</key>
 	<false/>
@@ -520,11 +526,15 @@
 	<key>NSFontPanelPreviewHeight</key>
 	<real>100</real>
 	<key>NSNavLastRootDirectory</key>
-	<string>~</string>
+	<string>~/Documents</string>
+	<key>NSNavLastUserSetHideExtensionButtonState</key>
+	<false/>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
 	<key>NSNavPanelExpandedSizeForSaveMode</key>
 	<string>{712, 448}</string>
+	<key>NSNavPanelExpandedStateForSaveMode</key>
+	<true/>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -590,7 +600,7 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>801 132 639 249 0 0 1440 878 </string>
 	<key>NSWindow Frame ProfilesPanel</key>
-	<string>349 272 735 382 0 0 1440 878 </string>
+	<string>349 271 735 382 0 0 1440 877 </string>
 	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
 	<string>436 528 616 174 0 0 1440 878 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
@@ -598,9 +608,9 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>434 363 620 392 0 0 1440 877 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
-	<string>269 142 606 469 0 0 1440 877 </string>
+	<string>269 123 599 501 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>235 323 1018 447 0 0 1440 878 </string>
+	<string>309 388 1018 447 0 0 1440 877 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>99 294 592 584 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_FiraCode-Regular</key>
@@ -608,7 +618,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>48 29 1232 748 0 0 1280 777 </string>
+	<string>48 153 1392 724 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -965,6 +975,8 @@
 			<real>1</real>
 			<key>Idle Code</key>
 			<integer>0</integer>
+			<key>Idle Period</key>
+			<real>60</real>
 			<key>Jobs to Ignore</key>
 			<array>
 				<string>rlogin</string>
@@ -2122,7 +2134,7 @@
 				<real>0.023000000044703484</real>
 			</dict>
 			<key>Log Directory</key>
-			<string></string>
+			<string>/Users/agross</string>
 			<key>Minimum Contrast</key>
 			<real>0.0</real>
 			<key>Mouse Reporting</key>
@@ -2154,7 +2166,7 @@
 			<key>Screen</key>
 			<integer>-1</integer>
 			<key>Scrollback Lines</key>
-			<integer>1000</integer>
+			<integer>0</integer>
 			<key>Selected Text Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -5620,6 +5632,8 @@
 	<integer>0</integer>
 	<key>NoSyncPermissionToShowTip</key>
 	<true/>
+	<key>NoSyncSaveDocumentAsPathSet_saveDocumentAs:</key>
+	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>503860793.59414703</real>
 	<key>NoSyncTipsDisabled</key>
@@ -5729,7 +5743,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-12-04T20:14:04Z</date>
+	<date>2019-01-16T19:31:03Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -5747,7 +5761,7 @@
 	<key>SmartPlacement</key>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
-	<real>0.31474358974358974</real>
+	<real>0.23416466346153852</real>
 	<key>StretchTabsToFillBar</key>
 	<false/>
 	<key>SuppressRestartAnnouncement</key>
