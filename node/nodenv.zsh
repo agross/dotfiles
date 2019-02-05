@@ -2,4 +2,4 @@
 
 (($+commands[nodenv])) || return 0
 
-eval "$(nodenv init -)"
+eval "$(nodenv init - --no-rehash)"

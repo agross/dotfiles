@@ -2,6 +2,7 @@
 
 if [[ "$OSTYPE" == 'mac' ]]; then
   formula nodenv
+  formula nodenv/nodenv/nodenv-package-rehash
 fi
 
 # vim: set ft=sh ts=2 sw=2 et:
