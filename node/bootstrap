@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
 if [[ "$OSTYPE" == 'mac' ]]; then
-  formula nvm
+  formula nodenv
 fi
 
 # vim: set ft=sh ts=2 sw=2 et:
