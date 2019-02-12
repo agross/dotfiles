@@ -13,6 +13,8 @@
 #   * I did not test externals pointing to files instead of directories
 #   * Works with bash >= 4.3
 #   * Clean up of SVN remotes used for externals is not implemented
+#   * svn:ignore metadata are not converted to .gitignore. Consider running
+#     git svn create-ignore
 #   * I assume there will be bugs, so check your clones for correctness!
 #
 # Example:
