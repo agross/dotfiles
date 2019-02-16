@@ -6,30 +6,33 @@
 set -eu
 setopt PIPE_FAIL
 
-opt=($@)
+opt=(-Q -v $@)
 
 autoload -U zmv
 
-# DKB
+# DKB.
+#
 # Kontoauszug_12345678_Nr_2018_001_per_2018_02_01.pdf
 # ->
 # Kontoauszug 12345678 2018-02-01.pdf
-zmv -Q -v $opt \
+zmv $opt \
     '(Kontoauszug)_([[:digit:]]##)_*_per_([[:digit:]]##)_([[:digit:]]##)_([[:digit:]]##).pdf(.N)' \
     '$1 $2 $3-$4-$5.pdf'
 
-# DKB VISA
+# DKB VISA.
+#
 # Kreditkartenabrechnung_1234xxxxxxxx5678_per_2018_02_01.pdf
 # ->
 # Kreditkarte 5678 2018-02-01.pdf
-zmv -Q -v $opt \
+zmv $opt \
     '(Kreditkarte)nabrechnung_*x([[:digit:]]##)_per_([[:digit:]]##)_([[:digit:]]##)_([[:digit:]]##).pdf(.N)' \
     '$1 $2 $3-$4-$5.pdf'
 
-# netbank
+# netbank.
+#
 # 0001234567_Kontoauszug_Nr_00001_vom_01-02-2018_985200185765501000.pdf
 # ->
 # Kontoauszug 1234567 2018-02-28.pdf
-zmv -Q -v $opt \
+zmv $opt \
     '([[:digit:]]##)_(Kontoauszug)_*_vom_([[:digit:]]##)-([[:digit:]]##)-([[:digit:]]##)_[[:digit:]]##.pdf(.N)' \
     '$2 ${1##0##} $5-$4-$3.pdf'
