@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+
+# Set directory date based on newest file or subdirectory.
+
+set -eu
+
+autoload -Uz colors
+
+# /  = directories only
+# D  = include dotfiles
+# N  = no error if there are no matches
+# F  = non-empty directories
+# od = depth first
+# on = sort by name
+for dir in **/*(/NDFodon); do
+  # N  = no error if there are no matches
+  # D  = include dotfiles
+  # om = order by modified date, newest first
+  # Y1 = limit to one match
+  newest=($dir/*(NDomY1))
+
+  if [[ ${#newest[@]} -eq 0 ]]; then
+    printf '%bempty%b: %b%s%b\n' \
+           $fg_bold[red] \
+           $reset_color \
+           $fg_bold[blue] \
+           $dir \
+           $reset_color
+
+    continue
+  fi
+
+  date=$(date +%Y-%m-%d --reference $newest)
+  printf '%b%s%b: %b%s/%b%s\n' \
+         $fg_bold[green] \
+         $date \
+         $reset_color \
+         $fg_bold[blue] \
+         $dir \
+         $reset_color \
+         ${newest##*/}
+
+  touch --reference $newest $dir
+done
