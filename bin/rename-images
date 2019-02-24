@@ -1,6 +1,11 @@
 #!/usr/bin/env zsh
 
 # Rename image uploads as per my conventions. Perform dry run with -n.
+# Docs:
+# https://github.com/zsh-users/zsh/blob/master/Functions/Misc/zmv
+# http://zsh.sourceforge.net/Doc/Release/Expansion.html#Filename-Generation
+# http://zsh.sourceforge.net/Doc/Release/Expansion.html#Glob-Qualifiers
+# http://zsh.sourceforge.net/Doc/Release/Expansion.html#Parameter-Expansion-Flags
 
 set -eu
 setopt PIPE_FAIL
@@ -21,6 +26,19 @@ autoload -U zmv
 zmv $opt \
     '(**/)(IMG|VID)_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))_([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2)).(*)(.N)' \
     '$1$3-$4-$5 $6.$7.$8.$9'
+
+# Portraits from camera.
+#
+# 00000PORTRAIT_00000_BURST20190224163058395.jpg
+# ->
+# 2019-02-24 16.30.58.jpg
+#
+# 00100sPORTRAIT_00100_BURST20190224163058395_COVER.jpg
+# ->
+# 2019-02-24 16.30.58-blur.jpg
+zmv $opt \
+    '(**/)*PORTRAIT_[[:digit:]](#c5)_BURST([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))[[:digit:]](#c3)(_COVER|*).(*)(.N)' \
+    '$1$2-$3-$4 $5.$6.$7${8/_COVER/-blur}.$9'
 
 # Screenshots.
 #
