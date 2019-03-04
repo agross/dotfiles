@@ -7,16 +7,16 @@ brew 'coreutils'
 brew 'diffutils'
 brew 'dos2unix'
 brew 'file-formula'
-brew 'findutils', args: %w(with-default-names)
+brew 'findutils'
 brew 'gawk'
 brew 'gnu-getopt'
-brew 'gnu-indent', args: %w(with-default-names)
-brew 'gnu-sed', args: %w(with-default-names)
-brew 'gnu-tar', args: %w(with-default-names)
-brew 'gnu-which', args: %w(with-default-names)
+brew 'gnu-indent'
+brew 'gnu-sed'
+brew 'gnu-tar'
+brew 'gnu-which'
 brew 'gnutls'
 brew 'gpatch'
-brew 'grep', args: %w(with-default-names)
+brew 'grep'
 brew 'gzip'
 brew 'make'
 brew 'rsync'
@@ -42,9 +42,9 @@ cask 'osxfuse'
 brew 'sshfs'
 
 # Apps without topic directories.
-brew 'curl', args: %w(with-libssh2 with-nghttp2)
+brew 'curl'
 brew 'httpie'
-brew 'imagemagick', args: %w(with-webp)
+brew 'imagemagick'
 brew 'jid'
 brew 'm-cli'
 brew 'ncdu'
