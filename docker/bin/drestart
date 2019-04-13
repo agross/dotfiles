@@ -8,16 +8,30 @@
 
 set -euo pipefail
 
-docker container \
-       ls \
-       --no-trunc \
-       --format '{{.Image}}\t{{.Names}}' |
-  grep --extended-regexp '^sha256:[0-9a-f]{64}' |
-  cut --fields 2 |
-  cut --delimiter _ \
-      --fields 1 |
-  sort |
-  uniq |
-  xargs --no-run-if-empty \
-        --verbose \
-        systemctl restart
+green='\e[1;32m'
+reset='\e[0m'
+
+mapfile -t services < <(docker container \
+                              ls \
+                              --no-trunc \
+                              --format '{{.Image}}\t{{.Names}}' |
+                         grep --extended-regexp '^sha256:[0-9a-f]{64}' |
+                         cut --fields 2 |
+                         cut --delimiter _ \
+                             --fields 1 |
+                         sort |
+                         uniq)
+
+printf 'Restarting: %b%s%b\n' "$green" "${services[*]}" "$reset"
+
+for service in "${services[@]}"; do
+  script="/var/data/$service/systemd/upgrade"
+
+  if [[ -x "$script" ]]; then
+    printf 'Running %b%s%b\n' "$green" "$script" "$reset"
+    "$script"
+  else
+    printf 'Restarting %b%s%b\n' "$green" "$service" "$reset"
+    systemctl restart "$service"
+  fi
+done
