@@ -2,36 +2,104 @@
 
 # Restart systemd services with that are based on outdated docker images.
 #
+# The service name is derived from the container name.
+#
+# Container        |  systemd Service
+# example          |  example.service
+# compose_db_1     |  compose.service
+# service_instance |  service.service
+#
 # If systemd service units are templated, assume the docker containers are named
 # with `@` replaced by `_`, e.g. the container created by
 # service@instance.service is named service_instance.
 
 set -euo pipefail
+#set -x
 
+red='\e[1;31m'
 green='\e[1;32m'
 reset='\e[0m'
 
-mapfile -t services < <(docker container \
-                              ls \
-                              --no-trunc \
-                              --format '{{.Image}}\t{{.Names}}' |
-                         grep --extended-regexp '^sha256:[0-9a-f]{64}' |
-                         cut --fields 2 |
-                         cut --delimiter _ \
-                             --fields 1 |
-                         sort |
-                         uniq)
+map-container-to-service()
+{
+  container="${1?Need container name}"
+  printf '%s' "${container%%_*}.service"
+}
 
-printf 'Restarting: %b%s%b\n' "$green" "${services[*]}" "$reset"
+outdated=()
 
-for service in "${services[@]}"; do
-  script="/var/data/$service/systemd/upgrade"
+mapfile -t used_images < <(docker container \
+                                 ls \
+                                 --no-trunc \
+                                 --format '{{.Image}}' |
+                                 sort |
+                                 uniq)
 
+for image in "${used_images[@]}"; do
+  printf 'Inspecting image %b%s%b\n' \
+         "$green" \
+         "$image" \
+         "$reset"
+
+  mapfile -t image_history < <(docker image history --no-trunc --quiet "$image")
+
+  for layer in "${image_history[@]}"; do
+    [[ "$layer" == '<missing>' ]] && continue
+
+    tags_digests="$(docker image inspect --format '{{.RepoTags}}{{.RepoDigests}}' "$layer")"
+
+    # If an image has a repo digest it was downloaded from a registry. If it is
+    # untagged the tag likely has been removed by a docker pull that updated the
+    # tag.
+    no_tags_but_repo_digests='^\[\]\[.+\]'
+    if [[ "$tags_digests" =~ $no_tags_but_repo_digests ]]; then
+      mapfile -t containers < <(docker container \
+                                      ls \
+                                      --no-trunc \
+                                      --format '{{.Names}}' \
+                                      --filter "ancestor=$image")
+
+      printf 'Outdated associated containers: %b%s%b\n' \
+             "$red" \
+             "${containers[*]}" \
+             "$reset"
+      for container in "${containers[@]}"; do
+        outdated+=("$(map-container-to-service "$container")")
+      done
+
+      break
+    fi
+  done
+done
+
+if ! (( ${#outdated[@]} )); then
+  printf 'No services need restarting\n' \
+         "$green" \
+         "$reset"
+
+  exit
+fi
+
+readarray -t outdated < <(printf '%s\n' "${outdated[@]}" | sort | uniq)
+
+printf 'The following services are about to restart: %b%s%b\n' \
+       "$green" \
+       "${outdated[*]}" \
+       "$reset"
+
+for service in "${outdated[@]}"; do
+  printf '%b%s%b: ' "$green" "$service" "$reset"
+
+  script="/var/data/${service%.service}/systemd/upgrade"
   if [[ -x "$script" ]]; then
-    printf 'Running %b%s%b\n' "$green" "$script" "$reset"
+    printf 'running %b%s%b\n' "$green" "$script" "$reset"
     "$script"
   else
-    printf 'Restarting %b%s%b\n' "$green" "$service" "$reset"
+    printf 'restarting\n'
     systemctl restart "$service"
   fi
 done
+
+printf '%bDone%b restarting services\n' \
+       "$green" \
+       "$reset"
