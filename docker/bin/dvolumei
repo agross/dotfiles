@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Inspect data inside a volume.
+
+set -euo pipefail
+
+source="${1?Need volume name}"
+shift
+
+cmd=(ls -la /data)
+if (($#)); then
+  cmd=("$@")
+fi
+
+set -x
+docker run \
+       --rm \
+       --mount "type=volume,source=$source,target=/data,readonly" \
+       busybox \
+       "${cmd[@]}"
