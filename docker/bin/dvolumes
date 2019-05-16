@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Inspect volume usage by container.
+
+set -euo pipefail
+
+green='\e[1;32m'
+reset='\e[0m'
+
+docker volume \
+       ls \
+       --format '{{.Name}}' |
+  xargs --replace={} \
+        sh -c "printf 'Volume %b%s%b:\n' '$green' '{}' '$reset' && docker ps --filter='volume={}'"
