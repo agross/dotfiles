@@ -14,16 +14,96 @@
 # service@instance.service is named service_instance.
 
 set -euo pipefail
-#set -x
+# set -x
+shopt -s extglob
 
 red='\e[1;31m'
 green='\e[1;32m'
+alternate='\e[1;36m'
 reset='\e[0m'
 
 map-container-to-service()
 {
   container="${1?Need container name}"
   printf '%s' "${container%%_*}.service"
+}
+
+print-services()
+{
+  local -n services="${1?Need array reference}"
+
+  if ! (( ${#services[@]} )); then
+    printf 'No services need restarting\n'
+    return 1
+  fi
+
+  readarray -t services < <(printf '%s\n' "${services[@]}" | sort | uniq)
+
+  printf '\nThe following services are about to restart: %b%s%b\n' \
+        "$green" \
+        "${services[*]}" \
+        "$reset"
+}
+
+select-services()
+{
+  local index
+  # shellcheck disable=SC2178
+  local -n services="${1?Need array reference}"
+  local selected=()
+
+  printf 'Enter the indices for the services you want to restart\n'
+  printf '  - separate indices with spaces\n'
+  printf '  - * selects everything\n'
+  printf '  - -<index> excludes service (-* excludes everything)\n'
+  printf '  - no input accepts selection\n'
+
+  while :; do
+    printf 'Index\tSelected\tService\n'
+    for index in "${!services[@]}"; do
+      local included=' '
+      [[ "${selected[$index]-}" == "${services[$index]}" ]] && included='*'
+
+      local color="$reset"
+      (( index % 2 == 0 )) && color="$alternate"
+
+      printf '%b%s\t%s\t\t%s%b\n' "$color" "$index" "$included" "${services[$index]}" "$reset"
+    done
+
+    read -r -p '> ' -e -a selection
+
+    # Nothing entered, break.
+    if ! (( ${#selection[@]} )); then
+      services=("${selected[@]}")
+      return
+    fi
+
+    for index in "${!selection[@]}"; do
+      local value="${selection[$index]}"
+
+      case "$value" in
+        +([[:digit:]]))
+          selected[$value]="${services[$value]}"
+          ;;
+
+        -+([[:digit:]]))
+          unset selected["${value#-}"]
+          ;;
+
+        '-*')
+          selected=()
+          ;;
+
+        '*')
+          selected=("${services[@]}")
+          ;;
+
+        *)
+          printf 'Unsupported value: %s\n' "$value"
+          ;;
+      esac
+    done
+  done
 }
 
 outdated=()
@@ -72,20 +152,25 @@ for image in "${used_images[@]}"; do
   done
 done
 
-if ! (( ${#outdated[@]} )); then
-  printf 'No services need restarting\n' \
-         "$green" \
-         "$reset"
+print-services outdated || exit 0
 
-  exit
+if [[ ! "${1-}" =~ ^(-f|--force)$ ]]; then
+  read -r -e -n 1 -p "Continue? [y/N/i] " answer
+
+  case "$answer" in
+    [Ii])
+      select-services outdated
+      print-services outdated || exit 0
+      ;;
+
+    [Yy])
+      ;;
+
+    *)
+      exit 1
+      ;;
+  esac
 fi
-
-readarray -t outdated < <(printf '%s\n' "${outdated[@]}" | sort | uniq)
-
-printf 'The following services are about to restart: %b%s%b\n' \
-       "$green" \
-       "${outdated[*]}" \
-       "$reset"
 
 for service in "${outdated[@]}"; do
   printf '%b%s%b: ' "$green" "$service" "$reset"
