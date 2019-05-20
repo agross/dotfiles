@@ -110,6 +110,9 @@ function gitconfig_aliases() {
     local alias=${pair[1]#alias.}
     local command=$pair[2]
 
+    # Prevent overwriting the alias builtin with an alias.
+    [[ "$alias" == 'alias' ]] && continue
+
     if [[ "$command[1]" == "!" ]]; then
       verbose Adding $fg[green].gitconfig$reset_color alias: $fg[red]$alias$reset_color = $fg[red]git $alias$reset_color
 
@@ -126,6 +129,9 @@ function gitcommand_aliases() {
   local cmd
   for cmd in ${(M)${(ok)commands}:#git-*}; do
     local alias=${cmd#git-}
+
+    # Prevent overwriting the alias builtin with an alias for git-alias.
+    [[ "$alias" == 'alias' ]] && continue
 
     verbose Adding $fg[green]git command$reset_color alias: \
             $fg[red]$alias$reset_color = $fg[red]git $alias$reset_color
@@ -148,6 +154,8 @@ function gitcommand_aliases() {
 function gitalias() {
   local alias="${1%%=*}"
   local command="${1#*=}"
+
+  [[ "$alias" == 'alias' ]] && return 1
 
   if [[ "$2" != "nogit" ]]; then
     command="git $command"
