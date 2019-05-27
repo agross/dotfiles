@@ -155,7 +155,7 @@ done
 print-services outdated || exit 0
 
 if [[ ! "${1-}" =~ ^(-f|--force)$ ]]; then
-  read -r -e -n 1 -p "Continue? [y/N/i] " answer
+  read -r -e -p "Continue? [y/N/i] " answer
 
   case "$answer" in
     [Ii])
