@@ -285,8 +285,7 @@ ask-continue()
     case "$answer" in
       [Ii])
         select-services services_ask
-        print-services services_ask
-        printf '\n'
+        print-services services_ask && printf '\n'
         ;;
 
       [Yy])
