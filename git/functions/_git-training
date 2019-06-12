@@ -48,6 +48,7 @@ _git-training::commands() {
     'cleanup:Undo Pull Request demo, remove samples, reset VS Code'
     'config:Manage temporary git configuration'
     'logs:Convert shell logs to HTML'
+    'record:Start recording an asciinema cast to a local file'
   )
 
   _describe -t commands 'git-training command' commands "$@"

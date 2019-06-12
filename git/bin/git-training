@@ -13,6 +13,10 @@ case $1 in
     command=cleanup
     ;;
 
+  record)
+    command=record
+    ;;
+
   *)
     command=usage
     ;;
@@ -31,6 +35,7 @@ git-training::usage() {
   printf '  config  Manage temporary git configuration\n'
   printf '  logs    Convert shell logs to HTML\n'
   printf '  cleanup Undo Pull Request demo, remove samples, reset VS Code\n'
+  printf '  record  Start recording an asciinema cast to a local file\n'
 
   return 1
 }
@@ -137,14 +142,30 @@ git-training::logs() {
       continue
     fi
 
-    ansifilter --input "$log" \
-               --output "$HOME/Downloads/Tag $day Teil $part.html" \
-               --html \
-               --doc-title "Tag $day Teil $part" \
-               --encoding utf-8 \
-               --font 'Menlo, Monaco, Consolas, Courier New, monospace'
+    for file in ${log%.*}.*(.); do
+      cp -- "$file" "$HOME/Downloads/Tag $day Teil $part.${file##*.}"
 
-    cp "$log" "$HOME/Downloads/Tag $day Teil $part.log"
+      case ${file##*.} in
+        log)
+          ansifilter --input "$file" \
+                     --output "$HOME/Downloads/Tag $day Teil $part.html" \
+                     --html \
+                     --doc-title "Tag $day Teil $part" \
+                     --encoding utf-8 \
+                     --font 'Menlo, Monaco, Consolas, Courier New, monospace'
+          ;;
+
+        asciinema)
+          # https://github.com/nbedos/termtosvg/issues/97
+          sed -i 's/"idle_time_limit": 1.0/"idle_time_limit": 1/' "$file"
+
+          termtosvg render \
+                    --template window_frame_js \
+                    "$file" \
+                    "$HOME/Downloads/Tag $day Teil $part.svg" \
+          ;;
+      esac
+    done
 
     part=$((part + 1))
   done
@@ -178,6 +199,15 @@ git-training::cleanup() {
        --request DELETE \
        --header "Authorization: token $GITHUB_DELETE_REPO_API_TOKEN" \
        https://api.github.com/repos/agross/archive-bundler
+}
+
+git-training::record() {
+  local newest_log="$(print ~/*.$ITERM_PROFILE.*.log(.On[1]:r))"
+
+  exec /usr/local/bin/asciinema rec \
+                                --idle-time-limit=1 \
+                                --command "$SHELL --interactive --login" \
+                                $newest_log.asciinema
 }
 
 git-training::$command "$@"

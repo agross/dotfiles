@@ -13,6 +13,11 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   cask p4merge
   cask fork
   cask gitup
+
+  # Tools required to record and convert casts.
+  formula ansifilter
+  formula asciinema
+  formula termtosvg
 fi
 
 local platform_specific=()
