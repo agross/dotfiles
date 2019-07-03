@@ -35,6 +35,10 @@ setopt hist_ignore_dups
 # event).
 setopt hist_ignore_all_dups
 
+# Remove command lines from the history list when the first character on the
+# line is a space, or when one of the expanded aliases contains a leading space.
+setopt hist_ignore_space
+
 # Whenever the user enters a line with history expansion, don't execute the line
 # directly; instead, perform history expansion and reload the line into the
 # editing buffer.
