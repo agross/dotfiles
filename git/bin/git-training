@@ -125,7 +125,7 @@ git-training::config() {
 
 git-training::logs() {
   if [[ "$1" == '--clear' ]]; then
-    rm --interactive -- ~/*_*.zsh\ Trainings.*.log(N.on)
+    rm --interactive -- ~/*_*-zsh\ Trainings-*.log(N.on)
     return $?
   fi
 
@@ -135,7 +135,7 @@ git-training::logs() {
   local part=1
   local log
   # Normal files, sorted by name, prevent warning when there are no files.
-  for log in ~/$(date --date="$offset" +%Y%m%d)_*.zsh\ Trainings.*.log(N.on); do
+  for log in ~/$(date --date="$offset" +%Y%m%d)_*-zsh\ Trainings-*.log(N.on); do
     du -h $log
     printf 'Convert part %s? [y/N]\n' $part
     if ! read -qs; then
@@ -202,7 +202,12 @@ git-training::cleanup() {
 }
 
 git-training::record() {
-  local newest_log="$(print ~/*.$ITERM_PROFILE.*.log(.On[1]:r))"
+  local newest_log="$(print ~/*-$ITERM_PROFILE-*.log(.On[1]:r))"
+
+  if [[ -z $newest_log ]]; then
+    printf 'Session log file not found\n' >&2
+    exit 1
+  fi
 
   exec /usr/local/bin/asciinema rec \
                                 --idle-time-limit=1 \
