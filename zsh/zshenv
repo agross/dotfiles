@@ -1,24 +1,28 @@
 # Loaded for all shells.
+#
+# Files loaded for local interactive shells:
+# 1. zshenv
+# 2. zprofile
+# 3. zshrc
+#
+# Files loaded for SSH sessions with screen:
+# 1. zshenv
+# 2. zprofile (execs screen)
+# 1. zshenv, now for a new zsh instance inside screen
+# 2. zshrc
+#
+# Files loaded for zsh -c:
+# 1. zshenv
 
 # ZSH_VERBOSE=true enables logging.
 # ZSH_VERBOSE=true
 
 # Path to dotfiles.
+# shellcheck disable=SC2034
 typeset -xr DOTFILES="$HOME/.dotfiles"
-
-# Prepend our startup function path and remove duplicates.
-typeset -Ua fpath
-fpath=("$DOTFILES/zsh/functions/startup" $fpath)
-autoload -Uz $DOTFILES/zsh/functions/startup/*(:t)
 
 # Language settings: This variable determines the locale category for any
 # category not specifically selected via a variable starting with `LC_'.
 export LANG=en_US.UTF-8
-
-# Load color support.
-autoload -U colors && colors
-
-# https://github.com/zplug/zplug/issues/332
-# verbose Loaded $fg[green]zshenv$reset_color
 
 # vim: set ft=zsh ts=2 sw=2 et:

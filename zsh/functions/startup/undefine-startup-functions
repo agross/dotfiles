@@ -5,7 +5,7 @@
 local this_directory=${${(%):-%x}:h}
 
 local -a functions
-functions=($this_directory/*(:t))
+functions=($this_directory/*(.:t))
 
 # First print what will be unfunctioned. We use two loops, one for printing,
 # another for the actual unfunction.
