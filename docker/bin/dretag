@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+image="${1?Need image to tag}"
+tag="${2?Need tag}"
+
+# If the tag does not contain a colon, append it to the image name.
+if [[ "$tag" != *:* ]]; then
+  tag="${image%:*}:${2?Need tag}"
+fi
+
+printf '%s will be tagged as %s\n' "$image" "$tag"
+
+docker image pull "$image"
+docker image tag "$image" "$tag"
+docker image rm "$image"
