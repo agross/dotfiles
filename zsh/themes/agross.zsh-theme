@@ -24,6 +24,11 @@ function {
   if (($+functions[iterm2_prompt_mark])) && \
      [[ "$ITERM_PROFILE" != 'zsh Trainings' ]]; then
     PROMPT+='%{$(iterm2_prompt_mark)%}'
+
+    # iterm's check whether the iterm2_prompt_mark function call is included
+    # does not work with setopt prompt_subst.
+    # https://gitlab.com/gnachman/iterm2/issues/7085#note_127567079
+    ITERM2_SQUELCH_MARK=true
   fi
   PROMPT+="$git_or_exit_status %E"
 
