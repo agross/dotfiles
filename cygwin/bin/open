@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+set -eu
+setopt pipe_fail
+
+if [[ ${1:-} == '-t' ]]; then
+  tc=${${commands[(r)TOTALCMD64.EXE]}:-/c/Tools/Total Commander/TOTALCMD64.EXE}
+
+  if [[ ! -x $tc ]]; then
+    printf 'Could not find Total Commander in $PATH or at %s\n' $tc >&2
+    exit 1
+  fi
+
+  open=$(cygpath --windows --absolute ${2:-.})
+
+  $tc /o /t $open
+else
+  cygstart ${1:-}
+fi
