@@ -1,0 +1,8 @@
+# Save buffer on the prompt.
+zle push-input
+
+BUFFER='git gl -20'
+zle accept-line
+
+# Restore buffer on a new prompt.
+zle reset-prompt
