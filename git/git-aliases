@@ -8,7 +8,7 @@
 	# Temporarily ignoring files.
 	ignore     = update-index --assume-unchanged
 	unignore   = update-index --no-assume-unchanged
-	ignored    = !git ls-files -v | grep ^h | cut --characters=3-
+	ignored    = !git ls-files -v | grep '^[[:lower:]]' | cut --characters=3-
 
 	gitignored = ls-files --others --directory --ignored --exclude-standard
 
