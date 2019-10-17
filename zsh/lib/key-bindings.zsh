@@ -62,3 +62,8 @@ bindkey '\em'     copy-earlier-word    # ESC, m
 
 zle -N insert-last-command-output
 bindkey '\e1'     insert-last-command-output # ESC, 1
+
+# Transpose arguments using ESC, t using shell rules.
+autoload -Uz transpose-words-match
+zstyle ':zle:transpose-words' word-style shell
+zle -N transpose-words transpose-words-match
