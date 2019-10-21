@@ -6,9 +6,10 @@
 	unset-x = update-index --chmod=-x
 
 	# Temporarily ignoring files.
-	ignore     = update-index --assume-unchanged
-	unignore   = update-index --no-assume-unchanged
-	ignored    = !git ls-files -v | grep '^[[:lower:]]' | cut --characters=3-
+	ignore     = update-index --skip-worktree
+	unignore   = update-index --no-skip-worktree
+	# Lowercase: files marked assume-unchanged, S: files marked skip-worktree.
+	ignored    = !git ls-files -v | grep '^[[:lower:]S]' | cut --characters=3-
 
 	gitignored = ls-files --others --directory --ignored --exclude-standard
 

@@ -217,7 +217,7 @@ zgit_hasunmerged() {
 zgit_has-assume-unchanged() {
   zgit_inworktree || return 1
 
-  if git -C "${zgit_info[toplevel]}" ls-files -v 2> /dev/null | grep --quiet '^h '; then
+  if git -C "${zgit_info[toplevel]}" ls-files -v 2> /dev/null | grep --quiet '^[[:lower:]S]'; then
     return 0
   else
     return 1
