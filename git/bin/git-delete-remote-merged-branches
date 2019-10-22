@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+# Deletes all remote branches that are no longer required because they have been
+# integrated into the current branch.
+#
+# git delete-remote-merged-branches [<remote>] [<comittish>]
+#
+# <remote> defaults to origin
+# <committish> defaults to HEAD. All <remote> branches that lead up to HEAD
+# (i.e. are integrated into HEAD) are deleted. Remote branches that share the
+# name with your current branch will not be deleted.
+#
+# Consider the following graph:
+#
+# * eeb0f799 (HEAD -> master, not-master, origin/master, origin/delete-b) Foobar
+# * afee971b Baz
+# * 6ed79961 (origin/delete-a) Bar
+# * e4b7fb44 Foo
+#
+# git delete-remote-merged-branches
+# git delete-remote-merged-branches origin HEAD
+# git delete-remote-merged-branches origin master
+# ...will delete origin's delete-a and delete-b branch
+#
+# git delete-remote-merged-branches origin not-master
+# git delete-remote-merged-branches origin eeb0f799
+# ...will delete origin's delete-a, delete-b and master branch
+#
+# git delete-remote-merged-branches origin afee971b
+# ...will delete origin's delete-a branch
+
+set -euo pipefail
+
+remote="${1:-origin}"
+branch="${2:-HEAD}"
+skip="$(git rev-parse --symbolic-full-name "$branch" || true)"
+delete=()
+
+while read -r sha ref; do
+  if git merge-base --is-ancestor "$sha" "$branch"; then
+    if [[ "$skip" == "$ref" ]]; then
+      >&2 printf 'Ignoring %s because it is your current branch\n' \
+                 "$ref"
+      continue
+    fi
+
+    delete+=("$ref")
+  fi
+done < <(git ls-remote --heads "$remote" 2>/dev/null)
+
+printf '\n'
+printf '%s\n' "${delete[@]}"
+read -r -e -p "Delete these branches from $remote? [y/N] " answer
+case "$answer" in
+  [Yy])
+    ;;
+
+  *)
+    exit 1
+    ;;
+esac
+
+git push --delete "$remote" "${delete[@]}"
