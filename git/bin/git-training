@@ -124,7 +124,7 @@ git-training::config() {
 }
 
 git-training::logs() {
-  if [[ "$1" == '--clear' ]]; then
+  if [[ "$1" == '--clean' ]]; then
     rm --interactive -- ~/*_*-zsh\ Trainings-*.{log,asciinema}(N.on)
     return $?
   fi

@@ -19,7 +19,7 @@ _git-training() {
           _arguments \
             '1:day index:(1 2 3)' \
             '2::date offset: ' \
-            '(--clear)--clear[Remove shell log files]' \
+            '(--clean)--clean[Remove shell log files]' \
             && ret=0
           ;;
 
