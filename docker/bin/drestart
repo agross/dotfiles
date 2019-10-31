@@ -109,6 +109,8 @@ add-restart-command()
 
   if [[ -x "$script" ]]; then
     services_add["$service"]="$script"
+  elif [[ "$service" == *@* ]]; then
+    services_add["$service"]="systemctl restart --all '$service'"
   else
     # shellcheck disable=SC2034
     services_add["$service"]="systemctl restart '$service'"
@@ -120,12 +122,12 @@ find-service()
   local container="${1?Need container name}"
 
   local service="${container%%_*}.service"
-  local instance="${container%%_*}@${container#*_}.service"
+  local template="${container%%_*}@*.service"
 
   if systemctl is-active --quiet "$service"; then
     printf '%s' "$service"
-  elif systemctl is-active --quiet "$instance"; then
-    printf '%s' "$instance"
+  elif systemctl is-active --quiet "$template"; then
+    printf '%s' "$template"
   fi
 }
 
