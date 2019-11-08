@@ -28,6 +28,7 @@ docker image \
     if ! used-by-container "$image"; then
       docker image \
              rm \
+             "$@" \
              "$image"
     fi
   done
