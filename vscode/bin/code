@@ -101,6 +101,11 @@ run() {
 
   [[ -v CODE_DEBUG ]] && typeset -p args
 
+  if [[ ! -t 0 ]]; then
+    # stdin is not a tty, something was piped to us.
+    exec "$code" "${args[@]}" 3<&0
+  fi
+
   exec "$code" "${args[@]}"
 }
 
