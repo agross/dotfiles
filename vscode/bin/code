@@ -77,21 +77,31 @@ translate-args() {
 
 }
 
+get-executable() {
+  local code="${1?Need code executable}"
+
+  while IFS= read -r executable; do
+    # Prevent calling ourselves.
+    if [[ "$executable" != "${BASH_SOURCE[0]}" ]]; then
+      printf "$executable"
+      return
+    fi
+  done < <(type -ap "$code" 2> /dev/null)
+
+  >&2 printf '%s executable not found\n' "$code"
+  return 127
+}
+
 run() {
-  local code="$1"
+  local code
+  code="$(get-executable "$1")"
+
   shift
   local args=("$@")
 
   [[ -v CODE_DEBUG ]] && typeset -p args
 
-  while IFS= read -r executable; do
-    # Prevent calling ourselves.
-    if [[ "$executable" != "${BASH_SOURCE[0]}" ]]; then
-      exec "$executable" "${args[@]}"
-    fi
-  done < <(type -ap "$code" 2> /dev/null)
-
-  exit 127
+  exec "$code" "${args[@]}"
 }
 
 translate-args "$@"
