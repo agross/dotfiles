@@ -40,6 +40,10 @@ for file in $~GLOB; do
   # Extract lowercase prefix.
   prefix=${(L)basename:0:$PREFIX_LENGTH}
 
+  if [[ $prefix == *. ]]; then
+    prefix=${prefix[1,-2]}_
+  fi
+
   target=$TARGET_DIRECTORY/$prefix/$name
   mkdir --parents -- ${target%/*}
 
