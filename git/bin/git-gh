@@ -1,20 +1,63 @@
 #!/usr/bin/env bash
 
-if [ -z "$1" ]; then
+set -euo pipefail
+
+while getopts ':hc:t:' opt; do
+  case "$opt" in
+    h)
+      read -r -d '' usage <<"USAGE" || true
+%s [-c commit-ish] [-t commit-ish] [username/repo]
+
+Opens the GitHub page for the current repository.
+
+Options:
+-c\tOpen commit page
+-t\tOpen tree page
+-h\tShow help
+USAGE
+
+      printf "$usage\\n" "${0##*/}"
+      exit 0
+      ;;
+
+    c)
+      path="/commit/$(git rev-parse "$OPTARG")"
+      ;;
+
+    t)
+      path="/tree/$(git rev-parse "$OPTARG")"
+      ;;
+
+    '?')
+      >&2 printf 'Invalid option: -%s\n' "$OPTARG"
+      exit 1
+      ;;
+
+    :)
+      >&2 printf 'Invalid option: -%s requires an argument\n' "$OPTARG"
+      exit 1
+      ;;
+  esac
+done
+
+shift $((OPTIND - 1))
+
+if [[ -z "${1:-}" ]]; then
   for url in $(git remote 2> /dev/null | xargs --max-args 1 git remote get-url --all 2> /dev/null); do
     case "$url" in
       https://github.com/*)
-        suffix="${url#https://github.com/}"
+        repo="${url#https://github.com/}"
         ;;
       git@github.com:*)
-        suffix="${url#git@github.com:}"
+        repo="${url#git@github.com:}"
         ;;
     esac
-    suffix="${suffix%.git}"
+
+    [[ -v repo ]] && repo="${repo%.git}"
   done
 fi
 
-url=https://github.com/${suffix:-${1?Need GitHub username/repo}}
+url=https://github.com/${repo:-${1?Need GitHub username/repo}}${path:-}
 
 case "$OSTYPE" in
   cygwin)
@@ -30,9 +73,9 @@ case "$OSTYPE" in
     ;;
 
   *)
-    printf 'Unsupported platform: %s\n' "$OSTYPE" 1>&2
+    >&2 printf 'Unsupported platform: %s\n' "$OSTYPE"
     exit 1
     ;;
 esac
 
-$program "$url"
+"$program" "$url"
