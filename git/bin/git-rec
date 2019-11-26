@@ -6,11 +6,10 @@ root="$PWD"
 nogit=
 error_exit=0
 
-opt=
 while getopts ':hnr:' opt; do
   case "$opt" in
     h)
-      read -r -d '' usage <<"EOF"
+      read -r -d '' usage <<"EOF" || true
 %s [-h] [-n] [-r ROOT] COMMAND
 
 Run git command recursively inside all git repositories under the current directory.
@@ -36,23 +35,29 @@ EOF
       ;;
 
     '?')
-      printf 'Invalid option: -%s\n' "$OPTARG"
+       >&2 printf 'Invalid option: -%s\n' "$OPTARG"
+      exit 1
+      ;;
+
+    :)
+      >&2 printf 'Invalid option: -%s requires an argument\n' "$OPTARG"
       exit 1
       ;;
   esac
 done
+
+shift $((OPTIND - 1))
 
 command=()
 if [[ -z "$nogit" ]]; then
   command=(git)
 fi
 
-if [[ $# -eq 0 ]]; then
-  printf 'Need command\n'
+if (($# == 0)); then
+  >&2 printf 'Need command\n'
   exit 2
 fi
 
-shift $((OPTIND - 1))
 command+=("$@")
 
 command_as_string="$(printf "%q " "${command[@]}")"
@@ -63,6 +68,11 @@ if [[ -t 1 ]]; then
   green='\e[1;32m'
   yellow='\e[1;33m'
   reset='\e[0m'
+else
+  red=
+  green=
+  yellow=
+  reset=
 fi
 
 printf 'Running %b%s%b in git repositories below %b%s%b:\n' \
