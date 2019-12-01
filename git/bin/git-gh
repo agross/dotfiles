@@ -2,17 +2,23 @@
 
 set -euo pipefail
 
-while getopts ':hc:t:' opt; do
+while getopts ':hc:p:tr' opt; do
   case "$opt" in
     h)
       read -r -d '' usage <<"USAGE" || true
-%s [-c commit-ish] [-t commit-ish] [username/repo]
+%s [-c commit-ish] [-p path] [username/repo]
 
-Opens the GitHub page for the current repository.
+Open the GitHub page for the current repository. If there is no terminal attached,
+only print the URL that would be openend.
 
 Options:
--c\tOpen commit page
--t\tOpen tree page
+-c\tOpen page for commit
+-r\tWhen -c is given a ref (i.e. branch, tag or HEAD), resolve to a SHA.
+-p\tOpen page for directory or file
+  \tPath are relative to the current directory.
+  \tImplies current branch or HEAD commit if -c is omitted.
+-t\tTest mode, shows example usage. For this to work, this script must reside
+  \tin a git repository with a GitHub remote.
 -h\tShow help
 USAGE
 
@@ -21,11 +27,89 @@ USAGE
       ;;
 
     c)
-      path="/commit/$(git rev-parse "$OPTARG")"
+      revision="$OPTARG"
+      ;;
+
+    r)
+      revision_as_sha=
+      ;;
+
+    p)
+      path="$OPTARG"
       ;;
 
     t)
-      path="/tree/$(git rev-parse "$OPTARG")"
+      # Run tests if stdout is a tty.
+      self="${0##*/}"
+      pushd "${0%$self}" > /dev/null
+
+      self_dir="$(git rev-parse --show-prefix)"
+      self_dir="${self_dir%/}"
+
+      head_short="$(git rev-parse --short HEAD)"
+      head="$(git rev-parse HEAD)"
+      master="$(git rev-parse master)"
+
+      declare -A tests
+      tests=(
+        [' ']=https://github.com/agross/dotfiles
+        ['holman/dotfiles']=https://github.com/holman/dotfiles
+        ['-c master']=https://github.com/agross/dotfiles/commit/master
+        ['-c master -r']=https://github.com/agross/dotfiles/commit/$master
+        ['-c HEAD']=https://github.com/agross/dotfiles/commit/HEAD
+        ['-c HEAD -r']=https://github.com/agross/dotfiles/commit/$head
+        ["-c $head_short"]=https://github.com/agross/dotfiles/commit/$head
+        ["-c $head_short -r"]=https://github.com/agross/dotfiles/commit/$head
+        ['-p .']=https://github.com/agross/dotfiles/tree/master/$self_dir
+        ["-p "$self""]=https://github.com/agross/dotfiles/blob/master/$self_dir/$self
+        ["-c master -p "$self""]=https://github.com/agross/dotfiles/tree/master/$self_dir
+        ['-c master -p . -r']=https://github.com/agross/dotfiles/tree/$master/$self_dir
+        ["-c master -p "$self""]=https://github.com/agross/dotfiles/blob/master/$self_dir/$self
+        ["-c master -p "$self" -r"]=https://github.com/agross/dotfiles/blob/$master/$self_dir/$self
+        ['-c HEAD -p .']=https://github.com/agross/dotfiles/tree/HEAD/$self_dir
+        ['-c HEAD -p . -r']=https://github.com/agross/dotfiles/tree/$head/$self_dir
+        ["-c HEAD -p "$self""]=https://github.com/agross/dotfiles/blob/HEAD/$self_dir/$self
+        ["-c HEAD -p "$self" -r"]=https://github.com/agross/dotfiles/blob/$head/$self_dir/$self
+        ["-c $head_short -p ."]=https://github.com/agross/dotfiles/tree/$head/$self_dir
+        ["-c $head_short -p . -r"]=https://github.com/agross/dotfiles/tree/$head/$self_dir
+        ["-c $head_short -p "$self""]=https://github.com/agross/dotfiles/blob/$head/$self_dir/$self
+        ["-c $head_short -p "$self" -r"]=https://github.com/agross/dotfiles/blob/$head/$self_dir/$self
+        ['-c git-gh-tag']=https://github.com/agross/dotfiles/tree/git-gh-tag
+        ['-c git-gh-tag -r']=https://github.com/agross/dotfiles/tree/$head
+        ['-c git-gh-tag -p .']=https://github.com/agross/dotfiles/tree/git-gh-tag/$self_dir
+        ['-c git-gh-tag -p . -r']=https://github.com/agross/dotfiles/tree/$head/$self_dir
+        ["-c git-gh-tag -p "$self""]=https://github.com/agross/dotfiles/blob/git-gh-tag/$self_dir/$self
+        ["-c git-gh-tag -p "$self" -r"]=https://github.com/agross/dotfiles/blob/$head/$self_dir/$self
+        ['-c git-gh-tag-annotated']=https://github.com/agross/dotfiles/tree/git-gh-tag-annotated
+        ['-c git-gh-tag-annotated -r']=https://github.com/agross/dotfiles/tree/$head
+        ['-c git-gh-tag-annotated -p .']=https://github.com/agross/dotfiles/tree/git-gh-tag-annotated/$self_dir
+        ['-c git-gh-tag-annotated -p . -r']=https://github.com/agross/dotfiles/tree/$head/$self_dir
+        ["-c git-gh-tag-annotated -p "$self""]=https://github.com/agross/dotfiles/blob/git-gh-tag-annotated/$self_dir/$self
+        ["-c git-gh-tag-annotated -p "$self" -r"]=https://github.com/agross/dotfiles/blob/$head/$self_dir/$self
+      )
+
+      trap 'git tag -d git-gh-tag git-gh-tag-annotated; popd > /dev/null' EXIT
+
+      git tag git-gh-tag "$head"
+      git tag --annotate --message=42 git-gh-tag-annotated "$head"
+
+      status=0
+      for key in "${!tests[@]}"; do
+        printf '%s\n' "$key"
+
+        expected="${tests[$key]}"
+        output="$(./"$self" $key)"
+        if [[ "$output" == "$expected" ]]; then
+          color='\e[1;32m'
+        else
+          status=1
+          color='\e[1;31m'
+        fi
+
+        printf '%bexpected: %s \n     was: %s%b\n' "$color" "$expected" "$output" '\e[0m'
+      done
+
+      exit $status
       ;;
 
     '?')
@@ -39,6 +123,48 @@ USAGE
       ;;
   esac
 done
+
+resolve() {
+  local revision="$1"
+
+  # Assume current branch or HEAD if nothing was given.
+  if [[ -z "$revision" ]]; then
+    revision="$(git symbolic-ref --short --quiet HEAD || git rev-parse HEAD)"
+  fi
+
+  # Transform short hashes into extended hashes.
+  extended="$(git rev-parse --verify "$revision")"
+  if [[ "$extended" == $revision* ]]; then
+    revision="$extended"
+  fi
+
+  if [[ -v revision_as_sha ]]; then
+    revision="$(git rev-parse --verify "$revision^{commit}")"
+  fi
+
+  printf '%s' "$revision"
+}
+
+if [[ -v revision || -v revision_as_sha || -v path ]]; then
+  resolved="$(resolve "${revision:-}")"
+fi
+
+if [[ -v path ]]; then
+  path="$(git rev-parse --show-prefix)$path"
+  [[ "$path" == */. ]] && path="${path%/.}"
+
+  type="$(git cat-file -t "$resolved:$path")"
+  path="/$type/$resolved/$path"
+elif [[ -v revision ]]; then
+  # Tags need /tree/tagname.
+  if [[ -n "$(git tag --list "$revision")" ]]; then
+    type=tree
+  else
+    type="$(git cat-file -t "$revision")"
+  fi
+
+  path="/$type/$resolved"
+fi
 
 shift $((OPTIND - 1))
 
@@ -59,6 +185,11 @@ fi
 
 url=https://github.com/${repo:-${1?Need GitHub username/repo}}${path:-}
 
+if [[ ! -t 1 ]]; then
+  printf '%s' "$url"
+  exit
+fi
+
 case "$OSTYPE" in
   cygwin)
     program=cygstart
@@ -73,7 +204,7 @@ case "$OSTYPE" in
     ;;
 
   *)
-    >&2 printf 'Unsupported platform: %s\n' "$OSTYPE"
+    >&2 printf 'Unsupported platform: %s. Please open manually: %s\n' "$OSTYPE" "$url"
     exit 1
     ;;
 esac
