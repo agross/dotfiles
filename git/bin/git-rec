@@ -2,54 +2,50 @@
 
 set -euo pipefail
 
-root="$PWD"
-nogit=
-error_exit=0
-
-while getopts ':hnr:' opt; do
-  case "$opt" in
-    h)
-      read -r -d '' usage <<"EOF" || true
-%s [-h] [-n] [-r ROOT] COMMAND
+options="\
+%s [--no-git] [--root=path] command
 
 Run git command recursively inside all git repositories under the current directory.
 
-Execute `git config --local git-rec.ignore true` inside a repository to ignore it.
+Execute 'git config --local git-rec.ignore true' inside a repository to ignore it.
+--
+h,help Show the help
 
-Options:
--r\tSpecify another root directory
--n\tDo not imply git command (i.e. do not prefix 'git' to COMMAND)
--h\tShow help
-EOF
+ Options
+r,root=path Specify another root directory
+n,no-git    Do not imply git command (i.e. do not prefix 'git' to command)"
 
-      printf "$usage\\n" "${0##*/}"
-      exit 0
+options="$(printf "$options" "${0##*/}")"
+
+eval "$(echo "$options" | git rev-parse --parseopt -- "$@" || echo exit $?)"
+
+while (($# > 0)); do
+  opt="$1"
+  shift
+
+  case "$opt" in
+    -r)
+      root="$1"
+      shift
       ;;
 
-    n)
-      nogit=true
+    -n)
+      no_implicit_git=
       ;;
 
-    r)
-      root="$OPTARG"
+    --)
+      break
       ;;
 
-    '?')
-       >&2 printf 'Invalid option: -%s\n' "$OPTARG"
-      exit 1
-      ;;
-
-    :)
-      >&2 printf 'Invalid option: -%s requires an argument\n' "$OPTARG"
+    *)
+      >&2 printf 'Unexpected option:: %s\n' "$opt"
       exit 1
       ;;
   esac
 done
 
-shift $((OPTIND - 1))
-
 command=()
-if [[ -z "$nogit" ]]; then
+if [[ ! -v no_implicit_git ]]; then
   command=(git)
 fi
 
@@ -59,7 +55,6 @@ if (($# == 0)); then
 fi
 
 command+=("$@")
-
 command_as_string="$(printf "%q " "${command[@]}")"
 command_as_string="${command_as_string% }"
 
@@ -75,6 +70,8 @@ else
   reset=
 fi
 
+root="${root:-$PWD}"
+
 printf 'Running %b%s%b in git repositories below %b%s%b:\n' \
        "$red" \
        "$command_as_string" \
@@ -82,6 +79,9 @@ printf 'Running %b%s%b in git repositories below %b%s%b:\n' \
        "$green" \
        "$root" \
        "$reset"
+
+exit_status=0
+
 while IFS= read -d $'\0' -r dotgit; do
   repo="${dotgit%.git}"
 
@@ -120,16 +120,16 @@ while IFS= read -d $'\0' -r dotgit; do
     if "${command[@]}"; then
       printf '%b✔%b Success\n' "$green" "$reset"
     else
-      error_exit=$?
+      exit_status=$?
 
       printf '%b✘%b Failed with exit status %d\n' \
              "$red" \
              "$reset" \
-             "$error_exit"
+             "$exit_status"
     fi
 
     popd > /dev/null
   fi
 done < <(find "$root" \( -type d -o -type f \) -name .git -print0 | sort --zero-terminated)
 
-exit $error_exit
+exit $exit_status

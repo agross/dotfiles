@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-set -uo pipefail
+set -euo pipefail
 
 # This is just a draft and likely not a complete solution, especially if you use
 # nested submodules.
 
-function safe-submodule-update::colors {
+function colors {
   local -A colors
   colors[red]="$(git    config --get-color ''                      'bold red')"
   colors[green]="$(git  config --get-color ''                      'bold green')"
@@ -20,19 +20,8 @@ function safe-submodule-update::colors {
   done
 }
 
-function safe-submodule-update::cleanup {
-  # Clear traps.
-  trap - EXIT SIGHUP SIGINT SIGTERM
-
-  local fun
-  for fun in colors cleanup check update run; do
-    # Undefine function.
-    unset -f safe-submodule-update::$fun
-  done
-}
-
-function safe-submodule-update::check {
-  local check results
+function check {
+  local check success
 
   # git submodule foreach fails as soon as we exit 1 for any check.
   # To communicate to this script whether any check failed, we use a temporary
@@ -41,7 +30,7 @@ function safe-submodule-update::check {
   success="$(mktemp)"
 
   IFS='' read -r -d '' check <<"EOF" || true
-    head="$(git log --color -1 --oneline)"
+    head="$(git show --color -1 --oneline --no-patch)"
     ref="$(git name-rev --name-only --no-undefined HEAD 2> /dev/null)"
 
     if [[ -n "$ref" ]]; then
@@ -64,7 +53,7 @@ function safe-submodule-update::check {
         $c_reset \
         "$head"
 
-      if [[ -n "$dry_run" || -n "$force_update" ]]; then
+      if [[ -v dry_run || -v force_update ]]; then
         :
       else
         rm -f "$success"
@@ -77,10 +66,7 @@ EOF
   [[ -f "$success" ]]
 }
 
-function safe-submodule-update::update {
-  local check_success="$1"
-  shift
-
+function update {
   local arg
   for arg in "$@"; do
     local "$arg"
@@ -95,7 +81,7 @@ function safe-submodule-update::update {
     return
   fi
 
-  if [[ "$check_success" == 0 ]]; then
+  if [[ "$status" == 0 ]]; then
     if [[ -v force_update ]]; then
       printf '%b%s%b Forced update, updating submodules\n' \
         "$c_yellow" \
@@ -119,48 +105,58 @@ function safe-submodule-update::update {
   fi
 }
 
-function safe-submodule-update::run {
-  trap safe-submodule-update::cleanup EXIT SIGHUP SIGINT SIGTERM
-
-  local function_name="$1"
-  shift
-
+function run {
   local -a args
-  args=( $(safe-submodule-update::colors) )
+  args=( $(colors) )
 
-  local opt
-  while getopts ':hnf' opt; do
+  local options="\
+%s [--dry-run] [--force]
+
+Checks whether submodule HEAD commits are reachable by branches or tags before
+running 'git submodule update'.
+--
+h,help Show the help
+
+ Options
+n,dry-run Dry run, check but do not update submodules
+f,force   Force submodule update regardless of submodule HEAD reachability"
+
+  options="$(printf "$options" "${0##*/}")"
+
+  eval "$(echo "$options" | git rev-parse --parseopt -- "$@" || echo exit $?)"
+
+  while (($# > 0)); do
+    opt="$1"
+    shift
+
     case "$opt" in
-      h)
-        printf '%s [-n] [-f] [-h]
-
-Checks whether submodule HEAD commits are reachable by branches or tags before running "git submodule update"
-
-Options:
-  -n\tDry run, check but do not update submodules
-  -f\tForce submodule update regardless of submodule HEAD reachability
-  -h\tShow help\n' \
-          "$function_name"
-        return
+      -n)
+        args+=('dry_run=')
         ;;
 
-      n)
-        args+=('dry_run=true')
+      -f)
+        args+=('force_update=')
         ;;
 
-      f)
-        args+=('force_update=true')
+      --)
+        break
         ;;
 
-      '?')
-        printf 'Invalid option: -%s\n' "$OPTARG"
-        return 1
+      *)
+        >&2 printf 'Unexpected option:: %s\n' "$opt"
+        exit 1
         ;;
     esac
   done
 
-  safe-submodule-update::check "${args[@]}"
-  safe-submodule-update::update $? "${args[@]}"
+  local status
+  if check "${args[@]}"; then
+    status=0
+  else
+    status=1
+  fi
+
+  update "status=$status" "${args[@]}"
 }
 
-safe-submodule-update::run "${0##*/}" "$@"
+run "$@"
