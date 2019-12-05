@@ -98,7 +98,6 @@ cask 'teamviewer'
 cask 'xnviewmp'
 
 # Apps from the Mac App Store.
-mas 'Amphetamine', id: 937_984_704
 mas 'Better', id: 1_121_192_229
 mas 'CleanMyDrive', id: 523_620_159
 mas 'EasyRes', id: 688_211_836
@@ -108,6 +107,7 @@ mas 'Monosnap', id: 540_348_655
 mas 'Moom', id: 419_330_170
 mas 'PCalc', id: 403_504_866
 mas 'Reeder', id: 880_001_334
+mas 'Spark', id: 1_176_895_641
 mas 'Trello', id: 1_278_508_951
 mas 'Tweetbot 3', id: 1_384_080_005
 mas 'WhatsApp', id: 1_147_396_723
