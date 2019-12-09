@@ -3,7 +3,7 @@
 set -euo pipefail
 
 options="\
-%s [--no-git] [--root=path] command
+%s [--no-git] [--root=path] -- command
 
 Run git command recursively inside all git repositories under the current directory.
 
@@ -12,8 +12,8 @@ Execute 'git config --local git-rec.ignore true' inside a repository to ignore i
 h,help Show the help
 
  Options
-r,root=path Specify another root directory
-n,no-git    Do not imply git command (i.e. do not prefix 'git' to command)"
+n,no-git    Do not imply git command (i.e. do not prefix 'git' to command)
+r,root=path Specify another root directory"
 
 options="$(printf "$options" "${0##*/}")"
 
