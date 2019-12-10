@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+dnf history info last | \
+  awk '/^\s+(Install|Upgrade)\s/ {print $2}' | \
+  xargs --no-run-if-empty dnf changelog --count=1
