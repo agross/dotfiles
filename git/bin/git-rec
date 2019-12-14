@@ -82,6 +82,8 @@ printf 'Running %b%s%b in git repositories below %b%s%b:\n' \
 
 exit_status=0
 
+trap 'exit 42' INT
+
 while IFS= read -d $'\0' -r dotgit; do
   repo="${dotgit%.git}"
 
