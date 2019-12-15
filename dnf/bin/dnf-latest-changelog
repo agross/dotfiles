@@ -2,6 +2,18 @@
 
 set -euo pipefail
 
+if [[ "${1:-}" == --today ]]; then
+  end="$(dnf history info last | \
+           sed -n 's/End time\s\+:\s\(.*\)(.*/\1/p')"
+
+  txn="$(date -d "$end" +%Y%m%d)"
+  today="$(date -d today +%Y%m%d)"
+
+  if (( txn != today)); then
+    exit
+  fi
+fi
+
 dnf history info last | \
   awk '/^\s+(Install|Upgrade)\s/ {print $2}' | \
   xargs --no-run-if-empty dnf changelog --count=1
