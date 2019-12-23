@@ -2,8 +2,12 @@
 
 set -e
 
-if [ "$OS" != Windows* ]; then
-  mono ./.paket/paket.exe "$@"
-else
-  ./.paket/paket.exe "@"
-fi
+case "$OS" in
+  Windows*)
+    ./.paket/paket.exe "$@"
+    ;;
+
+  *)
+    mono ./.paket/paket.exe "$@"
+    ;;
+esac
