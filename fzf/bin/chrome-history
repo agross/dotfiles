@@ -1,16 +1,19 @@
-# shellcheck disable=SC2148
+#!/usr/bin/env zsh
 
 if [[ "$OSTYPE" != darwin* ]]; then
   printf 'Unsupported platform: %s\n' "$OSTYPE" >&2
-  return 1
+  exit 1
 fi
 
 cols=$((COLUMNS / 3))
 sep='{::}'
 
-cp -f "$HOME/Library/Application Support/Google/Chrome/Default/History" /tmp/h
+tmp=$(mktemp)
+trap "rm --force -- $tmp" EXIT
+
+cp -f "$HOME/Library/Application Support/Google/Chrome/Default/History" "$tmp"
 sqlite3 -separator "$sep" \
-        /tmp/h \
+        "$tmp" \
         "select substr(title, 1, $cols), url
         from urls order by last_visit_time desc" |
   awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
