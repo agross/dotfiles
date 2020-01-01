@@ -7,10 +7,16 @@ dirs = Set.new
 $stdin.each_line do |line|
   dir = File.dirname(line)
   anc = []
+
   while dir != base && dirs.add?(dir)
     anc << dir
     dir = File.dirname(dir)
   end
-  puts anc.reverse unless anc.empty?
-  print line
+
+  begin
+    puts anc.reverse unless anc.empty?
+    print line
+  rescue Errno::EPIPE
+    exit 141
+  end
 end
