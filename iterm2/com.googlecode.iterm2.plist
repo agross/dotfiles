@@ -627,7 +627,7 @@
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>47 24 1393 853 0 0 1440 877 </string>
+	<string>47 0 1393 877 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -2415,7 +2415,7 @@
 								<key>base: priority</key>
 								<real>5</real>
 								<key>format</key>
-								<string>M/dd H:mm</string>
+								<string>MM/dd H:mm</string>
 								<key>localize</key>
 								<integer>1</integer>
 							</dict>
@@ -5845,9 +5845,9 @@
 		<string>3.3.1</string>
 		<string>3.3.3</string>
 		<string>3.3.7</string>
+		<string>3.3.0</string>
 		<string>3.2.9</string>
 		<string>3.3.2</string>
-		<string>3.3.0</string>
 	</array>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
@@ -5877,7 +5877,7 @@
 	<key>NoSyncLastTipTime</key>
 	<real>509034556.54214102</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>23</integer>
+	<integer>25</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -6611,6 +6611,7 @@
 	</array>
 	<key>NoSyncSearchHistory2</key>
 	<array>
+		<string>_processor</string>
 		<string>track</string>
 		<string>tyrack</string>
 		<string>branch topic</string>
@@ -6620,7 +6621,6 @@
 		<string>branch set</string>
 		<string>Ums</string>
 		<string>from</string>
-		<string>speed</string>
 	</array>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>503860793.59414703</real>
@@ -6733,7 +6733,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-12-14T12:03:28Z</date>
+	<date>2020-01-08T22:53:12Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
