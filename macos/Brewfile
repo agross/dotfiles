@@ -61,6 +61,7 @@ brew 'testssl'
 brew 'wakeonlan'
 brew 'webkit2png'
 brew 'xz'
+brew 'youtube-dl'
 
 cask 'android-file-transfer'
 cask 'anydesk'
