@@ -18,6 +18,9 @@ unsetopt auto_param_slash
 # Do not require a leading `.' in a filename to be matched explicitly.
 setopt globdots
 
+# Make globbing (filename generation) insensitive to case.
+unsetopt case_glob
+
 # In completion, recognize exact matches even if they are ambiguous.
 setopt rec_exact
 
