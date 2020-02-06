@@ -12,11 +12,11 @@ fi
 
 if [[ -n "$FZF_DEFAULT_COMMAND" ]]; then
   _fzf_compgen_path() {
-    eval $FZF_DEFAULT_COMMAND "$1"
+    eval $FZF_DEFAULT_COMMAND . "$1"
   }
 
   _fzf_compgen_dir() {
-    eval $FZF_DEFAULT_COMMAND --type directory "$1"
+    eval $FZF_DEFAULT_COMMAND --type directory . "$1"
   }
 fi
 
