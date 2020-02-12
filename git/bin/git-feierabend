@@ -14,6 +14,11 @@
 # branch with the downloaded commits by running
 # git branch something FETCH_HEAD
 
-git add --all && \
-  git commit --no-verify --message "Feierabendcommit $(date)" && \
-  git push --force origin HEAD:refs/private/$USER/$(git symbolic-ref --short HEAD)
+set -eu
+
+# Create commit.
+git add --all
+git commit --no-verify --message "Feierabendcommit $(date)" || true
+
+# Upload.
+git push --force origin "HEAD:refs/private/$USER/$(git symbolic-ref --short HEAD)"
