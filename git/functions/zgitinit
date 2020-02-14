@@ -29,8 +29,20 @@ zgit_info_update() {
   zgit_info=()
 
   local -a info
-  info=("${(@f)$(git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree --show-toplevel 2> /dev/null)}")
-  if [ $? -ne 0 ] || [ -z "$info[1]" ]; then
+  if ! info=("${(@f)$(git rev-parse --git-dir \
+                                    --is-inside-git-dir \
+                                    --is-bare-repository \
+                                    --is-inside-work-tree \
+                                    --show-toplevel \
+                                    2> /dev/null)}"); then
+    # Since git 2.25 --show-toplevel will error in bare repos which is OK
+    # because we will not need it.
+    if [[ "$info[3]" != true ]]; then
+      return
+    fi
+  fi
+
+  if [[ -z "$info[1]" ]]; then
     return
   fi
 
@@ -38,7 +50,7 @@ zgit_info_update() {
   zgit_info[ingitdir]=$info[2]
   zgit_info[bare]=$info[3]
   zgit_info[inwork]=$info[4]
-  zgit_info[toplevel]=$info[5]
+  [[ -n "$info[5]" ]] && zgit_info[toplevel]=$info[5]
 }
 
 zgit_isgit() {
