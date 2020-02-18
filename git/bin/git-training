@@ -123,6 +123,17 @@ git-training::config() {
   esac
 }
 
+git-training::logs::ask-overwrite() {
+  local file=${1?Need file}
+
+  if [[ ! -e $file ]]; then
+    return 0
+  fi
+
+  printf '%s already exists. Overwrite? [y/N]\n' $file
+  read -qs
+}
+
 git-training::logs() {
   if [[ "$1" == '--clean' ]]; then
     rm --interactive -- ~/*_*-zsh\ Trainings-*.{log,asciinema}(N.on)
@@ -133,36 +144,44 @@ git-training::logs() {
   local offset="${2:-now}"
 
   local part=1
-  local log
+  local log file target
   # Normal files, sorted by name, prevent warning when there are no files.
   for log in ~/$(date --date="$offset" +%Y%m%d)_*-zsh\ Trainings-*.log(N.on); do
     du -h $log
-    printf 'Convert part %s? [y/N]\n' $part
-    if ! read -qs; then
-      continue
-    fi
 
     for file in ${log%.*}.*(.); do
-      cp -- "$file" "$HOME/Downloads/Tag $day Teil $part.${file##*.}"
+      target="$HOME/Downloads/Tag $day Teil $part.${file##*.}"
+
+      if git-training::logs::ask-overwrite $target; then
+        cp --verbose -- "$file" "$target"
+      fi
 
       case ${file##*.} in
         log)
-          ansifilter --input "$file" \
-                     --output "$HOME/Downloads/Tag $day Teil $part.html" \
-                     --html \
-                     --doc-title "Tag $day Teil $part" \
-                     --encoding utf-8 \
-                     --font 'Menlo, Monaco, Consolas, Courier New, monospace'
+          target="$HOME/Downloads/Tag $day Teil $part.html"
+
+          if git-training::logs::ask-overwrite $target; then
+            ansifilter --input "$file" \
+                       --output "$target" \
+                       --html \
+                       --doc-title "Tag $day Teil $part" \
+                       --encoding utf-8 \
+                       --font 'Menlo, Monaco, Consolas, Courier New, monospace'
+          fi
           ;;
 
         asciinema)
           # https://github.com/nbedos/termtosvg/issues/97
           sed -i 's/"idle_time_limit": 1.0/"idle_time_limit": 1/' "$file"
 
-          termtosvg render \
-                    --template window_frame_js \
-                    "$file" \
-                    "$HOME/Downloads/Tag $day Teil $part.svg" \
+          target="$HOME/Downloads/Tag $day Teil $part.svg"
+
+          if git-training::logs::ask-overwrite $target; then
+            termtosvg render \
+                      --template window_frame_js \
+                      "$file" \
+                      "$target"
+          fi
           ;;
       esac
     done
