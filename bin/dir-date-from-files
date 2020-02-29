@@ -4,7 +4,7 @@
 
 set -eu
 
-autoload -Uz colors
+autoload -Uz colors && colors
 
 # /  = directories only
 # D  = include dotfiles
