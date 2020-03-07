@@ -14,13 +14,13 @@
 # service@instance.service is named service_instance.
 
 set -euo pipefail
-# set -x
 shopt -s extglob
 
 red='\e[1;31m'
 dark_red='\e[0;31m'
 green='\e[1;32m'
 dark_green='\e[0;32m'
+yellow='\e[1;33m'
 bold='\e[1m'
 reset='\e[0m'
 
@@ -103,9 +103,20 @@ add-restart-command()
     return
   fi
 
-  local script="${service%.service}"
-  script="${script%@*}"
-  script="/var/data/$script/systemd/upgrade"
+  local name="${service%.service}"
+  name="${name%@*}"
+
+  local disabled="/var/data/$name/systemd/.drestart-disabled"
+
+  if [[ -f "$disabled" ]]; then
+    printf 'Upgrades are disabled via: %b%s%b\n' \
+           "$yellow" \
+           "$disabled" \
+           "$reset"
+    return
+  fi
+
+  local script="/var/data/$name/systemd/upgrade"
 
   if [[ -x "$script" ]]; then
     services_add["$service"]="$script"
