@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+set -e
+
+term="$1"
+
+album="$(find -L ~/Music -type d -print0 |
+         sort -z |
+         fzf --read0 \
+             --reverse \
+             --tiebreak=begin \
+             --select-1 \
+             --exact \
+             --query "$term")"
+
+printf 'Playing %b%s%b\n' '\e[1;32m' "$album" '\e[0m'
+
+iina "$album"
