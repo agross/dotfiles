@@ -4,15 +4,21 @@ set -e
 
 term="$1"
 
-album="$(find -L ~/Music -type d -print0 |
-         sort -z |
-         fzf --read0 \
-             --reverse \
-             --tiebreak=begin \
-             --select-1 \
-             --exact \
-             --query "$term")"
-
-printf 'Playing %b%s%b\n' '\e[1;32m' "$album" '\e[0m'
-
-iina "$album"
+# By default, sort newest albums first.
+find -L ~/Music -mindepth 1 -type d -printf '%T+\t%p\0' |
+  sort -z --reverse |
+  cut -z --fields=2 |
+  fzf --read0 \
+      --reverse \
+      --no-sort \
+      --exact \
+      --tiebreak=begin \
+      --select-1 \
+      --no-header \
+      --cycle \
+      --query "$term" \
+      --bind="enter:execute(
+        printf 'Playing %b%s%b\n' '\e[1;32m' {} '\e[0m'
+        iina --no-stdin {}
+        sleep 3
+      )"
