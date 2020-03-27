@@ -13,6 +13,9 @@
 
 	gitignored = ls-files --others --directory --ignored --exclude-standard
 
+	# Git trainings: created often-used graph.
+	diverged = !git init && git some 2 && git checkout -b topic && git some 3 && git checkout - && git some
+
 	# git commit.
 	ci   = commit
 	cim  = commit --message
