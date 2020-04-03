@@ -64,12 +64,12 @@ platforms() {
 readlink-e() {
   local file="$1"
 
-  if [[ "$(platforms)" == 'mac' ]]; then
+  if ! target="$(readlink --canonicalize-existing "$file" 2> /dev/null)"; then
     perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$file"
     return
   fi
 
-  readlink --canonicalize-existing "$file"
+  printf '%s' "$target"
 }
 
 home-directory() {
