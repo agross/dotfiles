@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+item_id="${1?Need item ID}"
+path="${2?Need path}"
+
+red='\e[1;31m'
+green='\e[1;32m'
+reset='\e[0m'
+
+# shellcheck disable=SC2016
+added="$(beet info --library --format '$added' "id:$item_id")"
+if [[ -z "$added" ]]; then
+  >&2 printf 'No added timestamp for %s\n' "$path"
+  exit 1
+fi
+
+ts="$(date -d "$added" +%s)"
+
+# Make sure the random timestamp is different from the file's mtime.
+file_mtime="$(stat --format=%Y "$path")"
+randomized_ts=$file_mtime
+until ((randomized_ts != file_mtime )); do
+  randomized_ts=$((ts + (RANDOM % 100)))
+done
+
+randomized="$(date -d @$randomized_ts '+%Y-%m-%d %H:%M:%S')"
+
+printf '  mtime: %b%s%b -> %b%s%b (%s)\n' \
+       "$green" "$added" "$reset" \
+       "$red" "$randomized" "$reset" \
+       "${path##*/}"
+
+touch -m --date @$randomized_ts -- "$path"

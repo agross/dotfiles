@@ -1,0 +1,147 @@
+directory: ~/Nextcloud/Music
+library: ~/.config/beets/library.db
+
+import:
+  copy: false
+  move: false
+  write: false
+
+replace:
+  ':': ' -'
+  '\?': ''
+  # Defaults follow:
+  '[\\/]': _
+  '^\.': _
+  '[\x00-\x1f]': _
+  '[<>:"\?\*\|]': _
+  # '\.$': _
+  '\s+$': ''
+  '^\s+': ''
+
+paths:
+  # Order is important, first match wins.
+  # >- means newlines will be replaced by space.
+  #
+  # Compilations.
+  # comp:true:
+  #   $albumartist_no_va%if{albumartist_no_va, - }$album%aunique{}/$albumartist_no_va%if{albumartist_no_va, - }$album$maybe_disc - $track - $artist - $title
+  comp:true: >-
+    $albumartist_no_va$album%aunique{}/$albumartist_no_va$album$maybe_disc
+    - $track
+    - $artist
+    - $title
+  # Albums.
+  albumtype:album: >-
+    $albumartist
+    - $album%aunique{}/$artist
+    - $album$maybe_disc
+    - $track
+    - $title
+  # Single files.
+  singleton:true: >-
+    _Singles/$artist - $title
+  # Fallback.
+  default: >-
+    $albumartist
+    - $album%aunique{}/$artist
+    - $album$maybe_disc
+    - $track
+    - $title
+
+per_disc_numbering: true
+
+id3v23: true
+
+format_item: "\e[1;34m$path\e[0m"
+format_album: "\e[1;34m$path\e[0m"
+
+art_filename: cover
+
+plugins:
+  # Save mtime during import.
+  - importadded
+  # Only write specific tags.
+  - zero
+  # Automation.
+  - hook
+  # Find files with problems.
+  - badfiles
+  # Load metadata from discogs.
+  - discogs
+  # Add computed fields.
+  - inline
+  # Show info from file or library (beet into -l).
+  - info
+  # Download and embed covers.
+  - fetchart
+  - embedart
+
+# inline plugin.
+item_fields:
+  # Nothing for Various Artists, otherwise, the albumartist.
+  albumartist_no_va: u'%s - ' % (albumartist) if
+                     albumartist != 'Various Artists' else u''
+
+  # 'CD <number>' if there is more than one disc.
+  maybe_disc: u' CD %i' % (disc) if
+              disctotal > 1 else u''
+
+  # ' O.S.T.' for soundtracks.
+  maybe_soundtrack: u' O.S.T.' if
+                    albumtype == 'soundtrack' else u''
+
+importadded:
+  preserve_mtimes: true
+  # We do that ourselves, see after_write hook.
+  preserve_write_mtimes: false
+
+fetchart:
+  auto: true
+  cover_names:
+    - cover
+    - front
+  sources:
+    - filesystem
+    - amazon
+    - coverart
+    - itunes
+    - albumart
+    - wikipedia
+    - google
+
+embedart:
+  auto: true
+  #ifempty: true
+  maxwidth: 2000
+  remove_art_file: false
+
+zero:
+  auto: true
+  update_database: false
+  keep_fields:
+    - albumartist
+    - artist
+    - album
+    - disc
+    - track
+    - title
+    - year
+    # Both required, without art beet write would kick out covers.
+    # https://github.com/beetbox/beets/issues/3532
+    - images
+    - art
+
+hook:
+  hooks:
+    # Adjust cover mtime to match album mtime.
+    - event: art_set
+      command: >-
+        /Users/agross/.dotfiles/beets/hooks/art_set "{album.id}"
+                                                   "{album}"
+                                                   "{album.artpath}"
+
+    # Up the file's mtime by a couple of seconds to force Nextcloud to sync.
+    - event: after_write
+      command: >-
+        /Users/agross/.dotfiles/beets/hooks/after_write "{item.id}"
+                                                        "{path}"

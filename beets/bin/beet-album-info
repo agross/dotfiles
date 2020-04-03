@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Display album metadata.
+#
+# beet-album-info <query>
+# beet-album-info id:213
+
+set -euo pipefail
+
+green='\e[1;32m'
+reset='\e[0m'
+
+mapfile -t fields < <(beet fields)
+
+now=
+for field in "${fields[@]}"; do
+  if [[ "$field" == 'Album fields:' ]]; then
+    now=1
+    continue
+  fi
+
+  if [[ -z "$now" ]]; then
+    continue
+  fi
+
+  if [[ "$field" != \ \ * ]]; then
+    break
+  fi
+
+  field_trimmed="${field#  *}"
+
+  printf '%b%s%b: ' "$green" "$field_trimmed" "$reset"
+  beet list --album --format "\$$field_trimmed" "$@"
+done

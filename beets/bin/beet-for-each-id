@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Iterates all files in $PWD or by the query passed as the second argument and
+# gets their path and ID. The IDs of paths matching the first argument are
+# printed to stdout.
+#
+# This script works around the issue that beets does not match files
+# with umlauts. Mapping those to IDs and passing them to beets works.
+#
+# Example:
+# beet-for-each-id '*CD 1*' | xargs --open-tty -I{} beet modify disc=1 {}
+
+set -euo pipefail
+
+match="${1?Need pattern}"
+query="${2:-$PWD}"
+
+green='\e[1;32m'
+yellow='\e[1;33m'
+blue='\e[1;34m'
+reset='\e[0m'
+
+# shellcheck disable=SC2016
+mapfile -t result < <(beet info --library --format 'path="$path"; id="id:$id"' "$query")
+
+for pair in "${result[@]}"; do
+  [[ -z "$pair" ]] && continue
+
+  path=
+  id=
+  eval "$pair"
+
+  # shellcheck disable=SC2053
+  if [[ "$path" != $match ]]; then
+     >&2 printf '%b%s%b -> %bignored%b\n' \
+                "$blue" "$path" "$reset" \
+                "$yellow" "$reset"
+    continue
+  fi
+
+  >&2 printf '%b%s%b -> %b%s%b\n' \
+             "$blue" "$path" "$reset" \
+             "$green" "$id" "$reset"
+
+  printf '%s\n' "$id"
+done

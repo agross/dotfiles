@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+set -eu
+
+beet import ${1?Need path}
+[[ -d $1 ]] && beet extractart -a $1:t

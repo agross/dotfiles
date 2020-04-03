@@ -1,0 +1,26 @@
+# shellcheck shell=bash
+
+[[ "$platform" == 'mac' ]] || return 0
+
+formula python3
+pip3 install beets
+
+# Validation.
+formula mp3val
+formula flac
+
+# Cover art.
+pip3 install 'beets[fetchart]' \
+             https://github.com/ocelma/python-itunes/archive/master.zip
+formula imagemagick
+
+# Metadata.
+pip3 install discogs-client
+symlink "$topic/config.yaml" ~/.config/beets/config.yaml
+
+# Completion.
+mkdir --parents ~/.config/beets/completion/
+wget --output-document ~/.config/beets/completion/_beet \
+     https://raw.githubusercontent.com/beetbox/beets/master/extra/_beet
+
+# vim: set ft=sh ts=2 sw=2 et:
