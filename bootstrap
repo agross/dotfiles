@@ -272,6 +272,10 @@ install-dotfiles() {
                  "$green" "$root" "$reset_color")"
 }
 
+if [[ "${1-}" == --force ]]; then
+  overwrite_all=true
+fi
+
 # If we are sourced from a topic bootstrapper script this will be set and we
 # will only provide our functions.
 if [[ -z "${topic-}" ]]; then
