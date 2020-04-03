@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-if [[ "$OSTYPE" == 'mac' ]]; then
+if [[ "$platform" == 'mac' ]]; then
   formula zsh
 
   # Allow users to chsh to homebrew-installed zsh.
@@ -14,7 +14,7 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   fi
 fi
 
-[[ "$OSTYPE" == 'windows' ]] && return
+[[ "$platform" == 'windows' ]] && return
 
 symlink "$topic/zprofile"
 symlink "$topic/zshenv"

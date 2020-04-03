@@ -153,18 +153,19 @@ use a static path. For example, [my `git mergetool` scripts point to
 `bootstrap` will source each `topic/bootstrap` file and thereby run it using
 bash. The script can then
 
-* symlink files using the [`symlink $source $target`](https://github.com/agross/dotfiles/blob/master/bootstrap#L67)
+* symlink files using the [`symlink $source $target`](https://github.com/agross/dotfiles/blob/master/bootstrap#L71)
   function. `$target` may be omitted, e.g. `symlink $topic/foo` will create the
   symlink as `$HOME/.foo` pointing to `$DOTFILES/topic/foo`.
 * install additional programs at the script's discretion.
 
-Each `topic/bootstrap` has the following environment variables available:
+Each `topic/bootstrap` runs in a separate shell and has the following
+environment variables available:
 
-| Variable  | Description |
-| ----------| ----------- |
-| `$topic`  | Directory of the topic of the current `bootstrap` script |
-| `$OSTYPE` | Normalized operating system, e.g. `linux`, `mac`, `windows` for msysgit and Git for Windows, `cygwin`, or the original `$OSTYPE` |
-| `$HOME`   | Home directory for the operating system, e.g. `$HOME` for all Linux-style `$OSTYPE`s and `/c/Users/<you>/` for `$OSTYPE == 'windows'` |
+| Variable    | Description |
+| ------------| ----------- |
+| `$topic`    | Directory of the topic of the current `bootstrap` script (without trailing slash) |
+| `$platform` | Normalized operating system, e.g. `linux`, `mac`, `windows` for msysgit and Git for Windows, `cygwin`, or the original `$OSTYPE` |
+| `$HOME`     | Home directory for the operating system, e.g. `$HOME` for all Linux-style `$OSTYPE`s and `/c/Users/<you>/` for `$platform == 'windows'` |
 
 ### [zsh](#shell)-specific files
 

@@ -1,10 +1,10 @@
 # shellcheck shell=bash
 
-if [[ "$OSTYPE" != 'mac' ]]; then
+if [[ "$platform" != 'mac' ]]; then
   return
 fi
 
-ensure_homebrew_installed
+ensure-homebrew-installed
 brew bundle --verbose --file="$topic/Brewfile"
 brew cleanup
 

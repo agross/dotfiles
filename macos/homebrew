@@ -1,17 +1,18 @@
-ensure_homebrew_installed() {
+# shellcheck shell=bash
+
+ensure-homebrew-installed() {
   if command -v brew > /dev/null; then
     return
   fi
 
-  info "$(printf "Installing %b%s%b" $green homebrew $reset_color)"
-  sudo -v
-  yes '' | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  info "$(printf "Installing %b%s%b" "$green" homebrew "$reset_color")"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 }
 
-formula_installed() {
+formula-installed() {
   formula="$1"
 
-  ensure_homebrew_installed
+  ensure-homebrew-installed
   brew list "$formula" > /dev/null 2>&1
 }
 
@@ -19,16 +20,19 @@ formula() {
   formula="$1"
   shift
 
-  if ! formula_installed "$formula"; then
-    info "$(printf "Installing homebrew formula %b%s %s%b" $green "$formula $*" $reset_color)"
-    brew install "$formula" $@
+  if ! formula-installed "$formula"; then
+    info "$(printf "Installing homebrew formula %b%s%b" \
+                   "$green" \
+                   "$formula $*" \
+                   "$reset_color")"
+    brew install "$formula" "$@"
   fi
 }
 
 cask_installed() {
   cask="$1"
 
-  ensure_homebrew_installed
+  ensure-homebrew-installed
   ! brew cask info "$cask" | grep 'Not installed' > /dev/null 2>&1
 }
 
@@ -37,8 +41,11 @@ cask() {
   shift
 
   if ! cask_installed "$cask"; then
-    info "$(printf "Installing homebrew cask %b%s%b" $green "$cask $*" $reset_color)"
-    brew cask install "$cask" $@
+    info "$(printf "Installing homebrew cask %b%s%b" \
+                   "$green" \
+                   "$cask $*" \
+                   "$reset_color")"
+    brew cask install "$cask" "$@"
   fi
 }
 

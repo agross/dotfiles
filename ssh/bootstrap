@@ -1,31 +1,27 @@
 # shellcheck shell=bash
 
-if [[ "$OSTYPE" == 'mac' ]]; then
+if [[ "$platform" == 'mac' ]]; then
   formula openssh
   formula ssh-copy-id
 fi
 
-local ids="$topic/ssh"
+ids="$topic/ssh"
 
-local reset_nullglob="$(shopt -p nullglob)"
-local reset_dotglob="$(shopt -p dotglob)"
 shopt -s nullglob
 shopt -u dotglob
-local ids_available=($ids/*)
-$reset_nullglob
-$reset_dotglob
+ids_available=($ids/*)
 
 if ((!${#ids_available[*]})); then
   info "$(printf "Omitting symlink for %b%s%b as there are no IDs available" \
-        $green "$ids" $reset_color)"
+                 $green "$ids" $reset_color)"
   return
 fi
 
 symlink "$ids"
 
-local id
+# TODO
 for id in id_rsa capistrano letsencrypt teamcity; do
-  local private_key="$HOME/.ssh/$id"
+  private_key="$HOME/.ssh/$id"
   if [[ -f "$private_key" ]]; then
     chmod 600 "$private_key"
   fi

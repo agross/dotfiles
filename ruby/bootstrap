@@ -5,7 +5,7 @@ symlink "$topic/guard.rb"
 symlink "$topic/irbrc"
 symlink "$topic/pryrc"
 
-if [[ "$OSTYPE" == 'mac' ]]; then
+if [[ "$platform" == 'mac' ]]; then
   formula rbenv
   formula terminal-notifier
 fi

@@ -1,10 +1,10 @@
 # shellcheck shell=bash
 
-if [[ "$OSTYPE" == 'mac' ]]; then
+if [[ "$platform" == 'mac' ]]; then
   formula screen
 fi
 
-[[ "$OSTYPE" == 'windows' ]] && return
+[[ "$platform" == 'windows' ]] && return
 
 symlink "$topic/screenrc"
 

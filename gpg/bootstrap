@@ -1,11 +1,11 @@
 # shellcheck shell=bash
 
-if [[ "$OSTYPE" == 'mac' ]]; then
+if [[ "$platform" == 'mac' ]]; then
   formula gpg
   formula pinentry-mac
 fi
 
-[[ "$OSTYPE" == 'windows' ]] && return
+[[ "$platform" == 'windows' ]] && return
 
 symlink "$topic/gnupg"
 

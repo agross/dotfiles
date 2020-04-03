@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-if [[ "$OSTYPE" != 'mac' ]]; then
+if [[ "$platform" != 'mac' ]]; then
   return
 fi
 

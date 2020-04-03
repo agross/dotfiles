@@ -10,14 +10,25 @@ set -euo pipefail
 # Show executed commands.
 # set -x
 
-light_red='\e[01;31m'
-green='\e[0;32m'
-light_green='\e[01;32m'
-light_yellow='\e[01;33m'
-cyan='\e[0;36m'
-light_cyan='\e[01;36m'
-reset_color='\e[0m'
-clear_line='\e[2K'
+if [[ -t 0 ]]; then
+  light_red='\e[01;31m'
+  green='\e[0;32m'
+  light_green='\e[01;32m'
+  light_yellow='\e[01;33m'
+  cyan='\e[0;36m'
+  light_cyan='\e[01;36m'
+  reset_color='\e[0m'
+  clear_line='\e[2K'
+else
+  light_red=''
+  green=''
+  light_green=''
+  light_yellow=''
+  cyan=''
+  light_cyan=''
+  reset_color=''
+  clear_line=''
+fi
 
 info() {
   printf   "\r  [%b INFO %b] %b\n" \
@@ -45,12 +56,12 @@ platforms() {
     linux*)  printf 'linux';;
     darwin*) printf 'mac';;
     msys)    printf 'windows';;
-    cygwin)  printf "cygwin\nwindows";;
+    cygwin)  printf "cygwin windows";;
     *)       printf '%s' "$OSTYPE";;
   esac
 }
 
-readlink_e() {
+readlink-e() {
   local file="$1"
 
   if [[ "$(platforms)" == 'mac' ]]; then
@@ -61,9 +72,9 @@ readlink_e() {
   readlink --canonicalize-existing "$file"
 }
 
-home_directory() {
+home-directory() {
   case "${1?Need platform}" in
-    windows) printf '%s' "$(cygpath --unix "$USERPROFILE")";;
+    windows) cygpath --unix "$USERPROFILE";;
     *)       printf '%s' "$HOME";;
   esac
 }
@@ -71,18 +82,26 @@ home_directory() {
 symlink() {
   local src="${1?Need link source}"
   # If dst is not given, use src file name in $HOME, prepended with a dot.
-  local dst="$HOME/.${src##*/}"
-  if [[ $# -ge 2 ]]; then
+  local dst
+  if (($# >= 2)); then
     dst="$2"
+  else
+    dst="$HOME/.${src##*/}"
   fi
 
-  local overwrite= backup= skip= same=
+  local overwrite backup skip
+  # These global variables might be changed by symlink (which is either called
+  # here or by individual bootstrappers).
+  # We cannot declare them here because this would overwrite their contents
+  # if the variable is assigned already.
+  # declare overwrite_all backup_all skip_all
 
   if [[ -f "$dst" ]] || \
      [[ -d "$dst" ]] || \
      [[ -L "$dst" ]]; then
+    src="$(readlink-e "$src")"
     local current_target
-    current_target="$(readlink_e "$dst")"
+    current_target="$(readlink-e "$dst")"
 
     if [[ "$current_target" == "$src" ]]; then
       success "$(printf 'Already linked %b%s%b <-> %b%s%b' \
@@ -91,57 +110,57 @@ symlink() {
       return
     fi
 
-    if [[ "$overwrite_all" != 'true' ]] && \
-       [[ "$backup_all" != 'true' ]] && \
-       [[ "$skip_all" != 'true' ]]; then
+    if [[ -z "${overwrite_all-}" ]] && \
+       [[ -z "${backup_all-}" ]] && \
+       [[ -z "${skip_all-}" ]]; then
+      # shellcheck disable=SC2183
       user "$(printf "File already exists: %b%s%b (%b%s%b)
-                     Will be linked to: %b%s%b
-                     What do you want to do? (%bs%b)kip, (%bS%b)kip all, (%bo%b)verwrite, (%bO%b)verwrite all, (%bb%b)ackup, (%bB%b)ackup all?" \
-                     "$green" "$dst" "$reset_color" \
-                     "$cyan" "$(file --brief "$dst")" "$reset_color" \
-                     "$green" "$src" "$reset_color" \
-                     "$light_yellow" "$reset_color" \
-                     "$light_yellow" "$reset_color" \
-                     "$light_yellow" "$reset_color" \
-                     "$light_yellow" "$reset_color" \
-                     "$light_yellow" "$reset_color" \
-                     "$light_yellow" "$reset_color")"
+           Will be linked to: %b%s%b
+           What do you want to do? (%bs%b)kip, (%bS%b)kip all, (%bo%b)verwrite, (%bO%b)verwrite all, (%bb%b)ackup, (%bB%b)ackup all?" \
+           "$green" "$dst" "$reset_color" \
+           "$cyan" "$(file --brief "$dst" 2>/dev/null)" "$reset_color" \
+           "$green" "$src" "$reset_color" \
+           "$light_yellow" "$reset_color" \
+           "$light_yellow" "$reset_color" \
+           "$light_yellow" "$reset_color" \
+           "$light_yellow" "$reset_color" \
+           "$light_yellow" "$reset_color" \
+           "$light_yellow" "$reset_color")"
 
       while true; do
-          # Read from tty, needed because we read in outer loop.
-          local action
-          read -rn 1 action < /dev/tty
+        local action
+        read -rn 1 action
 
-          case "$action" in
-            o) overwrite=true;     break;;
-            O) overwrite_all=true; break;;
-            b) backup=true;        break;;
-            B) backup_all=true;    break;;
-            s) skip=true;          break;;
-            S) skip_all=true;      break;;
-            *) ;;
-          esac
+        case "$action" in
+          o) overwrite=true;     break;;
+          O) overwrite_all=true; break;;
+          b) backup=true;        break;;
+          B) backup_all=true;    break;;
+          s) skip=true;          break;;
+          S) skip_all=true;      break;;
+          *) ;;
+        esac
       done
     fi
 
-    overwrite="${overwrite:-$overwrite_all}"
-    backup="${backup:-$backup_all}"
-    skip="${skip:-$skip_all}"
+    overwrite="${overwrite:-${overwrite_all-}}"
+    backup="${backup:-${backup_all-}}"
+    skip="${skip:-${skip_all-}}"
 
-    if [[ "$skip" == 'true' ]]; then
+    if [[ -n "${skip-}" ]]; then
       success "$(printf 'Skipped %b%s%b <-> %b%s%b' \
                         "$green" "$src" "$reset_color" \
                         "$green" "$dst" "$reset_color")"
       return
     fi
 
-    if [[ "$overwrite" == 'true' ]]; then
+    if [[ -n "${overwrite-}" ]]; then
       rm -rf -- "$dst"
       success "$(printf 'Removed %b%s%b' \
                         "$green" "$dst" "$reset_color")"
     fi
 
-    if [[ "$backup" == 'true' ]]; then
+    if [[ -n "${backup-}" ]]; then
       mv -- "$dst" "${dst}.backup"
       success "$(printf 'Moved %b%s%b to %b%s%b' \
                         "$green" "$dst" "$reset_color" \
@@ -158,48 +177,103 @@ symlink() {
                     "$green" "$dst" "$reset_color")"
 }
 
-install_dotfiles() {
-  local dotfiles_root="$(dirname "$(readlink_e "$0")")"
+symlink-dotfiles-to-home() {
+  local root="${1?Need dotfiles root directory}"
+  local home="${2?Need home directory}"
+  local platform="${3?Need platform}"
 
-  local overwrite_all= backup_all= skip_all=
+  # shellcheck disable=SC2016
+  info "$(printf 'Installing dotfiles to %b$HOME%b=%b%s%b for %b$platform%b=%b%s%b' \
+                  "$light_red" "$reset_color" \
+                  "$green" "$home" "$reset_color" \
+                  "$light_red" "$reset_color" \
+                  "$light_yellow" "$platform" "$reset_color")"
 
-  info "$(printf "Installing dotfiles from %b%s%b" \
-                 "$green" "$dotfiles_root" "$reset_color")"
-
-  source "$dotfiles_root/macos/homebrew"
-
-  local platforms="$(platforms)"
-  while IFS=$'\n' read -r platform; do
-    local home="$(home_directory "$platform")"
-
-    info "$(printf "Installing dotfiles to %b\$HOME%b=%b%s%b for %b\$OSTYPE%b=%b%s%b" \
-                   "$light_red" "$reset_color" \
-                   "$green" "$home" "$reset_color" \
-                   "$light_red" "$reset_color" \
-                   "$light_yellow" "$platform" "$reset_color")"
-
-    # First, add a symlink for this dotfiles directory.
-    symlink "$dotfiles_root" "$home/.dotfiles"
-
-    # Find direct child directories (topics).
-    local topics="$(/usr/bin/find "$dotfiles_root" -mindepth 1 -maxdepth 1 -type d | sort)"
-    while IFS=$'\n' read -r topic; do
-      [[ -z "$topic" ]] && continue
-
-      # Find (optional) topic/bootstrap script and run it.
-      local bootstrap="$topic/bootstrap"
-      if [[ -f "$bootstrap" ]]; then
-        info "$(printf 'Running %b%s%b' \
-                        "$green" "$bootstrap" "$reset_color")"
-
-        # Run script from inside topic.
-        HOME="$home" OSTYPE="$platform" source "$bootstrap"
-      fi
-    done <<< "$topics"
-  done <<< "$platforms"
-
-  info "$(printf 'All installed from %b%s%b' \
-                 "$green" "$dotfiles_root" "$reset_color")"
+  # Add a symlink for this dotfiles directory.
+  symlink "$root" "$home/.dotfiles"
 }
 
-install_dotfiles
+run-topic-bootstrapper() {
+  local bootstrapper="${1?Need bootstrapper}"
+  local home="${2?Need home directory}"
+  local platform="${3?Need platform}"
+  local script
+
+  info "$(printf 'Running %b%s%b' \
+                  "$green" "$bootstrapper" "$reset_color")"
+
+  # Build script wrapper around bootstrapper.
+  script="\
+    set -euo pipefail
+
+    source '$0' # This script.
+    source '$root/macos/homebrew'
+    source '$bootstrapper'
+
+    # Write out the perhaps changed values for the *_all variables.
+    >&3 printf '# magic unicorns!\n'
+    >&3 printf 'overwrite_all=%s\n' \"\$overwrite_all\"
+    >&3 printf 'backup_all=%s\n' \"\$backup_all\"
+    >&3 printf 'skip_all=%s\n' \"\$skip_all\"
+    >&3 printf '# magic unicorns end!\n'
+  "
+
+  variables="$(mktemp)"
+
+  # Run wrapper with bash (like we do here).
+  # We pass some variables that we manage on our side and that may be used by
+  # the individual bootstrappers.
+  # The *_all variables may also be changed by user input.
+  /usr/bin/env -i \
+               PATH="$PATH" \
+               HOME="$home" \
+               platform="$platform" \
+               topic="${bootstrapper%/bootstrap}" \
+               \
+               overwrite_all="${overwrite_all-}" \
+               backup_all="${backup_all-}" \
+               skip_all="${skip_all-}" \
+               \
+               bash -c "$script" \
+               3>"$variables"
+
+  eval "$(cat "$variables")"
+  rm -f "$variables"
+}
+
+install-dotfiles() {
+  local root home platform bootstrappers bootstrapper
+
+  root="$(dirname "$(readlink-e "$0")")"
+
+  info "$(printf "Installing dotfiles from %b%s%b" \
+                 "$green" "$root" "$reset_color")"
+
+  for platform in $(platforms); do
+    home="$(home-directory "$platform")"
+    symlink-dotfiles-to-home "$root" "$home" "$platform"
+
+    # Find topics with bootstrappers. Bash > 3 cannot be assumed (on macOS).
+    # https://stackoverflow.com/a/32931403/149264
+    read -r -d '' -a bootstrappers < <(find -H \
+                                           "$home/.dotfiles" \
+                                           -mindepth 2 \
+                                           -maxdepth 2 \
+                                           -type f \
+                                           -name bootstrap \
+                                         | sort && printf '\0' )
+
+    for bootstrapper in "${bootstrappers[@]}"; do
+      run-topic-bootstrapper "$bootstrapper" "$home" "$platform"
+    done
+  done
+
+  info "$(printf 'All installed from %b%s%b' \
+                 "$green" "$root" "$reset_color")"
+}
+
+# If we are sourced from a topic bootstrapper script this will be set and we
+# will only provide our functions.
+if [[ -z "${topic-}" ]]; then
+  install-dotfiles
+fi

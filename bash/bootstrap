@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-if [[ "$OSTYPE" == 'mac' ]]; then
+if [[ "$platform" == 'mac' ]]; then
   formula bash
 
   # Allow users to chsh to homebrew-installed bash.
@@ -11,7 +11,7 @@ if [[ "$OSTYPE" == 'mac' ]]; then
   fi
 fi
 
-[[ "$OSTYPE" == 'windows' ]] && return
+[[ "$platform" == 'windows' ]] && return
 
 symlink "$topic/bashrc"
 
