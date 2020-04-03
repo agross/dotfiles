@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+set -e
+
+_BASH_VERSION="${_BASH_VERSION-latest}"
+
+for dir in /dotfiles /.dotfiles; do
+  docker run \
+          --rm \
+          --volume "$PWD:$dir" \
+          bash:$_BASH_VERSION \
+          sh -c "apk add perl tree &&
+                 bash --version &&
+                 $dir/bootstrap && tree -a ~"
+
+  docker run \
+          --rm \
+          --volume "$PWD:$dir" \
+          bash:$_BASH_VERSION \
+          sh -c "apk add perl tree &&
+                 bash --version &&
+                 cd $dir && ./bootstrap && tree -a ~"
+done
