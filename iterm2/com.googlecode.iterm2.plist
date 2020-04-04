@@ -12,6 +12,8 @@
 	<false/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
+	<key>ApplePressAndHoldEnabled</key>
+	<false/>
 	<key>AppleScrollAnimationEnabled</key>
 	<integer>0</integer>
 	<key>AppleSmoothFixedFontsSizeThreshold</key>
@@ -508,7 +510,7 @@
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
 	<key>HotkeyModifiers</key>
-	<integer>262401</integer>
+	<integer>0</integer>
 	<key>HotkeyTermAnimationDuration</key>
 	<real>0.10000000149011612</real>
 	<key>IRMemory</key>
@@ -621,13 +623,13 @@
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>309 365 770 429 0 0 1440 877 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
-	<string>99 294 592 584 0 0 1440 878 </string>
+	<string>99 293 592 584 0 0 1440 877 </string>
 	<key>NSWindow Frame com.apple.typography_panel_FiraCode-Regular</key>
 	<string>246 248 260 312 0 0 1440 878 </string>
 	<key>NSWindow Frame com.apple.typography_panel_Menlo-Regular</key>
 	<string>246 524 260 36 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>47 0 1393 877 0 0 1440 877 </string>
+	<string>47 24 1393 853 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>70 21 1210 757 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -2197,7 +2199,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>LigaMesloLGS-Regular 15</string>
+			<string>JetBrainsMono-Regular 15</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -5841,13 +5843,20 @@
 	<key>NoSyncAllAppVersions</key>
 	<array>
 		<string>3.3.6</string>
+		<string>3.3.8</string>
 		<string>3.3.4</string>
 		<string>3.3.1</string>
 		<string>3.3.3</string>
 		<string>3.3.7</string>
 		<string>3.3.0</string>
-		<string>3.2.9</string>
 		<string>3.3.2</string>
+		<string>3.2.9</string>
+	</array>
+	<key>NoSyncBFPRecents</key>
+	<array>
+		<string>Menlo</string>
+		<string>JetBrains Mono</string>
+		<string>Liga Meslo LG S</string>
 	</array>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
@@ -5862,7 +5871,7 @@
 		<key>screenFrame</key>
 		<string>{{0, 0}, {1440, 900}}</string>
 		<key>topLeft</key>
-		<string>{64, 618}</string>
+		<string>{476, 794}</string>
 	</dict>
 	<key>NoSyncHaveRequestedFullDiskAccess</key>
 	<true/>
@@ -5877,7 +5886,7 @@
 	<key>NoSyncLastTipTime</key>
 	<real>509034556.54214102</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>25</integer>
+	<integer>35</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -6198,6 +6207,14 @@
 				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
+				<string>currentTab.iterm2.localhostName</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
 				<string>style</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
@@ -6425,6 +6442,14 @@
 				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
+				<string>iterm2.localhostName</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
 				<string>tmuxWindowName</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
@@ -6604,24 +6629,6 @@
 	</dict>
 	<key>NoSyncSaveDocumentAsPathSet_saveDocumentAs:</key>
 	<true/>
-	<key>NoSyncSearchHistory</key>
-	<array>
-		<string>hub.home</string>
-		<string>/usr/local/bin</string>
-	</array>
-	<key>NoSyncSearchHistory2</key>
-	<array>
-		<string>_processor</string>
-		<string>track</string>
-		<string>tyrack</string>
-		<string>branch topic</string>
-		<string>track rem</string>
-		<string>einfa</string>
-		<string>eing</string>
-		<string>branch set</string>
-		<string>Ums</string>
-		<string>from</string>
-	</array>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>503860793.59414703</real>
 	<key>NoSyncTipsDisabled</key>
@@ -6733,7 +6740,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-01-08T22:53:12Z</date>
+	<date>2020-02-15T09:37:02Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -6774,7 +6781,7 @@
 		<string>Command History</string>
 	</array>
 	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1509817984</real>
+	<real>1580937728</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>UseBorder</key>
@@ -6797,7 +6804,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.3.7</string>
+	<string>3.3.8</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>7</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>

@@ -5,6 +5,7 @@ if [[ "$platform" != 'mac' ]]; then
 fi
 
 cask iterm2
+cask font-jetbrains-mono
 
 symlink "$topic/scripts/git trainings.scpt" \
         "$HOME/Library/Application Support/iTerm2/Scripts/git trainings.scpt"
