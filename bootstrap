@@ -275,13 +275,13 @@ install-dotfiles() {
 
     # Find topics with bootstrappers. Bash > 3 cannot be assumed (on macOS).
     # https://stackoverflow.com/a/32931403/149264
-    read -r -d '' -a bootstrappers < <(find -H \
-                                           "$home/.dotfiles" \
-                                           -mindepth 2 \
-                                           -maxdepth 2 \
-                                           -type f \
-                                           -name bootstrap \
-                                         | sort && printf '\0' )
+    IFS=$'\n' read -r -d '' -a bootstrappers < <(find -H \
+                                                     "$home/.dotfiles" \
+                                                     -mindepth 2 \
+                                                     -maxdepth 2 \
+                                                     -type f \
+                                                     -name bootstrap \
+                                                   | sort && printf '\0')
 
     for bootstrapper in "${bootstrappers[@]}"; do
       run-topic-bootstrapper "$bootstrapper" "$home" "$platform" "$@"
