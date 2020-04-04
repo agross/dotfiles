@@ -5,26 +5,31 @@ if [[ "$platform" == 'mac' ]]; then
   formula ssh-copy-id
 fi
 
-ids="$topic/ssh"
+directory="$topic/ssh"
 
 shopt -s nullglob
 shopt -u dotglob
-ids_available=($ids/*)
+ids=("$directory"/*)
 
-if ((!${#ids_available[*]})); then
+if ! ((${#ids[@]})); then
   info "$(printf "Omitting symlink for %b%s%b as there are no IDs available" \
-                 $green "$ids" $reset_color)"
+                 "$green" "$directory" "$reset_color")"
   return
 fi
 
-symlink "$ids"
+symlink "$directory"
 
-# TODO
-for id in id_rsa capistrano letsencrypt teamcity; do
-  private_key="$HOME/.ssh/$id"
-  if [[ -f "$private_key" ]]; then
-    chmod 600 "$private_key"
-  fi
-done
+find "$directory" \
+    -type f \
+    ! -name '*.*' \
+    ! -perm 600 \
+    -exec sh -c '
+      if ssh-keygen -l -f "$1" > /dev/null 2>&1; then
+        printf "Fixing permissons of %s\n" "$1"
+        chmod 600 -- "$1"
+      fi
+      exit 1
+      ' \
+      _ {} \;
 
 # vim: set ft=sh ts=2 sw=2 et:
