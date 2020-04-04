@@ -195,9 +195,29 @@ symlink-dotfiles-to-home() {
 
 run-topic-bootstrapper() {
   local bootstrapper="${1?Need bootstrapper}"
-  local home="${2?Need home directory}"
-  local platform="${3?Need platform}"
+  shift
+  local home="${1?Need home directory}"
+  shift
+  local platform="${1?Need platform}"
+  shift
   local script
+
+  local topic
+  topic="${bootstrapper%/bootstrap}"
+  topic_name="${topic##*/}"
+
+  # If we got extra args this is the list of topics we can only install.
+  while (($#)); do
+    if [[ "$topic_name" == "$1" ]]; then
+      break
+    fi
+
+    shift
+
+    if ! (($#)); then
+      return
+    fi
+  done
 
   info "$(printf 'Running %b%s%b' \
                   "$green" "$bootstrapper" "$reset_color")"
@@ -228,7 +248,7 @@ run-topic-bootstrapper() {
                PATH="$PATH" \
                HOME="$home" \
                platform="$platform" \
-               topic="${bootstrapper%/bootstrap}" \
+               topic="$topic" \
                \
                overwrite_all="${overwrite_all-}" \
                backup_all="${backup_all-}" \
@@ -264,7 +284,7 @@ install-dotfiles() {
                                          | sort && printf '\0' )
 
     for bootstrapper in "${bootstrappers[@]}"; do
-      run-topic-bootstrapper "$bootstrapper" "$home" "$platform"
+      run-topic-bootstrapper "$bootstrapper" "$home" "$platform" "$@"
     done
   done
 
@@ -274,10 +294,11 @@ install-dotfiles() {
 
 if [[ "${1-}" == --force ]]; then
   overwrite_all=true
+  shift
 fi
 
 # If we are sourced from a topic bootstrapper script this will be set and we
 # will only provide our functions.
 if [[ -z "${topic-}" ]]; then
-  install-dotfiles
+  install-dotfiles "$@"
 fi
