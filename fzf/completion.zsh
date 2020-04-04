@@ -43,5 +43,8 @@ fi
 # SSH connections to Windows hosts yield 'character set not supported'.
 [[ -n $SSH_CONNECTION && $OSTYPE == cygwin* ]] && return 0
 
-[[ -f ~/.fzf.zsh ]] || return 0
-source ~/.fzf.zsh
+for completion in  ~/.fzf.zsh \
+                   /usr/share/doc/fzf/examples/key-bindings.zsh; do
+  [[ -f $completion ]] && source $completion
+done
+unset completion
