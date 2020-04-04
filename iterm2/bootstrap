@@ -7,9 +7,14 @@ fi
 cask iterm2
 cask font-jetbrains-mono
 
-symlink "$topic/scripts/git trainings.scpt" \
-        "$HOME/Library/Application Support/iTerm2/Scripts/git trainings.scpt"
-symlink "$topic/scripts/trainings.scpt" \
-        "$HOME/Library/Application Support/iTerm2/Scripts/trainings.scpt"
+IFS=$'\n' read -r -d '' -a scripts < <(find "$topic/scripts" \
+                                           -type f \
+                                           -iname '*.scpt' \
+                                         | sort && printf '\0')
+
+for script in "${scripts[@]}"; do
+  symlink "$script" \
+          "$HOME/Library/Application Support/iTerm2/Scripts/${script##*/}"
+done
 
 # vim: set ft=sh ts=2 sw=2 et:
