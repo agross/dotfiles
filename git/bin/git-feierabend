@@ -13,6 +13,9 @@
 # Which stores the downloaded commits as FETCH_HEAD. You can then create a new
 # branch with the downloaded commits by running
 # git branch something FETCH_HEAD
+#
+# If you are in detached HEAD state the server-side branch will be named
+# "detached-HEAD".
 
 set -eu
 
@@ -20,5 +23,7 @@ set -eu
 git add --all
 git commit --no-verify --message "Feierabendcommit $(date)" || true
 
+ref="$(git symbolic-ref --short --quiet HEAD || printf 'detached-HEAD')"
+
 # Upload.
-git push --force origin "HEAD:refs/private/$USER/$(git symbolic-ref --short HEAD)"
+git push --force origin "HEAD:refs/private/$USER/$ref"
