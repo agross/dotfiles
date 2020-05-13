@@ -1,0 +1,14 @@
+#/usr/bin/env sh
+
+find "$HOME" \
+    -type d \
+    -name node_modules \
+    -prune \
+    -not \( \
+      -path '*/\.*' \
+      -o \
+      -path "$HOME/Library/*" \
+    \) \
+    -exec sh -c 'du -h "{}" | tail -1' \; \
+    -exec tmutil addexclusion "{}" \; \
+    -exec tmutil isexcluded "{}" \;
