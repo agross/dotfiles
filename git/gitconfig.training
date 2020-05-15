@@ -1,22 +1,18 @@
 [core]
-	whitespace = cr-at-eol
+	# Recommeded to display file names with umlauts un-encoded.
 	quotepath = false
-	# Notepad++ on Cygwin.
-	# editor = /C/Tools/Notepad++/notepad++.exe -multiInst -nosession -noPlugins \"$(cygpath --windows --absolute \"$1\")\"
-	# Notepad++ on msysgit (a.k.a. Git for Windows).
+
+	# Notepad++ with Git for Windows.
 	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession -noPlugins
-#[mergetool "bcomp"]
-#	cmd = '/C/Program Files (x86)/Beyond Compare 4/BComp.exe' -solo -automerge -reviewconflicts \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
-#	trustExitCode = true
-#[merge]
-#	tool = bcomp
-#[difftool "bcomp"]
-#	cmd = '/C/Program Files (x86)/Beyond Compare 4/BComp.exe' -solo -readonly \"$LOCAL\" \"$REMOTE\"
-#[diff]
-#	tool = bcomp
-[apply]
-	whitespace = nowarn
+
+	# Visual Studio Code (any OS as long as `code` is in the PATH).
+	# editor = code --new-window --wait
+
+# For more aliases, see git-aliases.
 [alias]
+	# s = status
+	# gl = log --oneline --all --graph
+
 	# This is a sample alias that
 	# - will be invoked by the shell (!) and not prefixed with 'git'
 	# - supports parameters ($1-default_value)
@@ -24,52 +20,43 @@
 	# - supports semicolons inside the string (alias needs to be enclosed by ")
 	#
 	# hello = "!sh -c 'echo \"hello, ${1-world}\"' --"
+
+# Aliases and settings I use outside of trainings.
 [include]
 	path = ~/.dotfiles/git/git-aliases
-	# Those are symlinked by the bootstrapper:
+	# Those are symlinked by the bootstrapper based on the OS.
 	path = ~/.git-config/alias-ui.config
 	path = ~/.git-config/credential-helper.config
 	path = ~/.git-config/gitignore.config
-	path = ~/.git-config/ruby-aliases.config
+
+# Default git {diff,merge}tool.
+[diff]
+	tool = diffmerge
+[merge]
+	tool = diffmerge
+
+# Recommended settings for git {diff,merge}tool.
+[difftool]
+	# prompt = false
+[mergetool]
+	# prompt = false
+	# keepBackup = false
+
+# Instead of relying on git's builtin {diff,merge}tool support, use my own.
+[include]
+	path = ~/.dotfiles/git/git-difftools
+	path = ~/.dotfiles/git/git-mergetools
+
 [color]
-	ui = auto
+	# Use colors for git-wtf (https://github.com/michaelklishin/git-wtf).
 	wtf = true
-[color "branch"]
-	local = green
-	remote = red
-[color "diff"]
-	meta = blue
+
+# Change some git log colors such that they become more readable on white
+# backgrounds.
 [color "decorate"]
 	head = blue
 	branch = green
 	remoteBranch = red
 	tag = bold magenta
-[branch]
-	# autoSetupRebase = always
-[merge]
-	tool = diffmerge
-[include]
-	path = ~/.dotfiles/git/git-mergetools
-[mergetool]
-	# prompt = false
-	# keepBackup = false
-[diff]
-	tool = diffmerge
-	# renames = copies
-	submodule = log
-[include]
-	path = ~/.dotfiles/git/git-difftools
-[difftool]
-	prompt = false
-[clean]
-	# requireForce = false
-[rerere]
-	# enabled = true
-	# autoupdate = true
-[push]
-	# default = simple
-	# default = matching
-[rebase]
-	# autoSquash = true
 
 # vim: set ft=gitconfig ts=2 sw=2 noet:
