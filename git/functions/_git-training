@@ -31,6 +31,12 @@ _git-training() {
             && ret=0
           ;;
 
+        break)
+          _arguments \
+            '1:timeout in minutes' \
+            && ret=0
+          ;;
+
         *)
           _message 'no more arguments' \
             && ret=0
@@ -49,6 +55,7 @@ _git-training::commands() {
     'config:Manage temporary git configuration'
     'logs:Convert shell logs to HTML'
     'record:Start recording an asciinema cast to a local file'
+    'break:Start break timer (default: 10 minutes)'
   )
 
   _describe -t commands 'git-training command' commands "$@"

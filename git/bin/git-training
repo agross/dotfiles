@@ -17,6 +17,10 @@ case $1 in
     command=record
     ;;
 
+  break)
+    command=break
+    ;;
+
   *)
     command=usage
     ;;
@@ -36,6 +40,7 @@ git-training::usage() {
   printf '  logs    Convert shell logs to HTML\n'
   printf '  cleanup Undo Pull Request demo, remove samples, reset VS Code\n'
   printf '  record  Start recording an asciinema cast to a local file\n'
+  printf '  break   Start break timer (default: 10 minutes)\n'
 
   return 1
 }
@@ -232,6 +237,15 @@ git-training::record() {
                                 --idle-time-limit=1 \
                                 --command "$SHELL --interactive --login" \
                                 $newest_log.asciinema
+}
+
+git-training::break() {
+  time=${1:-10}
+
+  killall 'AS Timer' 2> /dev/null
+
+  exec '/Applications/AS Timer.app/Contents/MacOS/AS Timer' \
+       "[SetMinutes=$time, SetSeconds=00, Start]" 2> /dev/null &disown
 }
 
 git-training::$command "$@"
