@@ -37,6 +37,9 @@ paths:
     - $album$maybe_disc
     - $track
     - $title
+  # Mixes (determined by path, see below).
+  mix:true: >-
+    _Mixes/$artist - $title
   # Single files.
   singleton:true: >-
     _Singles/$artist - $title
@@ -89,6 +92,9 @@ item_fields:
   # ' O.S.T.' for soundtracks.
   maybe_soundtrack: u' O.S.T.' if
                     albumtype == 'soundtrack' else u''
+  mix: |
+    import os
+    return os.path.dirname(path).endswith(b'/_Mixes')
 
 importadded:
   preserve_mtimes: true
