@@ -7,22 +7,23 @@ dir-date-from-newest-file() {
 
   dir="${1?Need directory}"
   red='\e[1;31m'
+  green='\e[1;32m'
   blue='\e[1;34m'
-  green='\e[1;33m'
   reset='\e[0m'
 
   newest="$(find "$dir" \
                 -mindepth 1 \
                 -type f \
-                -exec stat -c "%Y %n" {} \+ |
+                -exec stat -c '%Y %n' {} \+ |
             sort -n |
-            cut -d" " -f 2- |
+            cut -d' ' -f 2- |
             tail -n 1)"
 
   if [[ -n "$newest" ]]; then
-    printf "%b%s%b -> %b%s%b\n" \
-           "$blue" "$dir" "$reset" \
-           "$green" "${newest##*/}" "$reset"
+    printf '%b%s%b: %b%s/%b%s\n' \
+           "$green" "$(stat -c '%.10y' "$newest")" "$reset" \
+           "$blue" "${dir##*/}" "$reset" \
+           "${newest##*/}"
 
     touch -r "$newest" -- "$dir"
   else
@@ -37,4 +38,5 @@ find "$music" \
     -mindepth 1 \
     -type d \
     -print0 |
+    sort -z |
     xargs -0 -I {} bash -c 'dir-date-from-newest-file "{}"'
