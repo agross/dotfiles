@@ -7,8 +7,7 @@ script_path="${0%/*}"
 
 local_music="$HOME/Music/Music/"
 droid_music="/sdcard/Music"
-droid_host=172.16.0.15
-droid_port=2222
+droid_host=android
 
 rsync --progress \
       --verbose \
@@ -18,14 +17,12 @@ rsync --progress \
       --delete \
       --delete-excluded \
       --exclude-from "$script_path/$script.exclude" \
-      --rsh "ssh -p \"$droid_port\"" \
       "$local_music" \
       "$droid_host:$droid_music"
 
-scp -P "$droid_port" \
-    "$script_path/android-sync.dir-dates" \
+scp "$script_path/android-sync.dir-dates" \
     "$droid_host":"$droid_music"
 
-ssh -p "$droid_port" \
-    "$droid_host" \
+# shellcheck disable=2029
+ssh "$droid_host" \
     bash "$droid_music/android-sync.dir-dates" "$droid_music"
