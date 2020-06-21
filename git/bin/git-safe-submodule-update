@@ -5,7 +5,7 @@ set -euo pipefail
 # This is just a draft and likely not a complete solution, especially if you use
 # nested submodules.
 
-function colors {
+colors() {
   local -A colors
   colors[red]="$(git    config --get-color ''                      'bold red')"
   colors[green]="$(git  config --get-color ''                      'bold green')"
@@ -20,7 +20,7 @@ function colors {
   done
 }
 
-function check {
+check() {
   local check success
 
   # git submodule foreach fails as soon as we exit 1 for any check.
@@ -53,7 +53,7 @@ function check {
         $c_reset \
         "$head"
 
-      if [[ -v dry_run || -v force_update ]]; then
+      if [[ -n "${dry_run:-}" || -n "${force_update:-}" ]]; then
         :
       else
         rm -f "$success"
@@ -66,13 +66,13 @@ EOF
   [[ -f "$success" ]]
 }
 
-function update {
+update() {
   local arg
   for arg in "$@"; do
     local "$arg"
   done
 
-  if [[ -v dry_run ]]; then
+  if [[ -n "${dry_run:-}" ]]; then
     printf '%b%s%b Dry run requested, omitting submodule update\n' \
       "$c_yellow" \
       ! \
@@ -82,7 +82,7 @@ function update {
   fi
 
   if [[ "$status" == 0 ]]; then
-    if [[ -v force_update ]]; then
+    if [[ -n "${force_update:-}" ]]; then
       printf '%b%s%b Forced update, updating submodules\n' \
         "$c_yellow" \
         ! \
@@ -105,7 +105,7 @@ function update {
   fi
 }
 
-function run {
+run() {
   local -a args
   args=( $(colors) )
 
@@ -113,7 +113,8 @@ function run {
 %s [--dry-run] [--force]
 
 Checks whether submodule HEAD commits are reachable by branches or tags before
-running 'git submodule update'.
+running 'git submodule update'. This prevents these commits from becoming
+unreachable by the submodule update.
 --
 h,help Show the help
 
@@ -131,11 +132,11 @@ f,force   Force submodule update regardless of submodule HEAD reachability"
 
     case "$opt" in
       -n)
-        args+=('dry_run=')
+        args+=('dry_run=true')
         ;;
 
       -f)
-        args+=('force_update=')
+        args+=('force_update=true')
         ;;
 
       --)
