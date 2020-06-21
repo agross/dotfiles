@@ -16,13 +16,13 @@ rsync --progress \
       --partial \
       --delete \
       --delete-excluded \
-      --exclude-from "$script_path/$script.exclude" \
+      --exclude-from "$script_path/../$script/exclude" \
       "$local_music" \
       "$droid_host:$droid_music"
 
-scp "$script_path/android-sync.dir-dates" \
+scp "$script_path/../$script/dir-dates" \
     "$droid_host":"$droid_music"
 
 # shellcheck disable=2029
 ssh "$droid_host" \
-    bash "$droid_music/android-sync.dir-dates" "$droid_music"
+    bash "$droid_music/dir-dates" "$droid_music"
