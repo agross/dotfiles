@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+
+# Set cover.jpg mtimes according to newest file in directory.
+
+set -eu
+
+setopt extended_glob
+
+autoload -Uz colors && colors
+
+# .  = files only
+# D  = include dotfiles
+# N  = no error if there are no matches
+# od = depth first
+# on = sort by name
+for cover in **/cover.jpg(.DNodon); do
+  dir=${cover%/*}
+
+  # N  = no error if there are no matches
+  # D  = include dotfiles
+  # om = order by modified date, newest first
+  # Y1 = limit to one match
+  newest_non_cover=($dir/*~*cover.jpg(NDomY1))
+
+  if [[ ${#newest_non_cover[@]} -eq 0 ]]; then
+    printf '%bempty%b: %b%s%b\n' \
+           $fg_bold[red] \
+           $reset_color \
+           $fg_bold[blue] \
+           $cover \
+           $reset_color
+
+    continue
+  fi
+
+  date=$(date +%Y-%m-%d --reference $newest_non_cover)
+  printf '%b%s%b: %b%s/%b%s\n' \
+         $fg_bold[green] \
+         $date \
+         $reset_color \
+         $fg_bold[blue] \
+         $dir \
+         $reset_color \
+         ${newest_non_cover##*/}
+
+  touch --reference $newest_non_cover $cover
+done
