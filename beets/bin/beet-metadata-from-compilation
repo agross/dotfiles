@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+# E.g. album_id:645
+query=${1?Need query}
+
+for id in $(beet-for-each-id '*' $query); do
+  file=$(beet info -l --format '$path' $id)
+  printf '%s is %s\n' $id $file
+
+  track=$(echo $file | awk -F' - ' '{print $2}')
+  artist=$(echo $file | awk -F' - ' '{print $3}')
+  title=$(echo $file | awk -F' - ' '{print $4}')
+  title=${title%*.mp3}
+
+  beet modify comments! track=$track artist=$artist title=$title $id
+done

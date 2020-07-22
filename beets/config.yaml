@@ -73,7 +73,7 @@ plugins:
   - discogs
   # Add computed fields.
   - inline
-  # Show info from file or library (beet into -l).
+  # Show info from file or library (beet info -l).
   - info
   # Download and embed covers.
   - fetchart
