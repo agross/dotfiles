@@ -15,7 +15,7 @@ _terminal-title::preexec() {
   # Executed just after a command has been read and is about to be executed.
 
   # Print command line that is executed, but expand aliases ($2 instead of $1).
-  print -Pnf '\e]0;%s%s\a' "$(_terminal-title::ssh-prefix)" "$2"
+  print -Pnf '\e]0;%s%s\a' "$(_terminal-title::ssh-prefix)" "$2" 2> /dev/null
 }
 
 _terminal-title::precmd() {
