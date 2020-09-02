@@ -1,6 +1,6 @@
 # shellcheck disable=SC2148
 
-[[ "$(platform)" == 'windows' ]] || return 0
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
 
 # If we started an SSH agent on Windows or got SSH_AUTH_SOCK via agent forwarding,
 # make the environment variables known system-wide for use with cmd.exe or

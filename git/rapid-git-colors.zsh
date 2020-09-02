@@ -1,4 +1,4 @@
-[[ "$(platform)" == 'windows' ]] || return 0
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
 
 typeset -gA RAPID_GIT_COLORS
 RAPID_GIT_COLORS[reset]=$reset_color

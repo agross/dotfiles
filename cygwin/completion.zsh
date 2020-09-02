@@ -1,4 +1,4 @@
-[[ "$(platform)" == 'windows' ]] || return 0
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
 
 # Drives that cannot be reached by globbing.
 local drives=($(mount | command grep --perl-regexp '^\w: on /\w ' | cut --delimiter=' ' --fields=3))

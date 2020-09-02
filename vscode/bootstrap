@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-if [[ "$platform" == 'mac' ]]; then
+if [[ "$OSTYPE" == darwin* ]]; then
   cask visual-studio-code
 fi
 

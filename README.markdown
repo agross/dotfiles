@@ -164,8 +164,8 @@ environment variables available:
 | Variable    | Description |
 | ------------| ----------- |
 | `$topic`    | Directory of the topic of the current `bootstrap` script (without trailing slash) |
-| `$platform` | Normalized operating system, e.g. `linux`, `mac`, `windows` for msysgit and Git for Windows, `cygwin`, or the original `$OSTYPE` |
-| `$HOME`     | Home directory for the operating system, e.g. `$HOME` for all Linux-style `$OSTYPE`s and `/c/Users/<you>/` for `$platform == 'windows'` |
+| `$OSTYPE  ` | Operating system type, e.g. `linux-gnu`, `darwin19.0.3`, `cygwin`, i.e. the original `$OSTYPE` |
+| `$HOME`     | Home directory for the operating system, e.g. `$HOME` for all Linux-style `$OSTYPE`s and `/c/Users/<you>/` for `$OSTYPE == 'windows'` |
 
 ### [zsh](#shell)-specific files
 

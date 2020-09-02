@@ -1,10 +1,8 @@
 # shellcheck shell=bash
 
-[[ "$platform" == 'cygwin' ]] || \
-[[ "$platform" == 'windows' ]] && \
-return
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] && return
 
-if [[ "$platform" == 'mac' ]]; then
+if [[ "$OSTYPE" == darwin* ]]; then
   formula htop --with-ncurses
 fi
 

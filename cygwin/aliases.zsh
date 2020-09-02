@@ -1,4 +1,4 @@
-[[ "$(platform)" == 'windows' ]] || return 0
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
 
 # Some Cygwin programs like to produce stackdumps.
 alias rsd='rm -f *.exe.stackdump'

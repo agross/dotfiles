@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-[[ "$platform" == 'mac' ]] || return 0
+[[ "$OSTYPE" == darwin* ]] || return 0
 
 formula python3
 pip3 install beets

@@ -1,5 +1,5 @@
 # shellcheck shell=bash
 
-[[ "$platform" == 'mac' ]] && formula thefuck || return 0
+[[ "$OSTYPE" == darwin* ]] && formula thefuck || return 0
 
 # vim: set ft=sh ts=2 sw=2 et:

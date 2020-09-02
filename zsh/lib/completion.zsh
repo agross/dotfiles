@@ -79,7 +79,7 @@ zstyle ':completion:history-words:*' remove-all-dups yes
 # 4. Substring completion.
 # http://stackoverflow.com/a/24237590/149264
 # Way too slow on Windows.
-if [[ "$(platform)" != 'windows' ]]; then
+if [[ ! "$OSTYPE" =~ ^(msys|cygwin)$ ]]; then
   zstyle ':completion:*' matcher-list '' \
                                       'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' \
                                       'r:|[._-]=* r:|=*' \
@@ -93,7 +93,7 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:complete:-command-:*' ignored-patterns '*.(manifest|bat|dll|exe)'
 
 # Ignore .DS_Store and .localized as files on macOS.
-if [[ "$(platform)" == 'mac' ]]; then
+if [[ "$OSTYPE" == darwin* ]]; then
   zstyle ':completion:*:*:*:*:*files' ignored-patterns '.DS_Store|.localized'
 fi
 

@@ -1,6 +1,6 @@
 # shellcheck disable=SC2148
 
-[[ "$(platform)" == 'windows' ]] || return 0
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
 
 local bin_path="${0%/*}/bin"
 path=($bin_path $path)

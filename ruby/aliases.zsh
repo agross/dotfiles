@@ -4,7 +4,7 @@
 alias bun='bundle'
 alias bex='bundle exec'
 
-[[ "$(platform)" == 'windows' ]] || return 0
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
 
 verbose Setting up Windows Ruby aliases
 

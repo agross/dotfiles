@@ -4,7 +4,7 @@ symlink "$topic/gitconfig"
 symlink "$topic/gitconfig.training"
 symlink "$topic/git-wtfrc"
 
-if [[ "$platform" == 'mac' ]]; then
+if [[ "$OSTYPE" == darwin* ]]; then
   formula git
   cask beyond-compare
   cask diffmerge
@@ -21,8 +21,8 @@ if [[ "$platform" == 'mac' ]]; then
 fi
 
 platform_specific=()
-case "$platform" in
-  mac)
+case "$OSTYPE" in
+  darwin*)
     platform_specific=("$topic/platform-specific/macos")
     ;;
 

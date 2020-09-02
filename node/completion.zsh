@@ -1,4 +1,4 @@
-[[ "$(platform)" == 'windows' ]] || return 0
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
 
 local prefix="$(cygpath --unix "$APPDATA/npm")"
 local completion

@@ -1,4 +1,4 @@
-[[ "$(platform)" == 'windows' ]] || return 0
+[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
 
 # Have zsh automatically sync $cygwin and global exported $CYGWIN, minus duplicates.
 typeset -gxaUT CYGWIN cygwin ' '

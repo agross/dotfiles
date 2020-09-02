@@ -51,10 +51,8 @@ fail() {
   exit 1
 }
 
-platforms() {
+ostypes() {
   case "$OSTYPE" in
-    linux*)  printf 'linux';;
-    darwin*) printf 'mac';;
     msys)    printf 'windows';;
     cygwin)  printf "cygwin windows";;
     *)       printf '%s' "$OSTYPE";;
@@ -73,7 +71,7 @@ readlink-e() {
 }
 
 home-directory() {
-  case "${1?Need platform}" in
+  case "${1?Need OS type}" in
     windows) cygpath --unix "$USERPROFILE";;
     *)       printf '%s' "$HOME";;
   esac
@@ -180,14 +178,14 @@ symlink() {
 symlink-dotfiles-to-home() {
   local root="${1?Need dotfiles root directory}"
   local home="${2?Need home directory}"
-  local platform="${3?Need platform}"
+  local ostype="${3?Need OS type}"
 
   # shellcheck disable=SC2016
-  info "$(printf 'Installing dotfiles to %b$HOME%b=%b%s%b for %b$platform%b=%b%s%b' \
+  info "$(printf 'Installing dotfiles to %b$HOME%b=%b%s%b for %b$OSTYPE%b=%b%s%b' \
                   "$light_red" "$reset_color" \
                   "$green" "$home" "$reset_color" \
                   "$light_red" "$reset_color" \
-                  "$light_yellow" "$platform" "$reset_color")"
+                  "$light_yellow" "$ostype" "$reset_color")"
 
   # Add a symlink for this dotfiles directory.
   symlink "$root" "$home/.dotfiles"
@@ -198,7 +196,7 @@ run-topic-bootstrapper() {
   shift
   local home="${1?Need home directory}"
   shift
-  local platform="${1?Need platform}"
+  local ostype="${1?Need OS type}"
   shift
   local script
 
@@ -247,7 +245,7 @@ run-topic-bootstrapper() {
   /usr/bin/env -i \
                PATH="$PATH" \
                HOME="$home" \
-               platform="$platform" \
+               OSTYPE="$OSTYPE" \
                topic="$topic" \
                \
                overwrite_all="${overwrite_all-}" \
@@ -262,16 +260,16 @@ run-topic-bootstrapper() {
 }
 
 install-dotfiles() {
-  local root home platform bootstrappers bootstrapper
+  local root home ostype bootstrappers bootstrapper
 
   root="$(dirname "$(readlink-e "$0")")"
 
   info "$(printf "Installing dotfiles from %b%s%b" \
                  "$green" "$root" "$reset_color")"
 
-  for platform in $(platforms); do
-    home="$(home-directory "$platform")"
-    symlink-dotfiles-to-home "$root" "$home" "$platform"
+  for ostype in $(ostypes); do
+    home="$(home-directory "$ostype")"
+    symlink-dotfiles-to-home "$root" "$home" "$ostype"
 
     # Find topics with bootstrappers. Bash > 3 cannot be assumed (on macOS).
     # https://stackoverflow.com/a/32931403/149264
@@ -284,7 +282,7 @@ install-dotfiles() {
                                                    | sort && printf '\0')
 
     for bootstrapper in "${bootstrappers[@]}"; do
-      run-topic-bootstrapper "$bootstrapper" "$home" "$platform" "$@"
+      run-topic-bootstrapper "$bootstrapper" "$home" "$ostype" "$@"
     done
   done
 
