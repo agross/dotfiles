@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# Rename DKB account statement PDFs as per my conventions. Perform dry run with
-# -n.
+# Rename account statement PDFs as per my conventions. Perform dry run with -n.
 
 set -eu
 setopt PIPE_FAIL
@@ -36,3 +35,12 @@ zmv $opt \
 zmv $opt \
     '([[:digit:]]##)_(Kontoauszug)_*_vom_([[:digit:]]##)-([[:digit:]]##)-([[:digit:]]##)_[[:digit:]]##.pdf(.N)' \
     '$2 ${1##0##} $5-$4-$3.pdf'
+
+# Renault Bank.
+#
+# AZG187730200_002_20190228.pdf
+# ->
+# Kontoauszug 187730200 2019-02-28.pdf
+zmv $opt \
+    'AZG([[:digit:]]##)_*_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2)).pdf(.N)' \
+    'Kontoauszug $1 $2-$3-$4.pdf'
