@@ -242,6 +242,13 @@ git-training::record() {
 git-training::break() {
   time=${1:-10}
 
+  # Record break start and end time for video editing.
+  breaks="$HOME/Downloads/git-training-breaks-$(date --iso-8601=date).txt"
+  printf '%s - %s\n' \
+         "$(date '+%H:%M')" \
+         "$(date '+%H:%M' --date "+$time minutes")" \
+         >> "$breaks"
+
   killall 'AS Timer' 2> /dev/null
 
   exec '/Applications/AS Timer.app/Contents/MacOS/AS Timer' \
