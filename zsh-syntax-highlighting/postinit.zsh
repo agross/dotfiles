@@ -14,6 +14,9 @@ zle -N fast-colors
 # on the iTerm profile.
 FAST_WORK_DIR=$(mktemp --directory --suffix zsh-highlight-theme)
 
+# https://github.com/zdharma/fast-syntax-highlighting/issues/203
+touch $FAST_WORK_DIR/secondary_theme.zsh
+
 typeset -Ua overlays
 overlays=(
   8/overlay.ini
