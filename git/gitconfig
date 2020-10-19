@@ -92,7 +92,7 @@
 	newnormal = green
 	newhighlight = bold green 22
 [include]
-	path = ~/.git-config/windows/diff-highlight-colors.config
+	path = ~/.git-config/diff-highlight-colors.config
 [url "git@github.com:"]
 	insteadOf = gh:
 [url "git@grossweber.com"]
