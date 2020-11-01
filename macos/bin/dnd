@@ -48,7 +48,12 @@ else
   # http://unix.stackexchange.com/a/148698/72946
   # http://stackoverflow.com/a/10408906/149264
   nohup caffeinate -u -t $((9 * 60 * 60)) < /dev/null > /dev/null 2>&1 &disown
-  m volume mute
+
+  if ! scutil --dns | grep --quiet --fixed-strings home.therightstuff.de; then
+    # Only mute while not at home.
+    m volume mute
+  fi
+
   killall Flux 2> /dev/null
   osascript <<< 'tell application "PopClip" to set enabled to false'
   dnd::on
