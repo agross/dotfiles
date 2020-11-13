@@ -2,32 +2,19 @@
 
 autoload -U colors && colors
 
-defaults=(
-  defaults
-  -currentHost
-  write
-  ~/Library/Preferences/ByHost/com.apple.notificationcenterui
-)
+toggle_dnd='tell application "BetterTouchTool"
+  trigger_action "{\"BTTPredefinedActionType\":200}"
+end tell
+'
 
 function dnd::on() {
-  local enabledAt=$(date -u '+%Y-%m-%d %H:%M:%S +0000')
-
-  $defaults doNotDisturb -boolean true
-  $defaults doNotDisturbDate -date "$enabledAt"
-
-  killall NotificationCenter
+  osascript <<< $toggle_dnd > /dev/null
 
   printf 'DND turned %bon%b\n' "$fg[green]" "$reset_color"
 }
 
 function dnd::off() {
-  $defaults doNotDisturb -boolean false
-  defaults -currentHost \
-           delete \
-           ~/Library/Preferences/ByHost/com.apple.notificationcenterui \
-           doNotDisturbDate
-
-  killall NotificationCenter
+  osascript <<< $toggle_dnd > /dev/null
 
   printf 'DND turned %boff%b\n' "$fg[red]" "$reset_color"
 }
