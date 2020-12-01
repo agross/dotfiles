@@ -44,3 +44,13 @@ zmv $opt \
 zmv $opt \
     'AZG([[:digit:]]##)_*_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2)).pdf(.N)' \
     'Kontoauszug $1 $2-$3-$4.pdf'
+
+# LBB/Amazon.
+#
+# Kartenabrechnung_13082020_4920.pdf or
+# Kreditkartenabrechnung_13082020_4920.pdf
+# ->
+# Amazon 2020-08-13.pdf
+zmv $opt \
+    '(Kartenabrechnung|Kreditkartenabrechnung)_([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c4))_*.pdf(.N)' \
+    'Amazon $4-$3-$2.pdf'
