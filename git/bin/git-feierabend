@@ -4,6 +4,9 @@
 # branch on the server. (Private means nobody else will likely fetch it,
 # although everbody can.)
 #
+# After publishing the "backup commit" the commit itself is removed and
+# the index is restored. Partially staged files will be retained as such.
+#
 # Let's say your user name is agross and you work in feature/foo. git feierabend
 # will create a server-side branch named refs/private/agross/feature/foo. You
 # can inspect server-side branches by running git ls-remote origin.
@@ -19,11 +22,31 @@
 
 set -eu
 
-# Create commit.
+# Save current commit and index.
+commit="$(git rev-parse HEAD)"
+index="$(git write-tree)"
+
+# Stage all files.
 git add --all
-git commit --no-verify --message "Feierabendcommit $(date)" || true
+
+# Create commit.
+if ! git commit --no-verify --message "Feierabendcommit $(date)"; then
+  printf '%bNo changes to commit.\n%b' '\e[1;32m' '\e[0m'
+  exit
+fi
 
 ref="$(git symbolic-ref --short --quiet HEAD || printf 'detached-HEAD')"
 
 # Upload.
-git push --force origin "HEAD:refs/private/$USER/$ref"
+if ! git push --force origin "HEAD:refs/private/$USER/$ref"; then
+  printf '%bFailed to upload.\n%b' '\e[1;31m' '\e[0m'
+  exit=1
+else
+  exit=0
+fi
+
+# Restore previous HEAD commit and index.
+git reset --mixed "$commit"
+git read-tree "$index"
+
+exit $exit
