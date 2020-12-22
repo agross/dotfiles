@@ -21,8 +21,10 @@ docker image \
   grep --invert-match ':<none>' |
   while read -r image; do
     if ! is-local "$image"; then
-      docker image \
-             pull \
-             "$image"
+      if ! docker image \
+                  pull \
+                  "$image"; then
+        printf 'Failed pulling %s\n' "$image"
+      fi
     fi
   done
