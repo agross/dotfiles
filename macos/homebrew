@@ -45,7 +45,7 @@ cask() {
                    "$green" \
                    "$cask $*" \
                    "$reset_color")"
-    brew cask install "$cask" "$@"
+    brew install --cask "$cask" "$@"
   fi
 }
 
