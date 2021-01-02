@@ -18,6 +18,9 @@ replace:
   '\s+$': ''
   '^\s+': ''
 
+path_sep_replace: '／'
+drive_sep_replace: '／'
+
 paths:
   # Order is important, first match wins.
   # >- means newlines will be replaced by space.
