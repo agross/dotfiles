@@ -2,19 +2,14 @@
 
 autoload -U colors && colors
 
-toggle_dnd='tell application "BetterTouchTool"
-  trigger_action "{\"BTTPredefinedActionType\":200}"
-end tell
-'
-
 function dnd::on() {
-  osascript <<< $toggle_dnd > /dev/null
+  calm-notifications on
 
   printf 'DND turned %bon%b\n' "$fg[green]" "$reset_color"
 }
 
 function dnd::off() {
-  osascript <<< $toggle_dnd > /dev/null
+  calm-notifications off
 
   printf 'DND turned %boff%b\n' "$fg[red]" "$reset_color"
 }
