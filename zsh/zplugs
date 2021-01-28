@@ -68,12 +68,7 @@ zplug 'junegunn/fzf', \
       as:command, \
       use:'bin/{fzf,fzf-tmux}', \
       if:"[[ $(($+commands[wget] + $+commands[curl])) -gt 0 ]] && (($+commands[unzip]))", \
-      hook-build:$'
-        ./install --all --key-bindings --completion --no-update-rc &&
-        if [[ $OSTYPE == cygwin* ]]; then
-          sed --in-place --regexp-extended \'s/--height \\$\\{FZF_TMUX_HEIGHT.....\\}//g\' shell/*
-        fi
-      '
+      hook-build:'./install --all --key-bindings --completion --no-update-rc --no-bash --no-fish'
 zplug 'BurntSushi/ripgrep', \
       from:gh-r, \
       as:command, \

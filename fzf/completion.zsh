@@ -21,17 +21,13 @@ if [[ -n "$FZF_DEFAULT_COMMAND" ]]; then
 fi
 
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+  --height 80%
   --color=light
   --bind ctrl-j:preview-down,ctrl-k:preview-up
   --bind ctrl-h:preview-page-down,ctrl-l:preview-page-up
   --bind ctrl-p:toggle-preview
   --toggle-sort=\`
   --header "`: sort, Ctrl+P: preview, Ctrl+J,K,H,L: scroll preview"'
-
-# --height is currently not supported on Windows.
-if [[ $OSTYPE != cygwin* ]]; then
-  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --height 80%"
-fi
 
 export FZF_CTRL_R_OPTS='--exact'
 
