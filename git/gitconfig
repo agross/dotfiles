@@ -66,6 +66,8 @@
 [push]
 	default = simple
 	followTags = true
+[pull]
+	rebase = false
 [sendemail]
 	from = Alexander Groß <agross@therightstuff.de>
 	smtpencryption = tls
