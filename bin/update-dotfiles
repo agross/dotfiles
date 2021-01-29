@@ -1,0 +1,85 @@
+#!/usr/bin/env zsh
+
+set -euo pipe_fail
+
+autoload -U colors && colors
+
+hostsfile="$HOME/.dotfiles-hosts"
+if [[ ! -f "$hostsfile" ]]; then
+  >&2 printf '%b%s%b does not exist. Please create it with one line per host to update dotfiles on.\n' \
+             "$fg[green]" \
+             "$hostsfile" \
+             "$reset_color"
+  exit 1
+fi
+
+if [[ ! -d "${DOTFILES?Variable is not set}" ]]; then
+  >&2 printf '%b$DOTFILES%b does not exist.\n' \
+             "$fg[green]" \
+             "$reset_color"
+  exit 2
+fi
+
+daemon_pidfile="$(mktemp --suffix=git-daemon)"
+daemon_port=55550
+
+dotfiles::cleanup() {
+  # Clear traps.
+  trap - EXIT SIGHUP SIGINT SIGTERM
+
+  dotfiles::stop-git-daemon "$daemon_pidfile"
+}
+
+dotfiles::start-git-daemon() {
+  local dotfiles="${1?Need directory to serve}"
+
+  git daemon --base-path="$dotfiles/.git" \
+             --export-all \
+             --no-informative-errors \
+             --verbose \
+             --pid-file="$daemon_pidfile" \
+             --listen=localhost \
+             --port="$daemon_port" \
+             &
+}
+
+dotfiles::stop-git-daemon() {
+  local pidfile="${1?Need pidfile}"
+
+  local pid="$(cat "$pidfile" 2> /dev/null)"
+
+  [[ -n "$pid" ]] && kill "$pid"
+  rm -f "$pidfile"
+}
+
+dotfiles::update() {
+  local host="${1?Need host}"
+  local cmd="${2?Need command}"
+  local update=$(cat <<UPDATE
+    echo "Expecting dotfiles in $fg_bold[red]\$DOTFILES$reset_color (currently set to $fg[green]\$DOTFILES$reset_color)" && \
+    cd "\$DOTFILES" && \
+    git fetch git://localhost:$daemon_port/ && \
+    git reset --hard FETCH_HEAD && \
+    ./bootstrap
+UPDATE
+)
+
+  if [[ -n "$cmd" ]]; then
+    update="$cmd '$update'"
+  fi
+
+  printf '\nUpdating dotfiles on %b%s%b\n' "$fg_bold[blue]" "$host" "$reset_color"
+  ssh -n "$host" -R "${daemon_port}:localhost:${daemon_port}" "$update"
+}
+
+trap dotfiles::cleanup EXIT SIGHUP SIGINT SIGTERM
+
+dotfiles::start-git-daemon "$DOTFILES"
+
+while read -r host cmd; do
+  [[ "$host" == \#* ]] && continue
+
+  dotfiles::update "$host" "$cmd" || true
+done < "$hostsfile"
+
+# vim: set ft=zsh ts=2 sw=2 et:
