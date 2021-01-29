@@ -4,6 +4,13 @@ set -e
 
 _BASH_VERSION="${_BASH_VERSION-latest}"
 
+if [ -n "$DOCKER_PASSWORD" ] && [ -n "$DOCKER_USERNAME" ]; then
+  echo "$DOCKER_PASSWORD" |
+    docker login \
+           --username "$DOCKER_USERNAME" \
+           --password-stdin
+fi
+
 for clone_target in /dotfiles /root/.dotfiles; do
   >&2 printf 'Bootstrapping with absolute path to %s\n' "$clone_target"
   docker run \
