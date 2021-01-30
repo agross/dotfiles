@@ -38,12 +38,19 @@ zmv $opt \
 
 # Renault Bank.
 #
-# AZG187730200_002_20190228.pdf
+# 187730200_2020_Nr.009_Kontoauszug_vom_30.09.2020_20210130091531.pdf
 # ->
-# Kontoauszug 187730200 2019-02-28.pdf
+# Kontoauszug 187730200 2020-09-30.pdf
 zmv $opt \
-    'AZG([[:digit:]]##)_*_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2)).pdf(.N)' \
-    'Kontoauszug $1 $2-$3-$4.pdf'
+    '([[:digit:]]##)_*_Kontoauszug_vom_([[:digit:]](#c2)).([[:digit:]](#c2)).([[:digit:]](#c4))_*.pdf(.N)' \
+    'Kontoauszug $1 $4-$3-$2.pdf'
+
+# 1877302_2021_Jahres-Steuerbescheinigung 2020_vom_29.01.2021_20210130091521.pdf
+# ->
+# Steuerbescheinigung 2020.pdf
+zmv $opt \
+    '([[:digit:]]##)_*_Jahres-Steuerbescheinigung ([[:digit:]](#c4))_*.pdf(.N)' \
+    'Steuerbescheinigung $2.pdf'
 
 # LBB/Amazon.
 #
