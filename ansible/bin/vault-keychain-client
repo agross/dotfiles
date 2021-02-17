@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+id="${2?Need vault ID}"
+
+security find-generic-password \
+         -a "$USER" \
+         -l "$id" \
+         -g \
+         -w \
+         "$HOME/Library/Keychains/ansible.keychain-db"
