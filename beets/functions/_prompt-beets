@@ -1,0 +1,43 @@
+# vim: set ft=zsh ts=2 sw=2 et:
+# shellcheck disable=SC2168,SC2086
+
+[[ $1 == --status ]] || return
+
+music=(*.(mp3|flac|mpc)(.NY1))
+if ((#music == 0)); then
+  return
+fi
+
+[[ $PWD == */_Singles* ]] && return
+
+local album_info cover_info album cover embedded_cover
+
+album_info=("${(@f)$(beet info --include-keys=album_id,artpath \
+                               --library \
+                               --summarize \
+                               $PWD)}")
+
+album_id=${album_info[1]#album_}
+album="%B%F{blue}${album_id:-?}%f%b"
+
+cover=$album_info[2]
+if [[ $cover == *artpath:\ None ]]; then
+  cover='%B%F{red}✘%f%b 🖼'
+else
+  cover='%B%F{green}✔%f%b 🖼'
+fi
+
+printf '🥕 %s, %s' $album $cover
+
+if [[ ! -v PROMPT_BEET_NO_COVER && -n $album_id ]]; then
+  cover_info=$(beet info --include-keys=art \
+                         --summarize \
+                         $PWD)
+  if [[ $cover_info == 'art: True' ]]; then
+    embedded_cover='%B%F{green}✔%f%b 📄'
+  else
+    embedded_cover='%B%F{red}✘%f%b 📄'
+  fi
+
+  printf ', %s' $embedded_cover
+fi
