@@ -1,0 +1,33 @@
+# vim: set ft=zsh ts=2 sw=2 et:
+# shellcheck disable=SC2168,SC2086
+
+if [[ $1 == --init ]]; then
+  autoload -U zgitinit
+  zgitinit
+
+  autoload -U zgit-ext-rebaseinfo
+
+  return
+fi
+
+[[ $1 == --status ]] || return
+zgit_isgit || return
+
+zgit-ext-rebaseinfo
+
+local branch symbols
+
+zgit_ingitdir && branch+='GIT_DIR! '
+zgit_isbare   && branch+='BARE! '
+
+branch+=@$(zgit_head)$zgit_info[rebase]
+
+if zgit_inworktree; then
+  zgit_isworktreeclean      || symbols+='*'
+  zgit_hasuntracked         && symbols+='?'
+  zgit_isindexclean         || symbols+='^'
+  zgit_hasunmerged          && symbols+='Y'
+  zgit_has-assume-unchanged && symbols+=$(printf '%b!%b' "$(tput blink)" "$(tput sgr0)")
+fi
+
+printf '%%F{green}%s%%B%%F{red}%s%%b%%f' $branch $symbols
