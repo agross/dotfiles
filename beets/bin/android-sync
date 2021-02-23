@@ -6,12 +6,13 @@ script="${0##*/}"
 script_path="${0%/*}"
 
 local_music="$HOME/Music/Music/"
-droid_music="/sdcard/Music"
+droid_music="/storage/95AE-BE06/Android/media/com.arachnoid.sshelper/Music"
 droid_host=android
 
 rsync --progress \
       --verbose \
       --human-readable \
+      --modify-window=1 \
       --archive \
       --partial \
       --delete \
