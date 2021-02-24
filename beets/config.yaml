@@ -82,6 +82,8 @@ plugins:
   # Download and embed covers.
   - fetchart
   - embedart
+  # Load SQLite extensions for case-insensitive non-ASCII queries.
+  - loadext
 
 # inline plugin.
 item_fields:
@@ -140,6 +142,9 @@ zero:
     # https://github.com/beetbox/beets/issues/3532
     - images
     - art
+
+loadext:
+  - libicu
 
 hook:
   hooks:

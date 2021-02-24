@@ -23,4 +23,35 @@ mkdir --parents ~/.config/beets/completion/
 wget --output-document ~/.config/beets/completion/_beet \
      https://raw.githubusercontent.com/beetbox/beets/master/extra/_beet
 
+
+# Case-insensitive querying of umlauts.
+formula sqlite
+formula icu4c
+formula unzip
+
+tmp="$(mktemp -d)"
+pushd "$tmp" > /dev/null || return 1
+
+wget --output-document sqlite-src.zip \
+     'https://www.sqlite.org/src/zip/sqlite.zip?r=release'
+unzip sqlite-src.zip > /dev/null
+
+pushd sqlite/ext/icu > /dev/null || return 1
+
+printf 'Compiling libicu.dylib\n'
+gcc -shared \
+    -fPIC icu.c \
+    $($(brew --prefix icu4c)/bin/icu-config --ldflags) \
+    -I "$(brew --prefix icu4c)/include" \
+    -I "$(brew --prefix sqlite)/include" \
+    -o libicu.dylib
+
+printf 'Copying libicu.dylib to  ~/.config/beets/\n'
+mv libicu.dylib ~/.config/beets/
+
+popd > /dev/null || return 1
+popd > /dev/null || return 1
+
+rm -rf "$tmp"
+
 # vim: set ft=sh ts=2 sw=2 et:
