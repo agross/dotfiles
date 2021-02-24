@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# Set cover.jpg mtimes according to newest file in directory.
+# Set cover.* mtimes according to newest file in directory.
 
 set -eu
 
@@ -13,14 +13,14 @@ autoload -Uz colors && colors
 # N  = no error if there are no matches
 # od = depth first
 # on = sort by name
-for cover in **/cover.jpg(.DNodon); do
+for cover in **/cover.*(.DNodon); do
   dir=${cover%/*}
 
   # N  = no error if there are no matches
   # D  = include dotfiles
   # om = order by modified date, newest first
   # Y1 = limit to one match
-  newest_non_cover=($dir/*~*cover.jpg(NDomY1))
+  newest_non_cover=($dir/*~*cover.*(NDomY1))
 
   if [[ ${#newest_non_cover[@]} -eq 0 ]]; then
     printf '%bempty%b: %b%s%b\n' \
