@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+
+# Download and embed custom cover into album in $PWD.
+#
+# beet-apply-cover <URL> <album ID>
+#
+# The album ID is optional and may be used for directories with special
+# characters where beets unfortunately fails.
+#
+
+set -eu
+setopt pipe_fail
+setopt extended_glob
+
+url=${1?Need cover URL}
+album=${2:-}
+
+if [[ -z $album ]]; then
+  album_info=$(beet info --include-keys=album_id \
+                         --library \
+                         --summarize \
+                         $PWD)
+
+  album=${album_info#album_id: }
+
+  if [[ -z $album ]]; then
+    printf 'Could not determine album ID for %s\n' $PWD
+    exit 1
+  fi
+fi
+
+wget --output-document cover.jpg $url
+
+reference=(*~*cover.jpg(.omY1))
+touch --reference=$reference cover.jpg
+
+beet fetchart id:$album
+beet embedart --yes id:$album
