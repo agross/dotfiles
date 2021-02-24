@@ -9,6 +9,9 @@ local_music="$HOME/Music/Music/"
 droid_music="/storage/95AE-BE06/Android/media/com.arachnoid.sshelper/Music"
 droid_host=android
 
+# Set directory dates, rsync will sync those dates as well as file dates.
+dir-date-from-files "$local_music"
+
 rsync --progress \
       --verbose \
       --human-readable \
@@ -20,10 +23,3 @@ rsync --progress \
       --exclude-from "$script_path/../$script/exclude" \
       "$local_music" \
       "$droid_host:$droid_music"
-
-scp "$script_path/../$script/dir-dates" \
-    "$droid_host":"$droid_music"
-
-# shellcheck disable=2029
-ssh "$droid_host" \
-    bash "$droid_music/dir-dates" "$droid_music"

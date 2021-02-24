@@ -6,13 +6,15 @@ set -eu
 
 autoload -Uz colors && colors
 
+dir=${1-.}
+
 # /  = directories only
 # D  = include dotfiles
 # N  = no error if there are no matches
 # F  = non-empty directories
 # od = depth first
 # on = sort by name
-for dir in **/*(/NDFodon); do
+for dir in $dir/**/*(/NDFodon); do
   # N  = no error if there are no matches
   # D  = include dotfiles
   # om = order by modified date, newest first
