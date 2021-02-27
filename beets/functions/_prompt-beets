@@ -18,6 +18,7 @@ album_info=("${(@f)$(beet info --include-keys=album_id,artpath \
                                $PWD)}")
 
 album_id=${album_info[1]#album_}
+album_id=${album_id/ /}
 album="%B%F{blue}${album_id:-?}%f%b"
 
 cover=$album_info[2]
