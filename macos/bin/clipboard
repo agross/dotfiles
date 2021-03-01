@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+set -eu
+setopt pipe_fail
+
+autoload colors && colors
+
+file=${1?Need file}
+file=$file:A
+
+if [[ ! -e $file ]]; then
+  printf '%bNot found%b: %b%s%b\n' $fg_bold[red] $reset_color \
+                                   $fg_bold[blue] $file $reset_color
+  exit 1
+fi
+
+osascript -e 'on run args
+                set the clipboard to POSIX file (first item of args)
+              end' \
+          $file
+
+printf '%bCopied%b: %b%s%b\n' $fg_bold[green] $reset_color \
+                              $fg_bold[blue] $file $reset_color
