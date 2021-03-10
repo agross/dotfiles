@@ -1,0 +1,112 @@
+#!/usr/bin/env ruby
+
+require 'rake'
+
+class CueSheet
+  attr_reader :meta, :tracks
+
+  FRAMES_PER_SEC = 75
+
+  def initialize(file)
+    @meta = {}
+    @tracks = []
+
+    parse_file(file)
+
+    compute_durations(@tracks)
+  end
+
+  private
+
+  def parse_file(file)
+    File.open(file, 'r') do |f|
+      until (line = f.gets).nil?
+
+        if (m = line.match(/^PERFORMER "(.*)"/))
+          @meta[:artist] = m[1]
+        end
+
+        if (m = line.match(/^TITLE "(.*)"/))
+          @meta[:album] = m[1]
+        end
+
+        if (m = line.match(/^FILE "(.*)"/))
+          @meta[:file] = m[1]
+        end
+
+        if (m = line.match(/^  TRACK (\d+)/))
+          parse_track(f, m[1].to_i - 1, @meta)
+        end
+      end
+    end
+  end
+
+  def parse_track(file, num, meta)
+    @tracks[num] ||= meta.dup
+
+    until (line = file.gets).nil?
+      if !line.start_with?('    ')
+        file.seek(- line.length, IO::SEEK_CUR)
+        return
+      end
+
+      if (m = line.match(/^    TITLE "(.*)"/))
+        @tracks[num][:title] = m[1]
+      end
+
+      if (m = line.match(/^    PERFORMER "(.*)"/))
+        @tracks[num][:artist] = m[1]
+      end
+
+      if (m = line.match(/^    INDEX 01 (\d+):(\d+):(\d+)/))
+        minutes = m[1].to_i
+        seconds = m[2].to_i
+        frames = m[3].to_i
+        ms = 1000.0 / FRAMES_PER_SEC * frames
+
+        @tracks[num][:starts_at_ms] = (60 * minutes * 1000 + seconds * 1000 + ms).round
+      end
+    end
+  end
+
+  def compute_durations(tracks)
+    tracks[0...-1].each_with_index do |track, i|
+      track[:duration_ms] = tracks[i + 1][:starts_at_ms] - track[:starts_at_ms]
+    end
+  end
+end
+
+cue = CueSheet.new(ARGV.shift)
+
+cue.tracks.each_with_index do |track, index|
+  start = '%.3f' % [track[:starts_at_ms] / 1000.0]
+
+  cmd = %W(
+    ffmpeg
+    -hide_banner
+    -i #{track[:file]}
+    -ss #{start}
+  )
+
+  if track[:duration_ms]
+    duration = '%.3f' % [track[:duration_ms] / 1000.0]
+
+    cmd += %W(-t #{duration})
+  end
+
+  {
+    artist: track[:artist],
+    title: track[:title],
+    album: track[:album],
+    track: index + 1
+  }.each do |k, v|
+    cmd += ['-metadata', "#{k.to_s}=#{v.to_s}"]
+  end
+
+  cmd << '%s - %s - %.2d - %s.flac' % [track[:artist],
+                                      track[:album],
+                                      index + 1,
+                                      track[:title]]
+
+  sh(*cmd)
+end
