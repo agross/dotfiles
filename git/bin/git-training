@@ -21,6 +21,10 @@ case $1 in
     command=break
     ;;
 
+  user)
+    command=user
+    ;;
+
   *)
     command=usage
     ;;
@@ -253,6 +257,11 @@ git-training::break() {
 
   exec '/Applications/AS Timer.app/Contents/MacOS/AS Timer' \
        "[SetMinutes=$time, SetSeconds=00, Start]" 2> /dev/null &disown
+}
+
+git-training::user() {
+  git config --global user.name 'Alexander Groß'
+  git config --global user.email agross@grossweber.com
 }
 
 git-training::$command "$@"
