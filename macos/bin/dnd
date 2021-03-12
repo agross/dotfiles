@@ -24,6 +24,7 @@ if [[ $# -gt 0 ]]; then
   killall caffeinate 2> /dev/null
   m volume unmute
   open -a Flux
+  open -a DockMate
   osascript <<< 'tell application "PopClip" to set enabled to true'
   dnd::off
 else
@@ -37,6 +38,7 @@ else
   fi
 
   killall Flux 2> /dev/null
+  killall DockMate 2> /dev/null
   osascript <<< 'tell application "PopClip" to set enabled to false'
   dnd::on
 fi
