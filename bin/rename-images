@@ -10,7 +10,18 @@
 set -eu
 setopt PIPE_FAIL
 
-opt=(-Q -v $@)
+mkdir_mv() {
+  local src target target_dir
+
+  src=$2
+  target=$3
+  target_dir=$target:h
+
+  mkdir -p -- $target_dir
+  mv --verbose --no-clobber -- $src $target
+}
+
+opt=(-Q -v -p mkdir_mv $@)
 
 autoload -U zmv
 
@@ -18,35 +29,35 @@ autoload -U zmv
 #
 # IMG_20190215_081601.jpg
 # ->
-# 2019-02-15 08.16.01.jpg
+# 2019/2019-02-15 08.16.01.jpg
 #
 # IMG_20190215_081601_1.jpg
 # ->
-# 2019-02-15 08.16.01_1.jpg
+# 2019/2019-02-15 08.16.01_1.jpg
 #
 # VID_20190215_081601.mp4
 # ->
-# 2019-02-15 08.16.01.mp4
+# 2019/2019-02-15 08.16.01.mp4
 #
 # PXL_20190215_081601.mp4
 # ->
-# 2019-02-15 08.16.01.mp4
+# 2019/2019-02-15 08.16.01.mp4
 zmv $opt \
     '(**/)(IMG|VID|PXL)_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))_([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2)*).(*)(.N)' \
-    '$1$3-$4-$5 $6.$7.$8.$9'
+    '$1$3/$3-$4-$5 $6.$7.$8.$9'
 
 # Portraits from camera.
 #
 # 00000PORTRAIT_00000_BURST20190224163058395.jpg
 # ->
-# 2019-02-24 16.30.58.jpg
+# 2019/2019-02-24 16.30.58.jpg
 #
 # 00100sPORTRAIT_00100_BURST20190224163058395_COVER.jpg
 # ->
-# 2019-02-24 16.30.58-blur.jpg
+# 2019/2019-02-24 16.30.58-blur.jpg
 zmv $opt \
     '(**/)*PORTRAIT_[[:digit:]](#c5)_BURST([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))[[:digit:]](#c3)(_COVER|*).(*)(.N)' \
-    '$1$2-$3-$4 $5.$6.$7${8/_COVER/-blur}.$9'
+    '$1$2/$2-$3-$4 $5.$6.$7${8/_COVER/-blur}.$9'
 
 # Panoramas from camera.
 #
@@ -76,11 +87,11 @@ zmv $opt \
 #
 # IMG-20190224-WA0005.jpg
 # ->
-# 2019-02-24-0005.png
+# 2019/2019-02-24-0005.png
 #
 # VID-20190302-WA0000.mp4
 # ->
-# 2019-03-01-0000.mp4
+# 2019/2019-03-01-0000.mp4
 zmv $opt \
     '(**/)(IMG|VID)-([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))-WA([[:digit:]](#c4)).(*)(.N)' \
-    '$1$3-$4-$5-$6.$7'
+    '$1$3/$3-$4-$5-$6.$7'
