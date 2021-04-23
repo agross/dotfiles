@@ -45,6 +45,7 @@ git-training::usage() {
   printf '  cleanup Undo Pull Request demo, remove samples, reset VS Code\n'
   printf '  record  Start recording an asciinema cast to a local file\n'
   printf '  break   Start break timer (default: 10 minutes)\n'
+  printf '  user    Set user name and email\n'
 
   return 1
 }
