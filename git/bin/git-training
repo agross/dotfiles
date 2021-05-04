@@ -171,12 +171,14 @@ git-training::logs() {
           target="$HOME/Downloads/Tag $day Teil $part.html"
 
           if git-training::logs::ask-overwrite $target; then
-            ansifilter --input "$file" \
-                       --output "$target" \
-                       --html \
-                       --doc-title "Tag $day Teil $part" \
-                       --encoding utf-8 \
-                       --font 'Menlo, Monaco, Consolas, Courier New, monospace'
+            if ansifilter --input "$file" \
+                         --output "$target" \
+                         --html \
+                         --doc-title "Tag $day Teil $part" \
+                         --encoding utf-8 \
+                         --font 'Menlo, Monaco, Consolas, Courier New, monospace'; then
+              mv -- "$file" "$HOME/.Trash/"
+            fi
           fi
           ;;
 
@@ -187,10 +189,12 @@ git-training::logs() {
           target="$HOME/Downloads/Tag $day Teil $part.svg"
 
           if git-training::logs::ask-overwrite $target; then
-            termtosvg render \
-                      --template window_frame_js \
-                      "$file" \
-                      "$target"
+            if termtosvg render \
+                         --template window_frame_js \
+                         "$file" \
+                         "$target"; then
+              mv -- "$file" "$HOME/.Trash/"
+            fi
           fi
           ;;
       esac
