@@ -5,6 +5,7 @@ tap 'domt4/autoupdate'
 tap 'ggpeti/rmrec'
 
 # For bin/dnd.
+tap 'vitorgalvao/tiny-scripts'
 brew 'vitorgalvao/tiny-scripts/calm-notifications'
 
 # GNU utilities.
@@ -83,11 +84,8 @@ cask 'dropbox'
 cask 'evernote'
 cask 'flux'
 cask 'google-chrome'
-cask 'google-hangouts'
-cask 'hosts'
 cask 'hyperswitch'
 cask 'istat-menus'
-cask 'java'
 cask 'jetbrains-toolbox'
 cask 'kap'
 cask 'key-codes'
