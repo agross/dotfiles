@@ -10,7 +10,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
   cask diffmerge
   cask kdiff3
   cask meld
-  cask p4merge
+  cask p4v
   cask fork
   cask gitup
 
