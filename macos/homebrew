@@ -33,7 +33,7 @@ cask_installed() {
   cask="$1"
 
   ensure-homebrew-installed
-  ! brew cask info "$cask" | grep 'Not installed' > /dev/null 2>&1
+  ! brew info --cask "$cask" | grep 'Not installed' > /dev/null 2>&1
 }
 
 cask() {
