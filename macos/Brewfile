@@ -46,8 +46,9 @@ cask 'suspicious-package'
 cask 'webpquicklook'
 
 # FUSE.
-cask 'osxfuse'
-brew 'sshfs'
+cask 'macfuse'
+# Unsupported?
+# brew 'sshfs'
 
 # Apps without topic directories.
 brew 'curl'
