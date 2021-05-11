@@ -42,9 +42,10 @@ unzip sqlite-src.zip > /dev/null
 pushd sqlite/ext/icu > /dev/null || return 1
 
 printf 'Compiling libicu.dylib\n'
+# shellcheck disable=SC2046
 gcc -shared \
     -fPIC icu.c \
-    $($(brew --prefix icu4c)/bin/icu-config --ldflags) \
+    $("$(brew --prefix icu4c)/bin/icu-config" --ldflags) \
     -I "$(brew --prefix icu4c)/include" \
     -I "$(brew --prefix sqlite)/include" \
     -o libicu.dylib
