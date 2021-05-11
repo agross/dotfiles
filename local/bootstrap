@@ -1,0 +1,5 @@
+# shellcheck shell=bash
+
+find "$topic" -mindepth 2 -type f -name bootstrap -exec {} \;
+
+# vim: set ft=sh ts=2 sw=2 et:
