@@ -1,5 +1,5 @@
 # Allows to install updates automatically.
-tap 'domt4/autoupdate'
+tap 'homebrew/autoupdate'
 
 # Remove formula and its dependencies with 'brew rmrec <formula>'.
 tap 'ggpeti/rmrec'

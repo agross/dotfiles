@@ -9,6 +9,9 @@ brew bundle --verbose --file="$topic/Brewfile"
 brew cleanup
 
 brew link --force curl
-brew autoupdate --start --upgrade --cleanup --enable-notification || true
+
+if brew autoupdate status | grep --quiet 'Autoupdate is not configured'; then
+  brew autoupdate start --upgrade --cleanup --enable-notification
+fi
 
 # vim: set ft=sh ts=2 sw=2 et:
