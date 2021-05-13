@@ -1,6 +1,6 @@
 # shellcheck disable=SC2148
 
-[[ $OSTYPE == darwin* ]] || return
+[[ $OSTYPE == darwin* ]] || return 0
 
 local bin_path="${0%/*}/bin"
 path=($bin_path $path)
