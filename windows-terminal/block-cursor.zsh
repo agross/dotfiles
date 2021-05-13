@@ -1,1 +1,3 @@
-[[ -v WT_SESSION ]] && echo -en "\e[2 q"
+[[ -v WT_SESSION ]] || return 0
+
+echo -en "\e[2 q"
