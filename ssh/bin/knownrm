@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+number='^[0-9]+$'
+
+if ! [[ "$1" =~ $number ]] ; then
+  >&2 printf 'Error: Line number to delete from  ~/.ssh/known_hosts is missing\n'
+else
+  sed -i "$1d" ~/.ssh/known_hosts
+fi
