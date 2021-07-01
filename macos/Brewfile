@@ -46,9 +46,9 @@ cask 'suspicious-package'
 cask 'webpquicklook'
 
 # FUSE.
+tap 'gromgit/homebrew-fuse'
 cask 'macfuse'
-# Unsupported?
-# brew 'sshfs'
+brew 'sshfs-mac'
 
 # Apps without topic directories.
 brew 'curl'
