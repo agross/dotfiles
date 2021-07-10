@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+# Hook to prevent pushes to "locked" branches.
+#
+# Setup (on the git server):
+#
+# chmod +x path/to/this/script
+# ln -s path/to/server-side/git-repo/hooks/update path/to/this/script
+#
+# Lock branches using:
+#
+# cd path/to/server-side/git-repo
+# git config --local --type bool branch.refs/heads/master.locked true
+#
+# Unlock branches using:
+#
+# cd path/to/server-side/git-repo
+# git config --local --unset branch.refs/heads/master.locked true
+
+# Exit with error in case of script errors.
+set -e
+
+refname="${1?Need refname}"
+
+if ! locked="$(git config --get --local --type bool "branch.$refname.locked")"; then
+  # No lock information for $refname, assume push is permitted.
+  exit 0
+fi
+
+if [ "$locked" = true ]; then
+  printf '%s is locked. Push denied.\n' "$refname"
+  exit 1
+fi
