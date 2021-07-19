@@ -100,7 +100,6 @@ cask 'postman'
 cask 'roboform'
 cask 'skype'
 cask 'symboliclinker'
-cask 'teamviewer'
 cask 'xnviewmp'
 
 # Apps from the Mac App Store.
