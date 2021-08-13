@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# This is git "CheckOut New Feature branch".
+#
+# Usage:
+#
+#   git conf 123 foo bar "baz foobar"
+#
+# Will be translated to:
+#
+#   git checkout -b feature/123_foo-bar-baz-foobar
+
+set -euo pipefail
+
+if (( $# < 2 )); then
+  printf 'Need at least 2 arguments\n'
+  exit 1
+fi
+
+branch="$1"
+
+# Remove first argument from the argument vector.
+shift
+
+# Iterate the rest of the arguments.
+comment=
+for word; do
+  comment="$comment-${word//[[:space:]]/-}"
+done
+
+git checkout -b "feature/${branch}_${comment:1}"
