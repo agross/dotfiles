@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 git remote prune origin &&
-  git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | \
-    command grep '\[gone\]' | \
-    cut --delimiter=' ' --fields=1 | \
-    xargs git branch --delete
+  git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads |
+    command grep '\[gone\]' |
+    cut --delimiter=' ' --fields=1 |
+    xargs --no-run-if-empty git branch --delete
