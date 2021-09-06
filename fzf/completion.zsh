@@ -4,7 +4,15 @@ if (($+commands[fd])); then
   # Explicitly specify the path separator for Cygwin where a natively-comiled
   # executable outputs backslashes.
   # https://github.com/sharkdp/fd/issues/153#issuecomment-531548022
-  export FZF_DEFAULT_COMMAND='fd --path-separator=/ --color=always --hidden --follow --ignore-case --no-ignore-vcs --exclude .git'
+  export FZF_DEFAULT_COMMAND='noglob fd \
+    --path-separator=/ \
+    --color=always \
+    --hidden \
+    --follow \
+    --ignore-case \
+    --no-ignore-vcs \
+    --exclude .git \
+    --exclude **/Containers/*/Data'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --type file"
   export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type directory"
   export FZF_DEFAULT_OPTS='--ansi'
