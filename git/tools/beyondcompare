@@ -7,7 +7,7 @@ script_path="${0%/*}"
 
 tool="$(tool_path '/c/Tools/Beyond Compare/BComp.exe' \
                   '/mnt/c/Tools/Beyond Compare/BComp.exe' \
-                  'bcompare' \
+                  'bcomp' \
                   '/Applications/Beyond Compare.app/Contents/MacOS/bcomp')" || exit $?
 
 op="${1?Need operation (diff or merge) as the first argument}"
