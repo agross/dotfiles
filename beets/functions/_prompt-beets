@@ -17,7 +17,7 @@ local album_info cover_info album cover embedded_cover
 album_info=("${(@f)$(beet info --include-keys=album_id,artpath \
                                --library \
                                --summarize \
-                               $PWD)}")
+                               path:${PWD})}")
 
 album_id=${album_info[1]#album_id: }
 album="%B%F{blue}id:${album_id:-?}%f%b"
@@ -38,7 +38,7 @@ fi
 if [[ ! -v PROMPT_BEET_NO_COVER && -n $album_id ]]; then
   cover_info=$(beet info --include-keys=art \
                          --summarize \
-                         $PWD)
+                         path:${PWD})
   if [[ $cover_info == 'art: True' ]]; then
     embedded_cover='%B%F{green}✔%f%b 📄'
   else
