@@ -1,5 +1,6 @@
 .*
 cover.*
+*.jpg
 desktop.ini
 
 *.musiclibrary/
