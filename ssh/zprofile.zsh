@@ -4,6 +4,8 @@ if [[ -n "$SSH_CONNECTION" ]]; then
     ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh-agent-$USER-$HOSTNAME"
   fi
 
+  [[ -v NO_TERMINAL_MULTIPLEXER ]] && return 0
+
   if (($+commands[screen])); then
     verbose Starting $fg[red]screen$reset_color because we\'re connected using $fg[red]ssh$reset_color
     exec screen -dRq ssh
