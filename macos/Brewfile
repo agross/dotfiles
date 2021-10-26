@@ -4,10 +4,6 @@ tap 'homebrew/autoupdate'
 # Remove formula and its dependencies with 'brew rmrec <formula>'.
 tap 'ggpeti/rmrec'
 
-# For bin/dnd.
-tap 'vitorgalvao/tiny-scripts'
-brew 'vitorgalvao/tiny-scripts/calm-notifications'
-
 # GNU utilities.
 brew 'binutils'
 brew 'coreutils'
