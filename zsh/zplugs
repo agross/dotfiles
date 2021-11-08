@@ -56,7 +56,7 @@ zplug 'plugins/systemd', \
       if:"(($+commands[systemctl]))"
 
 # Other useful plugins.
-zplug 'zdharma/fast-syntax-highlighting', \
+zplug 'zdharma-continuum/fast-syntax-highlighting', \
       hook-load:'FAST_HIGHLIGHT=()'
 zplug 'Tarrasch/zsh-bd'
 zplug 'zsh-users/zsh-completions'
