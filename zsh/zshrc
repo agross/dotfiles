@@ -10,25 +10,97 @@ verbose Loading $fg[green]zshrc$reset_color
 # Load color support.
 autoload -U colors && colors
 
-# shellcheck disable=SC2034
-ZPLUG_LOADFILE=$DOTFILES/zsh/zplugs
+# Load paths and function paths first.
+load-local-files '$DOTFILES/**/(path|fpath).zsh'
 
-# Use extended_glob option for zplug subshells. We need to change it for zplug's use tags containing extended globs.
-zstyle ':zplug:config:setopt' only_subshell extended_glob
+# Load everything but the path, function path, zprofile, completion and postinit
+# files second.
+load-local-files '$DOTFILES/**/(^(path|fpath|aliases|zprofile|completion|postinit)).zsh'
 
-if ! zplug-init zplug-apply-unreleased-fixes; then
-  return 1
-fi
+# Load aliases after the files above since some of them check for programs to
+# be available.
+load-local-files '$DOTFILES/**/aliases.zsh'
 
-zplug-install
+zinit-init
 
-# Need to apply fixes once more after installing because zplug installs itself.
-zplug-apply-unreleased-fixes
+# oh-my-zsh plugins.
+zinit ice has:docker \
+          if:'[[ -f /proc/syno_cpu_arch ]]' \
+          as:completion &&
+  zinit snippet OMZ::plugins/docker/_docker
 
-# Source plugins and add commands to the PATH.
-zplug load ${ZSH_VERBOSE/true/--verbose}
+zinit ice has:docker-compose \
+          if:'[[ -f /proc/syno_cpu_arch || $OSTYPE == linux-gnu* ]]' \
+          as:completion &&
+  zinit snippet OMZ::plugins/docker-compose/_docker-compose
 
-# Clean up after ourselves.
+zinit ice if:'[[ $OSTYPE != darwin* && -z $SSH_CONNECTION ]]' &&
+  zinit snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
+
+zinit ice has:sudo &&
+  zinit snippet OMZ::plugins/sudo/sudo.plugin.zsh
+
+zinit ice has:systemctl &&
+  zinit snippet OMZ::plugins/systemd/systemd.plugin.zsh
+
+zinit ice has:gem &&
+  zinit snippet OMZ::plugins/gem/gem.plugin.zsh
+
+zinit ice atload:'FAST_HIGHLIGHT=()' &&
+  zinit light zdharma-continuum/fast-syntax-highlighting
+
+zinit light Tarrasch/zsh-bd
+zinit light zsh-users/zsh-completions
+
+zinit ice has:git \
+          as:program \
+          pick:git-some \
+          cloneopts: &&
+  zinit light grossweber/git-some
+
+zinit ice has:git &&
+  zinit light rapid-git/rapid-git
+
+zinit ice has:git \
+          as:program \
+          pick:git-standup &&
+  zinit light kamranahmedse/git-standup
+
+zinit ice from:gh-r \
+          as:program &&
+  zinit light junegunn/fzf
+
+zinit ice if:'[[ $OSTYPE == linux* && ! -f /proc/syno_cpu_arch ]]' \
+          from:gh-r \
+          as:program \
+          mv:'ripgrep* -> rg' \
+          pick:rg/rg &&
+  zinit light BurntSushi/ripgrep
+
+zinit ice has:git \
+          from:gh-r \
+          as:program &&
+  zinit light so-fancy/diff-so-fancy
+
+zinit light hlissner/zsh-autopair
+zinit light knu/z
+
+# Load theme before compinit.
+load-local-files '$DOTFILES/zsh/themes/agross.zsh-theme'
+
+# Load postinit before compinit.
+load-local-files '$DOTFILES/**/postinit.zsh'
+
+autoload -Uz compinit
+compinit
+
+# Load completions provided by plugins.
+zinit cdreplay -q
+
+# Load completions after compinit.
+load-local-files '$DOTFILES/**/completion.zsh'
+
+# Cleanup after ourselves.
 undefine-startup-functions
 
 # vim: set ft=zsh ts=2 sw=2 et:

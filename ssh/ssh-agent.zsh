@@ -3,7 +3,7 @@
 zstyle :omz:plugins:ssh-agent agent-forwarding on
 
 # https://github.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain
-[[ "$OSTYPE" == darwin* ]] && /usr/bin/ssh-add -A
+[[ "$OSTYPE" == darwin* ]] && /usr/bin/ssh-add --apple-use-keychain
 
 [[ "$OSTYPE" =~ ^(msys|cygwin)$ && -z "$SSH_CONNECTION" ]] || return 0
 

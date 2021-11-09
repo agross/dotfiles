@@ -15,7 +15,7 @@ case "$OSTYPE" in
     local function_dir="/usr/local/share/zsh/site-functions"
     mkdir --parents "$function_dir"
 
-    local file
+    local file=
     for file in $completion_dir/*.zsh-completion; do
       local target="$function_dir/_${file:r:t}"
       [[ "$file" == "${target:A}" ]] || ln --symbolic --force "$file" "$target"

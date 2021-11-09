@@ -1,0 +1,15 @@
+setopt extended_glob
+
+local glob=${1?Need glob}
+
+local file
+
+# Expand variables and glob patters.
+for file in ${(e)~glob}; do
+  verbose Loading $fg[green]$file$reset_color
+  source $file
+done
+
+unsetopt extended_glob
+
+# vim: set ft=zsh ts=2 sw=2 et:
