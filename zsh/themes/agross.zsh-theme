@@ -29,7 +29,7 @@ function {
   # value as the absolute path to the current directory.
   unsetopt auto_name_dirs
 
-  # Initialize of dynamic PROMPT parts.
+  # Initialize dynamic PROMPT parts.
   _prompt::dynamic --init
 
   # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
