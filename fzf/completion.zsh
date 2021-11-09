@@ -35,7 +35,10 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
   --bind ctrl-h:preview-page-down,ctrl-l:preview-page-up
   --bind ctrl-p:toggle-preview
   --toggle-sort=\`
-  --header "`: sort, Ctrl+P: preview, Ctrl+J,K,H,L: scroll preview"'
+  --header "`: sort, Ctrl+P: preview, Ctrl+J,K,H,L: scroll preview"
+  --pointer=➜
+  --prompt="➜ "
+  --marker=●'
 
 export FZF_CTRL_R_OPTS='--exact'
 
@@ -43,12 +46,3 @@ if (($+commands[tree])); then
   export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
   export FZF_CTRL_T_OPTS="--preview '(cat {} || tree -C {}) 2> /dev/null'"
 fi
-
-# SSH connections to Windows hosts yield 'character set not supported'.
-[[ -n $SSH_CONNECTION && $OSTYPE == cygwin* ]] && return 0
-
-for completion in  ~/.fzf.zsh \
-                   /usr/share/doc/fzf/examples/key-bindings.zsh; do
-  [[ -f $completion ]] && source $completion
-done
-unset completion

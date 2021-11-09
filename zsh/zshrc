@@ -66,9 +66,12 @@ zinit ice has:git \
           pick:git-standup &&
   zinit light kamranahmedse/git-standup
 
-zinit ice from:gh-r \
+zinit ice atclone:'./install --bin --no-update-rc --no-bash --no-fish --no-zsh' \
+          atpull:%atclone \
+          pick:'bin/fzf*' \
+          multisrc:'shell/*.zsh' \
           as:program &&
-  zinit light junegunn/fzf
+  zinit load junegunn/fzf
 
 zinit ice if:'[[ $OSTYPE == linux* && ! -f /proc/syno_cpu_arch ]]' \
           from:gh-r \
