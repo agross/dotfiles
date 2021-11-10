@@ -8,6 +8,8 @@
 #
 # Esc, X then enter fast-colors
 
+local this_directory=${${(%):-%x}:h}
+
 zle -N fast-colors
 
 # Save compiled theme to temporary directory as I use different themes based
@@ -29,9 +31,11 @@ fi
 
 local overlay
 for overlay in $overlays; do
-  overlay=${0%/*}/colors/$overlay
+  overlay=$this_directory/../colors/$overlay
 
   if [[ -f $overlay ]]; then
     fast-theme $overlay > /dev/null
   fi
 done
+
+# vim: set ft=zsh ts=2 sw=2 et:

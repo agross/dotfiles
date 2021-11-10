@@ -24,69 +24,86 @@ load-local-files '$DOTFILES/**/aliases.zsh'
 zinit-init
 
 # oh-my-zsh plugins.
-zinit ice has:docker \
+zinit ice wait lucid \
+          has:docker \
           if:'[[ -f /proc/syno_cpu_arch ]]' \
           as:completion &&
   zinit snippet OMZ::plugins/docker/_docker
 
-zinit ice has:docker-compose \
+zinit ice wait lucid \
+          has:docker-compose \
           if:'[[ -f /proc/syno_cpu_arch || $OSTYPE == linux-gnu* ]]' \
           as:completion &&
   zinit snippet OMZ::plugins/docker-compose/_docker-compose
 
-zinit ice if:'[[ $OSTYPE != darwin* && -z $SSH_CONNECTION ]]' &&
+zinit ice wait lucid \
+          if:'[[ $OSTYPE != darwin* && -z $SSH_CONNECTION ]]' &&
   zinit snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 
-zinit ice has:sudo &&
+zinit ice wait lucid \
+          has:sudo &&
   zinit snippet OMZ::plugins/sudo/sudo.plugin.zsh
 
-zinit ice has:systemctl &&
+zinit ice wait lucid \
+          has:systemctl &&
   zinit snippet OMZ::plugins/systemd/systemd.plugin.zsh
 
-zinit ice has:gem &&
+zinit ice wait lucid \
+          has:gem &&
   zinit snippet OMZ::plugins/gem/gem.plugin.zsh
 
-zinit ice atload:'FAST_HIGHLIGHT=()' &&
+zinit ice wait lucid \
+          atload:'FAST_HIGHLIGHT=(); zsh-syntax-highlight-postinit' &&
   zinit light zdharma-continuum/fast-syntax-highlighting
 
-zinit light Tarrasch/zsh-bd
-zinit light zsh-users/zsh-completions
+zinit ice wait lucid &&
+  zinit light Tarrasch/zsh-bd
+zinit ice wait lucid &&
+  zinit light zsh-users/zsh-completions
 
-zinit ice has:git \
+zinit ice wait lucid \
+          has:git \
           as:program \
           pick:git-some \
           cloneopts: &&
   zinit light grossweber/git-some
 
-zinit ice has:git &&
+zinit ice wait lucid \
+          has:git &&
   zinit light rapid-git/rapid-git
 
-zinit ice has:git \
+zinit ice wait lucid \
+          has:git \
           as:program \
           pick:git-standup &&
   zinit light kamranahmedse/git-standup
 
-zinit ice atclone:'./install --bin --no-update-rc --no-bash --no-fish --no-zsh' \
+zinit ice wait lucid \
+          atclone:'./install --bin --no-update-rc --no-bash --no-fish --no-zsh' \
           atpull:%atclone \
           pick:'bin/fzf*' \
           multisrc:'shell/*.zsh' \
           as:program &&
   zinit load junegunn/fzf
 
-zinit ice if:'[[ $OSTYPE == linux* && ! -f /proc/syno_cpu_arch ]]' \
+zinit ice wait lucid \
+          if:'[[ $OSTYPE == linux* && ! -f /proc/syno_cpu_arch ]]' \
           from:gh-r \
           as:program \
           mv:'ripgrep* -> rg' \
           pick:rg/rg &&
   zinit light BurntSushi/ripgrep
 
-zinit ice has:git \
+zinit ice wait lucid \
+          has:git \
           from:gh-r \
           as:program &&
   zinit light so-fancy/diff-so-fancy
 
-zinit light hlissner/zsh-autopair
-zinit light knu/z
+zinit ice wait lucid &&
+  zinit light hlissner/zsh-autopair
+zinit ice wait lucid &&
+  zinit light knu/z
 
 # Load theme before compinit.
 load-local-files '$DOTFILES/zsh/themes/agross.zsh-theme'
