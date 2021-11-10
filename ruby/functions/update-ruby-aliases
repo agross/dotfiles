@@ -17,15 +17,15 @@
 setopt local_options extended_glob
 
 local executable
-for executable in $(dirname "$commands[ruby]")/^?*.*(N.+cyg_mixed); do
-  local alias="$(basename "$executable")"
-  local command=""$commands[ruby]" "$executable""
+for executable in $commands[ruby]:h/^?*.*(N.+cyg_mixed); do
+  local alias=${${executable:t}// /-}
+  local command=($commands[ruby] $executable)
 
   if [[ $1 != '--no-verbose' ]]; then
     echo $fg[red]$alias$reset_color = $fg[red]$command$reset_color
   fi
 
-  alias "$alias"="$command"
+  alias "$alias=$command"
 done
 
 # vim: set ft=zsh ts=2 sw=2 et:

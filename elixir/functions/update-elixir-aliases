@@ -13,19 +13,19 @@
 setopt local_options extended_glob
 
 local executable
-for executable in $(dirname "$commands[elixir]")/^?*.*(N.+cyg_mixed); do
+for executable in $commands[elixir]:h/^?*.*(N.+cyg_mixed); do
   # Omit executable if it is a shell script.
   read shebang < "$executable"
   [[ "$shebang" == '#!/bin/sh' ]] && continue
 
-  local alias="$(basename "$executable")"
-  local command="$executable.bat"
+  local alias=${${executable:t}// /-}
+  local command=$executable.bat
 
   if [[ $1 != '--no-verbose' ]]; then
     echo $fg[red]$alias$reset_color = $fg[red]$command$reset_color
   fi
 
-  alias "$alias"="$command"
+  alias "$alias=$command"
 done
 
 # vim: set ft=zsh ts=2 sw=2 et:
