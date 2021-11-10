@@ -14,6 +14,9 @@
 # Files loaded for zsh -c:
 # 1. zshenv
 
+# Load color support.
+autoload -U colors && colors
+
 # ZSH_VERBOSE=true enables logging.
 # ZSH_VERBOSE=true
 

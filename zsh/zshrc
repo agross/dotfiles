@@ -7,9 +7,6 @@ autoload -Uz $DOTFILES/zsh/functions/startup/*(.:t)
 
 verbose Loading $fg[green]zshrc$reset_color
 
-# Load color support.
-autoload -U colors && colors
-
 # Load paths and function paths first.
 load-local-files '$DOTFILES/**/(path|fpath).zsh'
 
