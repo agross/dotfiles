@@ -13,13 +13,9 @@ autoload -U colors && colors
 # Load paths and function paths first.
 load-local-files '$DOTFILES/**/(path|fpath).zsh'
 
-# Load everything but the path, function path, zprofile, completion and postinit
-# files second.
-load-local-files '$DOTFILES/**/(^(path|fpath|aliases|zprofile|completion|postinit)).zsh'
-
-# Load aliases after the files above since some of them check for programs to
-# be available.
-load-local-files '$DOTFILES/**/aliases.zsh'
+# Load everything but the path, function path, zprofile and completion files
+# second.
+load-local-files '$DOTFILES/**/(^(path|fpath|zprofile|completion)).zsh'
 
 zinit-init
 
@@ -53,11 +49,12 @@ zinit ice wait lucid \
   zinit snippet OMZ::plugins/gem/gem.plugin.zsh
 
 zinit ice wait lucid \
-          atload:'FAST_HIGHLIGHT=(); zsh-syntax-highlight-postinit' &&
+          atload:'FAST_HIGHLIGHT=(); load-zsh-syntax-highlight' &&
   zinit light zdharma-continuum/fast-syntax-highlighting
 
 zinit ice wait lucid &&
   zinit light Tarrasch/zsh-bd
+
 zinit ice wait lucid &&
   zinit light zsh-users/zsh-completions
 
@@ -81,6 +78,7 @@ zinit ice wait lucid \
 zinit ice wait lucid \
           atclone:'./install --bin --no-update-rc --no-bash --no-fish --no-zsh' \
           atpull:%atclone \
+          atload:'load-fzf' \
           pick:'bin/fzf*' \
           multisrc:'shell/*.zsh' \
           as:program &&
@@ -107,9 +105,6 @@ zinit ice wait lucid &&
 
 # Load theme before compinit.
 load-local-files '$DOTFILES/zsh/themes/agross.zsh-theme'
-
-# Load postinit before compinit.
-load-local-files '$DOTFILES/**/postinit.zsh'
 
 autoload -Uz compinit
 compinit
