@@ -11,7 +11,7 @@ local user_command
 # * = executable files
 # N = ignore no matches
 for user_command in ${0%/*}/bin/git-*(*N); do
-  local name="$(basename "$user_command")"
+  local name=$user_command:t
 
   # If there is a completion function it likely has a #description in the second
   # line and is picked up automatically.
