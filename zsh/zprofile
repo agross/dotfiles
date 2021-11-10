@@ -11,5 +11,6 @@ local profile
 for profile in $DOTFILES/**/zprofile.zsh(.N); do
   source $profile
 done
+unset profile
 
 # vim: set ft=zsh ts=2 sw=2 et:
