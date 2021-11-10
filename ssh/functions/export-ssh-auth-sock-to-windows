@@ -1,0 +1,39 @@
+# shellcheck disable=SC2148
+
+[[ $OSTYPE =~ ^(msys|cygwin)$ ]] || return 0
+
+# Agents received through SSH connections are not made available to the rest
+# of the OS.
+[[ -n $SSH_CONNECTION ]] && return 0
+
+# If we started an SSH agent on Windows, make the environment variables known
+# system-wide for use with cmd.exe or any other Windows program. Otherwise unset
+# them.
+#
+# Windows Explorer will listen on changes to the global environment variables
+# and new processes started via Explorer will have the new environment variables
+# available.
+
+if [[ -z $SSH_AGENT_PID ]]; then
+  setx SSH_AGENT_PID '' > /dev/null
+  unset SSH_AGENT_PID
+else
+  setx SSH_AGENT_PID $SSH_AGENT_PID > /dev/null
+fi
+
+if [[ -z $SSH_AUTH_SOCK ]]; then
+  setx SSH_AUTH_SOCK '' > /dev/null
+  unset SSH_AUTH_SOCK
+else
+  setx SSH_AUTH_SOCK $(cygpath --windows $SSH_AUTH_SOCK) > /dev/null
+
+  # Clean up unused sockets.
+  local socket
+  for socket in /tmp/ssh-*/*(=U); do
+    [[ $socket == $SSH_AUTH_SOCK:A ]] && continue
+
+    rm -r -- $socket:h
+  done
+fi
+
+# vim: set ft=zsh ts=2 sw=2 et:

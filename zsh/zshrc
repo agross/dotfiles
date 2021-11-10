@@ -32,8 +32,9 @@ zinit ice wait lucid \
           as:completion &&
   zinit snippet OMZ::plugins/docker-compose/_docker-compose
 
-zinit ice wait lucid \
-          if:'[[ $OSTYPE != darwin* && -z $SSH_CONNECTION ]]' &&
+# No wait because loading password-protected keys is interactive.
+zinit ice if:'[[ $OSTYPE != darwin* && -z $SSH_CONNECTION ]]' \
+          atload:'export-ssh-auth-sock-to-windows' &&
   zinit snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 
 zinit ice wait lucid \
