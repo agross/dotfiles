@@ -28,4 +28,6 @@ typeset -xr DOTFILES="$HOME/.dotfiles"
 # category not specifically selected via a variable starting with `LC_'.
 export LANG=en_US.UTF-8
 
+skip_global_compinit=for-ubuntu
+
 # vim: set ft=zsh ts=2 sw=2 et:
