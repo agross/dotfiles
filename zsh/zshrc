@@ -73,7 +73,9 @@ zinit ice wait lucid \
           pick:git-standup &&
   zinit light kamranahmedse/git-standup
 
+# Do not load on Windows while connected through SSH.
 zinit ice wait lucid \
+          if:'[[ ! $OSTYPE =~ ^(msys|cygwin)$ ]] || [[ -z $SSH_CONNECTION ]]' \
           atclone:'./install --bin --no-update-rc --no-bash --no-fish --no-zsh' \
           atpull:%atclone \
           atload:'load-fzf' \
