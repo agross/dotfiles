@@ -93,6 +93,7 @@ zinit ice wait lucid \
   zinit light BurntSushi/ripgrep
 
 zinit ice wait:'0a' lucid \
+          if:'[[ $CPUTYPE != aarch64 ]]' \
           from:gh-r \
           as:program \
           mv:'fd* -> fd' \
