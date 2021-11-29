@@ -20,7 +20,8 @@ function dnd::off() {
 }
 
 # Pass any argument to turn off DND.
-if [[ $# -gt 0 ]]; then
+if [[ $# -gt 0 ]] ||
+   [[ $(defaults read com.apple.controlcenter 'NSStatusItem Visible FocusModes') == 1 ]]; then
   killall caffeinate 2> /dev/null
   m volume unmute
   open -a Flux
