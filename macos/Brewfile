@@ -94,8 +94,11 @@ cask 'paste'
 cask 'popclip'
 cask 'postman'
 cask 'roboform'
+cask 'signal'
 cask 'skype'
 cask 'symboliclinker'
+cask 'telegram'
+cask 'whatsapp'
 cask 'xnviewmp'
 
 # Apps from the Mac App Store.
