@@ -56,10 +56,12 @@ zinit ice wait lucid &&
 zinit ice wait lucid &&
   zinit light zsh-users/zsh-completions
 
+# Required for "sbin" ices.
+zinit light zdharma-continuum/zinit-annex-bin-gem-node
+
 zinit ice wait lucid \
           has:git \
-          as:program \
-          pick:git-some \
+          sbin:git-some \
           cloneopts: &&
   zinit light grossweber/git-some
 
@@ -69,8 +71,8 @@ zinit ice wait lucid \
 
 zinit ice wait lucid \
           has:git \
-          as:program \
-          pick:git-standup &&
+          sbin:git-standup \
+          as:null &&
   zinit light kamranahmedse/git-standup
 
 # Do not load on Windows while connected through SSH.
