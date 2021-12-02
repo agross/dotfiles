@@ -4,22 +4,18 @@
 [[ -f /usr/local/share/zsh/site-functions/_git ]] && \
   rm  -f /usr/local/share/zsh/site-functions/_git
 
-# Set up completion for scripts in git/bin.
+# Set up completion for git-* scripts.
 local -a user_commands
 local user_command
 
-# * = executable files
-# N = ignore no matches
-for user_command in ${0%/*}/bin/git-*(*N); do
-  local name=$user_command:t
-
+for user_command in ${commands[(I)git-*]}; do
   # If there is a completion function it likely has a #description in the second
   # line and is picked up automatically.
-  (( $+functions[_$name] )) && continue
+  (( $+functions[_$user_command] )) && continue
 
-  name="${name#git-}"
+  name="${user_command#git-}"
   name="${name%.*}"
-  user_commands+=($name:"run $user_command")
+  user_commands+=($name:"run $commands[$user_command]")
 done
 
 zstyle ':completion:*:*:git:*' user-commands $user_commands
