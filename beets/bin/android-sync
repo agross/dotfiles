@@ -6,7 +6,7 @@ script="${0##*/}"
 script_path="${0%/*}"
 
 local_music="$HOME/Music/Music/"
-droid_music="/storage/95AE-BE06/Android/media/com.arachnoid.sshelper/Music"
+droid_music="/storage/3B3E-E2EC/Android/media/com.arachnoid.sshelper/Music"
 droid_host=android
 
 # Set directory dates, rsync will sync those dates as well as file dates.
