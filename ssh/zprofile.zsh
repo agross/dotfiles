@@ -4,6 +4,10 @@ if [[ -n $SSH_CONNECTION ]]; then
   if (($+commands[screen])); then
     verbose Starting $fg[red]screen$reset_color because we\'re connected \
             using $fg[red]ssh$reset_color
+
+    # Synology does not support xterm-256color.
+    [[ -f /proc/syno_cpu_arch ]] && export TERM=xterm
+
     exec screen -dRq ssh
   fi
 
