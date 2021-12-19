@@ -8,10 +8,10 @@ set -euo pipefail
 is-local() {
   local image="${1?Need image}"
 
-  [[ -n "$(docker image \
-                  inspect \
-                  --format '{{ index .Config.Labels "local" }}' \
-                  "$image")" ]]
+  [[ "$(docker image \
+               inspect \
+               --format '{{ .RepoDigests }}' \
+               "$image")" == '[]' ]]
 }
 
 docker image \
