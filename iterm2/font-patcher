@@ -3,8 +3,94 @@
 set -euo pipefail
 
 ligaturizer=https://github.com/ToxicFrog/Ligaturizer.git
-meslo_repo=andreberg/Meslo-Font
-meslo_style='Meslo LGS'
+
+meslo-original() {
+  local target="${1?Need target directory}"
+
+  local meslo_repo=andreberg/Meslo-Font
+  local meslo_style='Meslo LGS'
+  local dir
+
+  dir="$(mktemp --directory)"
+  pushd "$dir" > /dev/null
+
+  url="$(curl --fail \
+              --silent \
+              --location \
+              https://api.github.com/repos/$meslo_repo/tags |
+           sed --silent --regexp-extended 's/\s+"tarball_url": "(.+)".*/\1/p' |
+           head --lines 1)"
+  tag="${url##*/}"
+
+  printf 'Tag: %s URL: %s\n' "$tag" "$url"
+  curl --fail \
+       --silent \
+       --location \
+       "$url" |
+    tar xzv |
+    grep "${meslo_style%?} $tag" |
+    xargs -d '\n' unzip -j
+
+   cp --verbose \
+      --no-clobber \
+      -- \
+      "${meslo_style// /}"*.ttf \
+      "$target"
+
+  popd > /dev/null
+}
+
+meslo-powerline() {
+  local target="${1?Need target directory}"
+
+  local dir
+
+  dir="$(mktemp --directory)"
+  pushd "$dir" > /dev/null
+
+  git clone --no-checkout \
+            --filter=blob:none \
+            --depth 1 \
+             https://github.com/powerline/fonts.git \
+             .
+
+   git restore --source master -- Meslo\ Slashed/
+
+   cp --verbose \
+      --no-clobber \
+      -- \
+      Meslo\ Slashed/Meslo\ LG\ S*.ttf \
+      "$target"
+
+   popd > /dev/null
+}
+
+meslo-nerdfont() {
+  local target="${1?Need target directory}"
+
+  local dir
+
+  dir="$(mktemp --directory)"
+  pushd "$dir" > /dev/null
+
+  git clone --no-checkout \
+            --filter=blob:none \
+            --depth 1 \
+             https://github.com/ryanoasis/nerd-fonts.git \
+             .
+
+   git restore --source master -- patched-fonts/Meslo/S/
+
+   shopt -s globstar
+
+   cp --verbose \
+      --no-clobber \
+      -- \
+      patched-fonts/Meslo/S/**/*Complete.ttf \
+      "$target"
+
+   popd > /dev/null
+}
 
 dir="$(mktemp --directory)"
 
@@ -16,38 +102,30 @@ git clone --depth 1 \
           "$ligaturizer" \
           .
 
-url="$(curl --fail \
-            --silent \
-            --location \
-            https://api.github.com/repos/$meslo_repo/tags |
-         sed --silent --regexp-extended 's/\s+"tarball_url": "(.+)".*/\1/p' |
-         head --lines 1)"
-tag="${url##*/}"
-
-printf 'Tag: %s URL: %s\n' "$tag" "$url"
-curl --fail \
-     --silent \
-     --location \
-     "$url" |
-  tar xzv |
-  grep "${meslo_style%?} $tag" |
-  xargs -d '\n' unzip -j -d input-fonts
+input="$PWD/input-fonts"
+mkdir "$input"
+meslo-original "$input"
+meslo-powerline "$input"
 
 if ! brew list fontforge > /dev/null; then
   brew install fontforge
 fi
 
-mkdir output-fonts
+output="output-fonts"
+mkdir "$output"
 
-for ttf in input-fonts/"${meslo_style// /}"*.ttf; do
+ls -la "$input"
+
+for ttf in "$input"/*.ttf; do
   fontforge -lang py \
             -script ligaturize.py \
-                    --output-dir='output-fonts/' \
+                    --output-dir="$output" \
                     --prefix='Liga' \
                     -- \
                     "$ttf"
 done
 
-cp --verbose -- output-fonts/*.ttf ~/Library/Fonts
+cp --verbose -- "$output"/*.ttf ~/Library/Fonts
+meslo-nerdfont ~/Library/Fonts
 
 popd > /dev/null
