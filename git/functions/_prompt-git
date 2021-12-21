@@ -20,14 +20,15 @@ local branch symbols
 zgit_ingitdir && branch+='GIT_DIR! '
 zgit_isbare   && branch+='BARE! '
 
-branch+=@$(zgit_head)$zgit_info[rebase]
+branch+=" $(zgit_head)$zgit_info[rebase]"
 
+# https://www.nerdfonts.com/cheat-sheet
 if zgit_inworktree; then
-  zgit_isworktreeclean      || symbols+='*'
-  zgit_hasuntracked         && symbols+='?'
-  zgit_isindexclean         || symbols+='^'
-  zgit_hasunmerged          && symbols+='Y'
-  zgit_has-assume-unchanged && symbols+=$(printf '%b!%b' "$(tput blink)" "$(tput sgr0)")
+  zgit_isworktreeclean      || symbols+=' '
+  zgit_hasuntracked         && symbols+=' '
+  zgit_isindexclean         || symbols+=' '
+  zgit_hasunmerged          && symbols+=' '
+  zgit_has-assume-unchanged && symbols+=$(printf ' %b%b' "$(tput blink)" "$(tput sgr0)")
 fi
 
 printf '%%F{green}%s%%B%%F{red}%s%%b%%f' $branch $symbols
