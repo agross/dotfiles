@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-ligaturizer=https://github.com/rojiani/Ligaturizer.git
+ligaturizer=https://github.com/ToxicFrog/Ligaturizer.git
 meslo_repo=andreberg/Meslo-Font
 meslo_style='Meslo LGS'
 
@@ -10,14 +10,16 @@ dir="$(mktemp --directory)"
 
 pushd "$dir" > /dev/null
 
-git clone "$ligaturizer" "$dir"
-
-rm -rf input-fonts/* output-fonts/*
+git clone --depth 1 \
+          --recurse-submodules=fonts/fira  \
+          --shallow-submodules \
+          "$ligaturizer" \
+          .
 
 url="$(curl --fail \
-           --silent \
-           --location \
-           https://api.github.com/repos/$meslo_repo/tags |
+            --silent \
+            --location \
+            https://api.github.com/repos/$meslo_repo/tags |
          sed --silent --regexp-extended 's/\s+"tarball_url": "(.+)".*/\1/p' |
          head --lines 1)"
 tag="${url##*/}"
@@ -35,8 +37,17 @@ if ! brew list fontforge > /dev/null; then
   brew install fontforge
 fi
 
-make
+mkdir output-fonts
 
-cp --verbose output-fonts/Liga${meslo_style/ /}*.ttf ~/Library/Fonts
+for ttf in input-fonts/"${meslo_style// /}"*.ttf; do
+  fontforge -lang py \
+            -script ligaturize.py \
+                    --output-dir='output-fonts/' \
+                    --prefix='Liga' \
+                    -- \
+                    "$ttf"
+done
+
+cp --verbose -- output-fonts/*.ttf ~/Library/Fonts
 
 popd > /dev/null
