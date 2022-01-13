@@ -9,15 +9,19 @@
 	<key>AdjustWindowForFontSizeChange</key>
 	<false/>
 	<key>AlternateMouseScroll</key>
-	<false/>
+	<true/>
 	<key>AutoLogFormat</key>
 	<string>\(session.creationTimeString)-\(session.profileName)-\(iterm2.pid).log</string>
 	<key>BootstrapDaemon</key>
+	<true/>
+	<key>BracketedPasteMode</key>
 	<true/>
 	<key>CheckTestRelease</key>
 	<true/>
 	<key>CloseBookmarksWindowAfterOpening</key>
 	<false/>
+	<key>ConvertDosNewlines</key>
+	<true/>
 	<key>Coprocess MRU</key>
 	<array/>
 	<key>Custom Color Presets</key>
@@ -381,6 +385,8 @@
 	<key>EnableDivisionView</key>
 	<true/>
 	<key>EnableProxyIcon</key>
+	<false/>
+	<key>EscapeShellCharsWithBackslash</key>
 	<false/>
 	<key>GlobalKeyMap</key>
 	<dict>
@@ -1230,7 +1236,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>LigaMesloLGS-Regular 16</string>
+			<string>MesloLGSNerdFontComplete-Regular 16</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -2064,7 +2070,7 @@
 			<key>Minimum Contrast</key>
 			<real>0.0</real>
 			<key>Mouse Reporting</key>
-			<true/>
+			<false/>
 			<key>Name</key>
 			<string>zsh</string>
 			<key>Non Ascii Font</key>
@@ -2074,7 +2080,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>LigaMesloLGS-Regular 15</string>
+			<string>MesloLGSNerdFontComplete-Regular 15</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -5725,6 +5731,12 @@
 	<false/>
 	<key>OpenTmuxWindowsIn</key>
 	<integer>0</integer>
+	<key>PasteSpecialRegex</key>
+	<string></string>
+	<key>PasteSpecialSubstitution</key>
+	<string></string>
+	<key>PasteSpecialUseRegexSubstitution</key>
+	<false/>
 	<key>PasteTabToStringTabStopSize</key>
 	<integer>2</integer>
 	<key>PointerActions</key>
