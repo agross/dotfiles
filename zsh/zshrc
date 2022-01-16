@@ -54,6 +54,9 @@ zinit ice wait lucid &&
   zinit light Tarrasch/zsh-bd
 
 zinit ice wait lucid &&
+  zinit light zsh-users/zsh-autosuggestions
+
+zinit ice wait lucid &&
   zinit light zsh-users/zsh-completions
 
 # Required for "sbin" ices.
