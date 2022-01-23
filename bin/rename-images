@@ -10,6 +10,9 @@
 set -eu
 setopt PIPE_FAIL
 
+autoload -Uz colors && colors
+zmodload -F zsh/stat b:zstat
+
 mkdir_mv() {
   local src target target_dir
 
@@ -18,10 +21,52 @@ mkdir_mv() {
   target_dir=$target:h
 
   mkdir -p -- $target_dir
+
+  if [[ -f $target ]]; then
+    zstat -H src_stat $src
+    zstat -H target_stat $target
+
+    if (( src_stat[size] == target_stat[size] )); then
+      printf '%bTarget exists and has the same size (%b%s%b): %b%s%b\nDeleting %b%s%b\n' \
+             $fg_bold[blue] \
+             $fg_bold[yellow] \
+             $target_stat[size] \
+             $fg_bold[blue] \
+             $fg_bold[green] \
+             $target \
+             $reset_color \
+             $fg_bold[red] \
+             $src \
+             $reset_color
+
+      rm -- $src
+
+      return
+    else
+      printf '%bTarget exists but size does not match:\n%b%s%b %s\n%b%s%b %s\n' \
+              $fg_bold[red] \
+              $fg_bold[yellow] \
+              $src_stat[size] \
+              $reset_color \
+              $src \
+              $fg_bold[yellow] \
+              $target_stat[size] \
+              $reset_color \
+              $target
+    fi
+  fi
+
   mv --verbose --no-clobber -- $src $target
 }
 
-opt=(-Q -v -p mkdir_mv $@)
+# https://github.com/zsh-users/zsh/blob/master/Functions/Misc/zmv#L75
+# -f  Force overwriting of destination files.
+#     zmv would error out if the target exists. We check if the destination
+#     already exists in mkdir_mv with some extra smarts.
+# -Q  Force bare glob qualifiers on.
+# -v  Be verbose.
+# -p  Call <program> instead of cp, ln or mv.
+opt=(-f -Q -v -p mkdir_mv $@)
 
 autoload -U zmv
 
