@@ -140,3 +140,76 @@ zmv $opt \
 zmv $opt \
     '(**/)(IMG|VID)-([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))-WA([[:digit:]](#c4)).(*)(.N)' \
     '$1$3/$3-$4-$5-$6.$7'
+
+# Threema images and videos with special duplicate handling.
+mkdir_mv_threema() {
+  local src target attempt_target
+  typeset -A count_per_target
+
+  src=$2
+  target=${3%% \**}
+  attempt_target=$target
+
+  while [[ -f $attempt_target ]]; do
+    printf '%b%s%b already exists, trying ' \
+            $fg_bold[green] \
+            $attempt_target \
+            $reset_color
+
+    if ! ((+count_per_target[$target])); then
+      count_per_target[$target]=0
+    fi
+    count_per_target[$target]=$(($count_per_target[$target] + 1))
+
+    attempt_target=$(printf '%s (%s).%s' $target:r $count_per_target[$target] $target:e)
+
+    printf '%b%s%b\n' \
+            $fg_bold[green] \
+            $attempt_target \
+            $reset_color
+  done
+
+  mkdir_mv -- $src $attempt_target
+}
+
+threema_opt=("${opt[@]}")
+index=$opt[(i)mkdir_mv]
+threema_opt[$index]=mkdir_mv_threema
+
+# Month and day are switched!
+#
+# image-20213112-111255.jpeg
+# ->
+# 2021/2021-12-31 11.12.55.jpeg
+#
+# image-20213112-111255 (1).jpeg
+# ->
+# 2021/2021-12-31 11.12.55 (1).jpeg
+zmv $threema_opt \
+    '(**/)image-([[:digit:]](#c4))([[:digit:]](#c4))-([[:digit:]](#c6))(*).(*)(.N)' \
+    '$1$2/$2-${3:2:2}-${3:0:2} ${4:0:2}.${4:2:2}.${4:4:2}.$6 * and to make it unique: $5'
+
+# image-202103272113.jpeg
+# ->
+# 2021/2021-03-27 21.13.00.jpeg
+#
+# image-202103272113 (1).jpeg
+# ->
+# 2021/2021-03-27 21.13.00 (1).jpeg
+zmv $threema_opt \
+    '(**/)image-([[:digit:]](#c4))([[:digit:]](#c4))([[:digit:]](#c4))(*).(*)(.N)' \
+    '$1$2/$2-${3:0:2}-${3:2:2} ${4:0:2}.${4:2:2}.00.$6 * and to make it unique: $5'
+
+# threema-20200531-121801-2f0886bfc2a63765.jpg
+# ->
+# 2020/2020-05-31 12.18.01.jpg
+#
+# threema-20210924-083208378.jpg
+# ->
+# 2021/2021-09-24 08.32.08.jpg
+zmv $threema_opt \
+    '(**/)threema-([[:digit:]](#c4))([[:digit:]](#c4))-([[:digit:]](#c6))(*).(*)(.N)' \
+    '$1$2/$2-${3:0:2}-${3:2:2} ${4:0:2}.${4:2:2}.${4:4:2}.$6 * and to make it unique $5'
+
+# Rename *.jpeg to *jpg.
+zmv $opt '(**/)(*).jpeg' '$1$2.jpg'
