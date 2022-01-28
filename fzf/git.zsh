@@ -1,4 +1,16 @@
-(($+commands[fzf])) || (($+commands[fzf-tmux])) || return 0
+function _fzf::git::load()
+{
+  # These will be defined as key bindings: ^g^<key> for _fzf::git::<value>
+  local -A bindings
+  bindings[f]=file
+  bindings[g]=status-file
+  bindings[b]=branch
+  bindings[t]=tag
+  bindings[r]=remote
+  bindings[h]=hash
+
+  _fzf::git::bind-keys "${${(@qqkv)bindings}[*]}"
+}
 
 function _fzf::git::is_repo() {
   git rev-parse --git-dir > /dev/null 2>&1
@@ -135,14 +147,3 @@ function _fzf::git::bind-keys() {
 
   unfunction $0
 }
-
-# These will be defined as key bindings: ^g^<key> for _fzf::git::<value>
-local -A bindings
-bindings[f]=file
-bindings[g]=status-file
-bindings[b]=branch
-bindings[t]=tag
-bindings[r]=remote
-bindings[h]=hash
-
-_fzf::git::bind-keys "${${(@qqkv)bindings}[*]}"

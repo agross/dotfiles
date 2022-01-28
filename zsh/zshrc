@@ -83,7 +83,7 @@ zinit ice wait:'0b' lucid \
           if:'[[ ! $OSTYPE =~ ^(msys|cygwin)$ ]] || [[ -z $SSH_CONNECTION ]]' \
           atclone:'./install --bin --no-update-rc --no-bash --no-fish --no-zsh' \
           atpull:%atclone \
-          atload:'load-fzf' \
+          atload:'load-fzf && _fzf::git::load' \
           pick:'bin/fzf*' \
           multisrc:'shell/*.zsh' \
           as:program &&
