@@ -212,4 +212,4 @@ zmv $threema_opt \
     '$1$2/$2-${3:0:2}-${3:2:2} ${4:0:2}.${4:2:2}.${4:4:2}.$6 * and to make it unique $5'
 
 # Rename *.jpeg to *jpg.
-zmv $opt '(**/)(*).jpeg' '$1$2.jpg'
+zmv $opt '(**/)(*).jpeg(.N)' '$1$2.jpg'
