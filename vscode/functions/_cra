@@ -1,0 +1,5 @@
+#compdef cra
+# shellcheck disable=SC2148
+
+_directories
+_files
