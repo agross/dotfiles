@@ -103,10 +103,13 @@ cue.tracks.each_with_index do |track, index|
     cmd += ['-metadata', "#{k.to_s}=#{v.to_s}"]
   end
 
-  cmd << '%s - %s - %.2d - %s.flac' % [track[:artist],
-                                      track[:album],
-                                      index + 1,
-                                      track[:title]]
+  cmd << '%s - %s - %.2d - %s%s' % [
+    track[:artist],
+    track[:album],
+    index + 1,
+    track[:title],
+    File.extname(track[:file]),
+  ]
 
   sh(*cmd)
 end
