@@ -31,11 +31,11 @@ inspect-images()
 
   local -a used_images
   mapfile -t used_images < <(docker container \
-                                  ls \
-                                  --no-trunc \
-                                  --format '{{.Image}}' |
-                                  sort |
-                                  uniq)
+                                    ls \
+                                    --no-trunc \
+                                    --format '{{.Image}}' |
+                                    sort |
+                                    uniq)
 
   local image
   for image in "${used_images[@]}"; do
@@ -61,10 +61,10 @@ inspect-images()
       if [[ "$tags_digests" =~ $no_tags_but_repo_digests ]]; then
         local -a containers
         mapfile -t containers < <(docker container \
-                                        ls \
-                                        --no-trunc \
-                                        --format '{{.Names}}' \
-                                        --filter "ancestor=$image")
+                                         ls \
+                                         --no-trunc \
+                                         --format '{{.Names}}' \
+                                         --filter "ancestor=$image")
 
         printf 'Outdated associated containers: %b%s%b\n' \
                "$red" \
