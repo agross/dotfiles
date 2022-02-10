@@ -106,7 +106,12 @@ add-restart-command()
   local name="${service%.service}"
   name="${name%@*}"
 
-  local disabled="/var/data/$name/systemd/.drestart-disabled"
+  local unit_paths unit_path
+  mapfile -t unit_paths < <(systemctl show --property=FragmentPath --value "$service")
+  unit_path="$(realpath "${unit_paths[0]}")"
+  unit_path="${unit_path%/*}"
+
+  local disabled="$unit_path/.drestart-disabled"
 
   if [[ -f "$disabled" ]]; then
     printf 'Upgrades are disabled via: %b%s%b\n' \
@@ -116,7 +121,7 @@ add-restart-command()
     return
   fi
 
-  local script="/var/data/$name/systemd/upgrade"
+  local script="$unit_path/upgrade"
 
   if [[ -x "$script" ]]; then
     services_add["$service"]="$script"
