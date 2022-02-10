@@ -106,6 +106,7 @@ input="$PWD/input-fonts"
 mkdir "$input"
 meslo-original "$input"
 meslo-powerline "$input"
+meslo-nerdfont "$input"
 
 if ! brew list fontforge > /dev/null; then
   brew install fontforge
@@ -126,6 +127,8 @@ for ttf in "$input"/*.ttf; do
 done
 
 cp --verbose -- "$output"/*.ttf ~/Library/Fonts
+
+# For good measure, copy the unligaturized Meslo LGS Nerd Font.
 meslo-nerdfont ~/Library/Fonts
 
 popd > /dev/null
