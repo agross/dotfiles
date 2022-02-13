@@ -152,11 +152,11 @@ hook:
     - event: art_set
       command: >-
         /Users/agross/.dotfiles/beets/hooks/art_set "{album.id}"
-                                                   "{album}"
-                                                   "{album.artpath}"
+                                                    "{album}"
+                                                    "{album.artpath}"
 
     # Up the file's mtime by a couple of seconds to force Nextcloud to sync.
     - event: after_write
       command: >-
         /Users/agross/.dotfiles/beets/hooks/after_write "{item.id}"
-                                                        "{path}"
+                                                       "{path}"
