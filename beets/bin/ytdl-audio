@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+yt-dlp --format bestaudio \
+       --extract-audio \
+       --keep-video \
+       --embed-thumbnail \
+       --embed-metadata \
+       --no-embed-chapters \
+       --no-embed-info-json \
+       "$@"
