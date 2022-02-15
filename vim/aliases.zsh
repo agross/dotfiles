@@ -1,7 +1,5 @@
 if (($+commands[vim])); then
   alias vi=vim
-else
+elif (($+commands[vi])); then
   alias vim=vi
 fi
-
-export EDITOR=vim
