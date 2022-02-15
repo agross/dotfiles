@@ -15,11 +15,11 @@ dir=${1-.}
 # od = depth first
 # on = sort by name
 for dir in $dir/**/*(/NDFodon); do
-  # N  = no error if there are no matches
-  # D  = include dotfiles
-  # om = order by modified date, newest first
-  # Y1 = limit to one match
-  newest=($dir/*(NDomY1))
+  # N   = no error if there are no matches
+  # D   = include dotfiles
+  # om  = order by modified date, newest first
+  # [1] = first match
+  newest=($dir/*(NDom[1]))
 
   if [[ ${#newest[@]} -eq 0 ]]; then
     printf '%bempty%b: %b%s%b\n' \
