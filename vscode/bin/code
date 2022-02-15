@@ -15,8 +15,8 @@ set -euo pipefail
 #
 # Path translation is done using `cygpath` on Cygwin or `wslpath` on WSL.
 #
-# code relative/path -> translated if it exist
-# code /absolute/path -> translated if it exist
+# code relative/path -> translated if it exists
+# code /absolute/path -> translated if it exists
 # code -- relative/path -> always translated
 # code -- /absolute/path -> always translated
 #
