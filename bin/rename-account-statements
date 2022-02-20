@@ -20,11 +20,11 @@ zmv $opt \
 
 # DKB VISA.
 #
-# Kreditkartenabrechnung_1234xxxxxxxx5678_per_2018_02_01.pdf
+# Kreditkartenabrechnung_1234________5678_per_2018_02_01.pdf
 # ->
 # Kreditkarte 5678 2018-02-01.pdf
 zmv $opt \
-    '(Kreditkarte)nabrechnung_*x([[:digit:]]##)_per_([[:digit:]]##)_([[:digit:]]##)_([[:digit:]]##).pdf(.N)' \
+    '(Kreditkarte)nabrechnung_*_([[:digit:]]##)_per_([[:digit:]]##)_([[:digit:]]##)_([[:digit:]]##).pdf(.N)' \
     '$1 $2 $3-$4-$5.pdf'
 
 # netbank.
