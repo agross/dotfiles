@@ -27,6 +27,11 @@ if [[ $# -gt 0 ]] ||
   open -a Flux
   open -a DockMate
   osascript <<< 'tell application "PopClip" to set enabled to true'
+
+  if brew autoupdate status | grep --quiet --invert-match running; then
+    brew autoupdate start
+  fi
+
   dnd::off
 else
   # http://unix.stackexchange.com/a/148698/72946
@@ -41,5 +46,10 @@ else
   killall Flux 2> /dev/null
   killall DockMate 2> /dev/null
   osascript <<< 'tell application "PopClip" to set enabled to false'
+
+  if brew autoupdate status | grep --quiet running; then
+    brew autoupdate stop
+  fi
+
   dnd::on
 fi
