@@ -1,9 +1,4 @@
 #!/usr/bin/env sh
 
-updater="$HOME/Library/Application Support/com.github.domt4.homebrew-autoupdate/updater"
-
-brew autoupdate --delete && \
-  brew autoupdate --start --upgrade --cleanup --enable-notification && \
-  cat "$updater" && \
-  sed -i "s_false_$(which terminal-notifier)_g" "$updater" && \
-  cat "$updater"
+brew autoupdate delete && \
+  brew autoupdate start --upgrade --cleanup
