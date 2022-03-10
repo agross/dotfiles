@@ -73,7 +73,6 @@ cask 'atext'
 cask 'banking-4'
 cask 'bartender'
 cask 'bettertouchtool'
-cask 'bitwarden'
 cask 'cleanmymac'
 cask 'dash'
 cask 'dockmate'
@@ -105,6 +104,7 @@ cask 'xnviewmp'
 # Apps from the Mac App Store.
 mas 'AS Timer', id: 512_464_723
 mas 'Better', id: 1_121_192_229
+mas 'Bitwarden', id: 1_352_778_147
 mas 'CleanMyDrive 2', id: 523_620_159
 mas 'Discovery', id: 1_381_004_916
 mas 'EasyRes', id: 688_211_836
