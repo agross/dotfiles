@@ -28,7 +28,7 @@ if [[ $# -gt 0 ]] ||
   open -a DockMate
   osascript <<< 'tell application "PopClip" to set enabled to true'
 
-  if brew autoupdate status | grep --quiet --invert-match running; then
+  if ! brew autoupdate status | grep --quiet running; then
     brew autoupdate start
   fi
 
