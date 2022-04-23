@@ -144,6 +144,14 @@ git-training::logs::ask-overwrite() {
   read -qs
 }
 
+git-training::logs::trash() {
+  local file=${1?Need file}
+  local target=$HOME/.Trash/git-training-logs
+
+  mkdir --parents -- $target
+  mv --target-directory=$target -- $file
+}
+
 git-training::logs() {
   if [[ "$1" == '--clean' ]]; then
     rm --interactive -- ~/*_*-zsh\ Trainings-*.{log,asciinema}(N.on)
@@ -177,7 +185,7 @@ git-training::logs() {
                          --doc-title "Tag $day Teil $part" \
                          --encoding utf-8 \
                          --font 'Menlo, Monaco, Consolas, Courier New, monospace'; then
-              mv -- "$file" "$HOME/.Trash/"
+              git-training::logs::trash "$file"
             fi
           fi
           ;;
@@ -193,7 +201,7 @@ git-training::logs() {
                          --template window_frame_js \
                          "$file" \
                          "$target"; then
-              mv -- "$file" "$HOME/.Trash/"
+              git-training::logs::trash "$file"
             fi
           fi
           ;;
