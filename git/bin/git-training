@@ -160,7 +160,7 @@ git-training::logs() {
     du -h $log
 
     for file in ${log%.*}.*(.); do
-      target="$HOME/Downloads/Tag $day Teil $part.${file##*.}"
+      target="$HOME/Downloads/Day $day Part $part.${file##*.}"
 
       if git-training::logs::ask-overwrite $target; then
         cp --verbose -- "$file" "$target"
@@ -168,7 +168,7 @@ git-training::logs() {
 
       case ${file##*.} in
         log)
-          target="$HOME/Downloads/Tag $day Teil $part.html"
+          target=${target:r}.html
 
           if git-training::logs::ask-overwrite $target; then
             if ansifilter --input "$file" \
@@ -186,7 +186,7 @@ git-training::logs() {
           # https://github.com/nbedos/termtosvg/issues/97
           sed -i 's/"idle_time_limit": 1.0/"idle_time_limit": 1/' "$file"
 
-          target="$HOME/Downloads/Tag $day Teil $part.svg"
+          target=${target:r}.svg
 
           if git-training::logs::ask-overwrite $target; then
             if termtosvg render \
