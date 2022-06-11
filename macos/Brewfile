@@ -64,7 +64,7 @@ brew 'testssl'
 brew 'wakeonlan'
 brew 'webkit2png'
 brew 'xz'
-brew 'youtube-dl'
+brew 'yt-dlp'
 
 cask 'alt-tab'
 cask 'android-file-transfer'
