@@ -1,5 +1,5 @@
-[[ -z $SSH_CONNECTION ]] && return 0
-[[ -v NO_TERMINAL_MULTIPLEXER ]] && return 0
+# Only handle interactive SSH sesssions.
+[[ -z $SSH_CONNECTION || -z $SSH_TTY ]] && return
 
 if (($+commands[screen])); then
   if [[ -S $SSH_AUTH_SOCK && ! -h $SSH_AUTH_SOCK ]]; then
