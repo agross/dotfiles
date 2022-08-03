@@ -2,6 +2,8 @@
 
 [[ "$OSTYPE" == darwin* ]] || return 0
 
+cask 'db-browser-for-sqlite'
+
 formula python3
 pip3 install beets
 
