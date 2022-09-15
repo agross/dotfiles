@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+
+set -euo pipe_fail
+
+autoload -Uz colors && colors
+
+root=~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung/offen
+list=$root/AG/_files.csv
+
+rm --verbose --force -- $list
+
+for path in $root/AG*/*.pdf(.N); do
+  basename=${path:r:t}
+
+  supplier=${basename% *}
+  number=${basename##* }
+
+  printf '%s,%s\n' ${supplier:0:20} $number >> $list
+
+  printf '%b%s%b: %b%s%b %b%s%b\n' \
+         $fg_bold[blue] \
+         ${path:t2} \
+         $reset_color\
+         $fg_bold[green] \
+         $supplier \
+         $reset_color \
+         $fg_bold[cyan] \
+         $number \
+         $reset_color
+done
