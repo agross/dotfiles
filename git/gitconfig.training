@@ -28,6 +28,7 @@
 	path = ~/.git-config/alias-ui.config
 	path = ~/.git-config/credential-helper.config
 	path = ~/.git-config/gitignore.config
+	path = ~/.git-config/signing.config
 
 # Default git {diff,merge}tool.
 [diff]

@@ -13,6 +13,7 @@
 	path = ~/.git-config/credential-helper.config
 	path = ~/.git-config/gitignore.config
 	path = ~/.git-config/ruby-aliases.config
+	path = ~/.git-config/signing.config
 [color]
 	ui = auto
 	wtf = true
