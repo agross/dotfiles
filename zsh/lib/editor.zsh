@@ -1,5 +1,7 @@
-if (($+commands[code])) && [[ ! -v SSH_CONNECTION ]]; then
-  export EDITOR='code --new-window --wait'
-elif (($+commands[vim])); then
+if (($+commands[code])); then
+  export VISUAL=code
+fi
+
+if (($+commands[vim])); then
   export EDITOR=vim
 fi
