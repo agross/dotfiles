@@ -4,22 +4,26 @@ set -euo pipe_fail
 
 autoload -Uz colors && colors
 
-root=~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung/offen
-list=$root/AG/_files.csv
+root=~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung/offen/AG*
+list=_files.csv
 
-rm --verbose --force -- $list
+rm --verbose --force -- $~root/$list(.N)
 
-for path in $root/AG*/*.pdf(.N); do
-  basename=${path:r:t}
+lists_written=()
+
+for file in $~root/*.pdf(.N); do
+  dirname=${file:h}
+  basename=${file:r:t}
 
   supplier=${basename% *}
   number=${basename##* }
 
-  printf '%s,%s\n' ${supplier:0:20} $number >> $list
+  printf '%s;%s;%s;;%s\n' ${supplier:0:20} $number brutto 19 >> $dirname/$list
+  lists_written+=($dirname/$list)
 
   printf '%b%s%b: %b%s%b %b%s%b\n' \
          $fg_bold[blue] \
-         ${path:t2} \
+         ${file:t2} \
          $reset_color\
          $fg_bold[green] \
          $supplier \
@@ -28,3 +32,5 @@ for path in $root/AG*/*.pdf(.N); do
          $number \
          $reset_color
 done
+
+${VISUAL:-${EDITOR:-vi}} -- ${(u)lists_written}
