@@ -16,4 +16,4 @@
 #   $ e .
 #   $ e /usr/local
 #   # => opens the specified directory in your editor
-exec "$EDITOR" "${1:-.}"
+exec "${VISUAL:-${EDITOR:-vi}}" "${1:-.}"
