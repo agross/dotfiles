@@ -46,6 +46,10 @@ tap 'gromgit/homebrew-fuse'
 cask 'macfuse'
 brew 'sshfs-mac'
 
+# jqp
+tap 'noahgorstein/tap'
+brew 'jqp'
+
 # Apps without topic directories.
 brew 'bitwarden-cli'
 brew 'curl'
