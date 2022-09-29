@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+for container in $(docker container ps --filter='ancestor=mariadb' --quiet); do
+  name="$(docker container inspect --format '{{json .Name }}' "$container")"
+
+  password="$(
+    docker container inspect --format '{{json .Config.Env }}' "$container" |
+      jq --raw-output '.[] | scan("^MYSQL_ROOT_PASSWORD=(.*)") | first'
+  )"
+
+  printf '%b%s%b:\n' "\e[1;32m" "$name" "\e[0m"
+  docker container exec "$container" mysql_upgrade -uroot "-p$password" "$@"
+done
