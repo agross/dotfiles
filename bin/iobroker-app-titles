@@ -6,7 +6,7 @@ typeset -A url_to_tile
 url_to_tile[home.therightstuff.de]=Home
 url_to_tile[ogd.therightstuff.de]=OGD
 
-for app in ~/Applications/Chrome\ Apps.localized/ioBroker*.app(/); do
+for app in ~/Applications/(Chrome|Brave\ Browser)\ Apps.localized/ioBroker*.app(/); do
   printf '%s\n' $app
 
   url=$(grep --only-matching --perl-regexp '\w+\.therightstuff\.de' $app/Contents/Info.plist)
