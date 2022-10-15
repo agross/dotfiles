@@ -117,7 +117,7 @@ function gitconfig_aliases() {
       verbose Adding $fg[green].gitconfig$reset_color alias: $fg[red]$alias$reset_color = $fg[red]git $alias$reset_color
 
       # Commands starting with ! need to go through git.
-      alias $alias="git $alias"
+      alias $alias="noglob git $alias"
     else
       gitalias $alias="$command"
     fi
@@ -158,7 +158,7 @@ function gitalias() {
   [[ "$alias" == 'alias' ]] && return 1
 
   if [[ "$2" != "nogit" ]]; then
-    command="git $command"
+    command="noglob git $command"
   fi
 
   verbose Adding $fg[green]$funcstack[2]$reset_color alias: $fg[red]$alias$reset_color = $fg[red]$command$reset_color
