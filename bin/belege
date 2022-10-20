@@ -21,8 +21,12 @@ for file in $~root/*.pdf(.N); do
   vat=19
   [[ $supplier == Taxi* ]] && vat=7
 
-  printf '%s;"%s";%s;;%s\n' ${supplier:0:20} $number brutto $vat >> $dirname/$list
-  lists_written+=($dirname/$list)
+  csv=$dirname/$list
+
+  [[ ! -f $csv ]] && printf '\xEF\xBB\xBF' > $csv
+
+  printf '%s;"%s";%s;;%s\n' ${supplier:0:20} $number brutto $vat >> $csv
+  lists_written+=($csv)
 
   printf '%b%s%b: %b%s%b %b%s%b %b%s%%%b\n' \
          $fg_bold[blue] \
