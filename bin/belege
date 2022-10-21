@@ -43,4 +43,6 @@ for file in $~root/*.pdf(.N); do
          $reset_color
 done
 
-${VISUAL:-${EDITOR:-vi}} -- ${(u)lists_written}
+if (( $#lists_written )); then
+  ${VISUAL:-${EDITOR:-vi}} -- ${(u)lists_written}
+fi
