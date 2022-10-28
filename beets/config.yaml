@@ -44,6 +44,10 @@ paths:
   # Mixes (beet modify mix=true <query>).
   mix:true: >-
     _Mixes/$artist - $title
+  # Items with the "dir" attribute matching the "." regex.
+  # beet modify dir=_Special <query>
+  dir::.: >-
+    $dir/$artist - $title
   # Single files.
   singleton:true: >-
     _Singles/$artist - $title
