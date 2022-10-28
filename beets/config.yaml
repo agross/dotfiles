@@ -27,8 +27,6 @@ paths:
   # >- means newlines will be replaced by space.
   #
   # Compilations.
-  # comp:true:
-  #   $albumartist_no_va%if{albumartist_no_va, - }$album%aunique{}/$albumartist_no_va%if{albumartist_no_va, - }$album$maybe_disc - $track - $artist - $title
   comp:true: >-
     $albumartist_no_va$album%aunique{}/$albumartist_no_va$album$maybe_disc
     - $track
