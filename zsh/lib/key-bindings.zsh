@@ -20,7 +20,7 @@ bindkey '^Z'      undo                 # Ctrl + Z
 bindkey '^Y'      redo                 # Ctrl + Y
 
 bindkey '^R'      history-incremental-pattern-search-backward # Ctrl + R
-bindkey '^J'      history-incremental-pattern-search-forward  # Ctrl + J
+bindkey '^F'      history-incremental-pattern-search-forward  # Ctrl + F (below R)
 
 bindkey '^[[A'    up-line-or-history   # Up arrow
 bindkey '^[[B'    down-line-or-history # Down arrow
