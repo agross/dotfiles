@@ -7,10 +7,10 @@ fi
 cask iterm2
 cask font-jetbrains-mono
 
-IFS=$'\n' read -r -d '' -a scripts < <(find "$topic/scripts" \
-                                           -type f \
-                                           -iname '*.scpt' \
-                                         | sort && printf '\0')
+mapfile -t scripts < <(find "$topic/scripts" \
+                            -type f \
+                            \( -iname '*.scpt' -o -iname '*.py' \) \
+                         | sort)
 
 for script in "${scripts[@]}"; do
   symlink "$script" \
