@@ -7,6 +7,12 @@ autoload -Uz colors && colors
 root=~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung/offen/AG*
 list=_files.csv
 
+typeset -A vat_amounts
+vat_amounts=(
+  Taxi\* 7
+  DB\* 7
+)
+
 rm --verbose --force -- $~root/$list(.N)
 
 lists_written=()
@@ -18,8 +24,7 @@ for file in $~root/*.pdf(.N); do
   supplier=${basename% *}
   number=${basename##* }
 
-  vat=19
-  [[ $supplier == Taxi* ]] && vat=7
+  vat=${vat_amounts[(k)$supplier]:-19}
 
   csv=$dirname/$list
 
