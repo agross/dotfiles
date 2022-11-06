@@ -158,4 +158,4 @@ hook:
     - event: after_write
       command: >-
         /Users/agross/.dotfiles/beets/hooks/after_write "{item.id}"
-                                                       "{path}"
+                                                        "{path}"
