@@ -4,6 +4,8 @@ if [[ "$OSTYPE" == darwin* ]]; then
   formula argocd
   formula kubernetes-cli
   formula k9s
+
+  cask openlens
 fi
 
 # vim: set ft=sh ts=2 sw=2 et:
