@@ -71,8 +71,6 @@ values_for() {
   done
 }
 
-rm --verbose --force -- $~root/$list(.N)
-
 lists_written=()
 
 for file in $~root/*.pdf(.N); do
@@ -84,11 +82,6 @@ for file in $~root/*.pdf(.N); do
 
   for gross vat in $(values_for $supplier $number); do
     csv=$dirname/$list
-
-    [[ ! -f $csv ]] && printf '\xEF\xBB\xBF' > $csv
-
-    printf '%s;"%s";%s;;%s\n' ${supplier:0:20} $number $gross $vat >> $csv
-    lists_written+=($csv)
 
     printf '%b%s%b: %b%s%b %b%s%b %b%s%%%b\n' \
            $fg_bold[blue] \
@@ -103,6 +96,22 @@ for file in $~root/*.pdf(.N); do
            $fg_bold[magenta] \
            $vat \
            $reset_color
+
+    printf -v supplier_number '%s;"%s";' ${supplier:0:20} $number
+    printf -v gross_vat '%s;;%s' $gross $vat
+
+    if [[ -f $csv ]]; then
+      if grep --quiet --fixed-strings $supplier_number $csv; then
+        >&2 printf 'Entry exists, not updating: %s\n' $supplier_number
+        continue
+      fi
+    else
+      # Write UTF-8 BOM for our beloved Umlauts.
+      printf '\xEF\xBB\xBF' > $csv
+    fi
+
+    echo $supplier_number$gross_vat >> $csv
+    lists_written+=($csv)
   done
 done
 
