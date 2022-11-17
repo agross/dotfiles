@@ -7,11 +7,69 @@ autoload -Uz colors && colors
 root=~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung/offen/AG*
 list=_files.csv
 
-typeset -A vat_amounts
-vat_amounts=(
-  Taxi\* 7
-  DB\* 7
-)
+type::taxi()
+{
+  [[ $1 == Taxi* ]] || return 1
+
+  printf '%s\n' brutto
+  printf '%s\n' 7
+}
+
+type::db()
+{
+  [[ $1 == DB* ]] || return 1
+
+  printf '%s\n' brutto
+  printf '%s\n' 7
+}
+
+type::hotel()
+{
+  [[ $1 == Hotel* ]] || return 1
+
+  # Hotels likely have 2 VAT amounts.
+  printf '%s\n' brutto-7
+  printf '%s\n' 7
+  printf '%s\n' brutto-19
+  printf '%s\n' 19
+}
+
+type::congstar()
+{
+  [[ $1 == congstar* ]] || return 1
+
+  # Most often a static gross amount.
+  printf '%s\n' 25
+  printf '%s\n' 19
+}
+
+type::telekom()
+{
+  [[ $1 == Telekom* ]] || return 1
+
+  # Most often a static gross amount.
+  printf '%s\n' 54,94
+  printf '%s\n' 19
+}
+
+type::default()
+{
+  printf '%s\n' brutto
+  printf '%s\n' 19
+}
+
+values_for() {
+  local supplier=${1:?Need supplier}
+  local number=${2:?Need number}
+
+  local types=(taxi db hotel congstar telekom default)
+
+  for type in $types; do
+    if type::$type $supplier $number; then
+      return
+    fi
+  done
+}
 
 rm --verbose --force -- $~root/$list(.N)
 
@@ -24,28 +82,28 @@ for file in $~root/*.pdf(.N); do
   supplier=${basename% *}
   number=${basename##* }
 
-  vat=${vat_amounts[(k)$supplier]:-19}
+  for gross vat in $(values_for $supplier $number); do
+    csv=$dirname/$list
 
-  csv=$dirname/$list
+    [[ ! -f $csv ]] && printf '\xEF\xBB\xBF' > $csv
 
-  [[ ! -f $csv ]] && printf '\xEF\xBB\xBF' > $csv
+    printf '%s;"%s";%s;;%s\n' ${supplier:0:20} $number $gross $vat >> $csv
+    lists_written+=($csv)
 
-  printf '%s;"%s";%s;;%s\n' ${supplier:0:20} $number brutto $vat >> $csv
-  lists_written+=($csv)
-
-  printf '%b%s%b: %b%s%b %b%s%b %b%s%%%b\n' \
-         $fg_bold[blue] \
-         ${file:t2} \
-         $reset_color\
-         $fg_bold[green] \
-         $supplier \
-         $reset_color \
-         $fg_bold[cyan] \
-         $number \
-         $reset_color \
-         $fg_bold[magenta] \
-         $vat \
-         $reset_color
+    printf '%b%s%b: %b%s%b %b%s%b %b%s%%%b\n' \
+           $fg_bold[blue] \
+           ${file:t2} \
+           $reset_color\
+           $fg_bold[green] \
+           $supplier \
+           $reset_color \
+           $fg_bold[cyan] \
+           $number \
+           $reset_color \
+           $fg_bold[magenta] \
+           $vat \
+           $reset_color
+  done
 done
 
 if (( $#lists_written )); then
