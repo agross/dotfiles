@@ -3,6 +3,7 @@
 yt-dlp --format bestaudio \
        --extract-audio \
        --keep-video \
+       --no-mtime \
        --embed-thumbnail \
        --embed-metadata \
        --no-embed-chapters \
