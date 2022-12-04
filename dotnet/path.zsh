@@ -3,4 +3,5 @@
 (($+commands[dotnet])) || return 0
 
 # https://github.com/dotnet/cli/issues/9321
-path=($HOME/.dotnet/tools $path)
+# Replace the bogus entry as tilde is ignored during path expansion.
+path[${path[(ie)~/.dotnet/tools]}]=($HOME/.dotnet/tools)
