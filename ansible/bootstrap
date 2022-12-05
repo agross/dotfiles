@@ -1,0 +1,7 @@
+# shellcheck shell=bash
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  formula ansible
+fi
+
+# vim: set ft=sh ts=2 sw=2 et:
