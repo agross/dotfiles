@@ -1,8 +1,9 @@
 #compdef dotnet
+# vim: set ft=zsh ts=2 sw=2 et:
 
 # Based on https://learn.microsoft.com/en-us/dotnet/core/tools/enable-tab-autocomplete
 
-local completions=(${(@f)$(dotnet complete "$words")})
+local completions=(${(@f)$(dotnet complete "$words" 2> /dev/null)})
 
 # If the completion list is empty, continue with normal completion.
 if (( $#completions == 0 )); then
@@ -11,3 +12,37 @@ if (( $#completions == 0 )); then
 fi
 
 _values argument $completions
+
+# Tools are invoked as the second arg.
+if (( $#words != 2 )); then
+  return
+fi
+
+# Extract local tool commands.
+local -a local_tools local_tool_commands
+
+local_tools=(${(@f)$(dotnet tool list --local 2> /dev/null)})
+local_tools=(${local_tools:5})
+
+local i
+for ((i = 1; i <= $#local_tools; i++)); do
+  if (( i % 4 == 0 )); then
+    local_tool_commands+=($local_tools[$i])
+  fi
+done
+
+_describe -t local_tool 'dotnet local tool' local_tool_commands
+
+# Extract global tool commands.
+local -a global_tools global_tool_commands
+
+global_tools=(${(@f)$(dotnet tool list --global 2> /dev/null)})
+global_tools=(${global_tools:5})
+
+for ((i = 1; i <= $#global_tools; i++)); do
+  if (( i % 3 == 0 )); then
+    global_tool_commands+=($global_tools[$i])
+  fi
+done
+
+_describe -t global_tool 'dotnet global tool' global_tool_commands
