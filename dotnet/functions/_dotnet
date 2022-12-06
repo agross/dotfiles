@@ -1,0 +1,13 @@
+#compdef dotnet
+
+# Based on https://learn.microsoft.com/en-us/dotnet/core/tools/enable-tab-autocomplete
+
+local completions=(${(@f)$(dotnet complete "$words")})
+
+# If the completion list is empty, continue with normal completion.
+if (( $#completions == 0 )); then
+  _arguments '*::arguments: _normal'
+  return
+fi
+
+_values argument $completions
