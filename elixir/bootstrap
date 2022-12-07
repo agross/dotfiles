@@ -1,9 +1,0 @@
-# shellcheck shell=bash
-
-if [[ "$OSTYPE" == darwin* ]]; then
-  formula elixir
-fi
-
-symlink "$topic/iex.exs"
-
-# vim: set ft=sh ts=2 sw=2 et:
