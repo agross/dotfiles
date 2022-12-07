@@ -51,6 +51,7 @@ brew 'jqp'
 # Apps without topic directories.
 brew 'bitwarden-cli'
 brew 'curl'
+brew 'graphviz'
 brew 'httpie'
 brew 'imagemagick'
 brew 'jid'
