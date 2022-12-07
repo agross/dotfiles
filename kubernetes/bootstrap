@@ -2,6 +2,7 @@
 
 if [[ "$OSTYPE" == darwin* ]]; then
   formula argocd
+  formula helm
   formula kubernetes-cli
   formula k9s
 
