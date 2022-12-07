@@ -1,17 +1,25 @@
 # shellcheck shell=bash
 
+load-homebrew-env() {
+  local brew=/usr/local/bin/brew # Intel.
+  [[ -x "$brew" ]] || brew=/opt/homebrew/bin/brew # Apple silicon.
+
+  if [[ -x "$brew" ]]; then
+    eval "$("$brew" shellenv)"
+    return
+  fi
+
+  return 1
+}
+
 ensure-homebrew-installed() {
-  if command -v brew > /dev/null; then
+  if load-homebrew-env; then
     return
   fi
 
   info "$(printf "Installing %b%s%b" "$green" homebrew "$reset_color")"
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-
-  local brew=/usr/local/bin/brew # Intel.
-  [[ -x "$brew" ]] || brew=/opt/homebrew/bin/brew # Apple silicon.
-
-  eval "$("$brew" shellenv)"
+  load-homebrew-env
 }
 
 formula-installed() {
