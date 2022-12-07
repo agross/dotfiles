@@ -24,7 +24,7 @@ symlink "$topic/config.yaml" ~/.config/beets/config.yaml
 formula coreutils
 formula wget
 
-mkdir --parents ~/.config/beets/completion/
+mkdir -p ~/.config/beets/completion/
 wget --output-document ~/.config/beets/completion/_beet \
      https://raw.githubusercontent.com/beetbox/beets/master/extra/_beet
 
