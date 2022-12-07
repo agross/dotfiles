@@ -1,6 +1,9 @@
 # Allows to install updates automatically.
 tap 'homebrew/autoupdate'
 
+# Install updates for all casks.
+tap 'buo/cask-upgrade'
+
 # Remove formula and its dependencies with 'brew rmrec <formula>'.
 tap 'ggpeti/rmrec'
 
