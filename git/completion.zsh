@@ -1,8 +1,10 @@
 # Remove the crappy zsh completion shipped by Homebrew git.
 # I prefer zsh's builtin git completion.
 # https://github.com/Homebrew/homebrew-core/issues/33275
-[[ -f /usr/local/share/zsh/site-functions/_git ]] && \
-  rm  -f /usr/local/share/zsh/site-functions/_git
+if (($+commands[brew])); then
+  [[ -f $(brew --prefix)/share/zsh/site-functions/_git ]] && \
+    rm -f $(brew --prefix)/share/zsh/site-functions/_git
+fi
 
 # Set up completion for git-* scripts.
 local -a user_commands

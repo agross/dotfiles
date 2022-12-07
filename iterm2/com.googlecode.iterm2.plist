@@ -3558,7 +3558,7 @@
 			<key>Columns</key>
 			<integer>150</integer>
 			<key>Command</key>
-			<string>/usr/local/bin/bash -l -i -c "exec /usr/local/bin/iex"</string>
+			<string>/bin/bash -l -i -c "exec /usr/local/bin/iex"</string>
 			<key>Cursor Color</key>
 			<dict>
 				<key>Alpha Component</key>

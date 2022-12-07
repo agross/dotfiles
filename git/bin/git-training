@@ -234,10 +234,10 @@ git-training::record() {
     exit 1
   fi
 
-  exec /usr/local/bin/asciinema rec \
-                                --idle-time-limit=1 \
-                                --command "$SHELL --interactive --login" \
-                                $newest_log.asciinema
+  exec asciinema rec \
+                 --idle-time-limit=1 \
+                 --command "$SHELL --interactive --login" \
+                 $newest_log.asciinema
 }
 
 git-training::break() {

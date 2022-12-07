@@ -8,11 +8,12 @@ case "$OSTYPE" in
     ;;
 
   darwin*)
+    # Seems like nowadays docker installs its completion itself. Keep regardless.
     local completion_dir='/Applications/Docker.app/Contents/Resources/etc'
 
     [[ -d "$completion_dir" ]] || return 0
 
-    local function_dir="/usr/local/share/zsh/site-functions"
+    local function_dir="$(brew --prefix)/share/zsh/site-functions"
     mkdir --parents "$function_dir"
 
     local file=
