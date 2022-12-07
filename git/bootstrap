@@ -6,13 +6,18 @@ symlink "$topic/git-wtfrc"
 
 if [[ "$OSTYPE" == darwin* ]]; then
   formula git
+  formula git-lfs
+  formula git-svn
+
   cask beyond-compare
   cask diffmerge
   cask kdiff3
   cask meld
   cask p4v
+
   cask fork
   cask gitup
+  cask sourcetree
 
   # Tools required to record and convert casts.
   formula ansifilter
