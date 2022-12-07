@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
 if [[ "$OSTYPE" == darwin* ]]; then
-  formula vim --with-override-system-vi
+  formula vim
 fi
 
 [[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] && return
