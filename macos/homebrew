@@ -7,6 +7,11 @@ ensure-homebrew-installed() {
 
   info "$(printf "Installing %b%s%b" "$green" homebrew "$reset_color")"
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+  local brew=/usr/local/bin/brew # Intel.
+  [[ -x "$brew" ]] || brew=/opt/homebrew/bin/brew # Apple silicon.
+
+  eval "$("$brew" shellenv)"
 }
 
 formula-installed() {

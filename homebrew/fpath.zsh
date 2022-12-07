@@ -3,4 +3,4 @@ if [[ ! "$OSTYPE" == darwin* ]]; then
 fi
 
 # Make sure homebrew zsh functions take precedence.
-fpath=($(brew --prefix 2> /dev/null)/Cellar/zsh/$ZSH_VERSION/**/functions(/N) $fpath)
+fpath=($HOMEBREW_CELLAR/zsh/$ZSH_VERSION/**/functions(/N) $fpath)

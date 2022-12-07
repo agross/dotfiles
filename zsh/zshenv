@@ -30,4 +30,10 @@ export LANG=en_US.UTF-8
 
 skip_global_compinit=for-ubuntu
 
+local env
+for env in $DOTFILES/**/zshenv.zsh(.N); do
+  source $env
+done
+unset env
+
 # vim: set ft=zsh ts=2 sw=2 et:

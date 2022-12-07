@@ -4,7 +4,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
   formula zsh
 
   # Allow users to chsh to homebrew-installed zsh.
-  brew_zsh="$(brew --prefix)/bin/zsh"
+  brew_zsh="$HOMEBREW_PREFIX/bin/zsh"
   shells=/etc/shells
   if ! grep -F -q "$brew_zsh" "$shells"; then
     echo "$brew_zsh" | sudo -p "Adding $brew_zsh to $shells. Password:" -- tee -a "$shells" > /dev/null

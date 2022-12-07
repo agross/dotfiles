@@ -242,11 +242,7 @@ run-topic-bootstrapper() {
   # We pass some variables that we manage on our side and that may be used by
   # the individual bootstrappers.
   # The *_all variables may also be changed by user input.
-  /usr/bin/env -i \
-               PATH="$PATH" \
-               HOME="$home" \
-               OSTYPE="$OSTYPE" \
-               topic="$topic" \
+  /usr/bin/env topic="$topic" \
                \
                overwrite_all="${overwrite_all-}" \
                backup_all="${backup_all-}" \
