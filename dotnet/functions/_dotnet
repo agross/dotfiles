@@ -11,38 +11,55 @@ if (( $#completions == 0 )); then
   return
 fi
 
-_values argument $completions
+_dotnet-local-tools() {
+  local -a tools
+
+  tools=(${(@f)$(dotnet tool list --local 2> /dev/null)})
+  tools=(${tools:5})
+
+  local i
+  for ((i = 1; i <= $#tools; i++)); do
+    if (( i % 4 == 0 )); then
+      printf '%s\n' $tools[$i]
+    fi
+  done
+}
+
+_dotnet-global-tools() {
+  local -a tools
+
+  tools=(${(@f)$(dotnet tool list --global 2> /dev/null)})
+  tools=(${tools:5})
+
+  for ((i = 1; i <= $#tools; i++)); do
+    if (( i % 3 == 0 )); then
+      printf '%s\n' $tools[$i]
+    fi
+  done
+}
 
 # Tools are invoked as the second arg.
-if (( $#words != 2 )); then
-  return
+if (( $#words == 2 )); then
+  local -a local_tools global_tools
+
+  local_tools=($(_dotnet-local-tools))
+  global_tools=($(_dotnet-global-tools))
+
+  _describe -t local_tool 'dotnet local tool' local_tools
+  _describe -t global_tool 'dotnet global tool' global_tools
 fi
 
-# Extract local tool commands.
-local -a local_tools local_tool_commands
+# Did we receive a tool as the second arg? If yes, then handle the command line
+# as a precommand.
+if (( $#words >= 3 )); then
+  local -a tools
+  tools=($(_dotnet-local-tools) $(_dotnet-global-tools))
 
-local_tools=(${(@f)$(dotnet tool list --local 2> /dev/null)})
-local_tools=(${local_tools:5})
-
-local i
-for ((i = 1; i <= $#local_tools; i++)); do
-  if (( i % 4 == 0 )); then
-    local_tool_commands+=($local_tools[$i])
+  if (( ${tools[(ie)$words[2]]} <= $#tools )); then
+    # Tool matched, handle the rest of the command line using its completion.
+    _precommand
+    return
   fi
-done
+fi
 
-_describe -t local_tool 'dotnet local tool' local_tool_commands
-
-# Extract global tool commands.
-local -a global_tools global_tool_commands
-
-global_tools=(${(@f)$(dotnet tool list --global 2> /dev/null)})
-global_tools=(${global_tools:5})
-
-for ((i = 1; i <= $#global_tools; i++)); do
-  if (( i % 3 == 0 )); then
-    global_tool_commands+=($global_tools[$i])
-  fi
-done
-
-_describe -t global_tool 'dotnet global tool' global_tool_commands
+_values argument $completions

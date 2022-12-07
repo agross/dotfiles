@@ -8,6 +8,6 @@ case "$OS" in
     ;;
 
   *)
-    mono ./.paket/paket.exe "$@"
+    dotnet paket "$@"
     ;;
 esac
