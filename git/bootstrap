@@ -17,7 +17,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
   # Tools required to record and convert casts.
   formula ansifilter
   formula asciinema
-  formula termtosvg
 fi
 
 platform_specific=()

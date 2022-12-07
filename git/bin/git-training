@@ -189,22 +189,6 @@ git-training::logs() {
             fi
           fi
           ;;
-
-        asciinema)
-          # https://github.com/nbedos/termtosvg/issues/97
-          sed -i 's/"idle_time_limit": 1.0/"idle_time_limit": 1/' "$file"
-
-          target=${target:r}.svg
-
-          if git-training::logs::ask-overwrite $target; then
-            if termtosvg render \
-                         --template window_frame_js \
-                         "$file" \
-                         "$target"; then
-              git-training::logs::trash "$file"
-            fi
-          fi
-          ;;
       esac
     done
 
