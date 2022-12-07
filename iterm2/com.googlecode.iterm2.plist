@@ -5236,7 +5236,7 @@
 			<key>Columns</key>
 			<integer>150</integer>
 			<key>Command</key>
-			<string>/usr/local/bin/bash -l -i</string>
+			<string>/opt/homebrew/bin/bash -l -i</string>
 			<key>Cursor Boost</key>
 			<real>0.0</real>
 			<key>Cursor Color</key>
