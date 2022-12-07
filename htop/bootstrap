@@ -3,7 +3,7 @@
 [[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] && return
 
 if [[ "$OSTYPE" == darwin* ]]; then
-  formula htop --with-ncurses
+  formula htop
 fi
 
 symlink "$topic/htoprc"
