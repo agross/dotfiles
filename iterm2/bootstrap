@@ -9,10 +9,10 @@ cask iterm2
 brew tap homebrew/cask-fonts
 cask font-jetbrains-mono
 
-mapfile -t scripts < <(find "$topic/scripts" \
-                            -type f \
-                            \( -iname '*.scpt' -o -iname '*.py' \) \
-                         | sort)
+IFS=$'\n' read -r -d '' -a scripts < <(find "$topic/scripts" \
+                                            -type f \
+                                            \( -iname '*.scpt' -o -iname '*.py' \) \
+                                         | sort && printf '\0')
 
 for script in "${scripts[@]}"; do
   symlink "$script" \
