@@ -117,6 +117,9 @@ zinit ice wait lucid &&
 zinit ice wait lucid &&
   zinit light knu/z
 
+# Clear invalid completions, i.e. broken symlinks in $HOME/.zinit/completions.
+zinit cclear
+
 # Load theme before compinit.
 load-local-files '$DOTFILES/zsh/themes/agross.zsh-theme'
 
