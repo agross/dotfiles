@@ -1,4 +1,4 @@
-if (($+commands[code])); then
+if (($+commands[code])) && [[ $commands[code] != ${DOTFILES}* ]]; then
   export VISUAL=code
 fi
 
