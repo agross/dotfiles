@@ -120,13 +120,14 @@ sessions, just create a new topic directory and put files underneath.
 dotfiles
 ├─ example
 |  ├─ bootstrap              # bootstrapper: script to symlink files and install additional programs
-|  ├─ zprofile.zsh           # zsh #1: run for login shells
-|  ├─ something.zsh          # zsh #3: additional setup
-|  ├─ postinit.zsh           # zsh #4: run after additional setup (no guaranteed order)
-|  ├─ aliases.zsh            # zsh #4: run after additional setup (no guaranteed order)
+|  ├─ zshenv.zsh             # zsh #1: run for all shells
+|  ├─ zprofile.zsh           # zsh #2: run for login shells
+|  ├─ fpath.zsh              # zsh #3: set up the $FPATH variable
+|  ├─ path.zsh               # zsh #3: set up the $PATH variable
+|  ├─ something.zsh          # zsh #4: additional setup (no guaranteed order)
 |  └─ completion.zsh         # zsh #5: zsh completion setup
 └─ git
-   ├─ bin                    # contains git scripts, invoke with git specific-script
+   ├─ bin                    # contains git scripts, invoke with `git specific-script`
    |  └─ git-specific-script
    ├─ bootstrap              # bootstrapper to create symlinks
    ├─ gitconfig              # symlinked to ~/.gitconfig by bootstrap
@@ -138,7 +139,7 @@ dotfiles
 There are some special files that either the `bootstrap` script or
 [zsh](#shell) reads.
 
-### `bootstrap`-specific files
+### The `bootstrap`per
 
 The bootstrapper will create an implicit symlink for the dotfiles directory
 itself. `$HOME/.dotfiles` will point to the dotfiles clone directory unless you
@@ -150,8 +151,8 @@ use a static path. For example, [my `git mergetool` scripts point to
 
 #### topic/bootstrap
 
-`bootstrap` will source each `topic/bootstrap` file and thereby run it using
-bash. The script can then
+`bootstrap` will run topic-specific `topic/bootstrap` scripts where `topic` is one
+of the top-level subdirectories like `git`. These scripts can then
 
 * symlink files using the [`symlink $source $target`](https://github.com/agross/dotfiles/blob/master/bootstrap#L71)
   function. `$target` may be omitted, e.g. `symlink $topic/foo` will create the
@@ -169,33 +170,36 @@ environment variables available:
 
 ### [zsh](#shell)-specific files
 
-I use the excellent [zplug](https://github.com/zplug/zplug) project to manage my
-zsh plugins and initialization.
+I use [zinit](https://github.com/zdharma-continuum/zinit) to manage my zsh
+plugins and shell initialization.
 
 You can configure verbose logging of the zsh startup process by
 [setting `ZSH_VERBOSE`](https://github.com/agross/dotfiles/blob/master/zsh/zshenv#L4)
 to a nonempty value.
 
-#### topic/\*\*/zprofile.zsh
+#### topic/\*\*/zshenv.zsh and topic/\*\*/zprofile.zsh
 
-These files are loaded for login shells only (i.e. `zsh --login`). I use them to
-[run `screen` or `tmux` when connecting to a server via SSH](https://github.com/agross/dotfiles/blob/master/ssh/zprofile.zsh).
+`zshenv.zsh` files are loaded for every shell. Make sure they load fast.
+
+`zprofile.zsh` files are loaded for login shells only (i.e. `zsh --login`).
+I use them to [run `screen` or `tmux` when connecting to a server via SSH](https://github.com/agross/dotfiles/blob/master/ssh/zprofile.zsh).
+
+[Documentation on startup files.](https://zsh.sourceforge.io/Intro/intro_3.html)
+
+#### topic/\*\*/fpath.zsh and topic/\*\*/path.zsh
+
+Add to the `$FPATH` (function path) and `$PATH` (binary path) variables here so
+later scripts (next section) can find your topic-specific functions and
+executables.
 
 #### topic/\*\*/\*.zsh
 
 You can put anything you want in these, e.g. set up topic-specific aliases.
 
-#### topic/\*\*/aliases.zsh, topic/\*\*/postinit.zsh
-
-These scripts are loaded last, i.e. after all
-[zplug](https://github.com/zplug/zplug) plugins are loaded and before completion
-setup is run. Put any last-minute setup here. I use them on Windows to make my
-Cygwin [SSH agent environment variables known system-wide](https://github.com/agross/dotfiles/blob/master/ssh/postinit.zsh).
-
 #### topic/\*\*/completion.zsh
 
-Completion scripts are run after [zplug](https://github.com/zplug/zplug) calls
-[zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html)
+Completion scripts are run after [zinit](https://github.com/zdharma-continuum/zinit)
+calls [zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html)
 to initialize the completion system. Put any completion-specific setup here.
 
 # Thanks
