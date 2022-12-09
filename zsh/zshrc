@@ -10,9 +10,9 @@ verbose Loading $fg[green]zshrc$reset_color
 # Load paths and function paths first.
 load-local-files '$DOTFILES/**/(path|fpath).zsh'
 
-# Load everything but the path, function path, zprofile and completion files
-# second.
-load-local-files '$DOTFILES/**/(^(path|fpath|zprofile|completion)).zsh'
+# Load everything but the path, function path, zshenv, zprofile and completion
+# files second.
+load-local-files '$DOTFILES/**/(^(path|fpath|zshenv|zprofile|completion)).zsh'
 
 zinit-init
 
