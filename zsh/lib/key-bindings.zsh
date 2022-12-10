@@ -68,7 +68,7 @@ autoload -Uz transpose-words-match
 zstyle ':zle:transpose-words' word-style shell
 zle -N transpose-words transpose-words-match
 
-# Edit the command line with Ctrl + X, Ctrl +E or Esc, e.
+# Edit the command line with Ctrl + X, Ctrl + E or Esc, e.
 # In addition, you may use `fc` to fix the last command executed.
 autoload -Uz edit-command-line
 zle -N edit-command-line
