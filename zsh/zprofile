@@ -8,7 +8,7 @@ autoload -Uz verbose
 verbose Loading $fg[green]zprofile$reset_color
 
 local profile
-for profile in $DOTFILES/**/zprofile.zsh(.N); do
+for profile in $DOTFILES/**/zprofile.zsh(@,.N); do
   source $profile
 done
 unset profile

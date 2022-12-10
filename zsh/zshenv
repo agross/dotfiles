@@ -31,7 +31,7 @@ export LANG=en_US.UTF-8
 skip_global_compinit=for-ubuntu
 
 local env
-for env in $DOTFILES/**/zshenv.zsh(.N); do
+for env in $DOTFILES/**/zshenv.zsh(@,.N); do
   source $env
 done
 unset env
