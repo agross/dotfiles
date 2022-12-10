@@ -2,11 +2,15 @@
 
 # Restart systemd services with that are based on outdated docker images.
 #
-# The service name is derived from the container name.
+# The service name is derived from (in this order, first match wins)
+#   1. the container's "systemd.service" label
+#   2. the container's docker compose project name label "com.docker.compose.project"
+#   3. the container name
+#   4. the container name followed by '@*' for templated services
 #
 # Container              |  systemd Service
 # example                |  example.service
-# compose_db_1           |  compose.service
+# compose-db-1           |  compose.service (from com.docker.compose.project label)
 # service-foo_instance-1 |  service-foo@instance-1.service
 #
 # If systemd service units are templated, assume the docker containers are named
@@ -137,14 +141,31 @@ find-service()
 {
   local container="${1?Need container name}"
 
-  local service="${container%%_*}.service"
-  local template="${container%%_*}@*.service"
+  local -a inspect=(docker container inspect --format)
 
-  if systemctl is-active --quiet "$service"; then
-    printf '%s' "$service"
-  elif systemctl is-active --quiet "$template"; then
-    printf '%s' "$template"
-  fi
+  local systemd_service="$("${inspect[@]}" '{{ index .Config.Labels "systemd.service" }}' "$container")"
+  local compose_project="$("${inspect[@]}" '{{ index .Config.Labels "com.docker.compose.project" }}' "$container")"
+  local service="$container"
+  local templated_service="${container}@*"
+
+  local -a candidates=(
+    "$systemd_service"
+    "$compose_project"
+    "$service"
+    "$templated_service"
+  )
+
+  local candidate
+  for candidate in "${candidates[@]}"; do
+    [[ -z "$candidate" ]] && continue
+
+    candidate="$candidate.service"
+
+    if systemctl is-active --quiet "$candidate"; then
+      printf '%s' "$candidate"
+      break
+    fi
+  done
 }
 
 print-services()
