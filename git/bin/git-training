@@ -189,6 +189,10 @@ git-training::logs() {
             fi
           fi
           ;;
+
+        *)
+          git-training::logs::trash $file
+          ;;
       esac
     done
 
