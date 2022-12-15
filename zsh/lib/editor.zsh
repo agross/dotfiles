@@ -1,5 +1,16 @@
-if (($+commands[code])) && [[ $commands[code] != ${DOTFILES}* ]]; then
-  export VISUAL=code
+if (($+commands[code])); then
+  local executables
+
+  if executables=(${(f)"$(where code)"}); then
+    # Exclude code from $DOTFILES.
+    executables=(${executables##$DOTFILES*})
+
+    if ((${#executables})); then
+      export VISUAL=code
+    fi
+  fi
+
+  unset executables
 fi
 
 if (($+commands[vim])); then

@@ -4,6 +4,7 @@ if [[ -n "$SSH_CONNECTION" ]]; then
 fi
 
 local executables
+
 if executables=(${(f)"$(where code)"}); then
   # Exclude code from $DOTFILES.
   executables=(${executables##$DOTFILES*})
@@ -14,6 +15,8 @@ if executables=(${(f)"$(where code)"}); then
     export GIT_EDITOR='code --new-window --wait'
   fi
 fi
+
+unset executables
 
 # Notepad++ with custom syntax.
 # Files will be renamed to <name>.git before invoking Notepad++ and renamed
