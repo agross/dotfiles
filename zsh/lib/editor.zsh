@@ -1,4 +1,4 @@
-if (($+commands[code])); then
+if [[ -z "$SSH_CONNECTION" ]] && (($+commands[code])); then
   local executables
 
   if executables=(${(f)"$(where code)"}); then
