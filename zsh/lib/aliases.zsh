@@ -3,6 +3,7 @@ alias -g M='| less'
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
+alias -g GG='| command grep --color=auto --ignore-case --binary-files=without-match'
 alias -g XA='| xargs'
 
 alias -g DN='> /dev/null'
