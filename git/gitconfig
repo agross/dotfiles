@@ -79,6 +79,7 @@
 	#submodulesummary = true
 [rebase]
 	autoSquash = true
+	autoStash = true
 [stash]
 	showPatch = true
 [pager]
