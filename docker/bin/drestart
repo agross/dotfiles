@@ -143,10 +143,12 @@ find-service()
 
   local -a inspect=(docker container inspect --format)
 
-  local systemd_service="$("${inspect[@]}" '{{ index .Config.Labels "systemd.service" }}' "$container")"
-  local compose_project="$("${inspect[@]}" '{{ index .Config.Labels "com.docker.compose.project" }}' "$container")"
+  local systemd_service compose_project
+
+  systemd_service="$("${inspect[@]}" '{{ index .Config.Labels "systemd.service" }}' "$container")"
+  compose_project="$("${inspect[@]}" '{{ index .Config.Labels "com.docker.compose.project" }}' "$container")"
   local service="$container"
-  local templated_service="${container}@*"
+  local templated_service="${container%%_*}@*"
 
   local -a candidates=(
     "$systemd_service"
