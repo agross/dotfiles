@@ -1,3 +1,6 @@
 .DS_Store
 
+# Snyk cache files.
+.dccache
+
 # vim: set ft=gitignore ts=2 sw=2 et:
