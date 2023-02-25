@@ -105,5 +105,10 @@
 	insteadOf = gl:
 [commit]
 	verbose = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 
 # vim: set ft=gitconfig ts=2 sw=2 noet:
