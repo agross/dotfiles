@@ -1,3 +1,4 @@
+# vim: set ft=gitconfig ts=2 sw=2 noet:
 [user]
 	email = agross@therightstuff.de
 	name = Alexander Groß
@@ -110,5 +111,3 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-
-# vim: set ft=gitconfig ts=2 sw=2 noet:
