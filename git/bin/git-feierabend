@@ -32,7 +32,6 @@ git add --all
 # Create commit.
 if ! git commit --no-verify --message "Feierabendcommit $(date)"; then
   printf '%bNo changes to commit.\n%b' '\e[1;32m' '\e[0m'
-  exit
 fi
 
 ref="$(git symbolic-ref --short --quiet HEAD || printf 'detached-HEAD')"
