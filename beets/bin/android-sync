@@ -5,12 +5,12 @@ set -euo pipefail
 script="${0##*/}"
 script_path="${0%/*}"
 
-local_music="$HOME/Music/Music/"
-droid_music="/storage/3B3E-E2EC/Android/media/com.arachnoid.sshelper/Music"
-droid_host=android
+source_path="$HOME/Music/Music/"
+target_path="/storage/3B3E-E2EC/Music"
+target_host=root@poco-x3-alex
 
 # Set directory dates, rsync will sync those dates as well as file dates.
-dir-date-from-files "$local_music"
+dir-date-from-files "$source_path"
 
 rsync --progress \
       --verbose \
@@ -21,5 +21,5 @@ rsync --progress \
       --delete \
       --delete-excluded \
       --exclude-from "$script_path/../$script/exclude" \
-      "$local_music" \
-      "$droid_host:$droid_music"
+      "$source_path" \
+      "$target_host:$target_path"
