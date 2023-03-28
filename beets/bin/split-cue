@@ -85,6 +85,7 @@ cue.tracks.each_with_index do |track, index|
     ffmpeg
     -hide_banner
     -i #{track[:file]}
+    -vn
     -ss #{start}
   )
 
