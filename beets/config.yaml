@@ -159,3 +159,7 @@ hook:
       command: >-
         /Users/agross/.dotfiles/beets/hooks/after_write "{item.id}"
                                                         "{path}"
+
+ui:
+  colors:
+    text_highlight_minor: blue
