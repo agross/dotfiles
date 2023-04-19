@@ -112,6 +112,11 @@ zinit ice wait lucid \
           as:program &&
   zinit light so-fancy/diff-so-fancy
 
+zinit ice wait lucid \
+          nocd \
+          has:borgmatic &&
+  zinit light 3v1n0/zsh-bash-completions-fallback
+
 zinit ice wait lucid &&
   zinit light hlissner/zsh-autopair
 zinit ice wait lucid &&
