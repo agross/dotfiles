@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# Exclude directories named Library at any path component, e.g. ~/Library and
+# ~/Documents/Library.
+
+find . \
+     -not \( -type d -name Library -prune \) \
+     -type f \
+     \( -name '*.DS_Store' -o -name .dccache \) \
+     -ls \
+     -exec rm -- {} \;
