@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 number='^[0-9]+$'
 
 if ! [[ "$1" =~ $number ]] ; then
-  >&2 printf 'Error: Line number to delete from  ~/.ssh/known_hosts is missing\n'
+  ssh-keygen -R "$1"
+  ssh-keyscan -H "$1" >> ~/.ssh/known_hosts
 else
   sed -i "$1d" ~/.ssh/known_hosts
 fi
