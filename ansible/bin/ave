@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+ansible-vault edit "$1"
