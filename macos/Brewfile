@@ -128,6 +128,7 @@ cask 'sequel-pro'
 mas 'AS Timer', id: 512_464_723
 mas 'Bitwarden', id: 1_352_778_147
 mas 'CleanMyDrive 2', id: 523_620_159
+mas 'Command X', id: 6_448_461_551
 mas 'Discovery', id: 1_381_004_916
 mas 'EasyRes', id: 688_211_836
 mas 'Microsoft Remote Desktop', id: 1_295_203_466
