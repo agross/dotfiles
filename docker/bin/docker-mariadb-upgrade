@@ -7,9 +7,10 @@ for container in $(docker container ps --filter='ancestor=mariadb' --quiet); do
 
   password="$(
     docker container inspect --format '{{json .Config.Env }}' "$container" |
-      jq --raw-output '.[] | scan("^MYSQL_ROOT_PASSWORD=(.*)") | first'
+      jq --raw-output '.[] | scan("^(?:MYSQL|MARIADB)_ROOT_PASSWORD=(.*)") | first'
   )"
 
   printf '%b%s%b:\n' "\e[1;32m" "$name" "\e[0m"
-  docker container exec "$container" mysql_upgrade -uroot "-p$password" "$@"
+  docker container exec "$container" mysql_upgrade -uroot "-p$password" "$@" ||
+    docker container exec "$container" mariadb-upgrade -uroot "-p$password" "$@"
 done
