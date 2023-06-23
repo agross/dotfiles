@@ -73,6 +73,8 @@ values_for() {
 
 lists_written=()
 
+setopt extended_glob
+
 for file in $~root/*.pdf(.N); do
   dirname=${file:h}
   basename=${file:r:t}
@@ -96,6 +98,15 @@ for file in $~root/*.pdf(.N); do
            $fg_bold[magenta] \
            $vat \
            $reset_color
+
+    existing_receipt=(~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung/**/*$number*~*/offen/*(.NY1))
+    if (( $#existing_receipt > 0 )); then
+      >&2 printf '%bDuplicate receipt%b, not updating: %s\n' \
+                 $fg_bold[red] \
+                 $reset_color \
+                 $existing_receipt[1]
+      continue
+    fi
 
     printf -v supplier_number '%s;"%s";' ${supplier:0:20} $number
     printf -v gross_vat '%s;;%s' $gross $vat
