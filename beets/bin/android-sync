@@ -6,8 +6,8 @@ script="${0##*/}"
 script_path="${0%/*}"
 
 source_path="$HOME/Music/Music/"
-target_path="/storage/3B3E-E2EC/Music"
-target_host=root@poco-x3-alex
+target_path=/storage/emulated/0/Music
+target_host=root@poco-x5-pro-5g-alex
 
 # Set directory dates, rsync will sync those dates as well as file dates.
 dir-date-from-files "$source_path"
