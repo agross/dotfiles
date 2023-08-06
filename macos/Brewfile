@@ -118,11 +118,9 @@ cask 'wireshark'
 cask 'xnviewmp'
 cask 'zoom'
 
-# DB tools in testing.
+# DB tools.
 cask 'azure-data-studio'
-cask 'beekeeper-studio'
 cask 'dbgate'
-cask 'sequel-pro'
 
 # Apps from the Mac App Store.
 mas 'AS Timer', id: 512_464_723
