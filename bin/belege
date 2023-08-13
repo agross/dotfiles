@@ -74,8 +74,9 @@ values_for() {
 lists_written=()
 
 setopt extended_glob
+files=($~root/*.pdf(.N))
 
-for file in $~root/*.pdf(.N); do
+for file in ${(i)files}; do
   dirname=${file:h}
   basename=${file:r:t}
 
