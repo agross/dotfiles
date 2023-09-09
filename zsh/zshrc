@@ -21,7 +21,7 @@ zinit ice wait lucid \
           has:docker \
           if:'[[ -f /proc/syno_cpu_arch ]]' \
           as:completion &&
-  zinit snippet OMZ::plugins/docker/_docker
+  zinit snippet OMZ::plugins/docker/completions/_docker
 
 zinit ice wait lucid \
           has:docker-compose \
