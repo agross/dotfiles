@@ -63,6 +63,7 @@ inspect-images()
       # tag.
       local no_tags_but_repo_digests='^\[\]\[.+\]'
       if [[ "$tags_digests" =~ $no_tags_but_repo_digests ]]; then
+        local restart_added=
         local -a containers
         mapfile -t containers < <(docker container \
                                          ls \
@@ -70,17 +71,25 @@ inspect-images()
                                          --format '{{.Names}}' \
                                          --filter "ancestor=$image")
 
-        printf 'Outdated associated containers: %b%s%b\n' \
-               "$red" \
-               "${containers[*]}" \
-               "$reset"
-
-        local container
         for container in "${containers[@]}"; do
-          add-restart-command services_inspect "$container"
+          local configured_image
+          configured_image="$(docker container \
+                                     inspect \
+                                     "$container" \
+                                     --format '{{.Config.Image}}')"
+
+          if [[ "$image" != "$configured_image" ]]; then
+            printf 'Outdated associated containers: %b%s%b\n' \
+                  "$red" \
+                  "${containers[*]}" \
+                  "$reset"
+
+            add-restart-command services_inspect "$container"
+            restart_added=true
+          fi
         done
 
-        break
+        [[ -n "$restart_added" ]] && break
       fi
     done
   done
