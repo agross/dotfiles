@@ -11,7 +11,7 @@ sep='{::}'
 tmp=$(mktemp)
 trap "rm --force -- $tmp" EXIT
 
-cp -f "$HOME/Library/Application Support/Google/Chrome/Default/History" "$tmp"
+cp -f "$HOME/Library/Application Support/BraveSoftware/Brave-Browser/Default/History" "$tmp"
 sqlite3 -separator "$sep" \
         "$tmp" \
         "select substr(title, 1, $cols), url
