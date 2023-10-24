@@ -4,8 +4,41 @@ set -euo pipe_fail
 
 autoload -Uz colors && colors
 
-root=~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung/offen/AG*
+zmodload zsh/pcre
+setopt extended_glob rematchpcre
+
+year=$(date +'%Y')
+month=$(date +'%m')
+
+accounting=~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung
+archive=$year/$month/*/Alexander\ Groß/(offen|[[:digit:]]-[[:digit:]]|[[:digit:]][[:digit:]]-[[:digit:]])/*(.N)
+open=offen/AG*/*.pdf(.N)
 list=_files.csv
+
+prefix()
+{
+  local file index
+  local -a files
+
+  files=($accounting/$~archive)
+  files+=($accounting/$~open)
+
+  # Reverse-sort files by name and numbers numerically to handle prefixes like
+  # 2023-01-01-10 being ordered after 2023-01-01-9, not 2023-01-01-1.
+  files=(${(iOn)files:t})
+
+  for file in $files; do
+    # Find the first file that starts with the <year>-<month>-<day>-<index> pattern.
+    if [[ $file =~ '^\d{4}-\d{2}-\d{2}-(\d+)\s' ]]; then
+      index=$match[1]
+      break
+    fi
+  done
+
+  index=$((index + 1))
+
+  printf '%s-%s-01-%s' $year $month $index
+}
 
 type::taxi()
 {
@@ -73,12 +106,23 @@ values_for() {
 
 lists_written=()
 
-setopt extended_glob
-files=($~root/*.pdf(.N))
+files=($accounting/$~open)
 
 for file in ${(i)files}; do
   dirname=${file:h}
   basename=${file:r:t}
+  extname=${file:e}
+
+  if [[ $basename =~ '^(\d{4}-\d{2}-\d{2})-(\d+)\s' ]]; then
+    printf '%b%s%b: %bHas prefix, ignoring%b\n' \
+           $fg_bold[blue] \
+           ${file:t2} \
+           $reset_color\
+           $fg_bold[gray] \
+           $reset_color
+
+    continue
+  fi
 
   supplier=${basename% *}
   number=${basename##* }
@@ -125,6 +169,8 @@ for file in ${(i)files}; do
     echo $supplier_number$gross_vat >> $csv
     lists_written+=($csv)
   done
+
+  mv --verbose --no-clobber -- $file "$dirname/$(prefix) $basename.$extname"
 done
 
 if (( $#lists_written )); then
