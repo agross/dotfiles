@@ -54,7 +54,8 @@ zinit ice wait lucid &&
   zinit light Tarrasch/zsh-bd
 
 zinit ice wait lucid \
-          if:'[[ ! $ITERM_PROFILE =~ Trainings$ ]] ' &&
+          if:'[[ ! $ITERM_PROFILE =~ Trainings$ ]]' \
+          atload:_zsh_autosuggest_start &&
   zinit light zsh-users/zsh-autosuggestions
 
 zinit ice wait lucid &&
