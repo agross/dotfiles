@@ -77,7 +77,10 @@ trap dotfiles::cleanup EXIT SIGHUP SIGINT SIGTERM
 dotfiles::start-git-daemon "$DOTFILES"
 
 while read -r host cmd; do
+  host="${=host}"
+
   [[ "$host" == \#* ]] && continue
+  [[ "$host" == '' ]] && continue
 
   dotfiles::update "$host" "$cmd" || true
 done < "$hostsfile"
