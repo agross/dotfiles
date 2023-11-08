@@ -45,6 +45,11 @@
 	b   = branch
 	brs = branch --all --verbose
 
+	# "New" commits on the current branch that are not reachable from master or main.
+	new = !git log --oneline $(git show-ref --verify --hash refs/heads/master 2> /dev/null || git show-ref --verify --hash refs/heads/main)..HEAD
+	# Commits on master or main that are not reachable from the current branch, i.e. that are "missing" here.
+	missing = !git log --oneline HEAD..$(git show-ref --verify --hash refs/heads/master 2> /dev/null || git show-ref --verify --hash refs/heads/main)
+
 	# git remote.
 	rv = remote --verbose
 	pf = push --force-with-lease
