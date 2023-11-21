@@ -17,3 +17,7 @@ alias rmrf='rm --recursive --force'
 
 # Also done by Ctrl + L.
 alias cls='echo -ne "\033c"'
+
+if (($+commands[ip])); then
+  alias ip='ip -color=auto'
+fi
