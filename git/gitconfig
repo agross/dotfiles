@@ -12,6 +12,7 @@
 # For more aliases, see git-aliases.
 [alias]
 	s = status
+	foo = status
 	# s = status
 	# gl = log --oneline --all --graph
 

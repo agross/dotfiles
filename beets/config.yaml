@@ -144,6 +144,7 @@ zero:
     # https://github.com/beetbox/beets/issues/3532
     - images
     - art
+    - soll-nicht-committed-werden
 
 loadext:
   - libicu
