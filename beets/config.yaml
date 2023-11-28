@@ -125,6 +125,7 @@ embedart:
   #ifempty: true
   maxwidth: 2000
   remove_art_file: false
+  soll-committed-werden: true
 
 zero:
   auto: true
