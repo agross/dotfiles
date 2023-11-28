@@ -11,6 +11,7 @@
 
 # For more aliases, see git-aliases.
 [alias]
+	s = status
 	# s = status
 	# gl = log --oneline --all --graph
 
