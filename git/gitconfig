@@ -1,115 +1,64 @@
-# vim: set ft=gitconfig ts=2 sw=2 noet:
-[user]
-	email = agross@therightstuff.de
-	name = Alexander Groß
 [core]
-	whitespace = cr-at-eol
+	# Recommeded to display file names with umlauts un-encoded.
 	quotepath = false
-[apply]
-	whitespace = nowarn
+	pager = diff-so-fancy | less --tabs=4 -RF
+
+	# Notepad++ with Git for Windows.
+	# editor = '/C/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -nosession -noPlugins
+
+	# Visual Studio Code (any OS as long as `code` is in the PATH).
+	# editor = code --new-window --wait
+
+# For more aliases, see git-aliases.
+[alias]
+	# s = status
+	# gl = log --oneline --all --graph
+
+	# This is a sample alias that
+	# - will be invoked by the shell (!) and not prefixed with 'git'
+	# - supports parameters ($1-default_value)
+	# - ignores if more parameters then the referenced ones are passed (--)
+	# - supports semicolons inside the string (alias needs to be enclosed by ")
+	#
+	# hello = "!sh -c 'echo \"hello, ${1-world}\"' --"
+
+# Aliases and settings I use outside of trainings.
 [include]
 	path = ~/.dotfiles/git/git-aliases
-	# Those are symlinked by the bootstrapper:
+	# Those are symlinked by the bootstrapper based on the OS.
 	path = ~/.git-config/alias-ui.config
 	path = ~/.git-config/credential-helper.config
 	path = ~/.git-config/gitignore.config
-	path = ~/.git-config/ruby-aliases.config
 	path = ~/.git-config/signing.config
-[color]
-	ui = auto
-	wtf = true
-[color "diff"]
-	old = bold red
-	new = bold green
-	meta = bold yellow
-[color "branch"]
-	current = bold green
-	local = green
-	remote = red
-	upstream = bold red
-	plain = bold yellow
-[color "status"]
-	added = bold red
-	changed = bold green
-	untracked = bold cyan
-	nobranch = red reverse
-[color "interactive"]
-	prompt = bold blue
-	error = bold red
-[branch]
-	autoSetupMerge = true
-	autoSetupRebase = always
-[svn]
-	rmdir = true
-	findcopiesharder = true
-[merge]
-	tool = diffmerge
-	log = true
-[mergetool]
-	prompt = false
-	keepBackup = false
-[include]
-	path = ~/.dotfiles/git/git-mergetools
+
+# Default git {diff,merge}tool.
 [diff]
 	tool = diffmerge
-	renames = copies
-	submodule = log
-	compactionHeuristic = true
-	indentHeuristic = true
+[merge]
+	tool = diffmerge
+
+# Recommended settings for git {diff,merge}tool.
 [difftool]
-	prompt = false
+	# prompt = false
+[mergetool]
+	# prompt = false
+	# keepBackup = false
+
+# Instead of relying on git's builtin {diff,merge}tool support, use my own.
 [include]
 	path = ~/.dotfiles/git/git-difftools
-[clean]
-	requireForce = false
-[rerere]
-	enabled = true
-	autoupdate = true
-[push]
-	default = simple
-	followTags = true
-[pull]
-	rebase = false
-[sendemail]
-	from = Alexander Groß <agross@therightstuff.de>
-	smtpencryption = tls
-	smtpserver = smtp.gmail.com
-	smtpuser = agross@therightstuff.de
-	smtpserverport = 587
-[status]
-	#submodulesummary = true
-[rebase]
-	autoSquash = true
-	autoStash = true
-[stash]
-	showPatch = true
-[pager]
-	# --no-init             - keep screen contents after quitting less (do not use alternative screen)
-	# --quit-at-eof         - quit less if EOF is reached
-	# --quit-if-one-screen  - quit immediately if output fits the screen
-	# --RAW-CONTROL-CHARS   - colorize output
-	log  = diff-so-fancy | LESS= less ${GIT_PAGER_ARGS---no-init --quit-at-eof --quit-if-one-screen} --RAW-CONTROL-CHARS
-	show = diff-so-fancy-smart '^(commit [a-f0-9]+|(added|deleted|modified|renamed): )'
-	diff = diff-so-fancy-smart '^(added|deleted|modified|renamed): '
-[color "diff-highlight"]
-	oldnormal = red
-	oldhighlight = red bold 52
-	newnormal = green
-	newhighlight = bold green 22
-[include]
-	path = ~/.git-config/diff-highlight-colors.config
-[url "git@github.com:"]
-	insteadOf = gh:
-[url "git@grossweber.com"]
-	insteadOf = gw:
-[url "ssh://git@gitlab.grossweber.com:10022/"]
-	insteadOf = gl:
-[commit]
-	verbose = true
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-[grep]
-	lineNumber = true
+	path = ~/.dotfiles/git/git-mergetools
+
+[color]
+	# Use colors for git-wtf (https://github.com/michaelklishin/git-wtf).
+	wtf = true
+
+# Change some git log colors such that they become more readable on white
+# backgrounds.
+[color "decorate"]
+	head = blue
+	branch = green
+	remoteBranch = red
+	tag = bold magenta
+
+# vim: set ft=gitconfig ts=2 sw=2 noet:
