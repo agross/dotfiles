@@ -1,4 +1,5 @@
 (($+commands[ansible])) || return 0
+[[ "$OSTYPE" == darwin* ]] || return 0
 
 VAULT=${0%/*}/bin/vault-keychain-client
 
