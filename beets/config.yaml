@@ -143,6 +143,7 @@ zero:
     - day
     - month
     - year
+    - comments
     # Both required, without art beet write would kick out covers.
     # https://github.com/beetbox/beets/issues/3532
     - images
