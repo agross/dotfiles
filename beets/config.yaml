@@ -69,8 +69,10 @@ art_filename: cover
 plugins:
   # Save mtime during import.
   - importadded
-  # Only write specific tags.
+  # Only write specific tags from the database to the file.
   - zero
+  # Remove other tags that may be present in the file's metadata.
+  - scrub
   # Automation.
   - hook
   # Find files with problems.
@@ -143,6 +145,10 @@ zero:
     # https://github.com/beetbox/beets/issues/3532
     - images
     - art
+
+scrub:
+  # Disable metadata stripping during import or modify operations.
+  auto: false
 
 loadext:
   - libicu
