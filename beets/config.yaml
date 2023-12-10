@@ -88,6 +88,8 @@ plugins:
   - embedart
   # Load SQLite extensions for case-insensitive non-ASCII queries.
   - loadext
+  # Open media player.
+  - play
 
 # inline plugin.
 item_fields:
