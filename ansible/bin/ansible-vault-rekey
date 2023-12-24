@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+old_id="${1:?Need old vault identity}"
+new_id="${2:?Need new vault identity}"
+
+if [[ -t 0 ]]; then
+  blue='\e[01;34m'
+  green='\e[0;32m'
+  reset_color='\e[0m'
+else
+  blue=
+  green=
+  reset_color=
+fi
+
+shopt -s globstar
+for vault in **/*.vault.yml; do
+  if [[ ! -f "$vault" ]]; then
+    continue
+  fi
+
+  mapfile -t -n 1 lines < "$vault"
+
+  if [[ "${lines[0]-}" == *\;$old_id ]]; then
+    printf 'Rekeying %b%s%b: ' "$blue" "$vault" "$reset_color"
+
+    ansible-vault rekey \
+                  --encrypt-vault-id "$new_id" \
+                  "$vault"
+  else
+    >&2 printf '%b%s%b is not encrypted with vault ID %b%s%b\n' \
+               "$blue" \
+               "$vault" \
+               "$reset_color" \
+               "$green" \
+               "$old_id" \
+               "$reset_color"
+  fi
+done
