@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 yt-dlp --format bestaudio \
+       --recode 'wav>mp3' \
        --extract-audio \
        --no-mtime \
        --embed-thumbnail \
