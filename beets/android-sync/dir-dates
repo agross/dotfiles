@@ -12,12 +12,12 @@ dir-date-from-newest-file() {
   reset='\e[0m'
 
   newest="$(find "$dir" \
-                -mindepth 1 \
-                -type f \
-                -exec stat -c '%Y %n' {} \+ |
-            sort -n |
-            cut -d' ' -f 2- |
-            tail -n 1)"
+                 -mindepth 1 \
+                 -type f \
+                 -exec stat -c '%Y %n' {} \+ |
+              sort -n |
+              cut -d' ' -f 2- |
+              tail -n 1)"
 
   if [[ -n "$newest" ]]; then
     printf '%b%s%b: %b%s/%b%s\n' \
@@ -35,8 +35,8 @@ dir-date-from-newest-file() {
 export -f dir-date-from-newest-file
 
 find "$music" \
-    -mindepth 1 \
-    -type d \
-    -print0 |
-    sort -z |
-    xargs -0 -I {} bash -c 'dir-date-from-newest-file "{}"'
+     -mindepth 1 \
+     -type d \
+     -print0 |
+  sort -z |
+  xargs -0 -I {} bash -c 'dir-date-from-newest-file "{}"'
