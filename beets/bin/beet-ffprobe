@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ -t 0 ]]; then
+  blue='\e[01;34m'
+  reset_color='\e[0m'
+else
+  blue=
+  reset_color=
+fi
+
+
+if (( $# < 1 )); then
+  >&2 printf 'Need query\n'
+  exit 1
+fi
+
+# shellcheck disable=SC2016
+mapfile -t files < <(beet info -f '$path' "$@")
+
+for file in "${files[@]}"; do
+  # Every second line is an empty line.
+  [[ -z "$file" ]] && continue
+
+  >&2 printf '%b%s%b\n' "$blue" "$file" "$reset_color"
+
+  ffprobe -hide_banner "$file"
+done
