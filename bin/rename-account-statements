@@ -18,6 +18,13 @@ zmv $opt \
     '(Kontoauszug)_([[:digit:]]##)_*_per_([[:digit:]]##)_([[:digit:]]##)_([[:digit:]]##).pdf(.N)' \
     '$1 $2 $3-$4-$5.pdf'
 
+# Kontoauszug_1_2024_vom_05.01.2024_zu_Konto_12345678.pdf
+# ->
+# Kontoauszug 12345678 2024-01-05.pdf
+zmv $opt \
+    '(Kontoauszug)_*_vom_([[:digit:]](#c2)).([[:digit:]](#c2)).([[:digit:]](#c4))_zu_Konto_([[:digit:]]##).pdf(.N)' \
+    '$1 $5 $4-$3-$2.pdf'
+
 # DKB VISA.
 #
 # Kreditkartenabrechnung_1234xxxxxxxx5678_per_2018_02_01.pdf
