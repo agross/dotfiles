@@ -70,6 +70,17 @@ opt=(-f -Q -v -p mkdir_mv $@)
 
 autoload -U zmv
 
+# Panoramas from camera.
+#
+# PANO_20190318_215555.vr.jpg
+# ->
+# Panoramas/2019-03-18 21.55.55-vr.jpg
+panoramas=Panoramas
+[[ -d $panoramas ]] || mkdir $panoramas
+zmv $opt \
+    '(**/)PANO_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))_([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2)).(vr).(*)(.N)' \
+    '$1$panoramas/PANO $2-$3-$4 $5.$6.$7-$8.$9'
+
 # Photos and videos from camera.
 #
 # IMG_20190215_081601.jpg
@@ -87,8 +98,12 @@ autoload -U zmv
 # PXL_20190215_081601.mp4
 # ->
 # 2019/2019-02-15 08.16.01.mp4
+#
+# PANO_20190215_081601.mp4
+# ->
+# 2019/2019-02-15 08.16.01.mp4
 zmv $opt \
-    '(**/)(IMG|VID|PXL)_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))_([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))*.(*)(.N)' \
+    '(**/)(IMG|VID|PXL|PANO)_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))_([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))*.(*)(.N)' \
     '$1$3/$3-$4-$5 $6.$7.$8.$9'
 
 # Portraits from camera.
@@ -103,17 +118,6 @@ zmv $opt \
 zmv $opt \
     '(**/)*PORTRAIT_[[:digit:]](#c5)_BURST([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))[[:digit:]](#c3)(_COVER|*).(*)(.N)' \
     '$1$2/$2-$3-$4 $5.$6.$7${8/_COVER/-blur}.$9'
-
-# Panoramas from camera.
-#
-# PANO_20190318_215555.vr.jpg
-# ->
-# Panoramas/2019-03-18 21.55.55-vr.jpg
-panoramas=Panoramas
-[[ -d $panoramas ]] || mkdir $panoramas
-zmv $opt \
-    '(**/)PANO_([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))_([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2)).(vr).(*)(.N)' \
-    '$1$panoramas/PANO $2-$3-$4 $5.$6.$7-$8.$9'
 
 # Screenshots.
 #
