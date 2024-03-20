@@ -119,14 +119,9 @@ for file in ${(i)files}; do
     printf -v supplier_number '%s;"%s";' ${supplier:0:20} $number
     printf -v gross_vat '%s;;%s' $gross $vat
 
-    if [[ -f $csv ]]; then
-      if grep --quiet --fixed-strings $supplier_number $csv; then
-        >&2 printf 'Entry exists, not updating: %s\n' $supplier_number
-        continue
-      fi
-    else
-      # Write UTF-8 BOM for our beloved Umlauts.
-      printf '\xEF\xBB\xBF' > $csv
+    if [[ -f $csv ]] && grep --quiet --fixed-strings $supplier_number $csv; then
+      >&2 printf 'Entry exists, not updating: %s\n' $supplier_number
+      continue
     fi
 
     echo $supplier_number$gross_vat >> $csv
@@ -135,8 +130,12 @@ for file in ${(i)files}; do
 done
 
 for csv in $csvs_written; do
-  sort --numeric-sort $csv > $csv.temp
-  mv -- $csv.temp $csv
+  # Remove BOM (which sort does not handle), sort, add BOM for our beloved Umlauts.
+  sed '1s/^\xEF\xBB\xBF//' < $csv | \
+    sort --ignore-case > $csv.temp
+
+  printf '\xEF\xBB\xBF' | cat - $csv.temp > $csv
+  rm -- $csv.temp
 done
 
 if (( $#csvs_written )); then
