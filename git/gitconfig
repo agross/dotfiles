@@ -81,6 +81,7 @@
 [rebase]
 	autoSquash = true
 	autoStash = true
+	updateRefs = true
 [stash]
 	showPatch = true
 [pager]
