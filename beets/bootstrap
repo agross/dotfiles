@@ -5,19 +5,26 @@
 cask 'db-browser-for-sqlite'
 
 formula python3
-pip3 install beets
+
+pip3 install \
+     --break-system-packages \
+     beets
 
 # Validation.
 formula mp3val
 formula flac
 
 # Cover art.
-pip3 install 'beets[fetchart]' \
-             https://github.com/ocelma/python-itunes/archive/master.zip
+pip3 install \
+     --break-system-packages \
+     'beets[fetchart]' \
+     https://github.com/ocelma/python-itunes/archive/master.zip
 formula imagemagick
 
 # Metadata.
-pip3 install discogs-client
+pip3 install \
+     --break-system-packages \
+     discogs-client
 symlink "$topic/config.yaml" ~/.config/beets/config.yaml
 
 # Completion.
