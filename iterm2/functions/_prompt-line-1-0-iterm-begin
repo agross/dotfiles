@@ -1,9 +1,8 @@
 # vim: set ft=zsh ts=2 sw=2 et:
-# shellcheck disable=SC2168,SC2086,SC2046
+# shellcheck disable=SC2046
 
 (($+functions[iterm2_prompt_mark])) || return
 [[ "$ITERM_PROFILE" != 'zsh Trainings' ]] || return
-
 
 # iTerm's check whether the iterm2_prompt_mark function call is included
 # does not work with setopt prompt_subst.
@@ -11,6 +10,4 @@
 # shellcheck disable=SC2034
 [[ $1 == --init ]] && ITERM2_SQUELCH_MARK=true
 
-[[ $1 == --success || $1 == --error ]] || return
-
-printf '%%{%s%%}' $(iterm2_prompt_mark)
+[[ $1 == --status ]] && printf '%%{%s%%}' $(iterm2_prompt_mark)

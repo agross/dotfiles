@@ -1,0 +1,7 @@
+# vim: set ft=zsh ts=2 sw=2 et:
+# shellcheck disable=SC2046
+
+(($+functions[iterm2_prompt_end])) || return
+[[ "$ITERM_PROFILE" != 'zsh Trainings' ]] || return
+
+[[ $1 == --status ]] && printf '%%{%s%%}' $(iterm2_prompt_end)

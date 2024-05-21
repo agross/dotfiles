@@ -6,21 +6,28 @@ _prompt::dynamic() {
   done
 }
 
-_prompt-1-user-host() {
-  [[ $1 == --status ]] && echo -n '%F{green}%n@%m%f '
+_prompt-line-1-1-user-at-host() {
+  [[ $1 == --status ]] && print -n '%F{green}%n@%m%f '
 }
 
-_prompt-2-cwd() {
-  [[ $1 == --status ]] && echo -n '%F{yellow}%~%f '
+_prompt-line-1-2-cwd() {
+  [[ $1 == --status ]] && print -n '%F{yellow}%~%f '
 }
 
-_prompt-z-jobs() {
-  [[ $1 == --status ]] && echo -n '%(1j|%B%F{magenta} %j job%(2j|s|)%f%b|)'
+_prompt-line-1-z-jobs() {
+  [[ $1 == --status ]] && print -n '%(1j|%B%F{magenta} %j job%(2j|s|)%f%b|)'
 }
 
-_prompt-z-exit-status() {
-  [[ $1 == --success ]] && echo -n '$'
-  [[ $1 == --error ]] && echo -n '%F{red}%K{white}%B%S↑%s%b%k%f'
+_prompt-line-1-zz-newline() {
+  [[ $1 == --status ]] && print -n '%E\n'
+}
+
+_prompt-line-2-1-exit-status() {
+  [[ $1 == --status ]] && print -n '%(?|$|%F{red}%K{white}%B%S↑%s%b%k%f)'
+}
+
+_prompt-line-2-2-cursor() {
+  [[ $1 == --status ]] && print -n ' %E'
 }
 
 function {
@@ -33,13 +40,8 @@ function {
   _prompt::dynamic --init
 
   # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
-  local stat='%(?|$(_prompt::dynamic --success)|$(_prompt::dynamic --error))'
-
   # Start with newline.
-  PROMPT=$'\n'
-  PROMPT+='$(_prompt::dynamic --status)%E'
-  PROMPT+=$'\n'
-  PROMPT+="$stat %E"
+  PROMPT=$'\n$(_prompt::dynamic --status)'
 }
 
 # vim: set ft=zsh ts=2 sw=2 et:
