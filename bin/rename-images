@@ -180,40 +180,12 @@ threema_opt=("${opt[@]}")
 index=$opt[(i)mkdir_mv]
 threema_opt[$index]=mkdir_mv_threema
 
-# Month and day are switched!
-#
-# image-20213112-111255.jpeg
+# image-20240520-173202-494.jpeg
 # ->
-# 2021/2021-12-31 11.12.55.jpeg
-#
-# image-20213112-111255 (1).jpeg
-# ->
-# 2021/2021-12-31 11.12.55 (1).jpeg
+# 2024/2024-05-20 17.32.02.jpeg
 zmv $threema_opt \
-    '(**/)image-([[:digit:]](#c4))([[:digit:]](#c4))-([[:digit:]](#c6))(*).(*)(.N)' \
-    '$1$2/$2-${3:2:2}-${3:0:2} ${4:0:2}.${4:2:2}.${4:4:2}.$6 * and to make it unique: $5'
-
-# image-202103272113.jpeg
-# ->
-# 2021/2021-03-27 21.13.00.jpeg
-#
-# image-202103272113 (1).jpeg
-# ->
-# 2021/2021-03-27 21.13.00 (1).jpeg
-zmv $threema_opt \
-    '(**/)image-([[:digit:]](#c4))([[:digit:]](#c4))([[:digit:]](#c4))(*).(*)(.N)' \
-    '$1$2/$2-${3:0:2}-${3:2:2} ${4:0:2}.${4:2:2}.00.$6 * and to make it unique: $5'
-
-# threema-20200531-121801-2f0886bfc2a63765.jpg
-# ->
-# 2020/2020-05-31 12.18.01.jpg
-#
-# threema-20210924-083208378.jpg
-# ->
-# 2021/2021-09-24 08.32.08.jpg
-zmv $threema_opt \
-    '(**/)threema-([[:digit:]](#c4))([[:digit:]](#c4))-([[:digit:]](#c6))(*).(*)(.N)' \
-    '$1$2/$2-${3:0:2}-${3:2:2} ${4:0:2}.${4:2:2}.${4:4:2}.$6 * and to make it unique $5'
+    '(**/)image-([[:digit:]](#c4))([[:digit:]](#c2))([[:digit:]](#c2))-([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c2))-(*).(*)(.N)' \
+    '$1$2/$2-$3-$4 $5.$6.$7.$9 * and to make it unique: $8'
 
 # Rename *.jpeg to *jpg.
 zmv $opt '(**/)(*).jpeg(.N)' '$1$2.jpg'
