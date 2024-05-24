@@ -90,7 +90,9 @@ for file in ${(i)files}; do
   supplier=${basename% *}
   number=${basename##* }
 
+  value_index=0
   for gross vat in $(values_for $supplier $number); do
+    value_index=$((value_index + 1))
     csv=$dirname/$list
 
     printf '%b%s%b: %b%s%b %b%s%b %b%s%%%b\n' \
@@ -119,7 +121,7 @@ for file in ${(i)files}; do
     printf -v supplier_number '%s;"%s";' ${supplier:0:20} $number
     printf -v gross_vat '%s;;%s' $gross $vat
 
-    if [[ -f $csv ]] && grep --quiet --fixed-strings $supplier_number $csv; then
+    if [[ -f $csv ]] && (( value_index == 1 )) && grep --quiet --fixed-strings $supplier_number $csv; then
       >&2 printf 'Entry exists, not updating: %s\n' $supplier_number
       continue
     fi
