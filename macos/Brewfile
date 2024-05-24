@@ -1,5 +1,5 @@
 # Allows to install updates automatically.
-tap 'homebrew/autoupdate'
+tap 'domt4/autoupdate'
 
 # Install updates for all casks.
 tap 'buo/cask-upgrade'
