@@ -4,6 +4,10 @@ if [[ "$OSTYPE" != darwin* ]]; then
   return
 fi
 
+# sudo with Touch ID
+# https://apple.stackexchange.com/a/466029
+sed "s/^#auth/auth/" /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
+
 ensure-homebrew-installed
 brew bundle --verbose --file="$topic/Brewfile"
 brew cleanup
