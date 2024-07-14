@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+# setopt extended_glob
+
+private_key() {
+  grep --quiet --fixed-strings 'PRIVATE KEY-----' $REPLY
+}
+
+chmod 700 $DOTFILES/ssh/ssh
+
+for key in $DOTFILES/ssh/ssh/**/*(.+private_key); do
+  printf 'Found keyfile: %s\n' $key
+
+  chmod 600 $key
+done
