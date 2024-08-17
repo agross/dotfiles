@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+self="$(basename "$0")"
+
+usage() {
+  printf 'Usage:\n'
+  printf '  %s create <volume> <file>\n' "$self"
+  printf '  %s restore <file> <volume>\n' "$self"
+
+  printf '\nExamples:\n'
+  printf '  %s create volume backup.tar.gz\n' "$self"
+  printf '  %s restore backup.tar.gz volume\n' "$self"
+}
+
+case "${1-}" in
+  create)
+    if [[ -z "${2-}" || -z "${3-}" ]]; then
+      usage
+      exit 1
+    fi
+
+    volume="$2"
+
+    dir="$(dirname "$3")"
+    if [[ "$dir" == . ]]; then
+      dir="$PWD"
+    fi
+    filename="$(basename "$3")"
+
+    docker container \
+           run \
+           --rm \
+           --mount "type=volume,source=$volume,target=/source,readonly" \
+           --mount "type=bind,source=$dir,target=/dest" \
+           busybox \
+           tar cvaf "/dest/$filename" -C /source --numeric-owner .
+      ;;
+
+  restore)
+    if [[ -z "${2-}" || -z "${3-}" ]]; then
+      usage
+      exit 1
+    fi
+
+    dir="$(dirname "$2")"
+    if [[ "$dir" == . ]]; then
+      dir="$PWD"
+    fi
+    filename="$(basename "$2")"
+
+    volume="$3"
+
+    docker container \
+           run \
+           --rm \
+           --mount "type=bind,source=$dir,target=/source" \
+           --mount "type=volume,source=$volume,target=/dest" \
+           busybox \
+           tar xvf "/source/$filename" -C /dest
+      ;;
+
+  *)
+    usage
+    exit 1
+    ;;
+esac
