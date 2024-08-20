@@ -8,4 +8,5 @@ yt-dlp --format bestaudio \
        --embed-metadata \
        --no-embed-chapters \
        --no-embed-info-json \
+       --cookies-from-browser brave \
        "$@"
