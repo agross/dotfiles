@@ -7,6 +7,14 @@ autoload -Uz colors && colors
 zmodload zsh/pcre
 setopt extended_glob rematchpcre
 
+zmodload zsh/zutil
+
+force=
+zparseopts -D -F -K -- \
+           {f,-force}=force \
+ || return
+
+
 year=$(date +'%Y')
 month=$(date +'%m')
 
@@ -110,12 +118,18 @@ for file in ${(i)files}; do
            $reset_color
 
     existing_receipt=(~/GROSSWEBER/Rechnungswesen/Finanzbuchhaltung/**/*$number*~*/offen/*(.NY1))
-    if (( $#existing_receipt > 0 )); then
+    if (( $#existing_receipt )); then
       >&2 printf '%bDuplicate receipt%b, not updating: %s\n' \
                  $fg_bold[red] \
                  $reset_color \
                  $existing_receipt[1]
-      continue
+      if (( $#force )); then
+        >&2 printf '%bForce given%b, continung anyway\n' \
+                   $fg_bold[green] \
+                   $reset_color
+      else
+        continue
+      fi
     fi
 
     printf -v supplier_number '%s;"%s";' ${supplier:0:20} $number
