@@ -124,7 +124,7 @@ for file in ${(i)files}; do
                  $reset_color \
                  $existing_receipt[1]
       if (( $#force )); then
-        >&2 printf '%bForce given%b, continung anyway\n' \
+        >&2 printf '%bForce given%b, continuing anyway\n' \
                    $fg_bold[green] \
                    $reset_color
       else
