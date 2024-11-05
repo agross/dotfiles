@@ -24,7 +24,7 @@ formula imagemagick
 # Metadata.
 pip3 install \
      --break-system-packages \
-     discogs-client
+     python3-discogs-client
 symlink "$topic/config.yaml" ~/.config/beets/config.yaml
 
 # Completion.
