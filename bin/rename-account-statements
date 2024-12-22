@@ -11,20 +11,6 @@ autoload -U zmv
 
 # DKB.
 #
-# Kontoauszug_12345678_Nr_2018_001_per_2018_02_01.pdf
-# ->
-# Kontoauszug 12345678 2018-02-01.pdf
-zmv $opt \
-    '(Kontoauszug)_([[:digit:]]##)_*_per_([[:digit:]]##)_([[:digit:]]##)_([[:digit:]]##).pdf(.N)' \
-    '$1 $2 $3-$4-$5.pdf'
-
-# Kontoauszug_1_2024_vom_05.01.2024_zu_Konto_12345678.pdf
-# ->
-# Kontoauszug 12345678 2024-01-05.pdf
-zmv $opt \
-    '(Kontoauszug)_*_vom_([[:digit:]](#c2)).([[:digit:]](#c2)).([[:digit:]](#c4))_zu_Konto_([[:digit:]]##).pdf(.N)' \
-    '$1 $5 $4-$3-$2.pdf'
-
 # 2023-09-08_Kontoauszug_19_2023_vom_05.09.2023_zu_Konto_12345678.pdf
 # ->
 # Kontoauszug 12345678 2023-09-05.pdf
@@ -34,30 +20,29 @@ zmv $opt \
 
 # DKB VISA.
 #
-# Kreditkartenabrechnung_1234xxxxxxxx5678_per_2018_02_01.pdf
-# or
-# Kreditkartenabrechnung_1234________5678_per_2018_02_01.pdf
+# 2024-11-18_Kreditkartenabrechnung_vom_22._Oktober_2024.pdf
 # ->
-# Kreditkarte 5678 2018-02-01.pdf
-zmv $opt \
-    '(Kreditkarte)nabrechnung_*[_x]([[:digit:]]##)_per_([[:digit:]]##)_([[:digit:]]##)_([[:digit:]]##).pdf(.N)' \
-    '$1 $2 $3-$4-$5.pdf'
+# Kreditkarte 2024-10-22.pdf
+declare months=(
+  Januar
+  Februar
+  März
+  April
+  Mai
+  Juni
+  Juli
+  August
+  September
+  Oktober
+  November
+  Dezember
+)
 
-# 2024-04-24_Kreditkartenabrechnung_vom_22._April_2024.pdf
-# ->
-# Kreditkarte 2014-04-24.pdf
-zmv $opt \
-    '[[:digit:]](#c4)-([[:digit:]](#c2))-[[:digit:]](#c2)_(Kreditkarte)nabrechnung_vom_([[:digit:]](#c2))._*_([[:digit:]](#c4)).pdf(.N)' \
-    '$2 $4-$1-$3.pdf'
-
-# netbank.
-#
-# 0001234567_Kontoauszug_Nr_00001_vom_01-02-2018_985200185765501000.pdf
-# ->
-# Kontoauszug 1234567 2018-02-28.pdf
-zmv $opt \
-    '([[:digit:]]##)_(Kontoauszug)_*_vom_([[:digit:]]##)-([[:digit:]]##)-([[:digit:]]##)_[[:digit:]]##.pdf(.N)' \
-    '$2 ${1##0##} $5-$4-$3.pdf'
+for ((month = 1; month <= $#months; month++)); do
+  zmv $opt \
+      '*_(Kreditkarte)nabrechnung_vom_([[:digit:]](#c2))._'$months[$month]'_([[:digit:]](#c4)).pdf(.N)' \
+      '$1 $3-'${(l:2::0:)month}'-$2.pdf'
+done
 
 # Renault Bank.
 #
@@ -74,13 +59,3 @@ zmv $opt \
 zmv $opt \
     '([[:digit:]]##)_*_Jahres-Steuerbescheinigung ([[:digit:]](#c4))_*.pdf(.N)' \
     'Steuerbescheinigung $2.pdf'
-
-# LBB/Amazon.
-#
-# Kartenabrechnung_13082020_4920.pdf or
-# Kreditkartenabrechnung_13082020_4920.pdf
-# ->
-# Amazon 2020-08-13.pdf
-zmv $opt \
-    '(Kartenabrechnung|Kreditkartenabrechnung)_([[:digit:]](#c2))([[:digit:]](#c2))([[:digit:]](#c4))_*.pdf(.N)' \
-    'Amazon $4-$3-$2.pdf'
