@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+image_name="${PWD##*/}:latest"
+
+get-nodejs-version-from() {
+  local version_file="${1:?Need path to version file}"
+
+  local version
+
+  version="$(cat "$version_file" 2> /dev/null)"
+
+  printf '%s' "${version%.*}"
+}
+
+get-dotnet-sdk-version-from() {
+  local global_json="${1:?Need path to global.json}"
+
+  if ! hash jq 2> /dev/null; then
+    >&2 printf 'Please install jq\n'
+    exit 1
+  fi
+
+  local version
+  version="$(jq --raw-output \
+                --exit-status \
+                .sdk.version \
+                "$global_json")"
+
+  printf '%s' "${version%.*}"
+}
+
+nodejs_version="NODE_VERSION=$(get-nodejs-version-from .node-version || true)"
+dotnet_sdk_version="DOTNET_SDK_VERSION=$(get-dotnet-sdk-version-from global.json)"
+
+docker_buildx_build=(docker buildx
+                            build
+                            --progress=plain
+                            --build-arg "$nodejs_version"
+                            --build-arg "$dotnet_sdk_version"
+                    )
+
+docker_buildx_build+=(--load --tag "$image_name")
+
+"${docker_buildx_build[@]}" "$@" \
+                            .
