@@ -54,7 +54,7 @@ type::congstar()
   [[ $1 == congstar* ]] || return 1
 
   # Most often a static gross amount.
-  printf '%s\n' 25
+  printf '%s\n' 20
   printf '%s\n' 19
 }
 
