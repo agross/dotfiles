@@ -67,4 +67,17 @@ popd > /dev/null || return 1
 
 rm -rf "$tmp"
 
+printf 'Compiling apetag\n'
+tmp="$(mktemp -d)"
+pushd "$tmp" > /dev/null || return 1
+
+git clone https://github.com/robertmuth/apetag.git .
+
+make
+
+[[ -d "$HOME/bin" ]] || mkdir "$HOME/bin"
+mv apetag "$HOME/bin"
+
+rm -rf "$tmp"
+
 # vim: set ft=sh ts=2 sw=2 et:
