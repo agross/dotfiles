@@ -16,8 +16,7 @@ if (( $# < 1 )); then
   exit 1
 fi
 
-# shellcheck disable=SC2016
-mapfile -t files < <(beet info -f '$path' "$@")
+mapfile -t files < <(beet info --format=\$path "$@")
 
 for file in "${files[@]}"; do
   # Every second line is an empty line.
