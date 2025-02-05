@@ -86,7 +86,7 @@ meslo-nerdfont() {
    cp --verbose \
       --no-clobber \
       -- \
-      patched-fonts/Meslo/S/**/*Complete.ttf \
+      patched-fonts/Meslo/S/**/*NerdFontPropo-*.ttf \
       "$target"
 
    popd > /dev/null
@@ -108,7 +108,7 @@ meslo-original "$input"
 meslo-powerline "$input"
 meslo-nerdfont "$input"
 
-if ! brew list fontforge > /dev/null; then
+if ! brew list fontforge > /dev/null 2>&1; then
   brew install fontforge
 fi
 
