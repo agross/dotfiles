@@ -2145,7 +2145,7 @@
 			<key>Show Status Bar</key>
 			<true/>
 			<key>Silence Bell</key>
-			<true/>
+			<false/>
 			<key>Smart Cursor Color</key>
 			<true/>
 			<key>Space</key>

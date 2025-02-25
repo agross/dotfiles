@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ -z "${1-}" ]]; then
+  collect="$(mktemp --tmpdir=.)"
+else
+  touch "$1"
+  collect="$1"
+fi
+
+printf 'Saving to: %s' "$collect"
+
+paste=(pbpaste -Prefer txt)
+previous="$("${paste[@]}")"
+
+while :; do
+  line="$("${paste[@]}")"
+
+  if [[ "$line" == "$previous" ]]; then
+    printf .
+    sleep 1
+    continue
+  fi
+  previous="$line"
+
+  printf '\a'
+  tee --append "$collect" <<< "$line"
+done
