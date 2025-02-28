@@ -27,8 +27,8 @@ if zgit_inworktree; then
   zgit_isworktreeclean      || symbols+=' '
   zgit_hasuntracked         && symbols+=' '
   zgit_isindexclean         || symbols+=' '
-  zgit_hasunmerged          && symbols+=' '
-  zgit_has-assume-unchanged && symbols+=$(printf ' %b%b' "$(tput blink)" "$(tput sgr0)")
+  zgit_hasunmerged          && symbols+=' '
+  zgit_has-assume-unchanged && symbols+=$(printf ' %b%b' "$(tput blink)" "$(tput sgr0)")
 fi
 
 printf '%%F{green}%s%%B%%F{red}%s%%b%%f' $branch $symbols
