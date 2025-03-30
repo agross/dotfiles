@@ -18,3 +18,7 @@ termcapinfo xterm* 'hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
 # Use SSH_AUTH_SOCK in home directory. The file will be symlinked
 # to the current connection's socket by ssh/zprofile.
 setenv SSH_AUTH_SOCK $HOME/.ssh/ssh_auth_sock
+
+# Fix subshell output on Midnight Commander (Ctrl + O) and remove full-screen
+# programs like vim from the scrollback buffer once exited.
+altscreen on
