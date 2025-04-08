@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+setopt extendedglob
+
+slns=(**/*.sln~**/node_modules/**~**/packages/**)
+
+if (( $#slns > 1 )); then
+  slns=($(print -l $slns | fzf --multi))
+fi
+
+if (( #slns == 0 )); then
+  printf 'No solutions found or none chosen.\n'
+  exit 1
+fi
+
+/Applications/Rider.app/Contents/MacOS/rider $slns >/dev/null 2>&1 &!
