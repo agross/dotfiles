@@ -68,6 +68,8 @@
 	wdc     = diff --staged --word-diff
 	preview = diff --staged
 
+	blame-copied = blame -C -C -C
+
 	# Handling merges.
 	mt        = mergetool
 	unresolve = checkout --merge
