@@ -45,6 +45,7 @@
 [merge]
 	tool = diffmerge
 	log = true
+	conflictStyle = diff3
 [mergetool]
 	prompt = false
 	keepBackup = false
