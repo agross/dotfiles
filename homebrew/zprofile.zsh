@@ -3,6 +3,8 @@ local brew=/usr/local/bin/brew # Intel.
 
 if [[ -x "$brew" ]]; then
   eval "$("$brew" shellenv)"
+
+  path=($HOMEBREW_CELLAR/*/*/libexec/gnubin(/N) $path)
 fi
 
 unset brew

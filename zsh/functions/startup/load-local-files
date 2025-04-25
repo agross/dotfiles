@@ -1,15 +1,23 @@
-setopt extended_glob
+# Cannot use setopt local_options here because this would unset all options set
+# by the globbed files.
+if ! setopt | grep --quiet extendedglob; then
+  local unset_extendedglob
+  setopt extendedglob
+fi
 
 local glob=${1?Need glob}
-
 local file
 
-# Expand variables and glob patters.
+# Expand variables and glob patterns.
 for file in ${(e)~glob}; do
   verbose Loading $fg[green]$file$reset_color
   source $file
 done
 
-unsetopt extended_glob
+if [[ -v unset_extendedglob ]]; then
+  unsetopt extendedglob
+fi
+
+unset glob file unset_extendedglob
 
 # vim: set ft=zsh ts=2 sw=2 et:

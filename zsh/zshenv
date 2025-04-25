@@ -24,16 +24,25 @@ autoload -U colors && colors
 # shellcheck disable=SC2034
 typeset -xr DOTFILES="$HOME/.dotfiles"
 
+# Prepend startup functions path and remove duplicates.
+typeset -Ua fpath
+fpath=("$DOTFILES/zsh/functions/startup" $fpath)
+autoload -Uz $DOTFILES/zsh/functions/startup/*(.:t)
+
+verbose Loading $fg[green]zshenv$reset_color
+
 # Language settings: This variable determines the locale category for any
 # category not specifically selected via a variable starting with `LC_'.
 export LANG=en_US.UTF-8
 
 skip_global_compinit=for-ubuntu
 
-local env
-for env in $DOTFILES/**/zshenv.zsh(@,.N); do
-  source $env
-done
-unset env
+load-local-files '$DOTFILES/**/zshenv.zsh(@,.N)'
+
+# Load paths and function paths first.
+load-local-files '$DOTFILES/**/(path|fpath).zsh'
+
+# Load aliases.
+load-local-files '$DOTFILES/**/aliases.zsh'
 
 # vim: set ft=zsh ts=2 sw=2 et:

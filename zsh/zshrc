@@ -1,14 +1,12 @@
 # Loaded for interactive shells.
 
-# Prepend startup functions path and remove duplicates.
-typeset -Ua fpath
-fpath=("$DOTFILES/zsh/functions/startup" $fpath)
-autoload -Uz $DOTFILES/zsh/functions/startup/*(.:t)
-
 verbose Loading $fg[green]zshrc$reset_color
 
-# Load paths and function paths first.
-load-local-files '$DOTFILES/**/(path|fpath).zsh'
+if [[ "$OSTYPE" == darwin* ]]; then
+  # Load paths and function paths again.
+  # https://gist.github.com/Linerre/f11ad4a6a934dcf01ee8415c9457e7b2
+  load-local-files '$DOTFILES/**/(path|fpath).zsh'
+fi
 
 # Load everything but the path, function path, zshenv, zprofile and completion
 # files second.
