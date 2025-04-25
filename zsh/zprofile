@@ -1,16 +1,7 @@
 # Loaded for login shells, i.e. not for screen sessions.
 
-# Prepend startup functions path and remove duplicates.
-typeset -Ua fpath
-fpath=("$DOTFILES/zsh/functions/startup" $fpath)
-autoload -Uz verbose
-
 verbose Loading $fg[green]zprofile$reset_color
 
-local profile
-for profile in $DOTFILES/**/zprofile.zsh(@,.N); do
-  source $profile
-done
-unset profile
+load-local-files '$DOTFILES/**/zprofile.zsh(@,.N)'
 
 # vim: set ft=zsh ts=2 sw=2 et:
