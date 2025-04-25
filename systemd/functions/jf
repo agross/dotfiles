@@ -1,0 +1,14 @@
+# vim: set ft=zsh ts=2 sw=2 et:
+
+local arg
+local -a args
+
+for arg in $@; do
+  if [[ $arg != -* ]] then
+    args+=(--unit $arg)
+  else
+    args+=($arg)
+  fi
+done
+
+journalctl --follow $args
