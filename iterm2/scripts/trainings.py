@@ -3,7 +3,8 @@
 import iterm2
 import time
 
-WATCHR = "/usr/local/bin/docker container run --pull=always --rm --tty --volume /Users/agross:/watch:ro ghcr.io/agross/watchr-client"
+WATCHR = """/usr/local/bin/docker container run --pull=always --rm --tty --volume /Users/agross:/watch:ro ghcr.io/agross/watchr-client
+"""
 
 SHELL_INIT = """open 'https://drive.explaineverything.com/discover/folders/view-folder?folder.id=1158574' \\
      https://watch.grossweber.com/ ; \\
@@ -16,8 +17,13 @@ async def main(connection):
 
   if window is not None:
     try:
-      watchrTab = await window.async_create_tab('bash', WATCHR)
+      watchrTab = await window.async_create_tab('zsh', None, 0)
       await watchrTab.async_set_title('Watchr')
+
+      time.sleep(1)
+
+      shellSession = watchrTab.current_session
+      await shellSession.async_send_text(WATCHR)
     except Exception as e:
       print(f'Error setting up Watchr: {e}')
 
