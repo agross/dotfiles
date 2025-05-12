@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+set -e
+
+git update-index -q --refresh
+
+if ! git diff-index --quiet --ignore-submodules HEAD; then
+  >&2 printf 'ERROR: Working directory not clean. Please stash your changes first.\n'
+  exit 1
+fi
+
+current_branch="$(git rev-parse --abbrev-ref HEAD)"
+
+# This fails in detached HEAD state or when there is no upstream configured.
+upstream_branch="$(git rev-parse --abbrev-ref 'HEAD@{upstream}')"
+
+remote="$(git config --get --local "branch.$current_branch.remote")"
+>&2 printf 'Fetching remote %s...\n' "$remote"
+git fetch "$remote"
+
+>&2 printf 'Resetting HEAD to configured remote branch %s\n' "$upstream_branch"
+git reset --hard 'HEAD@{upstream}'
