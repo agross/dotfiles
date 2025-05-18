@@ -8,6 +8,7 @@ tap 'buo/cask-upgrade'
 tap 'ggpeti/rmrec'
 
 # GNU utilities.
+brew 'bat'
 brew 'binutils'
 brew 'coreutils'
 brew 'diffutils'
