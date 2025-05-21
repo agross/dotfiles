@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+show_help() {
+  >&2 printf 'This script finds out which virtual ethernet adapter is connected to which container.\n\n'
+  >&2 printf 'Usage: docker-veth-containers [-n <CONTAINER_NAME>] [-i <INTEFACE_IN_CONTAINER>]\n\n'
+  >&2 printf '\t-n <CONTAINER_NAME>: limit to the named container (Default: all containers)\n'
+  >&2 printf '\t-i <INTERFACE_IN_CONTAINER>: limit to container interface name (Default: eth0)'
+
+  exit
+}
+
+dep=
+dependencies=(column nsenter)
+
+for dep in "${dependencies[@]}"; do
+  if ! hash "$dep" 2> /dev/null; then
+    >&2 printf 'Please install %s\n' "$dep"
+    exit 1
+  fi
+done
+
+container_filter=()
+interface=eth0
+
+while getopts "h?n:i:" opt; do
+   case "$opt" in
+   n)
+    container_filter=(--filter "name=$OPTARG")
+    break
+    ;;
+
+  i)
+    interface="$OPTARG"
+    break
+    ;;
+
+  *)
+    show_help
+     ;;
+   esac
+done
+
+mapfile -t containers < <(docker container ls --format '{{ .Names }}' "${container_filter[@]}")
+if (( ${#containers[@]} == 0 )); then
+  >&2 printf 'No containers running.\n'
+  exit 1
+fi
+
+mapfile -t veths < <(ip link show type veth)
+
+container-if-index() {
+  local pid="${1?Need PID}"
+  local interface="${2?Need interface}"
+
+  mapfile -t devices < <(nsenter --target="$pid" --net ip link show dev "$interface" type veth 2> /dev/null)
+
+  if [[ ! -v devices ]]; then
+    # Containers with host networking or MACVLAN.
+    return 1
+  fi
+
+  index="${devices[0]}"
+  index="${index##* $interface@if}"
+  index="${index%%:*}"
+
+  printf '%s' "$index"
+}
+
+find-veth-name() {
+  local index="${1?Need index}"
+  local name
+
+  for veth in "${veths[@]}"; do
+    if [[ "$veth" == "$index: veth"* ]]; then
+      name="$veth"
+      name="${name##$index: }"
+      name="${name%%@*}"
+      printf '%s' "$name"
+
+      return
+    fi
+  done
+
+  >&2 printf 'Could not find veth on index %s' "$index"
+  return 1
+}
+
+find-veth-mac() {
+  local index="${1?Need index}"
+  local name
+
+  for i in "${!veths[@]}"; do
+    veth="${veths[i]}"
+
+    if [[ "$veth" == "$index: veth"* ]]; then
+      mac="${veths[i + 1]}"
+      mac="${mac##*/ether }"
+      mac="${mac%% brd*}"
+      printf '%s' "$mac"
+
+      return
+    fi
+  done
+
+  >&2 printf 'Could not find veth on index %s' "$index"
+  return 1
+}
+
+inspect=(docker container inspect)
+
+output="$(printf 'CONTAINER VETH VETH-MAC CONTAINER-IP CONTAINER-MAC GATEWAY')"$'\n'
+
+for container in "${containers[@]}"; do
+  network_mode="$("${inspect[@]}" --format '{{ .HostConfig.NetworkMode }}' "$container")"
+  if [[ "$network_mode" == host ]]; then
+    output+="$(printf '%s' "$container")"$'\n'
+    continue
+  fi
+
+  pid="$("${inspect[@]}" --format '{{ .State.Pid }}' "$container")"
+
+  if index="$(container-if-index "$pid" "$interface")"; then
+    veth_name="$(find-veth-name "$index")"
+    veth_mac="$(find-veth-mac "$index")"
+  else
+    veth_name=-
+    veth_mac=-
+  fi
+
+  info="$("${inspect[@]}" \
+    --format "{{ .NetworkSettings.Networks.$network_mode.IPAddress }} {{ .NetworkSettings.Networks.$network_mode.MacAddress }} {{ .NetworkSettings.Networks.$network_mode.Gateway }}" \
+    "$container")"
+
+  output+="$(printf '%s %s %s %s' "$container" "${veth_name}" "${veth_mac}" "$info")"$'\n'
+done
+
+column -t <<< "$output"
