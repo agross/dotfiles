@@ -5,8 +5,6 @@ if [[ "$OSTYPE" != darwin* ]]; then
 fi
 
 cask iterm2
-
-brew tap homebrew/cask-fonts
 cask font-jetbrains-mono
 
 IFS=$'\n' read -r -d '' -a scripts < <(find "$topic/scripts" \
