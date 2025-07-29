@@ -63,7 +63,7 @@ type::telekom()
   [[ $1 == Telekom* ]] || return 1
 
   # Most often a static gross amount.
-  printf '%s\n' 102,89
+  printf '%s\n' 99,89
   printf '%s\n' 19
 }
 
