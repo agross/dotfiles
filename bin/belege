@@ -49,15 +49,6 @@ type::hotel()
   printf '%s\n' 19
 }
 
-type::congstar()
-{
-  [[ $1 == congstar* ]] || return 1
-
-  # Most often a static gross amount.
-  printf '%s\n' 20
-  printf '%s\n' 19
-}
-
 type::telekom()
 {
   [[ $1 == Telekom* ]] || return 1
@@ -77,7 +68,7 @@ values_for() {
   local supplier=${1:?Need supplier}
   local number=${2:?Need number}
 
-  local types=(taxi db hotel congstar telekom default)
+  local types=(taxi db hotel telekom default)
 
   for type in $types; do
     if type::$type $supplier $number; then
