@@ -53,8 +53,17 @@ type::telekom()
 {
   [[ $1 == Telekom* ]] || return 1
 
-  # Most often a static gross amount.
-  printf '%s\n' 99,89
+  if [[ $2 == 3* ]]; then
+    # Mobile.
+    printf '%s\n' 14,95
+  elif [[ $2 == 7* ]]; then
+    # Landline.
+    printf '%s\n' 99,89
+  else
+    >&2 printf 'Unsupported Telekom invoice number %s\n' "$2"
+    exit 1
+  fi
+
   printf '%s\n' 19
 }
 
