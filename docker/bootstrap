@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
 if [[ "$OSTYPE" == darwin* ]]; then
-  cask docker
+  cask docker-desktop
 
   formula dive
   formula hadolint
