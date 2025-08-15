@@ -3,9 +3,12 @@ begin
   require 'irb/ext/save-history'
 rescue LoadError
 end
-require 'awesome_print'
 
-AwesomePrint.irb!
+begin
+  require 'awesome_print'
+  AwesomePrint.irb!
+rescue LoadError
+end
 
 IRB.conf[:SAVE_HISTORY] = 1000
 IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb_history"
