@@ -1,7 +1,10 @@
-begin
-  require 'awesome_print'
-  AwesomePrint.pry!
-rescue LoadError
+unless Object.const_defined?('RecursiveOpenStruct')
+  # RecursiveOpenStruct cannot be printed by awesome_print.
+  begin
+    require 'awesome_print'
+    AwesomePrint.pry!
+  rescue LoadError
+  end
 end
 
 if defined?(PryByebug)
