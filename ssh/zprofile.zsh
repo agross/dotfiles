@@ -11,8 +11,14 @@ if (($+commands[screen])); then
   verbose Starting $fg[red]screen$reset_color because we\'re connected \
           using $fg[red]ssh$reset_color
 
-  # Synology does not support xterm-256color.
-  [[ -f /proc/syno_cpu_arch ]] && export TERM=xterm
+  if [[ -f /proc/syno_cpu_arch ]]; then
+    # Synology does not support xterm-256color (try vim with syntax highlighting).
+    export TERM=xterm
+
+    # Synology very likely has permissions wrong.
+    [[ -d ~/.screen ]] || mkdir --parents ~/.screen
+    chmod 700 ~/.screen
+  fi
 
   exec screen -dRq ssh
 fi
