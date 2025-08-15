@@ -1,5 +1,8 @@
 require 'irb/completion'
-require 'irb/ext/save-history'
+begin
+  require 'irb/ext/save-history'
+rescue LoadError
+end
 require 'awesome_print'
 
 AwesomePrint.irb!
