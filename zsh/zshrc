@@ -118,8 +118,15 @@ zinit ice wait lucid \
 
 zinit ice wait lucid &&
   zinit light hlissner/zsh-autopair
-zinit ice wait lucid &&
-  zinit light knu/z
+
+zinit ice wait lucid \
+            from:gh-r \
+            as:program \
+            pick:zoxide \
+            atclone:'./zoxide init zsh > init.zsh' \
+            atpull:%atclone \
+            src:init.zsh &&
+  zinit light ajeetdsouza/zoxide
 
 # Clear invalid completions, i.e. broken symlinks in $HOME/.zinit/completions.
 zinit cclear
