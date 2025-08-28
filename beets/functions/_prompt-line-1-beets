@@ -5,8 +5,9 @@
 
 [[ $1 == --status ]] || return
 
-music=(*.(mp3|flac|mpc)(.NY1))
-if ((#music == 0)); then
+setopt glob
+local music_files=(*.(mp3|flac|mpc|opus|m4a)(.NY1))
+if ((#music_files == 0)); then
   return
 fi
 
