@@ -9,7 +9,7 @@ url_to_tile[ogd.therightstuff.de]=OGD
 for app in ~/Applications/(Chrome|Brave\ Browser)\ Apps.localized/ioBroker*.app(/); do
   printf '%s\n' $app
 
-  url=$(grep --only-matching --perl-regexp '\w+\.therightstuff\.de' $app/Contents/Info.plist)
+  url=$(command grep --only-matching --perl-regexp '\w+\.therightstuff\.de' $app/Contents/Info.plist)
   title=${url_to_tile[$url]};
 
   printf 'Title: %s\n' $title
