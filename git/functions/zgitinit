@@ -187,7 +187,7 @@ zgit_tracking_merge() {
 zgit_isindexclean() {
   zgit_inworktree || return 1
 
-  if git diff --diff-filter=MARCDTXB --cached --quiet 2> /dev/null; then
+  if git diff --diff-filter=MARCDTXB --cached --quiet 2> /dev/null 1>&2; then
     return 0
   else
     return 1
@@ -197,7 +197,7 @@ zgit_isindexclean() {
 zgit_isworktreeclean() {
   zgit_inworktree || return 1
 
-  if git diff --diff-filter=MARCDTXB --quiet 2> /dev/null; then
+  if git diff --diff-filter=MARCDTXB --quiet 2> /dev/null 1>&2; then
     return 0
   else
     return 1
@@ -219,7 +219,7 @@ zgit_hasuntracked() {
 zgit_hasunmerged() {
   zgit_inworktree || return 1
 
-  if git diff --diff-filter=U --quiet 2> /dev/null; then
+  if git diff --diff-filter=U --quiet 2> /dev/null 1>&2; then
     return 1
   else
     return 0
