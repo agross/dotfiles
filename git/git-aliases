@@ -101,9 +101,6 @@
 	np = !git --no-pager
 	dp = !git -c pager.show='less -FRX' -c pager.log='less -FRX' -c pager.diff='less -FRX'
 
-	# Push GW repo to GitLab.
-	sync-gitlab = !"url=$(git remote get-url origin); url=${url#git@grossweber.com:}; git push ssh://git@gitlab.grossweber.com:10022/$url --all"
-
 	# https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html
 	ansible-magic-vars = grep --perl-regexp '\\bansible_(?!(facts|host|role_name|managed|version|check_mode|collection_name|config_file|dependent_role_names|diff_mode|forks|index_var|inventory_sources|limit|loop|loop_var|parent_role_\\w+|play_.*|run_tags|search_path|skip_tags|verbosity|local|become_user|connection|python_interpreter|user)\\b)'
 
