@@ -35,7 +35,7 @@ typeset -A dictionary
 local line
 for line in $lines; do
   local kv=("${(@s/ /)line}")
-  dictionary[${kv[1]:l}]=$kv[2]
+  dictionary[${kv[1]:l}]=$kv[2,-1]
 done
 
 echo -e "Spelling: $fg_bold[green]$word$reset_color\n"
