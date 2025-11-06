@@ -2,7 +2,7 @@
 
 # Commits all changes without running hooks and publishes them to a "private"
 # branch on the server. (Private means nobody else will likely fetch it,
-# although everbody can.)
+# although everybody can.)
 #
 # After publishing the "backup commit" the commit itself is removed and
 # the index is restored. Partially staged files will be retained as such.
