@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+min_width="$(git config get --default 150 delta.side-by-side-width)"
+
+delta_args=()
+
+terminal-width() {
+  local _rows cols
+
+  if hash tput 2>/dev/null; then
+    tput cols
+  elif hash stty 2>/dev/null; then
+    read -r _rows cols < <(stty size)
+    printf '%s' "$cols"
+  else
+    >&2 printf "Warning: tput/stty not found. Unable to determine terminal width."
+    printf 0
+  fi
+}
+
+if (( "$(terminal-width)" > min_width )); then
+  delta_args=(-c "delta.features=side-by-side $(git config get --default '' delta.features)")
+fi
+
+cmd=(git "${delta_args[@]}" "$@")
+
+exec "${cmd[@]}"
