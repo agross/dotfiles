@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ansible "${1:-all}" --list-hosts |
+  tail --lines=+2 |
+  sed 's/^[[:space:]]*//'
