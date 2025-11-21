@@ -50,8 +50,8 @@ done
 # ->
 # Kontoauszug 187730200 2020-09-30.pdf
 zmv $opt \
-    '([[:digit:]]##)_*_Kontoauszug_vom_([[:digit:]](#c2)).([[:digit:]](#c2)).([[:digit:]](#c4))_*.pdf(.N)' \
-    'Kontoauszug $1 $4-$3-$2.pdf'
+    '([[:digit:]]##)_*_Kontoauszug_vom_([[:digit:]](#c4)).([[:digit:]](#c2)).([[:digit:]](#c2))_*.pdf(.N)' \
+    'Kontoauszug $1 $2-$3-$4.pdf'
 
 # 1877302_2021_Jahres-Steuerbescheinigung 2020_vom_29.01.2021_20210130091521.pdf
 # ->
