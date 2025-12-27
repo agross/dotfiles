@@ -6,7 +6,7 @@ number='^[0-9]+$'
 
 if ! [[ "$1" =~ $number ]] ; then
   ssh-keygen -R "$1"
-  ssh-keyscan -H "$1" >> ~/.ssh/known_hosts
+  ssh-keyscan "$1" >> ~/.ssh/known_hosts
 else
   sed -i "$1d" ~/.ssh/known_hosts
 fi
