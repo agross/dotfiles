@@ -1,6 +1,19 @@
 #!/usr/bin/env sh
 
+docker container \
+       run \
+       --name bgutil-provider \
+       --rm \
+       --detach \
+       --publish 4416:4416 \
+       brainicism/bgutil-ytdlp-pot-provider:1.2.2
+
+docker container logs --follow bgutil-provider &
+
+trap "docker container kill bgutil-provider >/dev/null" EXIT
+
 yt-dlp --format bestaudio \
+       --extractor-args 'youtubepot-bgutilhttp:base_url=http://127.0.0.1:4416' \
        --recode 'wav>mp3' \
        --extract-audio \
        --no-mtime \
