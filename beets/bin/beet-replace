@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  >&2 printf 'Usage: beet-replace [-f] <new file> <query yielding old file>\n'
+  exit 1
+}
+
+if (( $# < 2 )); then
+  usage
+fi
+
+first="${1:-}"
+if [[ "$first" == -f ]]; then
+  force=
+else
+  new_path="${1:?Need new file}"
+fi
+shift
+
+if [[ -v force ]]; then
+  new_path="${1:?Need new file}"
+  shift
+fi
+
+if (( $# < 1 )); then
+  usage
+fi
+
+# shellcheck disable=SC2016
+mapfile -t ids < <(beet info --library --format '$id' "$@")
+# shellcheck disable=SC2016
+mapfile -t paths < <(beet info --library --format '$path' "$@")
+
+if (( ${#ids[@]} != 1 )); then
+  >&2 printf 'The beets database query did not return exactly 1 match for: %s\n' "$*"
+  >&2 typeset -p ids
+  >&2 typeset -p paths
+  exit 2
+fi
+
+id="${ids[0]}"
+old_path="${paths[0]}"
+
+if [[ ! -f "$new_path" ]]; then
+  >&2 printf 'Not a file: %s\n' "$new_path"
+  exit 3
+fi
+
+if [[ "$old_path" -ef "$new_path" ]]; then
+  >&2 printf 'Both old and new path point to the same file:\n%s\n%s\n' \
+             "$old_path" \
+             "$new_path"
+  exit 4
+fi
+
+old_size=$(stat -c %s "$old_path")
+new_size=$(stat -c %s "$new_path")
+
+if (( new_size < old_size )) && [[ ! -v force ]]; then
+  >&2 printf 'New file is smaller than old file, pass -f to force replacement: %s < %s\n' \
+             "$new_size" \
+             "$old_size"
+  exit 5
+fi
+
+# Replace file in database.
+beet modify --yes "path=$new_path" "id:$id"
+
+# Update database with new file metadata. The update command is silently ignored
+# if the mtime matches the database, so force.
+touch -- "$new_path"
+beet update \
+     --field=encoder \
+     --field=length \
+     --field=bitrate \
+     --field=bitrate_mode \
+     --field=encoder_info \
+     --field=format \
+     --field=bitdepth \
+     "id:$id"
+
+# Write metadata to new file.
+beet write "id:$id"
+
+# Remove old file.
+rm -- "$old_path"
+
+# Move new file according to metadata.
+beet move "id:$id"
