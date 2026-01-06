@@ -6,9 +6,10 @@ docker container \
        --rm \
        --detach \
        --publish 4416:4416 \
-       brainicism/bgutil-ytdlp-pot-provider:1.2.2
+       brainicism/bgutil-ytdlp-pot-provider:1.2.2 \
+       1>&2
 
-docker container logs --follow bgutil-provider &
+docker container logs --follow bgutil-provider 1>&2 &
 
 trap "docker container kill bgutil-provider >/dev/null" EXIT
 
