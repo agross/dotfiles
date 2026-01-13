@@ -1,3 +1,5 @@
+(($+commands[pnpm])) || return 0
+
 export PNPM_HOME="$HOME/.pnpm"
 
 case ":$PATH:" in
