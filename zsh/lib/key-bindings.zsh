@@ -1,12 +1,15 @@
 # Deletes all bindings.
 # bindkey -d
-# List keymaps.
-# bindkey -l
+# List keymaps with the one marked "main" being currently used.
+# bindkey -lL
 # List key bindings with as you would set up them using bindkey (the command).
 # bindkey -L
 # List bindings in keymap menuselect.
 # bindkey -M menuselect
 # About widgets: http://sgeb.io/articles/zsh-zle-closer-look-custom-widgets/
+
+# Default to emacs keymap regardless of $EDITOR or $VISUAL containing "vi".
+bindkey -e
 
 # To obtain key codes type Ctrl+X, followed by the key combination.
 # The code is then printed to the console.
