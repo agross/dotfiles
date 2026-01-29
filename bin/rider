@@ -2,7 +2,7 @@
 
 setopt extendedglob
 
-slns=(**/*.sln~**/node_modules/**~**/packages/**)
+slns=(**/*.sln?~**/node_modules/**~**/packages/**)
 
 if (( $#slns > 1 )); then
   slns=($(print -l $slns | fzf --multi))
