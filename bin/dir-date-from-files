@@ -8,6 +8,15 @@ autoload -Uz colors && colors
 
 dir=${1-.}
 
+excludes=
+while shift && (( $# )); do
+  excludes+="~$1"
+done
+
+typeset -p excludes
+
+setopt extendedglob
+
 # /  = directories only
 # D  = include dotfiles
 # N  = no error if there are no matches
@@ -19,7 +28,7 @@ for dir in $dir/**/*(/NDFodon); do
   # D   = include dotfiles
   # om  = order by modified date, newest first
   # [1] = first match
-  newest=($dir/*(NDom[1]))
+  newest=($dir/*$~excludes(NDom[1]))
 
   if [[ ${#newest[@]} -eq 0 ]]; then
     printf '%bempty%b: %b%s%b\n' \

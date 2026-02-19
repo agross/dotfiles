@@ -5,12 +5,12 @@ set -euo pipefail
 script="${0##*/}"
 script_path="${0%/*}"
 
-source_path="$HOME/Music/Music/"
+source_path="$HOME/Music/Music"
 target_path=/storage/emulated/0/Music
 target_host=root@oneplus-15-alex
 
 # Set directory dates, rsync will sync those dates as well as file dates.
-dir-date-from-files "$source_path"
+dir-date-from-files "$source_path" '**/cover.*' '**/.*'
 
 rsync --progress \
       --verbose \
@@ -21,5 +21,5 @@ rsync --progress \
       --delete \
       --delete-excluded \
       --exclude-from "$script_path/../$script/exclude" \
-      "$source_path" \
+      "$source_path/" \
       "$target_host:$target_path"
