@@ -9,9 +9,6 @@ alias cd..='cd ..'
 # cdd # will cd into foo
 alias cdd='cd "$(dirname $_)"'
 
-# In conjunction with Tarrasch/zsh-bd.
-(($+functions[bd])) && alias up='_() { bd ${1:-1} }; _'
-
 # Make cd push the old directory onto the directory stack.
 setopt auto_pushd
 

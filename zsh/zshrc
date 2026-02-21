@@ -48,7 +48,9 @@ zinit ice wait lucid \
           atload:'FAST_HIGHLIGHT=(); load-zsh-syntax-highlight' &&
   zinit light zdharma-continuum/fast-syntax-highlighting
 
-zinit ice wait lucid &&
+# Rename bd to up.
+zinit ice wait lucid \
+          atload:'functions -c bd up; functions -c _bd _up; unfunction bd _bd; compdef _up up; compdef -d bd' &&
   zinit light Tarrasch/zsh-bd
 
 zinit ice wait lucid \
