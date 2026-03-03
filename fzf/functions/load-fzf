@@ -1,22 +1,18 @@
+# vim: set ft=zsh ts=2 sw=2 et:
+
 (($+commands[fzf])) || (($+commands[fzf-tmux])) || return 0
 
-local fd=
-fd=$commands[fd]
-[[ -z $fd ]] && fd=$commands[fdfind]
+if (($+commands[fd])); then
+  fzf_default_command=($commands[fd]
+    --color=always
+    --hidden
+    --follow
+    --ignore-case
+    --no-ignore-vcs
+    --exclude .git
+    --exclude '**/Containers/*/Data')
 
-if [[ -n $fd ]]; then
-  # Explicitly specify the path separator for Cygwin where a natively-comiled
-  # executable outputs backslashes.
-  # https://github.com/sharkdp/fd/issues/153#issuecomment-531548022
-  export FZF_DEFAULT_COMMAND="noglob \"$fd\" \
-    --path-separator=/ \
-    --color=always \
-    --hidden \
-    --follow \
-    --ignore-case \
-    --no-ignore-vcs \
-    --exclude .git \
-    --exclude **/Containers/*/Data"
+  export FZF_DEFAULT_COMMAND=$(print ${(q+)fzf_default_command})
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --type file"
   export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type directory"
   export FZF_DEFAULT_OPTS='--ansi'
@@ -24,11 +20,11 @@ fi
 
 if [[ -n "$FZF_DEFAULT_COMMAND" ]]; then
   _fzf_compgen_path() {
-    eval $FZF_DEFAULT_COMMAND . "$1"
+    $fzf_default_command . "$1"
   }
 
   _fzf_compgen_dir() {
-    eval $FZF_DEFAULT_COMMAND --type directory . "$1"
+    $fzf_default_command --type directory . "$1"
   }
 fi
 
