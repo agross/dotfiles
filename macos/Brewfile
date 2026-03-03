@@ -43,38 +43,46 @@ cask 'syntax-highlight'
 cask 'suspicious-package'
 cask 'webpquicklook'
 
+tap 'tw93/tap'
+brew 'mole'
+
 # FUSE.
 tap 'gromgit/homebrew-fuse'
 cask 'macfuse'
 brew 'sshfs-mac'
 
-# jqp
-tap 'noahgorstein/tap'
+# JSON-related.
+brew 'jq'
 brew 'jqp'
+brew 'jid'
+brew 'jless'
 
 # Apps without topic directories.
+brew 'b2-tools'
+brew 'beads'
 brew 'bitwarden-cli'
 brew 'curl'
+brew 'doge'
 brew 'graphviz'
+brew 'grex'
 brew 'httpie'
 brew 'imagemagick'
-brew 'jid'
 brew 'm-cli'
 brew 'ncdu'
 brew 'nmap'
+brew 'opentofu'
 brew 'p7zip'
 brew 'ripgrep'
 brew 'shellcheck'
 brew 'shfmt'
 brew 'speedtest_cli'
+brew 'sslscan'
 brew 'testssl'
 brew 'wakeonlan'
-brew 'webkit2png'
 brew 'xz'
 brew 'yt-dlp'
 
 tap 'isen-ng/dotnet-sdk-versions'
-cask 'dotnet-sdk'
 
 cask 'alt-tab'
 cask 'aldente'
@@ -85,11 +93,11 @@ cask 'atext'
 cask 'banking-4'
 cask 'bettertouchtool'
 cask 'brave-browser'
+cask 'brewy'
 cask 'cleanmymac'
 cask 'dockdoor'
 cask 'double-commander'
 cask 'drawio'
-cask 'flux-app'
 cask 'freecad'
 cask 'istat-menus'
 cask 'jordanbaird-ice'
@@ -97,7 +105,7 @@ cask 'kap'
 cask 'keka'
 cask 'keyboardcleantool'
 cask 'launchcontrol'
-cask 'lumen'
+cask 'losslesscut'
 cask 'maestral'
 cask 'microsoft-excel'
 cask 'microsoft-word'
@@ -106,38 +114,40 @@ cask 'mqtt-explorer'
 cask 'netnewswire'
 cask 'nextcloud'
 cask 'pika'
+cask 'popclip'
 cask 'rider'
 cask 'signal'
+cask 'slack'
 cask 'symboliclinker'
 cask 'telegram'
-cask 'threema'
+cask 'threema@beta'
 cask 'timemachineeditor'
+cask 'viscosity'
 cask 'vnc-viewer'
 cask 'whatsapp'
 cask 'wireshark-app'
+cask 'wispr-flow'
 cask 'xnviewmp'
 cask 'zoom'
 
 # DB tools.
-cask 'azure-data-studio'
 cask 'dbgate'
 
 # Apps from the Mac App Store.
 mas 'AS Timer', id: 512_464_723
 mas 'Bitwarden', id: 1_352_778_147
+mas 'CCMenu 2', id: 603_117_688
 mas 'CleanMyDrive 2', id: 523_620_159
-mas 'Command X', id: 6_448_461_551
 mas 'Discovery', id: 1_381_004_916
 mas 'EasyRes', id: 688_211_836
 mas 'Monosnap', id: 540_348_655
-mas 'Moom', id: 419_330_170
+mas 'Moom Classic', id: 419_330_170
 mas 'PastePal', id: 1_503_446_680
 mas 'PCalc', id: 403_504_866
-mas 'PopClip', id: 445_189_367
+mas 'PDFgear', id: 6_469_021_132
 mas 'Shareful', id: 1_522_267_256
 mas 'Spark', id: 1_176_895_641
 mas 'Trello', id: 1_278_508_951
-mas 'WhatsApp', id: 1_147_396_723
 mas 'WireGuard', id: 1_451_685_025
 
 # vim: set ft=ruby ts=2 sw=2 et:
