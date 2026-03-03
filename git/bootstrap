@@ -9,15 +9,15 @@ if [[ "$OSTYPE" == darwin* ]]; then
   formula git-lfs
   formula git-svn
 
+  formula git-delta
+  formula diffnav
+  formula git-graph
+
   cask beyond-compare
   cask diffmerge
   cask kdiff3
-  cask meld
-  cask p4v
 
   cask fork
-  cask gitup
-  cask sourcetree
 
   # Tools required to record and convert casts.
   formula ansifilter
