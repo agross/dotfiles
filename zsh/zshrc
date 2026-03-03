@@ -14,7 +14,7 @@ load-local-files '$DOTFILES/**/(^(path|fpath|zshenv|zprofile|completion)).zsh'
 
 zinit-init
 
-# oh-my-zsh plugins.
+# My Synology's docker does not have completion, use oh-my-zsh plugins.
 zinit ice wait lucid \
           has:docker \
           if:'[[ -f /proc/syno_cpu_arch ]]' \
@@ -23,7 +23,7 @@ zinit ice wait lucid \
 
 zinit ice wait lucid \
           has:docker-compose \
-          if:'[[ -f /proc/syno_cpu_arch || $OSTYPE == linux-gnu* ]]' \
+          if:'[[ -f /proc/syno_cpu_arch ]]' \
           as:completion &&
   zinit snippet OMZ::plugins/docker-compose/_docker-compose
 
