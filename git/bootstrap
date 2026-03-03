@@ -19,8 +19,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
 
   cask fork
 
-  # Tools required to record and convert casts.
-  formula ansifilter
   formula asciinema
 fi
 

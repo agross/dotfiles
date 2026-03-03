@@ -171,29 +171,10 @@ git-training::logs() {
       target="$HOME/Downloads/Day $day Part $part.${file##*.}"
 
       if git-training::logs::ask-overwrite $target; then
-        cp --verbose -- "$file" "$target"
-      fi
-
-      case ${file##*.} in
-        log)
-          target=${target:r}.html
-
-          if git-training::logs::ask-overwrite $target; then
-            if ansifilter --input "$file" \
-                         --output "$target" \
-                         --html \
-                         --doc-title "Tag $day Teil $part" \
-                         --encoding utf-8 \
-                         --font 'Menlo, Monaco, Consolas, Courier New, monospace'; then
-              git-training::logs::trash "$file"
-            fi
-          fi
-          ;;
-
-        *)
+        if cp --verbose -- "$file" "$target"; then
           git-training::logs::trash $file
-          ;;
-      esac
+        fi
+      fi
     done
 
     part=$((part + 1))
