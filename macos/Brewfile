@@ -57,6 +57,12 @@ brew 'jqp'
 brew 'jid'
 brew 'jless'
 
+# AI-related.
+brew 'codex'
+cask 'codexbar'
+cask 'codex-app'
+cask 'wispr-flow'
+
 # Apps without topic directories.
 brew 'b2-tools'
 brew 'beads'
@@ -126,7 +132,6 @@ cask 'viscosity'
 cask 'vnc-viewer'
 cask 'whatsapp'
 cask 'wireshark-app'
-cask 'wispr-flow'
 cask 'xnviewmp'
 cask 'zoom'
 
