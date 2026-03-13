@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+command -v zfs > /dev/null
+
+zfs list -t snapshot -o used -p |
+awk '{ sum+=$1 } END { print sum/1024/1024/1024 " GB" }'
