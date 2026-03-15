@@ -88,8 +88,6 @@ brew 'wakeonlan'
 brew 'xz'
 brew 'yt-dlp'
 
-tap 'isen-ng/dotnet-sdk-versions'
-
 cask 'alt-tab'
 cask 'aldente'
 cask 'android-file-transfer'
