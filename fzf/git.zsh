@@ -100,9 +100,6 @@ function _fzf::git::hash() {
   preview="$extract_sha | \
            xargs --no-run-if-empty git show --color=always \
            $(_fzf::git::diff-so-fancy)"
-  if [[ $OSTYPE != cygwin* ]]; then
-    height=--height=99%
-  fi
 
   git log --graph \
           --all \

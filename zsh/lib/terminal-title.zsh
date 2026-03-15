@@ -33,7 +33,7 @@ _terminal-title::precmd() {
 }
 
 case "$TERM" in
-  xterm*|rxvt*|cygwin|screen*)
+  xterm*|rxvt*|screen*)
     verbose Setting up $fg[red]precmd$reset_color and \
             $fg[red]preexec$reset_color hooks for $fg[yellow]$TERM$reset_color
 

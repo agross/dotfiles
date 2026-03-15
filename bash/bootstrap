@@ -11,8 +11,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
   fi
 fi
 
-[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] && return
-
 symlink "$topic/bashrc"
 
 # vim: set ft=sh ts=2 sw=2 et:

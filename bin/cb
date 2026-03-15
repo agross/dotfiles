@@ -17,21 +17,19 @@ case "$OSTYPE" in
       exit 1
     fi
 
-    [[ -t 0 ]] \
-      && xclip -selection clipboard -out \
-      || xclip -selection clipboard -in
+    if [[ -t 0 ]]; then
+      xclip -selection clipboard -out
+    else
+      xclip -selection clipboard -in
+    fi
     ;;
 
   darwin*)
-    [[ -t 0 ]] \
-      && pbpaste \
-      || pbcopy
-    ;;
-
-  cygwin)
-    [[ -t 0 ]] \
-      && cat /dev/clipboard \
-      || cat > /dev/clipboard
+    if [[ -t 0 ]]; then
+      pbpaste
+    else
+      pbcopy
+    fi
     ;;
 
   *)

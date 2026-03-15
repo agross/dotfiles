@@ -4,8 +4,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
   formula vim
 fi
 
-[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] && return
-
 symlink "$topic/vim"
 symlink "$topic/vimrc"
 

@@ -41,7 +41,7 @@ get-translation-type() {
   translate_path=()
 
   case "$OSTYPE" in
-    cygwin)
+    cygwin|msys)
       translate_path=(cygpath --absolute --windows --)
       ;;
 

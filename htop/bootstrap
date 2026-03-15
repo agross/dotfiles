@@ -1,7 +1,5 @@
 # shellcheck shell=bash
 
-[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] && return
-
 if [[ "$OSTYPE" == darwin* ]]; then
   formula htop
 fi

@@ -1,7 +1,0 @@
-# shellcheck disable=SC2148
-
-# http://www.zsh.org/mla/users/2009/msg00183.html
-
-reply=("$(cygpath --mixed "$REPLY")")
-
-# vim: set ft=zsh ts=2 sw=2 et:

@@ -78,13 +78,12 @@ zstyle ':completion:history-words:*' remove-all-dups yes
 # 3. Partial word completion.
 # 4. Substring completion.
 # http://stackoverflow.com/a/24237590/149264
-# Way too slow on Windows.
-if [[ ! "$OSTYPE" =~ ^(msys|cygwin)$ ]]; then
-  zstyle ':completion:*' matcher-list '' \
-                                      'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' \
-                                      'r:|[._-]=* r:|=*' \
-                                      'l:|=* r:|=*'
-fi
+zstyle ':completion:*' \
+       matcher-list \
+       '' \
+       'm:ss=ß m:ue=ü m:ue=Ü m:oe=ö m:oe=Ö m:ae=ä m:ae=Ä m:{a-zA-Z}={A-Za-z}' \
+       'r:|[._-]=* r:|=*' \
+       'l:|=* r:|=*'
 
 # Ignore completion functions (until the _ignored completer).
 zstyle ':completion:*:functions' ignored-patterns '_*'

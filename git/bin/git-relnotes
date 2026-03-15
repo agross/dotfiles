@@ -3,10 +3,6 @@
 set -euo pipefail
 
 case "$OSTYPE" in
-  cygwin)
-    prefix=/usr/share/doc/git/html/RelNotes
-    ;;
-
   darwin*)
     install_dir="$(dirname "$(realpath "$(which git)")")"
     # $install_dir is

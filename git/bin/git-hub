@@ -212,10 +212,6 @@ if [[ ! -t 1 ]]; then
 fi
 
 case "$OSTYPE" in
-  cygwin)
-    program=cygstart
-    ;;
-
   darwin*)
     program=open
     url="${url// /%20}"

@@ -9,46 +9,15 @@ I use [zsh](http://zsh.sourceforge.net/) as my shell, because it's so much
 better than bash. Want to search your history using wildcards? No problem! Just
 `bindkey '^R' history-incremental-pattern-search-backward`.
 
-zsh runs on Windows only through Cygwin. Other platforms support it natively
-through `<package manager> install zsh; chsh --shell $(which zsh)`
-
 Don't expect a fancy bash setup, my dotfiles are organized around zsh.
 
 ## Supported Platforms
 
-I use these dotfiles on Windows, Cygwin, macOS and Linux. They should work on
-msysgit (a.k.a. [Git for Windows](https://git-scm.com/download/win)) as well,
-but I don't use it on a daily basis.
-
-### Cygwin
-
-When you install dotfiles under Cygwin the `bootstrap` script tries to create
-native NTFS symlinks by running `ln` with
-[`CYGWIN=winsymlinks:nativestrict`](https://cygwin.com/cygwin-ug-net/using.html#pathnames-symlinks).
-
-Native NTFS symlinks can only be created if you are either an Administrator
-[in an elevated shell](http://stackoverflow.com/a/15330511/149264) or if you
-have the `SeCreateSymbolicLinkPrivilege` privilege. Check with
-
-* `%SystemRoot%\system32\whoami.exe /priv` (`cmd.exe`)
-* `$SYSTEMROOT/system32/whoami.exe /priv` (`bash` or `zsh`)
-
-and if necessary [grant yourself this privilege](http://security.stackexchange.com/a/10198).
-
-### msysgit (a.k.a. [Git for Windows](https://git-scm.com/download/win))
-
-msysgit's implementation of `ln` just
-[copies the file/directory to the symlink target](https://groups.google.com/forum/#!topic/msysgit/_0QJUPgLm84).
-
-As I don't use msysgit, I didn't bother working around this limitation. If
-you're interested in having native NTFS symlinks, you may want to code up a
-solution that works using
-[this answer](http://stackoverflow.com/a/25394801/149264) as a starting point
-and submit a pull request.
+I use these dotfiles on macOS and Linux with zsh.
 
 ## Installation
 
-```bash
+```sh
 $ git clone --recursive https://github.com/agross/dotfiles.git ~/.dotfiles
 $ cd ~/.dotfiles
 $ ./bootstrap
@@ -63,7 +32,7 @@ You can run `boostrap` as often as you like, for example after adding new
 
 This is what you can expect from the boostrapper on a Linux system:
 
-```
+```sh
 agross@linux ~/.dotfiles
 $ ./bootstrap
   [ INFO ] Installing dotfiles from /home/agross/.dotfiles
@@ -116,7 +85,7 @@ organization allows for a nice separation of concerns. E.g. if you have a new
 application with dotfile(s) or if the application requires setup in your shell
 sessions, just create a new topic directory and put files underneath.
 
-```
+```text
 dotfiles
 ├─ example
 |  ├─ bootstrap              # bootstrapper: script to symlink files and install additional programs
@@ -165,8 +134,8 @@ environment variables available:
 | Variable    | Description |
 | ------------| ----------- |
 | `$topic`    | Directory of the topic of the current `bootstrap` script (without trailing slash) |
-| `$OSTYPE  ` | Operating system type, e.g. `linux-gnu`, `darwin19.0.3`, `cygwin`, i.e. the original `$OSTYPE` |
-| `$HOME`     | Home directory for the operating system, e.g. `$HOME` for all Linux-style `$OSTYPE`s and `/c/Users/<you>/` for `$OSTYPE == 'windows'` |
+| `$OSTYPE`   | Operating system type, e.g. `linux-gnu`, `darwin19.0.3` i.e. the original `$OSTYPE` |
+| `$HOME`     | Home directory for the operating system, e.g. `$HOME` |
 
 ### [zsh](#shell)-specific files
 
@@ -202,7 +171,7 @@ Completion scripts are run after [zinit](https://github.com/zdharma-continuum/zi
 calls [zsh's `compinit`](http://zsh.sourceforge.net/Doc/Release/Completion-System.html)
 to initialize the completion system. Put any completion-specific setup here.
 
-# Thanks
+## Thanks
 
 This work, especially the `boostrap` script, is based on the dotfiles of
 [Zach Holman](http://github.com/holman/dotfiles).

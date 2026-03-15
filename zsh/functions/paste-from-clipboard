@@ -1,8 +1,7 @@
+# vim: set ft=zsh ts=2 sw=2 et:
 # shellcheck disable=SC2148
 
 # Create a widget from the function paste-from clipboard.
-# Note that /dev/clipboard will give you access to the clipboard
-# if you are on Cygwin.
 
 local clipboard
 
@@ -16,10 +15,6 @@ case "$OSTYPE" in
     clipboard="$(pbpaste)"
     ;;
 
-  cygwin)
-    clipboard="$(cat /dev/clipboard)"
-    ;;
-
   *)
     >&2 printf 'Unsupported OS: %s\n' "$OSTYPE"
     return 1
@@ -28,5 +23,3 @@ esac
 
 BUFFER="$LBUFFER$clipboard$RBUFFER"
 CURSOR="$(($CURSOR + ${#clipboard}))"
-
-# vim: set ft=zsh ts=2 sw=2 et:

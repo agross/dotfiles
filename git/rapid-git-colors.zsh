@@ -1,5 +1,3 @@
-[[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] || return 0
-
 typeset -gA RAPID_GIT_COLORS
 RAPID_GIT_COLORS[reset]=$reset_color
 RAPID_GIT_COLORS[branch]=$fg[green]

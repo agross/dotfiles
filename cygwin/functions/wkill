@@ -1,7 +1,0 @@
-# shellcheck disable=SC2148
-
-# wkill to kill Cygwin and Windows processes (see ../completion.zsh).
-
-kill $*
-
-# vim: set ft=zsh ts=2 sw=2 et:

@@ -3,25 +3,6 @@
 # Assume we are dot-sourced from a script in our own directory.
 _script_path="${0%/*}"
 
-find_cygpath() {
-  local cygpath
-
-  if cygpath="$(command -v cygpath)"; then
-    printf '%s' "$cygpath"
-    return
-  fi
-
-  # Try local copy of cygpath.exe and cygwin1.dll (e.g. for msysgit).
-  cygpath="$_script_path/cygpath.exe"
-  if [ -f "$cygpath" ] && [ -x "$cygpath" ]; then
-    printf '%s' "$cygpath"
-    return
-  fi
-
-  printf "No cygpath in: \$PATH, %s\n" "$_script_path" >&2
-  return 1
-}
-
 tool_path() {
   [ $# = 0 ] && printf "Need tool candidate paths\n" >&2 && return 1
 
@@ -52,23 +33,7 @@ diff_args() {
     right_title="<File has been deleted>"
   fi
 
-  if [ "$OSTYPE" = 'cygwin' ] || [ "$OSTYPE" = 'msys' ]; then
-    local cygpath
-    cygpath="$(find_cygpath)" || exit 1
-
-    if [ ! -f "$left" ] && [ ! -d "$left" ]; then
-      left="$_script_path/empty"
-    fi
-    left="$("$cygpath" --mixed "$left")"
-
-    if [ ! -f "$right" ] && [ ! -d "$right" ]; then
-      right="$_script_path/empty"
-    fi
-    right="$("$cygpath" --mixed "$right")"
-  fi
-
   if [ -n "$GIT_DIFFMERGE_VERBOSE" ]; then
-    printf "Cygpath: %s\n"                     "$cygpath"
     printf "Left:    %s -> %s (Title: %s)\n"   "$1" "$left"  "$left_title"
     printf "Right:   %s -> %s (Title: %s)\n\n" "$2" "$right" "$right_title"
     printf "Command line:\n"
@@ -106,23 +71,7 @@ merge_args() {
     fi
   done
 
-  if [ "$OSTYPE" = 'cygwin' ] || [ "$OSTYPE" = 'msys' ]; then
-    local cygpath
-    cygpath="$(find_cygpath)" || exit 1
-
-    # Replace /dev/null with an empty file on Windows.
-    if [ ! -f "$base" ]; then
-      base="$_script_path/empty"
-    fi
-
-    base="$($cygpath --mixed "$base")"
-    local="$("$cygpath" --mixed "$local")"
-    remote="$("$cygpath" --mixed "$remote")"
-    result="$("$cygpath" --mixed "$result")"
-  fi
-
   if [ -n "$GIT_DIFFMERGE_VERBOSE" ]; then
-    printf "Cygpath:     %s\n"         "$cygpath"
     printf "Base:        %s -> %s\n"   "$1" "$base"
     printf "Local:       %s -> %s\n"   "$2" "$local"
     printf "Local desc:  %s\n"         "$local_desc"

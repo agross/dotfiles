@@ -27,10 +27,6 @@ case "$OSTYPE" in
   darwin*)
     platform_specific=("$topic/platform-specific/macos")
     ;;
-
-  cygwin|windows)
-    platform_specific=("$topic/platform-specific/windows")
-    ;;
 esac
 platform_specific+=("$topic/platform-specific/_")
 

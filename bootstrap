@@ -51,14 +51,6 @@ fail() {
   exit 1
 }
 
-ostypes() {
-  case "$OSTYPE" in
-    msys)    printf 'windows';;
-    cygwin)  printf "cygwin windows";;
-    *)       printf '%s' "$OSTYPE";;
-  esac
-}
-
 readlink-e() {
   local file="$1"
 
@@ -68,13 +60,6 @@ readlink-e() {
   fi
 
   printf '%s' "$target"
-}
-
-home-directory() {
-  case "${1?Need OS type}" in
-    windows) cygpath --unix "$USERPROFILE";;
-    *)       printf '%s' "$HOME";;
-  esac
 }
 
 symlink() {
@@ -167,8 +152,7 @@ symlink() {
   fi
 
   mkdir -p "$(dirname -- "$dst")"
-  # Create native symlinks on Windows.
-  CYGWIN=winsymlinks:nativestrict ln -s "$src" "$dst"
+  ln -s "$src" "$dst"
 
   success "$(printf 'Linked %b%s%b to %b%s%b' \
                     "$green" "$src" "$reset_color" \
@@ -256,30 +240,27 @@ run-topic-bootstrapper() {
 }
 
 install-dotfiles() {
-  local root home ostype bootstrappers bootstrapper
+  local root bootstrappers bootstrapper
 
   root="$(dirname "$(readlink-e "$0")")"
 
   info "$(printf "Installing dotfiles from %b%s%b" \
                  "$green" "$root" "$reset_color")"
 
-  for ostype in $(ostypes); do
-    home="$(home-directory "$ostype")"
-    symlink-dotfiles-to-home "$root" "$home" "$ostype"
+  symlink-dotfiles-to-home "$root" "$HOME" "$OSTYPE"
 
-    # Find topics with bootstrappers. Bash > 3 cannot be assumed (on macOS).
-    # https://stackoverflow.com/a/32931403/149264
-    IFS=$'\n' read -r -d '' -a bootstrappers < <(find -H \
-                                                     "$home/.dotfiles" \
-                                                     -mindepth 2 \
-                                                     -maxdepth 2 \
-                                                     -type f \
-                                                     -name bootstrap \
-                                                   | sort && printf '\0')
+  # Find topics with bootstrappers. Bash > 3 cannot be assumed (on macOS).
+  # https://stackoverflow.com/a/32931403/149264
+  IFS=$'\n' read -r -d '' -a bootstrappers < <(find -H \
+                                                    "$HOME/.dotfiles" \
+                                                    -mindepth 2 \
+                                                    -maxdepth 2 \
+                                                    -type f \
+                                                    -name bootstrap \
+                                                  | sort && printf '\0')
 
-    for bootstrapper in "${bootstrappers[@]}"; do
-      run-topic-bootstrapper "$bootstrapper" "$home" "$ostype" "$@"
-    done
+  for bootstrapper in "${bootstrappers[@]}"; do
+    run-topic-bootstrapper "$bootstrapper" "$HOME" "$OSTYPE" "$@"
   done
 
   info "$(printf 'All installed from %b%s%b' \
