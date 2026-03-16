@@ -5,7 +5,11 @@ set -e
 term="$1"
 
 # By default, sort newest albums first.
-find -L ~/Music -mindepth 1 -type d -printf '%T+\t%p\0' |
+find -L ~/Music \
+     -mindepth 1 \
+     -type d \
+     -not \( -path '*.localized' -o -path '*.musiclibrary' -o -path '*.musiclibrary/*' \) \
+     -printf '%T+\t%p\0' |
   sort -z --reverse |
   cut -z --fields=2 |
   fzf --read0 \

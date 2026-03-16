@@ -5,7 +5,7 @@ set -euo pipefail
 script="${0##*/}"
 script_path="${0%/*}"
 
-source_path="$HOME/Music/Music"
+source_path="$HOME/Nextcloud/Music"
 target_path=/storage/emulated/0/Music
 target_host=root@oneplus-15-alex
 
