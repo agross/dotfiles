@@ -61,7 +61,12 @@ brew 'jless'
 brew 'codex'
 cask 'codexbar'
 cask 'codex-app'
-cask 'wispr-flow'
+cask 'handy'
+# Paid.
+# cask 'voiceink'
+# Not as polished as Handy.
+# tap 'mazdak/tap'
+# cask 'audiowhisper'
 
 # Apps without topic directories.
 brew 'b2-tools'
@@ -140,7 +145,6 @@ cask 'dbgate'
 mas 'AS Timer', id: 512_464_723
 mas 'Bitwarden', id: 1_352_778_147
 mas 'CCMenu 2', id: 603_117_688
-mas 'CleanMyDrive 2', id: 523_620_159
 mas 'Discovery', id: 1_381_004_916
 mas 'EasyRes', id: 688_211_836
 mas 'Monosnap', id: 540_348_655
