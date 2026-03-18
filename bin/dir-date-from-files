@@ -13,8 +13,6 @@ while shift && (( $# )); do
   excludes+="~$1"
 done
 
-typeset -p excludes
-
 setopt extendedglob
 
 # /  = directories only
