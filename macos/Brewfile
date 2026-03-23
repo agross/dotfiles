@@ -58,19 +58,21 @@ brew 'jid'
 brew 'jless'
 
 # AI-related.
+brew 'beads'
+
 brew 'codex'
-cask 'codexbar'
 cask 'codex-app'
+
+brew 'ollama'
+tap 'danielmarbach/mnemonic-mcp', 'https://github.com/danielmarbach/mnemonic'
+brew 'mnemonic-mcp'
+
 cask 'handy'
 # Paid.
 # cask 'voiceink'
-# Not as polished as Handy.
-# tap 'mazdak/tap'
-# cask 'audiowhisper'
 
 # Apps without topic directories.
 brew 'b2-tools'
-brew 'beads'
 brew 'bitwarden-cli'
 brew 'curl'
 brew 'doge'
