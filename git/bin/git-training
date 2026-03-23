@@ -185,30 +185,6 @@ git-training::cleanup() {
   rm -rf ~/git-schulung
 
   git training config --reset
-
-  local dir=$(mktemp --directory)
-  trap "rm -rf $dir" EXIT SIGHUP SIGINT SIGTERM
-
-  remote=git@github.com:Archivists/archive-bundler
-  branch=refs/heads/master
-  reset_to=a838142
-
-  if ! git ls-remote \
-           --refs \
-           --heads \
-           --exit-code \
-           $remote \
-           $branch |
-       grep --quiet "^$reset_to"; then
-    git clone $remote $dir && \
-    git -C $dir push --force origin $reset_to:$branch
-  fi
-
-  printf '\n'
-  curl --include \
-       --request DELETE \
-       --header "Authorization: token $GITHUB_DELETE_REPO_API_TOKEN" \
-       https://api.github.com/repos/agross/archive-bundler
 }
 
 git-training::record() {
