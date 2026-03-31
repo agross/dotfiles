@@ -1,5 +1,7 @@
 # shellcheck shell=bash
 
+symlink "$topic/npmrc"
+
 if [[ "$OSTYPE" == darwin* ]]; then
   formula nodenv
   formula nodenv/nodenv/nodenv-package-rehash
