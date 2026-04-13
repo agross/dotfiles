@@ -142,6 +142,8 @@ cask 'wireshark-app'
 cask 'xnviewmp'
 cask 'zoom'
 
+tap 'TheBoredTeam/boring-notch'
+cask 'boring-notch'
 
 # Apps from the Mac App Store.
 mas 'AS Timer', id: 512_464_723
