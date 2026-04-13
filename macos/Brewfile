@@ -68,10 +68,12 @@ tap 'danielmarbach/mnemonic-mcp', 'https://github.com/danielmarbach/mnemonic'
 brew 'mnemonic-mcp'
 
 cask 'handy'
-# Paid.
-# cask 'voiceink'
+
+tap 'typewhisper/tap'
+cask 'typewhisper'
 
 # Apps without topic directories.
+
 brew 'b2-tools'
 brew 'bitwarden-cli'
 brew 'curl'
