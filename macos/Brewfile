@@ -107,6 +107,7 @@ cask 'bettertouchtool'
 cask 'brave-browser'
 cask 'brewy'
 cask 'cleanmymac'
+cask 'dbgate'
 cask 'dockdoor'
 cask 'double-commander'
 cask 'drawio'
@@ -141,8 +142,6 @@ cask 'wireshark-app'
 cask 'xnviewmp'
 cask 'zoom'
 
-# DB tools.
-cask 'dbgate'
 
 # Apps from the Mac App Store.
 mas 'AS Timer', id: 512_464_723
