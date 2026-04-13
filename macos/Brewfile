@@ -97,7 +97,6 @@ brew 'wakeonlan'
 brew 'xz'
 brew 'yt-dlp'
 
-cask 'alt-tab'
 cask 'aldente'
 cask 'android-file-transfer'
 cask 'android-platform-tools'
