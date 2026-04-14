@@ -24,7 +24,7 @@ if [[ $# -gt 0 ]] ||
    [[ $(defaults read com.apple.controlcenter 'NSStatusItem Visible FocusModes') == 1 ]]; then
   killall caffeinate 2> /dev/null
   m volume unmute
-  open -a Flux
+
   open -a DockDoor
   open -a boringNotch
   osascript <<< 'tell application "PopClip" to set enabled to true'
@@ -44,7 +44,6 @@ else
     m volume mute
   fi
 
-  killall Flux 2> /dev/null
   killall DockDoor 2> /dev/null
   killall -9 boringNotch 2> /dev/null
   osascript <<< 'tell application "PopClip" to set enabled to false'
