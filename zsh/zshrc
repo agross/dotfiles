@@ -47,9 +47,10 @@ zinit ice wait lucid \
           atload:'FAST_HIGHLIGHT=(); load-zsh-syntax-highlight' &&
   zinit light zdharma-continuum/fast-syntax-highlighting
 
-# Rename bd to up.
+# Rename bd to up, keep beads (bd) completion working.
 zinit ice wait lucid \
-          atload:'functions -c bd up; functions -c _bd _up; unfunction bd _bd; compdef _up up; compdef -d bd' &&
+          atinit:'(($+functions[_bd])) && functions -c _bd _beads_backup && unfunction _bd' \
+          atload:'functions -c bd up; functions -c _bd _up; unfunction bd _bd; compdef _up up; compdef -d bd; (($+functions[_beads_backup])) && functions -c _beads_backup _bd && unfunction _beads_backup && compdef _bd bd' &&
   zinit light Tarrasch/zsh-bd
 
 zinit ice wait lucid \
