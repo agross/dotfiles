@@ -6,11 +6,7 @@ desktop.ini
 *.musiclibrary/
 *.localized/
 
-_Queue/
-
-+ _Queue-Techno/
-_Queue-Techno/Seasidetrip/
-_Queue-Techno/casa caos IST/
+_Queue/*/*
 
 _Perlen/
 _Wave/
