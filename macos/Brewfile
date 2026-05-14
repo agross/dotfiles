@@ -47,9 +47,8 @@ tap 'tw93/tap'
 brew 'mole'
 
 # FUSE.
-tap 'gromgit/homebrew-fuse'
 cask 'macfuse'
-brew 'sshfs-mac'
+cask 'sshfs-mac'
 
 # JSON-related.
 brew 'jq'
