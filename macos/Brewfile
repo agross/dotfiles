@@ -61,6 +61,7 @@ brew 'beads'
 
 brew 'codex'
 cask 'codex-app'
+cask 'codexbar'
 
 brew 'ollama'
 tap 'danielmarbach/mnemonic-mcp', 'https://github.com/danielmarbach/mnemonic'
@@ -72,7 +73,6 @@ tap 'typewhisper/tap'
 cask 'typewhisper'
 
 # Apps without topic directories.
-
 brew 'b2-tools'
 brew 'bitwarden-cli'
 brew 'curl'
