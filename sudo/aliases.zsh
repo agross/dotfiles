@@ -10,5 +10,6 @@ if [[ "$OSTYPE" == darwin* && -z "$SSH_CONNECTION" ]]; then
   [[ -f "$HOME/Library/Keychains/Local Accounts.keychain-db" ]] || return 0
 
   export SUDO_ASKPASS="${0%/*}/sudo-askpass-keychain"
-  alias sudo='command sudo -A '
+  # This breaks sudo with Touch ID.
+  # alias sudo='command sudo -A '
 fi
