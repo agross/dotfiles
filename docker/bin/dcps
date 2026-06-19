@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Prettier docker ps output.
+
+set -euo pipefail
+
+docker compose \
+       ps \
+       --format 'table {{.ID}} {{.Image}}\t{{.Status}}\t{{.Service}}\t{{.Ports}}' \
+       "${@}"
