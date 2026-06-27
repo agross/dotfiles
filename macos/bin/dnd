@@ -26,7 +26,7 @@ if [[ $# -gt 0 ]] ||
   m volume unmute
 
   open -a DockDoor
-  open -a boringNotch
+  open -a Atoll
   osascript <<< 'tell application "PopClip" to set enabled to true'
 
   if ! brew autoupdate status | grep --quiet running; then
@@ -45,7 +45,7 @@ else
   fi
 
   killall DockDoor 2> /dev/null
-  killall -9 boringNotch 2> /dev/null
+  killall Atoll 2> /dev/null
   osascript <<< 'tell application "PopClip" to set enabled to false'
 
   if brew autoupdate status | grep --quiet running; then

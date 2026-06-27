@@ -100,6 +100,7 @@ cask 'aldente'
 cask 'android-platform-tools'
 cask 'anydesk'
 cask 'atext'
+cask 'atoll'
 cask 'banking-4'
 cask 'bettertouchtool'
 cask 'brave-browser'
@@ -139,9 +140,6 @@ cask 'whatsapp'
 cask 'wireshark-app'
 cask 'xnviewmp'
 cask 'zoom'
-
-tap 'TheBoredTeam/boring-notch'
-cask 'boring-notch'
 
 # Apps from the Mac App Store.
 mas 'AS Timer', id: 512_464_723
