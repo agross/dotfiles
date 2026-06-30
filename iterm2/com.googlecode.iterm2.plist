@@ -2092,7 +2092,7 @@
 			<key>Minimum Contrast</key>
 			<real>0.0</real>
 			<key>Mouse Reporting</key>
-			<false/>
+			<true/>
 			<key>Name</key>
 			<string>zsh</string>
 			<key>Non Ascii Font</key>

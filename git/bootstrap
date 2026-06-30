@@ -11,6 +11,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
 
   formula git-delta
   formula diffnav
+  formula hunk
   formula git-graph
 
   cask beyond-compare
