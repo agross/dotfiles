@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+# HOMEBREW_CASK_OPTS=--no-quarantine is no longer supported and I do not want to
+# click hundreds of "$App is an app downloaded from the Internet" dialogs.
+# This achieves the same. Here is your evidence, Mike McQuaid.
+# https://github.com/Homebrew/brew/issues/20755#issuecomment-3480899284
+>&2 printf 'Removing quarantine attributes from casks...\n'
+
+for app in /Applications/*.app(/U); do
+  if xattr -p com.apple.quarantine $app >/dev/null 2>&1; then
+    printf '%s\n' $app
+
+    # -r for apps that contain apps like Codex.
+    # print -l /Applications/Codex.app/**/*.app(/)
+    xattr -d -r com.apple.quarantine $app
+  fi
+done
+
+# xattr -r -d com.apple.quarantine /Applications/*.app(/U)

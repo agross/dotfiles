@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+brew cu --all "$@"
+brew-casks-no-quarantine
