@@ -3,6 +3,7 @@
 if [[ "$OSTYPE" == darwin* ]]; then
   ensure-homebrew-installed
   brew tap isen-ng/dotnet-sdk-versions
+  brew trust isen-ng/dotnet-sdk-versions
 fi
 
 # vim: set ft=sh ts=2 sw=2 et:

@@ -1,11 +1,8 @@
 # Allows to install updates automatically.
-tap 'domt4/autoupdate'
+tap 'domt4/autoupdate', trusted: true
 
 # Install updates for all casks.
-tap 'buo/cask-upgrade'
-
-# Remove formula and its dependencies with 'brew rmrec <formula>'.
-tap 'ggpeti/rmrec'
+tap 'buo/cask-upgrade', trusted: true
 
 # GNU utilities.
 brew 'bat'
@@ -43,9 +40,6 @@ cask 'suspicious-package'
 cask 'syntax-highlight'
 cask 'webpquicklook'
 
-tap 'tw93/tap'
-brew 'mole'
-
 # FUSE.
 cask 'macfuse'
 cask 'sshfs-mac'
@@ -64,13 +58,14 @@ cask 'codex-app'
 cask 'codexbar'
 
 brew 'ollama'
-tap 'danielmarbach/mnemonic-mcp', 'https://github.com/danielmarbach/mnemonic'
-brew 'mnemonic-mcp'
 
 cask 'handy'
 
-tap 'typewhisper/tap'
-cask 'typewhisper'
+tap 'danielmarbach/mnemonic-mcp', 'https://github.com/danielmarbach/mnemonic', trusted: true
+brew 'mnemonic-mcp'
+
+tap 'zzet/tap', trusted: true
+cask 'gortex'
 
 # Apps without topic directories.
 brew 'b2-tools'
@@ -82,6 +77,7 @@ brew 'grex'
 brew 'httpie'
 brew 'imagemagick'
 brew 'm-cli'
+brew 'mole'
 brew 'ncdu'
 brew 'nmap'
 brew 'opentofu'

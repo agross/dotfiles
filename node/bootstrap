@@ -4,7 +4,11 @@ symlink "$topic/npmrc"
 
 if [[ "$OSTYPE" == darwin* ]]; then
   formula nodenv
-  formula nodenv/nodenv/nodenv-package-rehash
+
+  ensure-homebrew-installed
+  brew tap nodenv/nodenv
+  brew trust nodenv/nodenv
+  formula nodenv-package-rehash
 fi
 
 # vim: set ft=sh ts=2 sw=2 et:
