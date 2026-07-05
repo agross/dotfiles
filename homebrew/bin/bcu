@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 
+trap 'brew-casks-no-quarantine; trap - EXIT' INT EXIT
+
 brew cu --all "$@"
-brew-casks-no-quarantine
