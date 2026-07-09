@@ -6,14 +6,14 @@
 # https://github.com/Homebrew/brew/issues/20755#issuecomment-3480899284
 >&2 printf 'Removing quarantine attributes from casks...\n'
 
-for app in /Applications/*.app(/U); do
-  if xattr -p com.apple.quarantine $app >/dev/null 2>&1; then
-    printf '%s\n' $app
+quarantined() {
+  xattr -p com.apple.quarantine $REPLY >/dev/null 2>&1
+}
 
-    # -r for apps that contain apps like Codex.
-    # print -l /Applications/Codex.app/**/*.app(/)
-    xattr -d -r com.apple.quarantine $app
-  fi
+for app in /Applications/*.app(/UN+quarantined); do
+  printf '%s\n' $app
+
+  # -r for apps that contain apps like Codex.
+  # print -l /Applications/Codex.app/**/*.app(/)
+  xattr -d -r com.apple.quarantine $app
 done
-
-# xattr -r -d com.apple.quarantine /Applications/*.app(/U)
