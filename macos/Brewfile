@@ -54,7 +54,7 @@ brew 'jless'
 brew 'beads'
 
 brew 'codex'
-cask 'codex-app'
+cask 'chatgpt'
 cask 'codexbar'
 
 brew 'ollama'
