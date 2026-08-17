@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+if (( $# < 3 )); then
+  printf 'Usage: %s USER PASS TEXT\n' "${0##*/}" >&2
+  exit 2
+fi
+
+user="$1"
+pass="$2"
+shift 2
+
+text="$*"
+
+if [[ -z "$user" || -z "$pass" || -z "$text" ]]; then
+  printf 'Error: USER, PASS, and TEXT must not be empty.\n' >&2
+  exit 2
+fi
+
+jq --null-input \
+   --arg text "$text" \
+   '{
+     jsonrpc: "2.0",
+     method: "Input.SendText",
+     params: {
+       text: $text,
+       done: true
+     },
+     id: 1
+   }' |
+   curl --silent \
+        --show-error \
+        --fail-with-body \
+        --user "$user:$pass" \
+        --header 'Content-Type: application/json' \
+        --data-binary @- \
+        http://172.16.0.65:8081/jsonrpc
