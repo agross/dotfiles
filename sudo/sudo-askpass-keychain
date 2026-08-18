@@ -2,8 +2,10 @@
 
 # As a first line of defense, detect whether we're called from sudo.
 parent_process="$(ps -o comm= -p $PPID)"
-if [ "$parent_process" != 'sudo' ] && \
-   [ "$parent_process" != "$(which sudo)" ]; then
+sudo="$(command -v sudo)"
+
+if [ "$parent_process" != sudo ] && \
+   [ "$parent_process" != "$sudo" ]; then
   >&2 printf 'SSH_ASKPASS %s: Not running from sudo but from %s.\n' "$0" "$parent_process"
   exit 1
 fi
@@ -11,4 +13,4 @@ fi
 security find-generic-password \
          -gwa \
          "$USER" \
-         "$HOME/Library/Keychains/Local Accounts.keychain-db"
+         "/Users/$USER/Library/Keychains/Local Accounts.keychain-db"
