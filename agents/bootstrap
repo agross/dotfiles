@@ -1,0 +1,9 @@
+# shellcheck shell=bash
+# vim: set ft=sh ts=2 sw=2 et:
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  # For npx skills@latest.
+  formula node
+fi
+
+symlink "$topic/agents"
