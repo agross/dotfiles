@@ -33,13 +33,10 @@ brew 'watch'
 # QuickLook plugins, https://github.com/sindresorhus/quick-look-plugins
 cask 'betterzip'
 cask 'mediainfoex'
-cask 'qlcolorcode'
 cask 'qlmarkdown'
 cask 'quicklook-video'
-cask 'quicklookase'
 cask 'suspicious-package'
 cask 'syntax-highlight'
-cask 'webpquicklook'
 
 # FUSE.
 cask 'macfuse'
