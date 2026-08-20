@@ -32,7 +32,6 @@ brew 'watch'
 
 # QuickLook plugins, https://github.com/sindresorhus/quick-look-plugins
 cask 'betterzip'
-cask 'mediainfoex'
 cask 'qlmarkdown'
 cask 'quicklook-video'
 cask 'suspicious-package'
