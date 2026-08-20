@@ -433,12 +433,40 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0xf700-0x3e0000-0x7e</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Apply Mode</key>
+			<integer>0</integer>
+			<key>Escaping</key>
+			<integer>2</integer>
+			<key>Text</key>
+			<string>Previous Mark
+Marks and Annotations.Previous Mark</string>
+			<key>Version</key>
+			<integer>2</integer>
+		</dict>
 		<key>0xf701-0x300000</key>
 		<dict>
 			<key>Action</key>
 			<integer>6</integer>
 			<key>Text</key>
 			<string></string>
+		</dict>
+		<key>0xf701-0x3e0000-0x7d</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Apply Mode</key>
+			<integer>0</integer>
+			<key>Escaping</key>
+			<integer>2</integer>
+			<key>Text</key>
+			<string>Next Mark
+Marks and Annotations.Next Mark</string>
+			<key>Version</key>
+			<integer>2</integer>
 		</dict>
 		<key>0xf702-0x320000</key>
 		<dict>
