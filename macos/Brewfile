@@ -53,8 +53,9 @@ brew 'beads'
 brew 'codex'
 cask 'chatgpt'
 cask 'codexbar'
-
-brew 'ollama'
+cask 'ollama-app'
+brew 'opencode'
+cask 't3-code'
 
 cask 'handy'
 
