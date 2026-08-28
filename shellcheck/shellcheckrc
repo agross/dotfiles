@@ -1,0 +1,2 @@
+# 2250 = put vars in braces
+disable=SC2250
