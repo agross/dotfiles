@@ -1,4 +1,5 @@
 # shellcheck shell=bash
+# vim: set ft=sh ts=2 sw=2 et:
 
 symlink "$topic/gitconfig"
 symlink "$topic/gitconfig.training"
@@ -7,7 +8,6 @@ symlink "$topic/git-wtfrc"
 if [[ "$OSTYPE" == darwin* ]]; then
   formula git
   formula git-lfs
-  formula git-svn
 
   formula git-delta
   formula diffnav
@@ -23,34 +23,39 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 platform_specific=()
-case "$OSTYPE" in
-  darwin*)
-    platform_specific=("$topic/platform-specific/macos")
-    ;;
-esac
+if [[ "$OSTYPE" == darwin* ]]; then
+  platform_specific=("$topic/platform-specific/macos")
+fi
+
 platform_specific+=("$topic/platform-specific/_")
 
 # Find platform-specific and generic configs with generics sorted last.
+# Poor man's mapfile on macOS bash 3.2.
+configs=()
+while IFS= read -r -d '' config; do
+  configs+=("$config")
+done < <(find "${platform_specific[@]}" \
+              -mindepth 1 \
+              -maxdepth 1 \
+              -type f \
+              -name '*.config' \
+              -print0 2> /dev/null)
+
 processed=()
-find "${platform_specific[@]}" \
-     -name '*.config' \
-     -type f \
-     -print0 2> /dev/null | \
-  while read -r -d $'\0' config; do
-    name="$(basename "$config")"
-    target="$HOME/.git-config/${name%%.*}.config"
 
-    # https://stackoverflow.com/questions/7577052/
-    for p in "${processed[@]:+${processed[@]}}"; do
-      if [[ "$p" == "$target" ]]; then
-        success "$(printf "Skipped %b%s%b (already has been linked)" \
-                          "$green" "$config" "$reset_color")"
-        continue 2
-      fi
-    done
+# https://stackoverflow.com/questions/7577052/
+for config in "${configs[@]:+${configs[@]}}"; do
+  name="$(basename "$config")"
+  target="$HOME/.config/git/${name%%.*}.config"
 
-    symlink "$config" "$target"
-    processed+=("$target")
+  for p in "${processed[@]:+${processed[@]}}"; do
+    if [[ "$p" == "$target" ]]; then
+      success "$(printf "Skipped %b%s%b (already has been linked)" \
+                        "$green" "$config" "$reset_color")"
+      continue 2
+    fi
   done
 
-# vim: set ft=sh ts=2 sw=2 et:
+  symlink "$config" "$target"
+  processed+=("$target")
+done
