@@ -38,7 +38,7 @@ formula() {
                    "$green" \
                    "$formula $*" \
                    "$reset_color")"
-    brew install "$formula" "$@"
+    brew install --yes "$formula" "$@"
   fi
 }
 
@@ -58,7 +58,7 @@ cask() {
                    "$green" \
                    "$cask $*" \
                    "$reset_color")"
-    brew install --cask "$cask" "$@"
+    brew install --cask --yes "$cask" "$@"
   fi
 }
 
