@@ -122,7 +122,6 @@ fetchart:
     - itunes
     - albumart
     - wikipedia
-    - google
 
 embedart:
   auto: true

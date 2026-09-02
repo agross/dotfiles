@@ -2,23 +2,24 @@
 
 [[ "$OSTYPE" == darwin* ]] || return 0
 
+formula beets
+
+symlink "$topic/config.yaml" ~/.config/beets/config.yaml
+
+# Completion is not part of the formula.
+mkdir -p ~/.config/beets/completion/
+curl --fail-with-body \
+     --output ~/.config/beets/completion/_beet \
+     https://raw.githubusercontent.com/beetbox/beets/master/extra/_beet
+
+# Sometimes patching the database is easier than using the CLI.
 cask 'db-browser-for-sqlite'
-
-# Python 3.14 is not supported yet.
-python_version=3.13
-formula python@$python_version
-
-# The version prefix is only available after installing the version.
-pip=("$(brew --prefix python@$python_version)/libexec/bin/pip3"
-     install
-     --upgrade
-     --break-system-packages)
-
-"${pip[@]}" beets
 
 # Validation.
 formula mp3val
 formula flac
+
+pip=(pip3 install --upgrade --break-system-packages)
 
 # Cover art.
 "${pip[@]}" 'beets[fetchart]' \
@@ -27,12 +28,6 @@ formula imagemagick
 
 # Metadata.
 "${pip[@]}" python3-discogs-client
-symlink "$topic/config.yaml" ~/.config/beets/config.yaml
-
-# Completion.
-mkdir -p ~/.config/beets/completion/
-curl --output ~/.config/beets/completion/_beet \
-     https://raw.githubusercontent.com/beetbox/beets/master/extra/_beet
 
 # Case-insensitive querying of umlauts.
 formula sqlite
@@ -42,7 +37,8 @@ formula unzip
 tmp="$(mktemp -d)"
 pushd "$tmp" > /dev/null || return 1
 
-curl --output sqlite-src.zip \
+curl --fail-with-body\
+     --output sqlite-src.zip \
      'https://www.sqlite.org/src/zip/sqlite.zip?r=release'
 unzip sqlite-src.zip > /dev/null
 
