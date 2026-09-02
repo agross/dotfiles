@@ -14,12 +14,13 @@ setopt extended_glob
 
 url=${1?Need cover URL}
 album=${2:-}
+current_dir="$(printf '%s' "$PWD" | iconv --from-code UTF-8 --to-code UTF-8-MAC)"
 
 if [[ -z $album ]]; then
   album_info=$(beet info --include-keys=album_id \
                          --library \
                          --summarize \
-                         $PWD)
+                         $current_dir)
 
   album=${album_info#album_id: }
 

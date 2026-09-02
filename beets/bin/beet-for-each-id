@@ -13,7 +13,8 @@
 set -euo pipefail
 
 match="${1?Need pattern}"
-query="${2:-$PWD}"
+current_dir="$(printf '%s' "$PWD" | iconv --from-code UTF-8 --to-code UTF-8-MAC)"
+query="${2:-$current_dir}"
 
 green='\e[1;32m'
 yellow='\e[1;33m'

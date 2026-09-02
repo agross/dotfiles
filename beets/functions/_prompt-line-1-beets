@@ -13,12 +13,14 @@ fi
 
 [[ $PWD == */_Singles* ]] && return
 
-local album_info cover_info album cover embedded_cover
+local current_dir album_info cover_info album cover embedded_cover
+
+current_dir="$(printf '%s' "$PWD" | iconv --from-code UTF-8 --to-code UTF-8-MAC)"
 
 album_info=("${(@f)$(beet info --include-keys=album_id,artpath \
                                --library \
                                --summarize \
-                               path:${PWD})}")
+                               path:${current_dir})}")
 
 album_id=${album_info[1]#album_id: }
 album="%B%F{blue}id:${album_id:-?}%f%b"
@@ -39,7 +41,7 @@ fi
 if [[ ! -v PROMPT_BEET_NO_COVER && -n $album_id ]]; then
   cover_info=$(beet info --include-keys=art \
                          --summarize \
-                         path:${PWD})
+                         path:${current_dir})
   if [[ $cover_info == 'art: True' ]]; then
     embedded_cover='%B%F{green}✔%f%b 📄'
   else
