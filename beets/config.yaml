@@ -1,5 +1,5 @@
 directory: ~/Nextcloud/Music
-library: ~/.config/beets/library.db
+library: ~/Nextcloud/Apps/beets/library.db
 
 import:
   copy: false

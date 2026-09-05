@@ -3,4 +3,4 @@
 open -a '/Applications/DB Browser for SQLite.app' \
         --args \
         --table items \
-        ~/.config/beets/library.db
+        ~/Nextcloud/Apps/beets/library.db
