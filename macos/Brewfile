@@ -55,7 +55,6 @@ cask 'chatgpt'
 cask 'codexbar'
 cask 'ollama-app'
 brew 'opencode'
-cask 't3-code'
 
 cask 'handy'
 
