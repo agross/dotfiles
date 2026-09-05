@@ -3,20 +3,12 @@ set encoding=utf8
 " Run as VIM not VI.
 set nocompatible
 
-" Load bundles from the "bundle" sub directories instead of one large plugin dir.
-set runtimepath^=~/.vim
-silent! call pathogen#runtime_append_all_bundles()
-silent! call pathogen#helptags()
-
 " Everything should be English.
 language messages en_US.UTF-8
 set langmenu=en_US.UTF-8
 
 " Enable syntax highlighting.
 syntax on
-
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=1
 
 " Default window size
 set textwidth=120
@@ -65,20 +57,7 @@ set mat=5
 " Always show status line.
 set laststatus=2
 
-function! InsertStatuslineColor(mode)
-  if a:mode == 'i'
-    highlight StatusLine guibg=green
-  elseif a:mode == 'r'
-    highlight StatusLine guibg=yellow
-  else
-    highlight StatusLine guibg=red
-  endif
-endfunction
-
-autocmd InsertEnter * call InsertStatuslineColor(v:insertmode)
-autocmd InsertLeave * highlight StatusLine guibg=#c2bfa5
-
-set statusline=%<%f\ %h%y\ [%{&ff}]%m%r\ %#warningmsg#%{SyntasticStatuslineFlag()}%*%=%-14.(%l,%c%V%)\ %P
+set statusline=%<%f\ %h%y\ [%{&ff}]%m%r\ %=%-14.(%l,%c%V%)\ %P
 
 " Mouse in all modes
 set mouse=a
@@ -111,7 +90,6 @@ set smartcase
 " Blink if there is an error
 set visualbell
 set noerrorbells
-set printoptions=paper:letter
 
 " Make backspace delete lots of things
 set backspace=indent,eol,start
@@ -123,116 +101,13 @@ set directory=$TEMP,.
 " Allow switching edited buffers without saving
 set hidden
 
-" Look for the file in the current directory, then south until you reach home.
-set tags=tags;$HOME
-
 set background=light
-let g:solarized_termcolors= 256
-let g:solarized_contrast  = "high"
-" colorscheme solarized
-call togglebg#map("<F5>")
-
-" Who needs .gvimrc?
-if has("gui_running")
-  set encoding=utf-8
-  set guifont=Consolas:h10
-  " Turn on toolbar
-  set guioptions+=T
-  " Turn on menu
-  set guioptions+=m
-end
-
-if &term =~ "256"
-  " Highlighting: Setup some nice colours to show the mark positions.
-  hi default ShowMarksHLl ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
-  hi default ShowMarksHLu ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
-  hi default ShowMarksHLo ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
-  hi default ShowMarksHLm ctermfg=white ctermbg=black cterm=bold guifg=white guibg=lightblue gui=bold
-end
-
-if has("gui_running")
-  function! ScreenFilename()
-    if has('win32')
-      return $HOME.'\.vimsize'
-    else
-      return $HOME.'/.vimsize'
-    endif
-  endfunction
-
-  function! ScreenRestore()
-    " Restore window size (columns and lines) and position
-    " from values stored in vimsize file.
-    " Must set font first so columns and lines are based on font size.
-    let f = ScreenFilename()
-    if has("gui_running") && g:screen_size_restore_pos && filereadable(f)
-      let vim_instance = (g:screen_size_by_vim_instance==1?(v:servername):'GVIM')
-      for line in readfile(f)
-        let sizepos = split(line)
-        if len(sizepos) == 5 && sizepos[0] == vim_instance
-          silent! execute "set columns=".sizepos[1]." lines=".sizepos[2]
-          silent! execute "winpos ".sizepos[3]." ".sizepos[4]
-          return
-        endif
-      endfor
-    endif
-  endfunction
-
-  function! ScreenSave()
-    " Save window size and position.
-    if has("gui_running") && g:screen_size_restore_pos
-      let vim_instance = (g:screen_size_by_vim_instance==1?(v:servername):'GVIM')
-      let data = vim_instance . ' ' . &columns . ' ' . &lines . ' ' .
-            \ (getwinposx()<0?0:getwinposx()) . ' ' .
-            \ (getwinposy()<0?0:getwinposy())
-      let f = ScreenFilename()
-      if filereadable(f)
-        let lines = readfile(f)
-        call filter(lines, "v:val !~ '^" . vim_instance . "\\>'")
-        call add(lines, data)
-      else
-        let lines = [data]
-      endif
-      call writefile(lines, f)
-    endif
-  endfunction
-
-  if !exists('g:screen_size_restore_pos')
-    let g:screen_size_restore_pos = 1
-  endif
-  if !exists('g:screen_size_by_vim_instance')
-    let g:screen_size_by_vim_instance = 1
-  endif
-
-  autocmd VimEnter * if g:screen_size_restore_pos == 1 | call ScreenRestore() | endif
-  autocmd VimLeavePre * if g:screen_size_restore_pos == 1 | call ScreenSave() | endif
-endif
 
 " The <Leader> character is your own personal modifier key, as g is Vim’s modifier key (when compared to vi). The default leader is \, but this isn’t located standardly on all keyboards and requires a pinky stretch in any case
 let mapleader = ","
 
 " Quick timeouts on key combinations.
 set timeoutlen=300
-
-" Alternatives to ESC:
-"imap jkl <ESC>
-"imap jlk <ESC>
-"imap kjl <ESC>
-"imap klj <ESC>
-"imap lkj <ESC>
-"imap ljk <ESC>
-"imap ;l <ESC>
-
-" "Very magic" regexes in searches
-"nnoremap / /\v
-"nnoremap ? ?\v
-
-" Vi-style editing in the command-line
-"nnoremap : q:a
-"nnoremap / q/a
-"nnoremap ? q?a
-
-" Window management
-"nmap <silent> <Leader>xo :wincmd j<CR>
 
 " The following will make tabs and trailing spaces visible when requested.
 set listchars=tab:>-,space:·,trail:~,eol:¶,precedes:«,extends:»
@@ -250,13 +125,10 @@ nnoremap ` '
 " Buffer management
 nmap <C-h> :bp<CR>
 nmap <C-l> :bn<CR>
-"nmap <TAB> :b#<CR>
-"nmap <C-q> :bd<CR>
 nmap <C-d> :bw<CR>
 vmap <C-d> :bw<CR>
 
 " Toggle highlighting
-" nmap <silent> <C-n> :silent :set nohls!<CR>:silent :set nohls?<CR>
 nmap <silent> <C-n> :silent :nohlsearch<CR>
 
 " Scroll faster
@@ -271,7 +143,6 @@ set wildmode=list:longest
 set wildignore=*.o
 
 autocmd Filetype yaml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-autocmd BufNewFile,BufRead *.boo setf boo
 
 " Automatically cd into the directory of the edited file.
 " alternatively: autocmd BufEnter * cd %:p:h
@@ -279,10 +150,6 @@ if exists("&autochdir")
   set autochdir
 endif
 
-" a.vim
-nmap <silent> <Leader>h :A<CR>
-
-" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
-nnoremap <silent> <M-F12> :BufExplorer<CR>
+" Buffers - next/previous: F12, Shift-F12.
 nnoremap <silent> <F12> :bn<CR>
 nnoremap <silent> <S-F12> :bp<CR>
