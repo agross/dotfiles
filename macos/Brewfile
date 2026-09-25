@@ -39,7 +39,8 @@ cask 'syntax-highlight'
 
 # FUSE.
 cask 'macfuse'
-cask 'sshfs-mac'
+tap 'gromgit/homebrew-fuse', trusted: true
+brew 'gromgit/fuse/sshfs-mac'
 
 # JSON-related.
 brew 'jq'
