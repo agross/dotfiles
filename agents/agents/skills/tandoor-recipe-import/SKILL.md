@@ -19,6 +19,11 @@ Before using the direct API or opening Tandoor in a browser, inspect the active 
 
 If the MCP is unavailable or lacks a required capability, use the direct authenticated API. Browser UI is the final fallback, only after both MCP and API cannot provide the required capability. State which MCP and API capabilities are unavailable before using the browser.
 
+## Direct API fallback
+
+- For `POST /api/recipe/`, always send `"internal": true`. Omitting it can persist `internal: false`, which produces the **External** badge on overview cards.
+- Re-read the created record and verify `internal: true` along with the requested recipe content.
+
 ## Extract and preserve the recipe
 
 - Accept URLs, raw text, recipe images, PDFs, handwritten cards, and batches. Extract the actual recipe, not surrounding editorial or promotional text.
