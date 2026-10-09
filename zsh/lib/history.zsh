@@ -3,10 +3,10 @@
 HISTFILE=$HOME/.zsh_history
 
 # The maximum number of events stored in the internal history list.
-HISTSIZE=5000
+HISTSIZE=10000
 
 # The maximum number of history events to save in the history file.
-SAVEHIST=5000
+SAVEHIST=10000
 
 # This option is a variant of INC_APPEND_HISTORY in which, where possible, the
 # history entry is written out to the file after the command is finished, so
