@@ -64,6 +64,14 @@ brew 'mnemonic-mcp'
 tap 'zzet/tap', trusted: true
 cask 'gortex'
 
+# Adobe and Microsoft replacements.
+cask 'pdfcraft'
+cask 'photocraft'
+cask 'vectorcraft'
+
+cask 'gridcraft'
+cask 'wordcraft'
+
 # Apps without topic directories.
 brew 'b2-tools'
 brew 'bitwarden-cli'
