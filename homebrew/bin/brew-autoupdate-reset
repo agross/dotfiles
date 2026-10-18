@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 
-brew autoupdate delete && \
-  brew autoupdate start --upgrade --cleanup
+brew autoupdate delete &&
+  brew autoupdate start --cleanup --upgrade --formula --sudo --pam &&
+  brew autoupdate status

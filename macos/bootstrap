@@ -15,7 +15,7 @@ brew cleanup
 brew link --force curl
 
 if brew autoupdate status | grep --quiet 'Autoupdate is not configured'; then
-  brew autoupdate start --upgrade --cleanup
+  brew autoupdate start --cleanup --upgrade --sudo --pam
 fi
 
 # vim: set ft=sh ts=2 sw=2 et:
