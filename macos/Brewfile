@@ -48,8 +48,6 @@ brew 'jid'
 brew 'jless'
 
 # AI-related.
-brew 'beads'
-
 brew 'codex'
 cask 'chatgpt'
 cask 'codexbar'
