@@ -41,6 +41,7 @@ If the MCP is unavailable or lacks a required capability, use the direct authent
 
 - Normalize source terms to singular German for matching and shopping-list quality, for example `Eier` to `Ei` and `Tomaten` to `Tomate`.
 - Normalize numeric input into decimal values. Retain an exact fraction as a note when the UI cannot represent it.
+- For count quantities of these Foods, keep the numeric amount and leave the unit empty instead of using `Stück`: `Ei`, `Zitrone`. Extend this list when requested; retain other units such as grams.
 - For a live import, use the exact selected existing Food label even when its display form differs from the normalized lookup form.
 - Keep a conversion only when the ingredient and conversion are unambiguous; otherwise retain the source measure in the note and ask.
 - Treat close Food matches as alternatives, not equivalents. Preserve the selected substitute in the ingredient note and align the instruction wording with it.
