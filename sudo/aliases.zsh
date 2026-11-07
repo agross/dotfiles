@@ -5,11 +5,3 @@
 if [[ ! -f /proc/syno_cpu_arch ]]; then
   alias sudo='command sudo '
 fi
-
-if [[ "$OSTYPE" == darwin* && -z "$SSH_CONNECTION" ]]; then
-  [[ -f "$HOME/Library/Keychains/Local Accounts.keychain-db" ]] || return 0
-
-  export SUDO_ASKPASS="${0%/*}/sudo-askpass-keychain"
-  # This breaks sudo with Touch ID.
-  # alias sudo='command sudo -A '
-fi
