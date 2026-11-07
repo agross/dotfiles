@@ -15,8 +15,9 @@ dir-date-from-files "$source_path" '**/cover.*' '**/.*'
 rsync --progress \
       --verbose \
       --human-readable \
-      --modify-window=1 \
+      --modify-window=10 \
       --archive \
+      --no-perms \
       --partial \
       --delete \
       --delete-excluded \
