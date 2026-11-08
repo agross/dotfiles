@@ -194,9 +194,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/JuliusBrussee/caveman.git",
       "skillPath": "skills/caveman/SKILL.md",
-      "skillFolderHash": "bdf0c87a2bdd47fc7fe9008c40cc6491ee801b81",
+      "skillFolderHash": "b314dd99b2b8723aae2de5a22079914567f2e58f",
       "installedAt": "2026-08-19T20:27:11.572Z",
-      "updatedAt": "2026-08-19T20:27:11.572Z"
+      "updatedAt": "2026-11-08T22:11:05.692Z"
     },
     "grilling": {
       "source": "mattpocock/skills",
@@ -214,16 +214,17 @@
   },
   "lastSelectedAgents": [
     "amp",
-    "antigravity",
-    "antigravity-cli",
     "cline",
     "codex",
     "cursor",
-    "deepagents",
+    "droid",
+    "fx",
     "gemini-cli",
     "github-copilot",
+    "kilo",
     "kimi-code-cli",
     "opencode",
+    "pi",
     "warp",
     "zed"
   ]
