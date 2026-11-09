@@ -5,6 +5,8 @@ import:
   copy: false
   move: false
   write: false
+  # Ask before importing metadata, even if strongly matched.
+  timid: true
 
 replace:
   ':': '꞉'
