@@ -61,8 +61,6 @@ paths:
 
 per_disc_numbering: true
 
-id3v23: true
-
 format_item: "\e[1;34m$path\e[0m"
 format_album: "\e[1;34m$path\e[0m"
 
