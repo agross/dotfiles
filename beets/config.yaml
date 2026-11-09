@@ -79,8 +79,9 @@ plugins:
   - hook
   # Find files with problems.
   - badfiles
-  # Load metadata from discogs.
+  # Load metadata from discogs and musicbrainz.
   - discogs
+  - musicbrainz
   # Add computed fields.
   - inline
   # Show info from file or library (beet info -l).
