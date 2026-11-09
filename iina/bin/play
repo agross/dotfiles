@@ -2,27 +2,45 @@
 
 set -e
 
-term="$1"
+case "$1" in
+  -s|--single)
+    shift
+    root=~/Music/_Singles
+    type=f
+    select_one=--no-select-1
+    action="execute(
+      url=\$(printf '%s' {} | jq --raw-input --slurp --raw-output @uri) &&
+        open -g -b com.colliderli.iina \"iina://open?enqueue=1&url=\$url\"
+    )"
+    ;;
 
-# By default, sort newest albums first.
-find -L ~/Music \
+  *)
+    root=~/Music
+    type=d
+    select_one=--select-1
+    action="execute(
+      printf 'Playing %b%s%b\n' '\e[1;32m' {} '\e[0m'
+      iina --no-stdin {}
+      sleep 3
+    )"
+    ;;
+esac
+
+# By default, sort newest items first.
+find -L "$root" \
      -mindepth 1 \
-     -type d \
+     -type "$type" \
      -not \( -path '*.localized' -o -path '*.musiclibrary' -o -path '*.musiclibrary/*' \) \
      -printf '%T+\t%p\0' |
   sort -z --reverse |
-  cut -z --fields=2 |
+  cut -z --fields=2- |
   fzf --read0 \
       --reverse \
       --no-sort \
       --exact \
       --tiebreak=begin \
-      --select-1 \
+      "$select_one" \
       --no-header \
       --cycle \
-      --query "$term" \
-      --bind="enter:execute(
-        printf 'Playing %b%s%b\n' '\e[1;32m' {} '\e[0m'
-        iina --no-stdin {}
-        sleep 3
-      )"
+      --query "${1-}" \
+      --bind="enter:$action"
