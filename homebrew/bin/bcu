@@ -2,4 +2,5 @@
 
 trap 'brew-casks-no-quarantine; trap - EXIT' INT EXIT
 
-brew cu --all "$@"
+# Keep Homebrew from resetting the sudo timestamp for each cask.
+HOMEBREW_SUDO_CHECKED=1 brew cu --all "$@"
