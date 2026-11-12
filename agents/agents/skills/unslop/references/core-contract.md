@@ -12,7 +12,10 @@ framing, empty or inflated abstraction, unsupported rhetorical certainty,
 opaque or mixed metaphor, misleading heading, needless repetition, or clear
 internal contradiction or ambiguity. Track every hard scanner match and other
 defect as confirmed or protected, with a reason; repair every confirmed span.
-One repair does not excuse another nearby defect.
+Read every sentence before scanner output, including headings and endings.
+Phrase lists are incomplete; recognize paraphrased scaffolding by function. Confirm filler when deletion loses no meaning;
+replace inflated diction with its plain equivalent. Punctuation, vocabulary,
+cadence, and structure alone prove neither a defect nor authorship.
 
 Do not fact-check or infer truth from the date or outside knowledge. Missing
 proof alone does not make a plan, offer, future date, promotion, technical term,
@@ -54,8 +57,9 @@ findings, return the source exactly.
 
 Preserve facts, quantities, dates, names, quotations, citations, code, units,
 scope, uncertainty, attribution, register, and meaning. Add no claims, advice,
-personality, anecdote, certainty, or conclusion. Do not substitute stock phrases
-or create staccato anti-slop prose. Preserve force-bearing "never", "must", and
+personality, anecdote, certainty, or conclusion. Delete empty framing; do not
+substitute filler or create staccato anti-slop prose. Re-read for missed defects
+and introduced filler; stop at matters of taste. Preserve force-bearing "never", "must", and
 "all" exactly in safety, security, legal, and technical rules. Presets change
 delivery, not facts. For lists, return one validated replacement per item.
 

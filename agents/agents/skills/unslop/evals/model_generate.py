@@ -1,39 +1,17 @@
 #!/usr/bin/env python3
-"""Live ``--generate-cmd`` adapter for evals/run_structure_climb.py.
+"""Text generation adapter for writing pipelines and paired product evaluations.
 
-Reads an assembled climb prompt on stdin, calls one model, writes the model's
-prose to stdout. Reuses run_model_parity's model-call plumbing so the climb's
-live path spans the same Anthropic (claude-cli) and OpenRouter (GPT + open-weights)
-spectrums as the recorded parity matrix, plus a ``codex`` kind for the local
-Codex CLI (OpenAI's agentic coding CLI, driven non-interactively via
-``codex exec``).
+The CLI reads a prompt from stdin and writes only the final response. It supports
+Codex, Claude CLI, OpenRouter, Gemini, and Cloudflare AI Gateway. Provider setup
+and development commands are documented in evals/CORE-BENCHMARK.md.
 
-  python3 evals/model_generate.py --kind claude-cli  --model claude-3-5-haiku-latest
-  python3 evals/model_generate.py --kind openrouter  --model openai/gpt-5.5
-  python3 evals/model_generate.py --kind openrouter  --model z-ai/glm-5.2
-  python3 evals/model_generate.py --kind codex       --model gpt-5.5
-  python3 evals/model_generate.py --kind codex       --model gpt-5.4-mini
+Core evaluations use call_isolated: text-only Codex/Claude in empty workspaces,
+or native Gemini/Cloudflare requests without tools. Native responses and usage
+are retained for independent evidence validation. Legacy climb callers may use
+the non-isolated CLI entrypoint; those calls are not core acceptance evidence.
 
-Exit 0 on a usable response, 1 on any model/network/key/CLI error (which aborts
-the climb honestly rather than silently shipping an empty draft). claude-cli
-can also be driven natively (``--generate-cmd "claude -p --model <id>"``);
-this adapter exists for the OpenRouter models (need the keychain POST
-wrapper) and for codex (needs output extraction, see ``call_codex`` below).
-
-Codex extraction. ``codex exec`` is an AGENT CLI: its stdout is an interleaved
-transcript (tool calls, hook lines, token counts), not a clean document. The
-clean-extraction path is ``--output-last-message FILE`` (``-o FILE``), which
-writes ONLY the agent's final text turn to a file with no wrapping -- verified
-by hand against this repo's SKILL-MACRO-01 fixture (a coding-agent prompt
-correctly returns bare prose, no markdown fence, no preamble). ``call_codex``
-runs read-only/ephemeral (no repo mutation, no persisted session) and reads
-that file instead of parsing stdout. KNOWN RISK: codex exec has been observed
-to hang silently in this environment (stuck MCP/tool call with no output and
-no exit). ``call_codex`` therefore runs the subprocess in its own process
-group and enforces a hard wall-clock timeout, SIGKILLing the whole group on
-expiry -- a hang is reported as a normal (None, error) failure, not a stuck
-process, so the climb loop aborts the round honestly instead of blocking
-forever.
+Codex final text comes from --output-last-message, never the agent transcript.
+Its process group is killed on timeout so a hung CLI cannot stall a climb.
 """
 
 from __future__ import annotations
@@ -47,12 +25,183 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import run_model_parity as parity  # noqa: E402
 
 CODEX_DEFAULT_TIMEOUT = 180
+
+
+def resolve_model(model: str) -> tuple[str, str]:
+    """Resolve an explicit provider:model id; unqualified ids use Codex."""
+    kind, separator, model_id = model.partition(":")
+    if not separator:
+        kind, model_id = "codex", model
+    if kind not in {"codex", "claude-cli", "gemini", "cloudflare"} or not model_id.strip():
+        raise ValueError("use a model id or codex:, claude-cli:, gemini:, or cloudflare:MODEL")
+    if kind == "cloudflare" and model_id.startswith("dynamic/"):
+        raise ValueError("evals require a specific model, not a dynamic gateway route")
+    return kind, model_id
+
+
+def provider_response(kind: str, payload: dict) -> tuple[str, dict]:
+    """Extract text and usage from retained native evidence, also used by scoring."""
+    if kind == "gemini":
+        candidates = payload.get("candidates", [])
+        if len(candidates) != 1 or candidates[0].get("finishReason") != "STOP":
+            raise ValueError("Gemini response is missing, blocked, or truncated")
+        parts = candidates[0].get("content", {}).get("parts", [])
+        if any(set(part) - {"text", "thought", "thoughtSignature"} for part in parts):
+            raise ValueError("Gemini response contains a non-text action")
+        text = "".join(part.get("text", "") for part in parts if not part.get("thought"))
+        native = payload.get("usageMetadata", {})
+        usage = {
+            "input_tokens": native.get("promptTokenCount"),
+            "cached_input_tokens": native.get("cachedContentTokenCount", 0),
+            "output_tokens": native.get("candidatesTokenCount"),
+        }
+        thoughts = native.get("thoughtsTokenCount", 0)
+        if type(thoughts) is not int or thoughts < 0:
+            raise ValueError("invalid Gemini reasoning-token count")
+        if type(usage["output_tokens"]) is int:
+            usage["output_tokens"] += thoughts
+        if native.get("toolUsePromptTokenCount", 0):
+            raise ValueError("Gemini response used tools")
+    elif kind == "cloudflare":
+        choices = payload.get("choices", [])
+        if len(choices) != 1 or choices[0].get("finish_reason") != "stop":
+            raise ValueError("Cloudflare response is missing, blocked, or truncated")
+        message = choices[0].get("message", {})
+        if message.get("tool_calls") or message.get("function_call") or message.get("refusal"):
+            raise ValueError("Cloudflare response contains a tool call or refusal")
+        text = message.get("content")
+        native = payload.get("usage", {})
+        usage = {
+            "input_tokens": native.get("prompt_tokens"),
+            "cached_input_tokens": native.get("prompt_tokens_details", {}).get("cached_tokens", 0),
+            "output_tokens": native.get("completion_tokens"),
+        }
+    elif kind == "claude-cli":
+        if (payload.get("type") != "result" or payload.get("subtype") != "success"
+                or payload.get("is_error") or payload.get("num_turns") != 1):
+            raise ValueError("Claude response did not complete successfully")
+        text = payload.get("result")
+        native = payload.get("usage", {})
+        counts = [native.get("input_tokens"), native.get("cache_read_input_tokens", 0),
+                  native.get("cache_creation_input_tokens", 0)]
+        if any(type(value) is not int or value < 0 for value in counts):
+            raise ValueError("Claude input-token evidence is incomplete")
+        usage = {
+            "input_tokens": sum(counts),
+            "cached_input_tokens": counts[1],
+            "output_tokens": native.get("output_tokens"),
+        }
+    else:
+        raise ValueError("unsupported native response provider")
+    if not isinstance(text, str) or not text.strip():
+        raise ValueError("provider returned no usable text")
+    if any(type(value) is not int or value < 0 for value in usage.values()):
+        raise ValueError("provider token evidence is incomplete")
+    if usage["cached_input_tokens"] > usage["input_tokens"]:
+        raise ValueError("cached tokens exceed input tokens")
+    return text, usage
+
+
+def call_isolated(model, prompt, *, timeout=180, cwd=None, event_sink=None):
+    """Call a text-only provider without project rules, skills, or model tools."""
+    kind, model_id = resolve_model(model)
+    if kind == "codex":
+        return call_codex(model_id, prompt, timeout=timeout, cwd=cwd,
+                          isolated=True, event_sink=event_sink)
+    started = time.perf_counter()
+    request_evidence = {}
+    try:
+        if kind == "gemini":
+            key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+            if not key:
+                return None, "GEMINI_API_KEY or GOOGLE_API_KEY is required"
+            url = "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent".format(
+                urllib.parse.quote(model_id, safe="")
+            )
+            config = {"maxOutputTokens": 16384}
+            if model_id.startswith("gemini-3"):
+                config["thinkingConfig"] = {"thinkingLevel": "LOW"}
+            elif model_id.startswith("gemini-2.5"):
+                config["thinkingConfig"] = {"thinkingBudget": 1024}
+            request_evidence = {"generation_config": config}
+            request = urllib.request.Request(url, data=json.dumps({
+                "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+                "generationConfig": config,
+            }).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json"})
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                payload = json.load(response)
+        elif kind == "cloudflare":
+            account = os.environ.get("CLOUDFLARE_ACCOUNT_ID") or os.environ.get("CF_ACCOUNT_ID")
+            gateway = os.environ.get("CF_GATEWAY_ID")
+            key = os.environ.get("CLOUDFLARE_API_TOKEN") or os.environ.get("CF_API_TOKEN")
+            if not account or not gateway or not key:
+                return None, "CLOUDFLARE_ACCOUNT_ID, CF_GATEWAY_ID, and CLOUDFLARE_API_TOKEN are required"
+            url = "https://api.cloudflare.com/client/v4/accounts/{}/ai/v1/chat/completions".format(
+                urllib.parse.quote(account, safe="")
+            )
+            request = urllib.request.Request(url, data=json.dumps({
+                "model": model_id, "messages": [{"role": "user", "content": prompt}],
+                "stream": False, "max_tokens": 16384,
+            }).encode(), headers={
+                "Authorization": "Bearer " + key, "Content-Type": "application/json",
+                "cf-aig-gateway-id": gateway, "cf-aig-skip-cache": "true",
+            })
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                cache_status = response.headers.get("cf-aig-cache-status", "")
+                payload = json.load(response)
+                request_evidence = {"gateway_id": gateway, "cache_bypassed": True,
+                                    "cache_status": cache_status,
+                                    "log_id": response.headers.get("cf-aig-log-id", "")}
+        else:
+            if cwd is None:
+                raise ValueError("isolated Claude calls require an empty working directory")
+            command = [
+                "claude", "-p", "--model", model_id, "--safe-mode",
+                "--tools", "", "--disable-slash-commands", "--strict-mcp-config",
+                "--mcp-config", '{"mcpServers":{}}', "--no-session-persistence",
+                "--output-format", "json", "--system-prompt",
+                "Follow the supplied writing task. Return only the requested response.",
+            ]
+            proc = subprocess.run(command, input=prompt, cwd=cwd, capture_output=True,
+                                  text=True, timeout=timeout)
+            if proc.returncode:
+                return None, "isolated Claude call failed (exit {})".format(proc.returncode)
+            payload = json.loads(proc.stdout)
+        if event_sink is not None:
+            event_sink.append(json.dumps({
+                "type": "unslop.provider_response", "provider": kind,
+                "model": model, "payload": payload, **request_evidence,
+            }) + "\n")
+        if kind == "cloudflare":
+            if request_evidence["cache_status"].upper() == "HIT":
+                return None, "Cloudflare returned cached evaluation output"
+            if payload.get("model") != model_id:
+                return None, "Cloudflare response model differs from requested model"
+        try:
+            text, usage = provider_response(kind, payload)
+        except ValueError as exc:
+            return None, str(exc)
+        if event_sink is not None:
+            event_sink.append(json.dumps({
+                "type": "unslop.invocation_metrics", "model": model,
+                "elapsed_seconds": round(time.perf_counter() - started, 6), **usage,
+            }) + "\n")
+        return text, None
+    except urllib.error.HTTPError as exc:
+        return None, "{} HTTP error {}".format(kind, exc.code)
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, subprocess.TimeoutExpired) as exc:
+        # Provider errors can contain request details. Keep credentials and prompts
+        # out of terminal errors; successful native evidence stays in run artifacts.
+        return None, "{} call failed: {}".format(kind, type(exc).__name__)
 
 
 @lru_cache(maxsize=1)
@@ -198,10 +347,10 @@ def call_codex(
 
 def main(argv):
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--kind", required=True, choices=["claude-cli", "openrouter", "codex"])
+    p.add_argument("--kind", required=True, choices=["claude-cli", "openrouter", "codex", "gemini", "cloudflare"])
     p.add_argument("--model", required=True)
     p.add_argument("--timeout", type=int, default=CODEX_DEFAULT_TIMEOUT,
-                   help="codex kind only: hard wall-clock timeout in seconds (default 180)")
+                   help="Codex, Gemini, and Cloudflare request timeout in seconds (default 180)")
     args = p.parse_args(argv)
 
     prompt = sys.stdin.read()
@@ -209,6 +358,8 @@ def main(argv):
         text, err = parity.call_claude_cli(args.model, prompt)
     elif args.kind == "openrouter":
         text, err = parity.call_openrouter(args.model, prompt)
+    elif args.kind in {"gemini", "cloudflare"}:
+        text, err = call_isolated(args.kind + ":" + args.model, prompt, timeout=args.timeout)
     else:
         text, err = call_codex(args.model, prompt, timeout=args.timeout)
 

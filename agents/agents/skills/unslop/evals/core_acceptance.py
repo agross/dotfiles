@@ -241,6 +241,8 @@ def _verify_controls(predictions: dict[str, Any], thresholds: dict[str, Any]) ->
     provenance = predictions.get("provenance")
     if not isinstance(provenance, dict):
         raise AcceptanceError("prediction provenance is required")
+    if provenance.get("evaluation_scope", "release") != "release":
+        raise AcceptanceError("development runs are not release acceptance evidence")
     if provenance.get("model") != GENERATION_MODEL:
         raise AcceptanceError("generation model must be gpt-5.6-luna")
     if provenance.get("judge_model") != JUDGE_MODEL:

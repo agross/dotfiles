@@ -1,11 +1,17 @@
 # Behavioral Evals
 
-The repo has two eval layers:
+The repo separates product measurement from regression checks:
 
 | Layer | Command | Measures |
 |-------|---------|----------|
 | Tooling | `python3 evals/run_adversarial.py` | Scanner and preservation scripts |
-| Behavioral | `skill-benchmark ... evals/shared-benchmark.json` | Skill output quality and with-skill/without-skill lift |
+| Behavioral | `skill-benchmark ... evals/shared-benchmark.json` | Skill routing, preservation, and rewrite regressions |
+| Core product | `python3 evals/core_runner.py ...` | Paired detection and repair, independent adjudication, and clean no-op behavior |
+
+Use [the core protocol](CORE-BENCHMARK.md#cross-family-development) for model
+comparisons, including open models through Cloudflare AI Gateway. The legacy
+behavioral lane below uses the same model for generation and judging. Its pass
+rate does not establish independent writing-quality improvement.
 
 `evals/shared-benchmark.json` is generated from the `target: skill` cases in
 `evals/adversarial-evals.json`:
@@ -25,6 +31,15 @@ The generated manifest adds:
 
 Script assertions run from `evals/` and read each run's `{output_dir}/output.md`.
 Use them as regression backstops; the judge assertions carry the behavioral signal.
+
+The tune cases cover phrase-level filler, paraphrased sentence and paragraph
+scaffolding, macro cleanup, clean no-ops, literal language, attribution,
+relational contradictions, safety limits, inert input, and audit-only routing.
+`SKILL-PARAPHRASE-01` deliberately has zero scanner hits: it removes an empty
+opening, identity claim, and closing question while preserving an informative
+question and answer. A larger phrase catalog would not exercise that distinction.
+These are authored regression cases, not a representative corpus or human
+calibration of the judge. Prompt-substring checks do not substitute for them.
 
 ## Add a Case
 
@@ -91,5 +106,4 @@ Notes:
   run measures the prose instructions without the skill's helper scripts.
 - Use `tune` while changing the skill, report `holdout`, and keep `holdback` sealed
   until a final confirmation run.
-- The base model already de-slops well, so per-case deltas matter more than the
-  aggregate mean.
+- Inspect per-case deltas; an aggregate gain does not excuse a damaged document.

@@ -1,8 +1,7 @@
 # unslop
 
-unslop strips the patterns that make writing read as machine-written, then rebuilds the prose
-in a real human voice. It ships as an agent skill, and the host agent runs it while you write,
-backed by deterministic scanners that any tool can call on its own.
+unslop finds formulaic or unclear writing and makes targeted edits while preserving
+meaning and voice. It ships as an agent skill with standalone Python scanners.
 
 Four commands cover the whole surface:
 
@@ -11,9 +10,9 @@ Four commands cover the whole surface:
 - `/unslop rewrite` diagnoses a draft and rebuilds it under the guards (the default).
 - `/unslop mimic` drafts or rewrites in a taught voice, then clears every removal gate.
 
-Detection carries the weight, and it's cheap, deterministic, and benchmarkable, which is what
-makes it the trust asset. Voice work is generative, and it runs under detection's constitution,
-so any mimic or rewrite that reintroduces a tell fails, however well it matches the voice.
+Scanners suggest candidates; the agent checks each use in context. Rewrite gates
+check preservation and known defects. Neither a clean scan nor a familiar phrase
+proves who wrote the text, and the checks cannot guarantee that every defect is gone.
 
 ## What counts as proof
 
@@ -38,6 +37,12 @@ result:
 
 The engineering suite can show that the implementation behaves as specified. Only the core
 scoreboard can show that the specification improves writing.
+
+The development runner supports OpenAI through Codex, Anthropic through Claude,
+Gemini, and open models through Cloudflare AI Gateway. Each model runs paired
+with-skill and without-skill arms under the same contract. See the
+[cross-family setup and evaluation protocol](evals/CORE-BENCHMARK.md#cross-family-development).
+Provider support is separate from demonstrated writing quality.
 
 ## Installation
 
@@ -75,8 +80,8 @@ and you never load the skill at all.
 ## Three Detection Layers
 
 Detection stacks three deterministic scanners, coarse to fine. Each one returns JSON and exits
-non-zero on a flag, and each carries false-positive protection rows, so a literal or domain use
-never trips it.
+non-zero on a flag. False-positive examples protect tested literal and domain
+uses; unfamiliar contexts still need review.
 
 **Phrase layer** (`scripts/banned_phrase_scan.py`). The compact runtime pack has 16 literal
 triggers, each backed by contextual false-positive protection. Gated words fire only in their
@@ -340,10 +345,6 @@ not prove that UNSLOP improves prose.
 - **Behavioral layer.** `evals/shared-benchmark.json` is generated from 12 `skill` cases with
   three ablations. It is useful for shaping and regression checks, but it is not the core
   product scoreboard.
-- **Measured simplification.** GEPA Optimize Anything selected one canonical full command over
-  seven redundant phases. In the recorded profile this cut warmed model calls from 48 to 24,
-  command tokens from 19 to 3, and deterministic orchestration time from about 6.25 seconds to
-  about 3.02 seconds while preserving the required gates.
 
 The latest valid public core result remains the v9 no-ship recorded in
 [`evals/CORE-RESULTS.md`](evals/CORE-RESULTS.md). Later development runs are directionally
@@ -509,5 +510,3 @@ broken. The guiding principles:
 ## Requirements and License
 
 Python 3.8+ and any supported coding agent. Licensed MIT.
-</content>
-</invoke>

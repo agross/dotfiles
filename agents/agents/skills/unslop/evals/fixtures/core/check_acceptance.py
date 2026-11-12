@@ -376,6 +376,10 @@ def main() -> int:
         control_mutation = _run(gate_command)
 
         controls["provenance"]["model"] = "gpt-5.6-luna"
+        controls["provenance"]["evaluation_scope"] = "development"
+        predictions_path.write_text(json.dumps(controls), encoding="utf-8")
+        development_rejected = _run(gate_command).returncode == 2
+        del controls["provenance"]["evaluation_scope"]
         controls["provenance"]["comparison_design"] = "unpaired"
         predictions_path.write_text(json.dumps(controls), encoding="utf-8")
         paired_design_mutation = _run(gate_command)
@@ -454,6 +458,7 @@ def main() -> int:
         valid_ok
         and hash_mutations_rejected
         and controls_rejected
+        and development_rejected
         and paired_design_rejected
         and validation_stack_drift_rejected
         and efficiency_rejected

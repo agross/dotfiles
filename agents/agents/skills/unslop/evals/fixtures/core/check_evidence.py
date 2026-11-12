@@ -12,6 +12,7 @@ import sys
 import tempfile
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -39,6 +40,7 @@ from core_metrics import (  # noqa: E402
     main as core_metrics_main,
     score,
 )
+from model_generate import call_isolated  # noqa: E402
 
 
 def run(command: list[str]) -> subprocess.CompletedProcess[str]:
@@ -66,7 +68,67 @@ def span(source: str, text: str, span_id: str, category: str | None = None) -> d
     return row
 
 
+def _native_rejected(events: list[dict], response: str, model: str) -> bool:
+    try:
+        _verify_live_events("\n".join(map(json.dumps, events)), response, "tampered native evidence", model)
+    except InputError:
+        return True
+    return False
+
+
 def main() -> int:
+    native_text = '{"findings":[],"rewrite":"The server returned 200."}'
+    native_events = [
+        {"type": "unslop.provider_response", "provider": "gemini",
+         "model": "gemini:fixture-model", "payload": {
+             "candidates": [{"finishReason": "STOP", "content": {"parts": [{"text": native_text}]}}],
+             "usageMetadata": {"promptTokenCount": 10, "candidatesTokenCount": 5, "thoughtsTokenCount": 3},
+         }},
+        {"type": "unslop.invocation_metrics", "model": "gemini:fixture-model",
+         "input_tokens": 10, "cached_input_tokens": 0, "output_tokens": 8, "elapsed_seconds": 1.0},
+    ]
+    _verify_live_events("\n".join(map(json.dumps, native_events)), native_text,
+                        "native Gemini", "gemini:fixture-model")
+    claude_events = copy.deepcopy(native_events)
+    claude_events[0].update(provider="claude-cli", model="claude-cli:fixture-model", payload={
+        "type": "result", "subtype": "success", "num_turns": 1, "result": native_text,
+        "usage": {"input_tokens": 6, "cache_read_input_tokens": 4, "output_tokens": 8},
+    })
+    claude_events[1].update(model="claude-cli:fixture-model", cached_input_tokens=4)
+    _verify_live_events("\n".join(map(json.dumps, claude_events)), native_text,
+                        "native Claude", "claude-cli:fixture-model")
+    tampered_usage = copy.deepcopy(native_events)
+    tampered_usage[1]["output_tokens"] = 5
+    boolean_usage = copy.deepcopy(native_events)
+    boolean_usage[1]["cached_input_tokens"] = False
+    truncated = copy.deepcopy(native_events)
+    truncated[0]["payload"]["candidates"][0]["finishReason"] = "MAX_TOKENS"
+    missing_usage = copy.deepcopy(native_events)
+    del missing_usage[0]["payload"]["usageMetadata"]["promptTokenCount"]
+    gateway_model = "@cf/qwen/fixture-model"
+    gateway_payload = {
+        "model": gateway_model,
+        "choices": [{"finish_reason": "stop", "message": {"role": "assistant", "content": native_text}}],
+        "usage": {"prompt_tokens": 10, "completion_tokens": 8},
+    }
+    http_response = io.BytesIO(json.dumps(gateway_payload).encode())
+    http_response.headers = {"cf-aig-cache-status": "MISS", "cf-aig-log-id": "fixture-request"}
+    gateway_sink = []
+    with patch.dict("os.environ", {"CLOUDFLARE_ACCOUNT_ID": "fixture-account",
+                                  "CF_GATEWAY_ID": "fixture-gateway", "CLOUDFLARE_API_TOKEN": "fixture-token"}):
+        with patch("model_generate.urllib.request.urlopen", return_value=http_response) as request:
+            gateway_text, gateway_error = call_isolated("cloudflare:" + gateway_model,
+                                                        "Rewrite this.", event_sink=gateway_sink)
+            sent_request = request.call_args.args[0]
+    gateway_contract = (
+        gateway_text == native_text and gateway_error is None
+        and sent_request.get_header("Cf-aig-gateway-id") == "fixture-gateway"
+        and sent_request.get_header("Cf-aig-skip-cache") == "true"
+        and json.loads(sent_request.data)["model"] == gateway_model
+    )
+    _verify_live_events("".join(gateway_sink), native_text, "Cloudflare gateway", "cloudflare:" + gateway_model)
+    gateway_events = [json.loads(line) for line in gateway_sink]
+    gateway_events[0]["payload"]["model"] = "a-different-model"
     forged_live_event_rejected = False
     try:
         _verify_live_events(
@@ -716,6 +778,13 @@ def main() -> int:
     )
     return 0 if (
         valid_ok
+        and _native_rejected(tampered_usage, native_text, "gemini:fixture-model")
+        and _native_rejected(boolean_usage, native_text, "gemini:fixture-model")
+        and _native_rejected(truncated, native_text, "gemini:fixture-model")
+        and _native_rejected(missing_usage, native_text, "gemini:fixture-model")
+        and _native_rejected(native_events, "forged response", "gemini:fixture-model")
+        and _native_rejected(gateway_events, native_text, "cloudflare:" + gateway_model)
+        and gateway_contract
         and safe_fallback_ok
         and fallback_threshold_rejected
         and forged_retry_rejected

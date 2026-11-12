@@ -80,7 +80,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--full",
         action="store_true",
-        help="run the extended mimic, voice, calibration, and maintenance suite too",
+        help="run core-contract, maintenance, and behavioral integrity checks",
     )
     return parser.parse_args(argv)
 
@@ -99,15 +99,16 @@ def main(argv: list[str]) -> int:
         return 0
 
     started = time.perf_counter()
-    if args.maintenance:
-        phases = [dict(phase) for phase in MAINTENANCE_PHASES]
-    else:
-        phases = [dict(phase) for phase in PHASES]
+    phases = list(MAINTENANCE_PHASES if args.maintenance else PHASES)
     if args.full:
-        phases.extend(dict(phase) for phase in MAINTENANCE_PHASES)
-        phases.extend(dict(phase) for phase in BEHAVIORAL_INTEGRITY_PHASES)
-    elif args.behavioral:
-        phases.extend(dict(phase) for phase in BEHAVIORAL_INTEGRITY_PHASES)
+        phases.extend(MAINTENANCE_PHASES)
+    if args.full or args.behavioral:
+        phases.extend(BEHAVIORAL_INTEGRITY_PHASES)
+    if args.behavioral:
+        phases.append({
+            "id": f"behavioral-{args.behavioral}",
+            "command": ["evals/run_behavioral.sh", args.behavioral],
+        })
     for phase in phases:
         phase_started = time.perf_counter()
         print(f"RUN  {phase['id']}", flush=True)
@@ -124,22 +125,6 @@ def main(argv: list[str]) -> int:
             )
             return proc.returncode
         print(f"OK   {phase['id']} ({elapsed:.2f}s)", flush=True)
-
-    if args.behavioral:
-        phase_started = time.perf_counter()
-        print(f"RUN  behavioral-{args.behavioral}", flush=True)
-        proc = subprocess.run(
-            ["evals/run_behavioral.sh", args.behavioral], cwd=ROOT
-        )
-        elapsed = time.perf_counter() - phase_started
-        if proc.returncode:
-            print(
-                f"FAIL behavioral-{args.behavioral} "
-                f"({elapsed:.2f}s, exit {proc.returncode})",
-                file=sys.stderr,
-            )
-            return proc.returncode
-        print(f"OK   behavioral-{args.behavioral} ({elapsed:.2f}s)", flush=True)
 
     print(f"PASS all checks ({time.perf_counter() - started:.2f}s)")
     return 0

@@ -490,7 +490,7 @@
           "type": "judge",
           "rubric": [
             "The answer removes the stock opener, generic time-setting filler, business jargon, empty summary transition, and conclusion scaffolding: 'Here's the thing', 'in today's', 'leverage our data', 'deep dive', 'at the end of the day', 'In conclusion', and 'one thing is certain'.",
-            "The answer removes or concretizes 'game-changer', vague 'actionable' praise, 'raises the bar', and 'exciting new chapter in our journey' rather than protecting them as ordinary promotional metaphor.",
+            "The answer removes or concretizes 'game-changer', vague 'actionable' praise, 'raises the bar', and 'exciting new chapter in our journey' rather than protecting them as ordinary promotional metaphor or substituting equally empty praise or transitions.",
             "The answer preserves Northstar, Q3, the \u00a348,000 budget, 184 opted-in UK customers, both quoted product claims, the 2.8% control, the 3.4% target, and Friday, 18 October.",
             "The answer keeps the experiment framing and does not claim that the 3.4% target was reached or that the campaign already succeeded."
           ],
@@ -510,7 +510,8 @@
             "In conclusion",
             "raises the bar",
             "one thing is certain",
-            "exciting new chapter in our journey"
+            "exciting new chapter in our journey",
+            "actionable"
           ]
         },
         {
@@ -567,7 +568,39 @@
       "tags": [
         "contextual_diagnosis",
         "adversarial",
-        "failure_mode:The rewrite preserves obvious stock hype because the contrac"
+        "failure_mode:The source audit overlooks sentence-level filler because it "
+      ]
+    },
+    {
+      "id": "SKILL-PARAPHRASE-01",
+      "split": "tune",
+      "kind": "contextual_diagnosis",
+      "domain": "operations",
+      "difficulty": "hard",
+      "trigger_type": "explicit",
+      "success_goals": [
+        "Remove paraphrased scaffolding while preserving a useful question and answer"
+      ],
+      "prompt": "Clean up this pilot announcement. Preserve its information and voice; return the edited announcement only.\n\nBefore we get to the dates, it helps to pause and consider what this milestone really represents.\n\nThe pilot runs from 6 May to 20 May. It is not merely a trial; it is a statement of who we are.\n\nWho can join? Only the 24 support agents on the evening shift. Maya will collect their notes on 21 May.\n\nWhat does that mean for the team? A future with possibility at its center.",
+      "expected_behavior": [
+        "Delete the opening ceremony, empty identity claim, and empty closing question and answer; preserve the dates, evening-shift eligibility, 24 support agents, Maya and her collection date. Leave the informative question-and-answer paragraph byte-for-byte unchanged."
+      ],
+      "assertions": [
+        {
+          "name": "skill-paraphrase-01-judge",
+          "type": "judge",
+          "rubric": [
+            "The announcement removes the opening sentence about pausing to consider a milestone, the trial-as-identity claim, and the empty closing question and answer. It does not replace them with other ceremony, hype, or a moral.",
+            "The announcement preserves the pilot from 6 May to 20 May and leaves this informative paragraph unchanged: Who can join? Only the 24 support agents on the evening shift. Maya will collect their notes on 21 May."
+          ],
+          "severity": "gate",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "contextual_diagnosis",
+        "adversarial",
+        "failure_mode:The editor only removes familiar catalog phrases, leaves par"
       ]
     }
   ],
@@ -577,6 +610,7 @@
       "removed_component": "compact scanner, structural diagnosis, and contextual rewrite rules",
       "expected_regressions": [
         "SKILL-CORE-DIRTY-01",
+        "SKILL-PARAPHRASE-01",
         "SKILL-MACRO-01"
       ]
     },

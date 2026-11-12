@@ -49,6 +49,7 @@ SPLITS: dict[str, str] = {
     "SKILL-ATTRIBUTION-02": "tune",
     "SKILL-SAFETY-SEMANTIC-02": "tune",
     "SKILL-CORE-DIRTY-01": "tune",
+    "SKILL-PARAPHRASE-01": "tune",
     "SKILL-DEHEDGE-02": "holdout",
     "SKILL-REGISTER-01": "holdout",
 }
@@ -66,6 +67,7 @@ DOMAIN: dict[str, str] = {
     "SKILL-ATTRIBUTION-02": "operations",
     "SKILL-SAFETY-SEMANTIC-02": "safety",
     "SKILL-CORE-DIRTY-01": "product",
+    "SKILL-PARAPHRASE-01": "operations",
 }
 
 # Difficulty is a coarse hint for reporting, not a gate.
@@ -212,7 +214,7 @@ DETERMINISTIC_ASSERTIONS = {
                 "Here's the thing", "game-changer", "in today's",
                 "leverage our data", "deep dive", "at the end of the day",
                 "In conclusion", "raises the bar", "one thing is certain",
-                "exciting new chapter in our journey",
+                "exciting new chapter in our journey", "actionable",
             ],
         ),
         _assertion("skill-core-dirty-01-keeps-budget", "regex", pattern=r"£48,000"),
@@ -335,7 +337,7 @@ def build_manifest(source: dict) -> dict:
             {
                 "id": "abl-detection-repair",
                 "removed_component": "compact scanner, structural diagnosis, and contextual rewrite rules",
-                "expected_regressions": ["SKILL-CORE-DIRTY-01", "SKILL-MACRO-01"],
+                "expected_regressions": ["SKILL-CORE-DIRTY-01", "SKILL-PARAPHRASE-01", "SKILL-MACRO-01"],
             },
             {
                 "id": "abl-preservation",

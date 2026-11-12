@@ -8,11 +8,12 @@ and `$OUTPUT` to your rewrite.
 
 ## Pass 1 — diagnose
 
-1. Extract the facts and constraints that must survive:
+1. Read the source before scanner output. Identify concrete defects and the
+   information each sentence contributes. Then extract the facts and constraints:
    ```bash
    python3 scripts/extract_constraints.py <<< "$INPUT"
    ```
-2. Scan the source so the rewrite answers evidence, not a hunch:
+2. Scan the source for candidates the reading may have missed:
    ```bash
    python3 scripts/banned_phrase_scan.py <<< "$INPUT"
    python3 scripts/structure_scan.py <<< "$INPUT"
@@ -26,6 +27,8 @@ and `$OUTPUT` to your rewrite.
 4. Classify exact spans as confirmed findings or protected source. Do not
    fact-check, use the current date, or treat missing support as an AI tell.
    Scanner rows remain candidates until contextual review confirms a defect.
+   If none are confirmed, return the source exactly. Skip reconstruction and
+   validation of unchanged output.
 
 ## Pass 2 — reconstruct
 

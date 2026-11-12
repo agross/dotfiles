@@ -21,7 +21,15 @@ directional evidence only.
 The cross-provider tables below are ancillary engineering history. They do not
 answer the core release question and do not substitute for Luna-vs-Luna evidence.
 
-The skill still works with one agent, but orchestrators should use the cheapest executor that can do each job.
+For current cross-family development, use the paired runner in
+[the core benchmark protocol](../evals/CORE-BENCHMARK.md#cross-family-development).
+It supports Codex, Claude, Gemini, and open models through Cloudflare AI Gateway.
+Keep the writing contract identical across providers. Select an executor from
+measured repair, preservation, and clean-text results, then compare cost among
+models that meet those requirements. Model size and provider are not quality gates.
+
+One agent can run the skill. The optional detector pipeline below is useful only
+when its additional calls improve measured outcomes for the workload.
 
 ## Tier 0: Deterministic Gates
 
@@ -67,20 +75,20 @@ Send one strong-enough rewriter the original text, merged Tier 0/Tier 1 findings
 | Job | Default executor | Escalate when |
 |---|---|---|
 | Tier 0 scripts | local deterministic | never; fix the script or input |
-| Detection packs | cheapest tier (see Model Parity) | JSON is malformed or pack scope is violated |
-| Span replacement / short rewrite | cheapest tier; gates carry safety (parity 2026-07-06: 8/8) | output fails a blocking gate twice |
-| Full rewrite of register-sensitive text (legal, medical, security, load-bearing hedges) | strongest practical model + mandatory Tier-0 re-scan | start here; cheap tiers erode register |
-| Macro structure (restructuring, coda/preview removal) | machine-gated AND machine-corrected via the structure climb (generate→scan→directive→regenerate); both frontier tiers converge fast, cheapest-that-converges is model-dependent (Anthropic haiku-4-5 at a slightly larger round cap; OpenAI's cheap tier not yet shown to converge) | never trust a model's own macro self-check — feed the scanners' directives back and re-scan (see Macro structure under the climb) |
+| Detection packs | lowest-cost model meeting current precision and recall requirements | misses, false positives, or malformed findings |
+| Span replacement / short rewrite | model validated on the relevant register, with gates | repeated repair or preservation failures |
+| Full rewrite of register-sensitive text (legal, medical, security, load-bearing hedges) | model validated on those preservation constraints, with Tier-0 re-scan | any loss of a load-bearing constraint |
+| Macro structure (restructuring, coda/preview removal) | model evaluated with the bounded structure climb | confirmed structural defects remain at the round limit |
 | Judge/eval | model specified by `evals/BEHAVIORAL-EVALS.md` | benchmark protocol changes |
 
-The model-dependent rows above are not set by taste. They are set by
-`evals/run_model_parity.py` (see Model Parity), whose live matrix was recorded 2026-07-06:
-span replacement clears on the cheapest tier because the output gates carry safety, while
-full rewrites of register-sensitive text and any macro restructuring escalate to the
-strongest practical model with a Tier-0 re-scan. Re-run the harness when the model features
-change and update these rows from its output.
+The July matrices below describe those models on those fixtures. They do not
+establish current family-wide rankings or prove that gates catch every harmful
+edit. Re-run the relevant workload after changing a model or contract.
 
-If Tier 2 output fails the same blocking gate twice, escalate one model tier. Do not add more rules to the prompt; the failure is execution quality.
+If Tier 2 fails twice, inspect the trace. Correct a conflicting contract before
+trying a stronger model; increasing model size cannot repair a contradictory gate.
+Keep the original if no candidate passes. Do not silently count that fallback as
+a successful repair.
 
 ## Model Parity
 
@@ -158,8 +166,8 @@ from prose. The cheap-tier misses were register and fact erosion in full rewrite
 
 **Measured conclusions.**
 
-- **Span replacement = cheapest tier, with gates on.** The output gates enforce fact and
-  tell safety, so the smallest model is safe for span-minimal replacement.
+- **Span replacement on these fixtures passed at the cheapest tested tier.**
+  This supports a workload-specific trial with gates, not a general safety claim.
 - **Full rewrites of register-sensitive text = frontier.** Legal, medical, security, or any
   text with load-bearing hedges/negation goes to the strongest practical model with a
   mandatory Tier-0 re-scan; cheap models erode register in unsupervised full rewrites.

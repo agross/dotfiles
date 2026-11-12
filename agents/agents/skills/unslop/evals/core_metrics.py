@@ -13,6 +13,7 @@ import argparse
 from datetime import datetime
 import hashlib
 import json
+import math
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -35,6 +36,7 @@ try:
         _semantic_judgment_prompt,
         _shipping_contract,
         _source_diagnostics,
+        _validate_diagnosis,
         _validate_generation,
         _validation_battery,
         _validation_blockers,
@@ -42,6 +44,7 @@ try:
         _validate_semantic_judgment,
         load_silhouette_reference,
     )
+    from .model_generate import provider_response, resolve_model
 except ImportError:
     from core_runner import (
         SILHOUETTE_REFERENCE_PATH,
@@ -59,6 +62,7 @@ except ImportError:
         _semantic_judgment_prompt,
         _shipping_contract,
         _source_diagnostics,
+        _validate_diagnosis,
         _validate_generation,
         _validation_battery,
         _validation_blockers,
@@ -66,6 +70,7 @@ except ImportError:
         _validate_semantic_judgment,
         load_silhouette_reference,
     )
+    from model_generate import provider_response, resolve_model
 
 
 METRIC_SCHEMA = "unslop-core-results-v1"
@@ -111,7 +116,7 @@ def _verify_live_events(
     label: str,
     expected_model: str,
 ) -> None:
-    """Bind a claimed live response to a complete Codex event envelope."""
+    """Bind a claimed live response and usage to retained native provider evidence."""
     _reject_tool_events(raw_events, label)
     events: list[dict] = []
     for line_number, line in enumerate(raw_events.splitlines(), 1):
@@ -127,6 +132,36 @@ def _verify_live_events(
             raise InputError(f"{label}: live event line {line_number} is not an object")
         events.append(event)
     event_types = [event.get("type") for event in events]
+    try:
+        provider, model_id = resolve_model(expected_model)
+    except ValueError as exc:
+        raise InputError(str(exc)) from exc
+    if provider != "codex":
+        if sorted(event_types) != ["unslop.invocation_metrics", "unslop.provider_response"]:
+            raise InputError(f"{label}: native provider evidence is incomplete")
+        envelope = next(event for event in events if event["type"] == "unslop.provider_response")
+        metric = next(event for event in events if event["type"] == "unslop.invocation_metrics")
+        if envelope.get("provider") != provider or envelope.get("model") != expected_model:
+            raise InputError(f"{label}: native provider identity mismatch")
+        if provider == "cloudflare" and (
+            not envelope.get("gateway_id") or envelope.get("cache_bypassed") is not True
+            or envelope.get("cache_status", "").upper() == "HIT"
+            or envelope.get("payload", {}).get("model") != model_id
+        ):
+            raise InputError(f"{label}: gateway model or uncached evidence mismatch")
+        try:
+            text, usage = provider_response(provider, envelope["payload"])
+        except (ValueError, KeyError, TypeError, AttributeError) as exc:
+            raise InputError(f"{label}: invalid native response: {exc}") from exc
+        if text != raw_response or metric.get("model") != expected_model:
+            raise InputError(f"{label}: native response is not bound to model output")
+        if any(type(metric.get(field)) is not int or metric.get(field) != value
+               for field, value in usage.items()):
+            raise InputError(f"{label}: native token evidence is inconsistent")
+        elapsed = metric.get("elapsed_seconds")
+        if type(elapsed) not in (int, float) or not math.isfinite(elapsed) or elapsed <= 0:
+            raise InputError(f"{label}: native elapsed-time evidence is missing")
+        return
     for required_type in ("thread.started", "turn.started", "turn.completed"):
         if event_types.count(required_type) != 1:
             raise InputError(f"{label}: live events require one {required_type}")
@@ -147,7 +182,7 @@ def _verify_live_events(
     if not isinstance(usage, dict) or len(metrics) != 1:
         raise InputError(f"{label}: live usage evidence is incomplete")
     metric = metrics[0]
-    if metric.get("model") != expected_model:
+    if metric.get("model") != model_id:
         raise InputError(f"{label}: live event model does not match provenance")
     for field in ("input_tokens", "cached_input_tokens", "output_tokens"):
         if not isinstance(usage.get(field), int) or metric.get(field) != usage[field]:
@@ -249,15 +284,26 @@ def verify_prediction_evidence(
         raise InputError("prediction root provenance is required")
     if root.get("runner") != "evals/core_runner.py":
         raise InputError("predictions were not produced by the core runner")
-    if root.get("model") != "gpt-5.6-luna":
+    development = root.get("evaluation_scope") == "development"
+    if root.get("evaluation_scope", "release") not in {"release", "development"}:
+        raise InputError("unknown evaluation scope")
+    if development and predictions.get("split") != "tune":
+        raise InputError("development evidence must use tune")
+    if not development and root.get("model") != "gpt-5.6-luna":
         raise InputError("generation model must be pinned to gpt-5.6-luna")
-    if root.get("judge_model") != "gpt-5.6-sol":
+    if not development and root.get("judge_model") != "gpt-5.6-sol":
         raise InputError("judge model must be pinned to independent gpt-5.6-sol")
+    try:
+        generation_provider = resolve_model(root.get("model", ""))[0]
+        if resolve_model(root.get("model", "")) == resolve_model(root.get("judge_model", "")):
+            raise ValueError("generator and judge must be different models")
+    except (ValueError, AttributeError) as exc:
+        raise InputError(str(exc)) from exc
     if root.get("offline_responses") is True and not allow_offline:
         raise InputError("offline response fixtures are not acceptance evidence")
     if root.get("offline_responses") not in {True, False}:
         raise InputError("offline response provenance must be boolean")
-    expected_provider = "fixture" if root["offline_responses"] else "codex"
+    expected_provider = "fixture" if root["offline_responses"] else generation_provider
     if root.get("provider") != expected_provider:
         raise InputError(
             f"prediction provider must be {expected_provider} for this response mode"
@@ -409,7 +455,7 @@ def verify_prediction_evidence(
         semantic_model_output = _extract_json_object(semantic["raw_response"])
         if semantic.get("model_parsed") != semantic_model_output:
             raise InputError(f"{case_id}: semantic model_parsed differs from raw response")
-        semantic_canonical = _validate_generation(
+        semantic_canonical = _validate_diagnosis(
             semantic_model_output, case["source"]
         )
         if semantic.get("parsed") != semantic_canonical:
@@ -1198,7 +1244,7 @@ def score(
             raw_response = semantic.get("raw_response")
             if isinstance(raw_response, str):
                 model_parsed = _extract_json_object(raw_response)
-                raw_findings = _validate_generation(
+                raw_findings = _validate_diagnosis(
                     model_parsed, case["source"]
                 )["findings"]
                 raw_tp, raw_fp, raw_fn = match_findings(
@@ -1333,6 +1379,13 @@ def score(
     operational_usage = _operational_usage(predictions)
     return {
         "schema": METRIC_SCHEMA,
+        "evaluation": {
+            "scope": predictions.get("provenance", {}).get("evaluation_scope", "release"),
+            "model": predictions.get("provenance", {}).get("model"),
+            "judge_model": predictions.get("provenance", {}).get("judge_model"),
+            "evidence_verified": verify_evidence,
+            "offline_responses": predictions.get("provenance", {}).get("offline_responses"),
+        },
         "split_filter": split,
         "by_split": dict(by_split),
         "by_case": dict(by_case),
@@ -1351,7 +1404,7 @@ def score(
                 case_id: _finalize_detection(counts)
                 for case_id, counts in sorted(raw_audit_by_case.items())
             },
-            "note": "Raw Luna source-audit spans after unique-only offset repair; no deterministic semantic normalization is applied.",
+            "note": "Raw source-audit spans after unique-only offset repair; no deterministic semantic normalization is applied.",
         },
         "operational": {
             "with_skill_runs": with_skill_runs,
@@ -1411,7 +1464,9 @@ def main(argv: list[str]) -> int:
             f"preservation={metrics['preservation']:.6f} "
             f"damage_rate={metrics['damage_rate']:.6f}"
         )
-        print(f"net_improvement={metrics['net_improvement']:.6f}")
+        for name in ("net_improvement", "clean_noop_rate"):
+            value = metrics[name]
+            print(f"{name}={value:.6f}" if value is not None else f"{name}=n/a")
     return 0
 
 
