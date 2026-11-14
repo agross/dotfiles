@@ -2,6 +2,19 @@
 
 autoload -U colors && colors
 
+function dnd::is-on() {
+  local dnd_status
+
+  dnd_status=$(shortcuts run dnd-status)
+
+  if [[ -z $dnd_status ]]; then
+    # No status means DND is off.
+    return 1
+  fi
+
+  return 0
+}
+
 function dnd::on() {
   shortcuts run dnd-on
 
@@ -20,8 +33,7 @@ function dnd::off() {
 }
 
 # Pass any argument to turn off DND.
-if [[ $# -gt 0 ]] ||
-   [[ $(defaults read com.apple.controlcenter 'NSStatusItem Visible FocusModes') == 1 ]]; then
+if [[ $# -gt 0 ]] || dnd::is-on; then
   killall caffeinate 2> /dev/null
   m volume unmute
 
