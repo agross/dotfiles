@@ -71,7 +71,6 @@ cask 'gridcraft'
 cask 'wordcraft'
 
 # Apps without topic directories.
-brew 'b2-tools'
 brew 'bitwarden-cli'
 brew 'cloudflare-speed-cli'
 brew 'curl'
